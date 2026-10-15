@@ -14,9 +14,9 @@
   "species": "cro",
   "candidate": 1,
   "status": "remake-candidate-1-adopted",
-  "revision": "c1-r02",
-  "url": "/models/cro-magnon-girl-reindeer/model-c1-r02.glb",
-  "sha256": "dd54a2b5c5aff66a112246a12e16182731a05b132d124d74c368ab55c4471a36",
+  "revision": "c1-r02-face-r01",
+  "url": "/models/cro-magnon-girl-reindeer/model-c1-r02-face-r01.glb",
+  "sha256": "32c5277060ec9c9c6147a670f4a57499fb965e24f77cecb16ad1d980eb07f93e",
   "bytes": 2750732,
   "triangles": 7862,
   "heightMetres": 1.45,
@@ -173,5 +173,9 @@
     "sha256": "b53c2ad473caf24d802fb7eb0d2aa7d49a0d2f14eed84e46efeb0449786266d5",
     "modelSha256": "dd54a2b5c5aff66a112246a12e16182731a05b132d124d74c368ab55c4471a36",
     "renderer": "scripts/qa-female-faces.mjs (FACE_QA_PORTRAIT=1, Idle_Loop 20%, 420x480, three.js)"
+  },
+  "faceRigidity": {
+    "review": "assets/cro-magnon-girl-reindeer/qa/c1-r02-face-r01.json",
+    "sha256": "94cd0d08ce4402a67492816f9443e48d2528cb633f234cdf0e72400f87d1354d"
   }
 }

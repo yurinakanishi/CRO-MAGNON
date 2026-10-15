@@ -1,0 +1,115 @@
+{
+  "schema": "cro-magnon/skin-weight-repair@1",
+  "date": "2026-10-15",
+  "decision": "adopt",
+  "reviewedBy": "Codex",
+  "request": "大きい顔の子たちが歩行・走行中に顔の形を変えないようにする",
+  "modelKey": "cro-magnon-boy-lion",
+  "candidate": 1,
+  "revision": "c1-r01-face-r01",
+  "url": "/models/cro-magnon-boy-lion/model-c1-r01-face-r01.glb",
+  "sha256": "6524f1bf1340a6c7af7fc5f3ab4ba6e0f5d3411fcedb35ddca079d9be8a169cd",
+  "bytes": 3321608,
+  "repair": {
+    "key": "cro-magnon-boy-lion",
+    "candidate": 1,
+    "previous": {
+      "url": "/models/cro-magnon-boy-lion/model-c1-r01.glb",
+      "sha256": "51b96004e980b926d133fe7b37d3f542371063fb85150982d7ed390434ce5ad3",
+      "bytes": 3321608,
+      "revision": "c1-r01"
+    },
+    "low": 0.6814999851832493,
+    "high": 0.864905059337616,
+    "changed": [
+      {
+        "material": "BodySurface",
+        "vertices": 3138,
+        "rigid": 319,
+        "blended": 1519
+      },
+      {
+        "material": "SkinSurface",
+        "vertices": 1068,
+        "rigid": 31,
+        "blended": 502
+      },
+      {
+        "material": "HeadSurface",
+        "vertices": 10043,
+        "rigid": 10043,
+        "blended": 0
+      }
+    ],
+    "sha256": "6524f1bf1340a6c7af7fc5f3ab4ba6e0f5d3411fcedb35ddca079d9be8a169cd",
+    "bytes": 3321608,
+    "sourcePreservedExceptSkinWeights": true
+  },
+  "measurement": {
+    "key": "cro-magnon-boy-lion",
+    "vertices": 9851,
+    "seamGroups": 410,
+    "maxSeamGapM": 0,
+    "clips": [
+      {
+        "name": "Craft",
+        "maxDeviationM": 9.992007221626409e-16,
+        "samples": 31
+      },
+      {
+        "name": "Eat",
+        "maxDeviationM": 1.1158466332997326e-15,
+        "samples": 31
+      },
+      {
+        "name": "Gather",
+        "maxDeviationM": 1.1113500228710729e-15,
+        "samples": 31
+      },
+      {
+        "name": "Give",
+        "maxDeviationM": 1.0053497077208614e-15,
+        "samples": 31
+      },
+      {
+        "name": "Idle_Loop",
+        "maxDeviationM": 1.1113338608303867e-15,
+        "samples": 31
+      },
+      {
+        "name": "Run_Loop",
+        "maxDeviationM": 1.1658167788096346e-15,
+        "samples": 31
+      },
+      {
+        "name": "Walk_Loop",
+        "maxDeviationM": 1.083178896637441e-15,
+        "samples": 31
+      },
+      {
+        "name": "Wave",
+        "maxDeviationM": 1.115761679444785e-15,
+        "samples": 31
+      },
+      {
+        "name": "Attack",
+        "maxDeviationM": 1.1660645525601868e-15,
+        "samples": 31
+      },
+      {
+        "name": "Downed",
+        "maxDeviationM": 1.000163993110495e-15,
+        "samples": 31
+      }
+    ],
+    "maxDeviationM": 1.1660645525601868e-15,
+    "maxCrossfadeDeviationM": 1.2216395188048187e-15
+  },
+  "visual": "assets/face-rigidity/20261015-r02/cro-magnon-boy-lion/comparison.png",
+  "previous": {
+    "manifest": "assets/cro-magnon-boy-lion/archive-manifest-c1-r01-20261015-face.json",
+    "url": "/models/cro-magnon-boy-lion/model-c1-r01.glb",
+    "sha256": "51b96004e980b926d133fe7b37d3f542371063fb85150982d7ed390434ce5ad3"
+  },
+  "preserved": "Every byte outside JOINTS_0/WEIGHTS_0: original TRELLIS geometry, normals, UV, images, materials, skeleton, bind matrices and all clips."
+}

@@ -64,6 +64,7 @@ const game = publicArg
 const { port } = await game.listen();
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const checks = [],
+  idleSamples = [],
   errors = [],
   forbidden = [];
 const pass = (label) => {
@@ -133,6 +134,51 @@ async function checkpoint(target) {
     });
   });
 }
+async function checkInactivity(target, background = false) {
+  const before = await checkpoint(target);
+  let blank;
+  if (background) {
+    blank = await target.context().newPage();
+    await blank.goto('about:blank');
+    await blank.bringToFront();
+  }
+  const startedAt = Date.now();
+  // Real elapsed time: no synthetic input, keepalive, or clock manipulation.
+  await new Promise((resolve) => setTimeout(resolve, 35000));
+  const elapsedMs = Date.now() - startedAt;
+  if (blank) {
+    await blank.close();
+    await target.bringToFront();
+  }
+  assert.equal(
+    await target.locator('#screens').evaluate((root) => root.classList.contains('active')),
+    false,
+  );
+  assert.equal(await target.locator('#world').isVisible(), true);
+  const after = await checkpoint(target);
+  const first = before.game.rooms[0].sessions[0].player;
+  const current = after.game.rooms[0].sessions[0].player;
+  assert.equal(current.id, first.id);
+  assert.deepEqual(current.inventory, first.inventory);
+  assert.equal(current.mascot, first.mascot);
+  assert.ok(after.game.savedAt > before.game.savedAt, 'autosave continues while idle');
+  const lock = await target.evaluate(async () =>
+    (await navigator.locks.query()).held.some((entry) => entry.name === 'cro-magnon-solo-play'),
+  );
+  assert.equal(lock, true, 'the same solo runtime remains active');
+  idleSamples.push({
+    background,
+    elapsedMs,
+    savedAtBefore: before.game.savedAt,
+    savedAtAfter: after.game.savedAt,
+  });
+  await target.screenshot({
+    path: `${output}/idle-${background ? 'background' : 'foreground'}.png`,
+  });
+  pass(
+    `${background ? 'Resumed background' : 'New foreground'} solo play stays active and autosaves after 35 seconds without input`,
+  );
+}
 try {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   context.on('request', (request) => {
@@ -159,6 +205,7 @@ try {
   assert.equal(original.mascot, '524');
   await page.screenshot({ path: `${output}/solo-world.png` });
   pass('First entry runs and autosaves a local character, outfit and one companion');
+  if (process.argv.includes('--idle')) await checkInactivity(page);
   await page.locator('#world').focus();
   await page.keyboard.down('w');
   await page.waitForTimeout(800);
@@ -187,6 +234,7 @@ try {
   assert.equal(restored.dye, 'teal');
   assert.equal(restored.mascot, '524');
   pass('Title/reload restores the same person, inventory and location while applying new clothes');
+  if (process.argv.includes('--idle')) await checkInactivity(page, true);
 
   // A second real tab must not attach a second writer to the same saved world.
   const second = await prepare(context);
@@ -244,7 +292,10 @@ try {
   if (page) await page.screenshot({ path: `${output}/failure.png` }).catch(() => {});
   throw error;
 } finally {
-  await writeFile(`${output}/result.json`, JSON.stringify({ checks, errors, forbidden }, null, 2));
+  await writeFile(
+    `${output}/result.json`,
+    JSON.stringify({ checks, idleSamples, errors, forbidden }, null, 2),
+  );
   await browser.close();
   await game.close();
 }

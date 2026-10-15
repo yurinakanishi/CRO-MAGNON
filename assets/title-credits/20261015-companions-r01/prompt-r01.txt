@@ -1,0 +1,18 @@
+Use case: precise-object-edit
+Asset type: alternate transparent game title artwork for CRO-MAGNON MMO.
+Input images:
+1. EDIT TARGET: the existing accepted title artwork, 1536 x 1024. Preserve it.
+2. CHARACTER REFERENCE: the fluffy grey-and-white cat with green eyes.
+3. CHARACTER REFERENCE: the yellow floating mascot named 524.
+Primary request: Create a second version of image 1 by adding exactly these TWO small companions near the feet of the mammoth on the RIGHT, to the right of the cute girl. Retain every existing person, animal, background element, title letter and underline.
+Placement and scale:
+- Cat: a small fluffy seated grey-and-white cat on the existing rocky ground beneath the right-hand mammoth, immediately to the right of the cute girl, around image position x=1245,y=620. Its paws rest on the same ground at approximately y=675. Its entire body is about 105–120 pixels tall. Keep it clearly distinct from the mammoth's legs and do not cover the girl or her spear.
+- 524: a small yellow rounded floating mascot a little farther right, beneath the mammoth's tusks and above the ground, around x=1370,y=580. Its complete silhouette is approximately 90–100 pixels tall/wide, slightly SMALLER than one of the cute human characters' heads. It must visibly float, with a clear air gap between its bottom and the ground; a subtle small grounding shadow below can show hovering. No string, support, legs or wings.
+Direction: BOTH the cat and 524 face toward the RIGHT side of the picture, in the SAME right-facing three-quarter direction as the cute boy and girl. Show enough of their front faces to recognize them. They do not face the viewer square-on or look left.
+Character fidelity:
+- The cat matches reference 2: long fluffy charcoal-grey and white fur, white chest and muzzle, grey ears and tail, white paws, green eyes, pink nose, friendly expression. Keep the natural cute cat proportions. A slightly raised front paw like the reference is welcome if natural.
+- 524 matches reference 3: a smooth soft golden-yellow round plump body with small rounded nubs around its silhouette and two little rounded points on top; the large face marking is the orange-red numerals "524" on a creamy white connected backing, with the short teal horizontal RIGHT-pointing arrow beneath. The numerals must read exactly "524", in that order, not mirrored, not "S24". Preserve this marking as its face; do not invent eyes or a conventional mouth.
+Style and lighting: integrate both into the same polished illustrated game-key-art style, warm light, earthy colours, shading and sharpness as the existing cute boy and girl. The cat should be fluffy and detailed; 524 should be rounded and softly shaded.
+Locked invariants: the entire existing scene remains intact. Keep exactly four existing humans, the sabertooth tiger, mammoth with both tusks, orange sun, snowy mountains, all three birds, rocky ground, and the title layout, at their existing locations and scale. Do not replace, move or redraw any existing character. Do not enlarge or crop the canvas. No additional mascots.
+Text (verbatim, unchanged at bottom): "CRO-MAGNON MMO". Preserve the original lettering and underline exactly. The only new text is "524" on the yellow mascot.
+Maintain the existing 3:2 composition and genuine alpha transparency in the outside background and letter gaps. Do NOT turn hidden RGB colours of transparent pixels into an opaque brown, black or white background. No checkerboard, no labels, no watermark.

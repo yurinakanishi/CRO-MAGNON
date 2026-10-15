@@ -1,0 +1,14 @@
+Use case: precise-object-edit
+Asset type: transparent title artwork for the existing CRO-MAGNON MMO game.
+Input images:
+1. EDIT TARGET: the existing 1536 by 1024 landscape title artwork. Preserve its composition and typography.
+2. CHARACTER REFERENCE ONLY: the recently added shell-headband boy.
+3. CHARACTER REFERENCE ONLY: the recently added feather-haired girl.
+Primary request: Replace ONLY the two human characters on the RIGHT side of image 1, between the tall central spearman and the mammoth. The smaller adult man behind the central spearman becomes the cute boy in image 2. The rightmost adult woman holding a spear in front of the mammoth becomes the cute girl in image 3.
+Boy: faithfully retain his spiky dark-brown hair, braided shell headband, big amber-brown eyes, two red ochre cheek stripes on each side, cream stitched hide tunic, dark fur vest, tooth necklace, brown shorts, fur-trimmed wrist bands and boots, leather belt and pouch.
+Girl: faithfully retain her chestnut bob with two small front braids, single cream-and-brown feather, large amber-brown eyes, red ochre cheek dots, rusty-brown short fur cape, cream-trimmed tan stitched hide dress with ochre zigzag hem, shell necklace, belt pouch and fur-trimmed boots.
+Both replacements must have the recognizable cute chibi proportions of the references: large heads and eyes, small bodies and short limbs, friendly confident faces. Their bodies are shorter than the original adults, feet resting naturally on the existing rocks. Adapt their poses to the scene, as adventurers looking towards the right in a slightly frontal three-quarter view that clearly shows their cute faces. Keep the boy in the inner right position and the girl to his right; avoid overlap that hides their faces. Retain a small stone axe for the boy and a slim prehistoric spear for the girl, with correct hands and one weapon each.
+Integrate the new characters with the existing warm amber lighting, painted fur and leather texture, grounding shadows, and polished illustrated game-key-art finish, while retaining their cute recognizable designs. Replace the entire former right-side adult figures, leaving no old faces or extra limbs.
+Locked invariants: leave the towering central adult male spearman and the crouching adult woman on the left unchanged. Leave the sabertooth tiger, mammoth, orange sun, snowy mountain silhouettes, three flying birds, ground rocks, plants, overall framing, and all title lettering and underline unchanged. There must still be exactly four humans total: the original two on the left/center and the new cute boy and girl on the right.
+Text (verbatim, unchanged): "CRO-MAGNON MMO".
+Keep the full existing canvas and 3:2 aspect ratio, with the logo in exactly the same position and scale. Preserve real alpha transparency in all empty exterior areas and between the letters; do not paint an opaque white/black/checkerboard background. No new elements, labels, captions, logos or watermarks.

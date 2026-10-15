@@ -1,0 +1,35 @@
+{
+  "key": "cro-magnon-girl-wolf",
+  "candidate": 1,
+  "previous": {
+    "url": "/models/cro-magnon-girl-wolf/model-c1-r02.glb",
+    "sha256": "af64bb45736b58b6a4f15c06e98a9dec4b7e93ec81f356aa653bb8fcf404cadb",
+    "bytes": 3273372,
+    "revision": "c1-r02"
+  },
+  "low": 0.862749948589571,
+  "high": 0.8960998588394951,
+  "changed": [
+    {
+      "material": "BodySurface",
+      "vertices": 4348,
+      "rigid": 32,
+      "blended": 220
+    },
+    {
+      "material": "SkinSurface",
+      "vertices": 406,
+      "rigid": 0,
+      "blended": 0
+    },
+    {
+      "material": "HeadSurface",
+      "vertices": 8575,
+      "rigid": 8366,
+      "blended": 193
+    }
+  ],
+  "sha256": "1c9ad1512631c667de892a1993a3d7fd2ef20c3bb08e3b298428d3c81b26eb8f",
+  "bytes": 3273372,
+  "sourcePreservedExceptSkinWeights": true
+}

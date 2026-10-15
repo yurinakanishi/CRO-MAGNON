@@ -24,6 +24,9 @@ import { CaveTorch } from './cave-torch.js';
 import { CAVE_LIGHT } from '../shared/cave-light.mjs';
 import { CaveSpring } from './cave-spring.js';
 
+const DIRECTION_KEYS = ['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
+const DOUBLE_TAP_MS = 300;
+
 /** A small, locally controlled scene using the game's verified cave and the
  * visitor's selected character. Its verified template is the one the world
  * reuses for the local player; another character is never substituted. */
@@ -40,6 +43,8 @@ export class LoadingCave {
   private readonly imageOptions: VerifiedTextureOptions;
   private readonly events = new AbortController();
   private readonly keys = new Set<string>();
+  private readonly lastTapAt = new Map<string, number>();
+  private dashing = false;
   private actor: Awaited<ReturnType<WorldRenderer['npcAssets']['create']>> | null = null;
   private torch: CaveTorch | null = null;
   private spring: CaveSpring | null = null;
@@ -138,7 +143,14 @@ export class LoadingCave {
       };
     const signal = this.events.signal;
     document.addEventListener('keydown', this.keydown, { signal, capture: true });
-    document.addEventListener('keyup', (e) => this.keys.delete(movementKey(e)), { signal });
+    document.addEventListener(
+      'keyup',
+      (e) => {
+        this.keys.delete(movementKey(e));
+        if (!DIRECTION_KEYS.some((key) => this.keys.has(key))) this.dashing = false;
+      },
+      { signal },
+    );
     window.addEventListener('blur', () => this.stop(), { signal });
     document.addEventListener('visibilitychange', () => this.stop(), { signal });
     this.overlay.addEventListener('pointerdown', this.pointerDown, { signal });
@@ -278,6 +290,8 @@ export class LoadingCave {
 
   private stop() {
     this.keys.clear();
+    this.lastTapAt.clear();
+    this.dashing = false;
     this.stick = { x: 0, y: 0, running: false };
     this.runMode = false;
     this.padRunning = false;
@@ -309,9 +323,15 @@ export class LoadingCave {
       e.stopImmediatePropagation();
       if (!e.repeat) this.toggleTorch();
     }
-    if (['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'].includes(key)) {
+    if (DIRECTION_KEYS.includes(key)) {
       e.preventDefault();
       e.stopImmediatePropagation();
+      // Match the world's double-tap dash until all direction keys are released.
+      if (!e.repeat) {
+        const now = performance.now();
+        if (now - (this.lastTapAt.get(key) ?? -Infinity) < DOUBLE_TAP_MS) this.dashing = true;
+        this.lastTapAt.set(key, now);
+      }
       this.keys.add(key);
     }
     if (key === 'escape') {
@@ -409,7 +429,7 @@ export class LoadingCave {
         running: this.padRunning,
       });
       // Each device owns its gait; a keyboard run toggle never forces a small tilt to run.
-      const motion = combineMovement(x, y, this.runMode, analog);
+      const motion = combineMovement(x, y, this.runMode || this.dashing, analog);
       this.movement.step(this.world.collision, motion.x, motion.y, this.yaw, dt, motion.running);
       this.actor?.animation.update(dt, this.movement.speed, motion.running);
     } else this.actor?.animation.update(dt, 0, false);

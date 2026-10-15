@@ -99,6 +99,7 @@ export function createGameCore({
   maxSavedSessions = Infinity,
   persistentSessions = false,
   playerLimit = WORLD.maxPlayers,
+  disconnectIdlePlayers = true,
   runtime = defaultRuntime,
   exhibition = false,
   visibility: requestedVisibility = ALL_CONTENT,
@@ -109,6 +110,7 @@ export function createGameCore({
   maxSavedSessions?: number;
   persistentSessions?: boolean;
   playerLimit?: number;
+  disconnectIdlePlayers?: boolean;
   runtime?: Runtime;
   exhibition?: boolean;
   visibility?: ContentVisibility;
@@ -741,7 +743,7 @@ export function createGameCore({
       }
       for (const player of room.players.values()) {
         if (player.socket.readyState !== 1) continue;
-        if (now - player.lastActivityAt >= IDLE_TIMEOUT_MS) {
+        if (disconnectIdlePlayers && now - player.lastActivityAt >= IDLE_TIMEOUT_MS) {
           send(player.socket, { type: 'error', code: 'IDLE_TIMEOUT', text: IDLE_MESSAGE });
           // Use the ordinary disconnect path so possessions and resume tokens survive.
           player.socket.close(IDLE_CLOSE_CODE, 'Idle timeout');

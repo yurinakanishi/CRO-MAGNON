@@ -1,0 +1,177 @@
+{
+  "modelKey": "cro-magnon-girl-twintails",
+  "name": "クロマニョン人 赤毛ふたつ結びの女の子",
+  "kind": "humanoid",
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred",
+    "upAxis": "Y",
+    "forwardAxis": "+Z"
+  },
+  "gender": "female",
+  "species": "cro",
+  "candidate": 1,
+  "status": "remake-candidate-1-adopted",
+  "revision": "c1-r01",
+  "url": "/models/cro-magnon-girl-twintails/model-c1-r01.glb",
+  "sha256": "81341522cfcb76789c08fb0bbc6d466ff3f98bc3b990db05ac3069456ec28f32",
+  "bytes": 2718092,
+  "triangles": 7940,
+  "heightMetres": 1.4499999999999997,
+  "clips": [
+    {
+      "name": "Idle_Loop",
+      "loop": true,
+      "seconds": 4
+    },
+    {
+      "name": "Walk_Loop",
+      "loop": true,
+      "seconds": 0.6568627450980392,
+      "fps": 204,
+      "frames": 135,
+      "description": "CMU 35_01 human walking retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
+    },
+    {
+      "name": "Run_Loop",
+      "loop": true,
+      "seconds": 0.4888888888888889,
+      "fps": 180,
+      "frames": 89,
+      "description": "CMU 09_01 human running retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
+    },
+    {
+      "name": "Gather",
+      "loop": false,
+      "seconds": 1.5
+    },
+    {
+      "name": "Craft",
+      "loop": false,
+      "seconds": 2
+    },
+    {
+      "name": "Give",
+      "loop": false,
+      "seconds": 1.2
+    },
+    {
+      "name": "Eat",
+      "loop": false,
+      "seconds": 1.8
+    },
+    {
+      "name": "Wave",
+      "loop": false,
+      "seconds": 2
+    },
+    {
+      "name": "Attack",
+      "seconds": 0.7,
+      "loop": false
+    },
+    {
+      "name": "Downed",
+      "seconds": 1.8,
+      "loop": false
+    }
+  ],
+  "lods": [],
+  "bones": 22,
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.9283919767172969,
+      "strideMetres": 0.6098261023535185,
+      "cycleSeconds": 0.6568627450980392,
+      "dutyFactor": 0.61,
+      "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+    },
+    "Run_Loop": {
+      "metresPerSecond": 2.3449505925235523,
+      "strideMetres": 1.146420289678181,
+      "cycleSeconds": 0.4888888888888889,
+      "dutyFactor": 0.36,
+      "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+    }
+  },
+  "humanLocomotion": {
+    "revision": "r1",
+    "sourceDelivery": "/models/cro-magnon-girl-twintails/model-downed-r01.glb",
+    "sourceSha256": "c6fd7c2bc3cc3104f90103c9a38d9878bac0e3d88cc2cba41571383fcc66c661",
+    "status": "candidate-unreviewed",
+    "changes": [
+      {
+        "clip": "Walk_Loop",
+        "trial": "35_01",
+        "startFrame": 140,
+        "endFrame": 274,
+        "phaseOffsetFrames": 0,
+        "sampleRate": 120,
+        "frames": 135,
+        "seconds": 0.6568627450980392,
+        "legScale": 0.4230868877141262,
+        "strideMetres": 0.6098261023535185,
+        "cadence": 1.7
+      },
+      {
+        "clip": "Run_Loop",
+        "trial": "09_01",
+        "startFrame": 1,
+        "endFrame": 89,
+        "phaseOffsetFrames": 80,
+        "sampleRate": 120,
+        "frames": 89,
+        "seconds": 0.4888888888888889,
+        "legScale": 0.4296718252327134,
+        "strideMetres": 1.146420289678181,
+        "cadence": 1.5
+      }
+    ],
+    "reference": "assets/human-locomotion/README.md"
+  },
+  "spearThrust": {
+    "revision": "r1",
+    "status": "adopted",
+    "sourceSha256": "3341086e474147237a2265e068b838efa474f9e3753536881811121f8b552ebf",
+    "sourceDelivery": "/models/cro-magnon-girl-twintails/stage0.glb",
+    "clip": "Attack",
+    "seconds": 0.7,
+    "impactSeconds": 0.333,
+    "frames": 86,
+    "sampleRate": 120,
+    "leftStepMetres": 0.40599999999999997,
+    "handSpacingMetres": 0.29,
+    "attachment": "authored-grip",
+    "author": "Claude Code (Opus 5.5) via the existing spear-thrust builder"
+  },
+  "downedMotion": {
+    "revision": "revision-01",
+    "sourceUrl": "/models/cro-magnon-girl-twintails/stage0.glb",
+    "sourceSha256": "52d7adae8d4c8c9b34a67d3b7e0953000ce4e6e8b3619409aefeaa0e9cf75b27",
+    "clip": "Downed",
+    "seconds": 1.8,
+    "fps": 60,
+    "review": "assets/downed-motion/README.md"
+  },
+  "notes": [
+    "Candidate 1 (2026-10-13): the first model of this character, a stylized low-poly design from a generated reference ([object Object]), reconstructed with TRELLIS-2 and reduced to 7940 triangles (body and head in separate 1024 atlases, the face painted from the reference), rigged with the 22-bone humanoid skeleton and all 10 clips. Review: assets/cro-magnon-girl-twintails/qa/c1-r01.json."
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5); Codex built-in image_gen references; local TRELLIS-2 reconstruction",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex built-in image_gen",
+    "referenceImage": "assets/cro-magnon-girl-twintails/source/c1-r01/cast1-g4.png",
+    "referenceSha256": "41a4c04bb78f7cfdcd0399b912d4c62a4c1e5581ae4c996dbbc5fb820edeb6bb",
+    "reconstruction": "local TRELLIS-2 C++ GGUF, res 1024, tex 1024, BiRefNet matte, xatlas atlas 2048",
+    "review": "assets/cro-magnon-girl-twintails/qa/c1-r01.json",
+    "previousManifest": null
+  },
+  "portrait": {
+    "file": "public/models/cro-magnon-girl-twintails/portrait.png",
+    "sha256": "14517cc2a1dcf6c2e4910735136c0ebf7021b0df112c32fe457b6a29284bff23",
+    "modelSha256": "81341522cfcb76789c08fb0bbc6d466ff3f98bc3b990db05ac3069456ec28f32",
+    "renderer": "scripts/qa-female-faces.mjs (FACE_QA_PORTRAIT=1, Idle_Loop 20%, 420x480, three.js)"
+  }
+}

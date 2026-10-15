@@ -1,0 +1,35 @@
+{
+  "key": "cro-magnon-girl-reindeer",
+  "candidate": 1,
+  "previous": {
+    "url": "/models/cro-magnon-girl-reindeer/model-c1-r02.glb",
+    "sha256": "dd54a2b5c5aff66a112246a12e16182731a05b132d124d74c368ab55c4471a36",
+    "bytes": 2750732,
+    "revision": "c1-r02"
+  },
+  "low": 0.8772499698062033,
+  "high": 0.9163999373673185,
+  "changed": [
+    {
+      "material": "BodySurface",
+      "vertices": 5169,
+      "rigid": 2,
+      "blended": 250
+    },
+    {
+      "material": "SkinSurface",
+      "vertices": 543,
+      "rigid": 3,
+      "blended": 33
+    },
+    {
+      "material": "HeadSurface",
+      "vertices": 5358,
+      "rigid": 5229,
+      "blended": 129
+    }
+  ],
+  "sha256": "ffb3442186456e4fb4599eaa46fcb9c63cfef2498215d926b3f82855db47ca82",
+  "bytes": 2750732,
+  "sourcePreservedExceptSkinWeights": true
+}

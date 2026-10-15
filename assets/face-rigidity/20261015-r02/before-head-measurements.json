@@ -1,0 +1,602 @@
+[
+  {
+    "key": "cro-magnon-woman",
+    "vertices": 5202,
+    "seamGroups": 155,
+    "maxSeamGapM": 0,
+    "clips": [
+      {
+        "name": "Craft",
+        "maxDeviationM": 0.0177009013277341,
+        "samples": 31
+      },
+      {
+        "name": "Eat",
+        "maxDeviationM": 0.020194053860822927,
+        "samples": 31
+      },
+      {
+        "name": "Gather",
+        "maxDeviationM": 0.023501265739347372,
+        "samples": 31
+      },
+      {
+        "name": "Give",
+        "maxDeviationM": 0.005905726032507172,
+        "samples": 31
+      },
+      {
+        "name": "Idle_Loop",
+        "maxDeviationM": 0.004897868057895932,
+        "samples": 31
+      },
+      {
+        "name": "Run_Loop",
+        "maxDeviationM": 0.026729806043513108,
+        "samples": 31
+      },
+      {
+        "name": "Walk_Loop",
+        "maxDeviationM": 0.00933319760821963,
+        "samples": 31
+      },
+      {
+        "name": "Wave",
+        "maxDeviationM": 0.016315197164061712,
+        "samples": 31
+      },
+      {
+        "name": "Attack",
+        "maxDeviationM": 0.0067244672508571714,
+        "samples": 31
+      },
+      {
+        "name": "Downed",
+        "maxDeviationM": 0.005449223207237354,
+        "samples": 31
+      }
+    ],
+    "maxDeviationM": 0.026729806043513108,
+    "maxCrossfadeDeviationM": 0.026785608396020597
+  },
+  {
+    "key": "cro-magnon-girl-feather",
+    "vertices": 6414,
+    "seamGroups": 390,
+    "maxSeamGapM": 0,
+    "clips": [
+      {
+        "name": "Craft",
+        "maxDeviationM": 0.03380538791842001,
+        "samples": 31
+      },
+      {
+        "name": "Eat",
+        "maxDeviationM": 0.038655915870667745,
+        "samples": 31
+      },
+      {
+        "name": "Gather",
+        "maxDeviationM": 0.04487734495010487,
+        "samples": 31
+      },
+      {
+        "name": "Give",
+        "maxDeviationM": 0.01127872547099589,
+        "samples": 31
+      },
+      {
+        "name": "Idle_Loop",
+        "maxDeviationM": 0.010409076532481562,
+        "samples": 31
+      },
+      {
+        "name": "Run_Loop",
+        "maxDeviationM": 0.1712718353676001,
+        "samples": 31
+      },
+      {
+        "name": "Walk_Loop",
+        "maxDeviationM": 0.13259307690728367,
+        "samples": 31
+      },
+      {
+        "name": "Wave",
+        "maxDeviationM": 0.034671155848095735,
+        "samples": 31
+      },
+      {
+        "name": "Attack",
+        "maxDeviationM": 0.008900902017719392,
+        "samples": 31
+      },
+      {
+        "name": "Downed",
+        "maxDeviationM": 0.016464355796701413,
+        "samples": 31
+      }
+    ],
+    "maxDeviationM": 0.1712718353676001,
+    "maxCrossfadeDeviationM": 0.17131776519579903
+  },
+  {
+    "key": "cro-magnon-girl-bear",
+    "vertices": 6066,
+    "seamGroups": 285,
+    "maxSeamGapM": 0,
+    "clips": [
+      {
+        "name": "Craft",
+        "maxDeviationM": 0.02180799144578949,
+        "samples": 31
+      },
+      {
+        "name": "Eat",
+        "maxDeviationM": 0.04826967978688848,
+        "samples": 31
+      },
+      {
+        "name": "Gather",
+        "maxDeviationM": 0.027944144350787566,
+        "samples": 31
+      },
+      {
+        "name": "Give",
+        "maxDeviationM": 0.007210855396807518,
+        "samples": 31
+      },
+      {
+        "name": "Idle_Loop",
+        "maxDeviationM": 0.011246094446141245,
+        "samples": 31
+      },
+      {
+        "name": "Run_Loop",
+        "maxDeviationM": 0.16930918260620925,
+        "samples": 31
+      },
+      {
+        "name": "Walk_Loop",
+        "maxDeviationM": 0.15251647052650597,
+        "samples": 31
+      },
+      {
+        "name": "Wave",
+        "maxDeviationM": 0.07434526886367719,
+        "samples": 31
+      },
+      {
+        "name": "Attack",
+        "maxDeviationM": 0.08095349857007007,
+        "samples": 31
+      },
+      {
+        "name": "Downed",
+        "maxDeviationM": 0.19345017928934982,
+        "samples": 31
+      }
+    ],
+    "maxDeviationM": 0.19345017928934982,
+    "maxCrossfadeDeviationM": 0.16915054782844086
+  },
+  {
+    "key": "cro-magnon-girl-wolf",
+    "vertices": 8398,
+    "seamGroups": 236,
+    "maxSeamGapM": 0,
+    "clips": [
+      {
+        "name": "Craft",
+        "maxDeviationM": 0.04221979826157386,
+        "samples": 31
+      },
+      {
+        "name": "Eat",
+        "maxDeviationM": 0.0641496465984384,
+        "samples": 31
+      },
+      {
+        "name": "Gather",
+        "maxDeviationM": 0.056059270573235176,
+        "samples": 31
+      },
+      {
+        "name": "Give",
+        "maxDeviationM": 0.02491276884086962,
+        "samples": 31
+      },
+      {
+        "name": "Idle_Loop",
+        "maxDeviationM": 0.015551466714084696,
+        "samples": 31
+      },
+      {
+        "name": "Run_Loop",
+        "maxDeviationM": 0.3278477329088571,
+        "samples": 31
+      },
+      {
+        "name": "Walk_Loop",
+        "maxDeviationM": 0.28540704199907524,
+        "samples": 31
+      },
+      {
+        "name": "Wave",
+        "maxDeviationM": 0.10372210452934699,
+        "samples": 31
+      },
+      {
+        "name": "Attack",
+        "maxDeviationM": 0.11714155791959935,
+        "samples": 31
+      },
+      {
+        "name": "Downed",
+        "maxDeviationM": 0.2868898386313122,
+        "samples": 31
+      }
+    ],
+    "maxDeviationM": 0.3278477329088571,
+    "maxCrossfadeDeviationM": 0.32611813787160765
+  },
+  {
+    "key": "cro-magnon-girl-twintails",
+    "vertices": 4510,
+    "seamGroups": 342,
+    "maxSeamGapM": 0,
+    "clips": [
+      {
+        "name": "Craft",
+        "maxDeviationM": 0.009873539459358807,
+        "samples": 31
+      },
+      {
+        "name": "Eat",
+        "maxDeviationM": 0.01596074552396519,
+        "samples": 31
+      },
+      {
+        "name": "Gather",
+        "maxDeviationM": 0.00994365731369787,
+        "samples": 31
+      },
+      {
+        "name": "Give",
+        "maxDeviationM": 0.012934090218666114,
+        "samples": 31
+      },
+      {
+        "name": "Idle_Loop",
+        "maxDeviationM": 0.005761369512996103,
+        "samples": 31
+      },
+      {
+        "name": "Run_Loop",
+        "maxDeviationM": 0.026828013244546166,
+        "samples": 31
+      },
+      {
+        "name": "Walk_Loop",
+        "maxDeviationM": 0.014932367878353099,
+        "samples": 31
+      },
+      {
+        "name": "Wave",
+        "maxDeviationM": 0.026995836233582468,
+        "samples": 31
+      },
+      {
+        "name": "Attack",
+        "maxDeviationM": 0.03379862850746379,
+        "samples": 31
+      },
+      {
+        "name": "Downed",
+        "maxDeviationM": 0.02790278011597979,
+        "samples": 31
+      }
+    ],
+    "maxDeviationM": 0.03379862850746379,
+    "maxCrossfadeDeviationM": 0.026718805508191612
+  },
+  {
+    "key": "cro-magnon-girl-reindeer",
+    "vertices": 5234,
+    "seamGroups": 190,
+    "maxSeamGapM": 0,
+    "clips": [
+      {
+        "name": "Craft",
+        "maxDeviationM": 0.015785116218278317,
+        "samples": 31
+      },
+      {
+        "name": "Eat",
+        "maxDeviationM": 0.018522063147273646,
+        "samples": 31
+      },
+      {
+        "name": "Gather",
+        "maxDeviationM": 0.020907087737402998,
+        "samples": 31
+      },
+      {
+        "name": "Give",
+        "maxDeviationM": 0.005265626750431107,
+        "samples": 31
+      },
+      {
+        "name": "Idle_Loop",
+        "maxDeviationM": 0.004391133579596127,
+        "samples": 31
+      },
+      {
+        "name": "Run_Loop",
+        "maxDeviationM": 0.11439012448294468,
+        "samples": 31
+      },
+      {
+        "name": "Walk_Loop",
+        "maxDeviationM": 0.09735447297923476,
+        "samples": 31
+      },
+      {
+        "name": "Wave",
+        "maxDeviationM": 0.01541063279611491,
+        "samples": 31
+      },
+      {
+        "name": "Attack",
+        "maxDeviationM": 0.002177023651525128,
+        "samples": 31
+      },
+      {
+        "name": "Downed",
+        "maxDeviationM": 0.011014380846221559,
+        "samples": 31
+      }
+    ],
+    "maxDeviationM": 0.11439012448294468,
+    "maxCrossfadeDeviationM": 0.1131799937502588
+  },
+  {
+    "key": "cro-magnon-boy-headband",
+    "vertices": 7437,
+    "seamGroups": 404,
+    "maxSeamGapM": 0,
+    "clips": [
+      {
+        "name": "Craft",
+        "maxDeviationM": 0.024588238795741933,
+        "samples": 31
+      },
+      {
+        "name": "Eat",
+        "maxDeviationM": 0.030544793119239657,
+        "samples": 31
+      },
+      {
+        "name": "Gather",
+        "maxDeviationM": 0.03265158426204769,
+        "samples": 31
+      },
+      {
+        "name": "Give",
+        "maxDeviationM": 0.012091321086187797,
+        "samples": 31
+      },
+      {
+        "name": "Idle_Loop",
+        "maxDeviationM": 0.006797446348919586,
+        "samples": 31
+      },
+      {
+        "name": "Run_Loop",
+        "maxDeviationM": 0.1536597831977342,
+        "samples": 31
+      },
+      {
+        "name": "Walk_Loop",
+        "maxDeviationM": 0.12224762481304721,
+        "samples": 31
+      },
+      {
+        "name": "Wave",
+        "maxDeviationM": 0.030285126833656986,
+        "samples": 31
+      },
+      {
+        "name": "Attack",
+        "maxDeviationM": 0.04198889329927928,
+        "samples": 31
+      },
+      {
+        "name": "Downed",
+        "maxDeviationM": 0.04478879587489797,
+        "samples": 31
+      }
+    ],
+    "maxDeviationM": 0.1536597831977342,
+    "maxCrossfadeDeviationM": 0.15358970596404206
+  },
+  {
+    "key": "cro-magnon-boy-lion",
+    "vertices": 9851,
+    "seamGroups": 410,
+    "maxSeamGapM": 0,
+    "clips": [
+      {
+        "name": "Craft",
+        "maxDeviationM": 0.20740729957617235,
+        "samples": 31
+      },
+      {
+        "name": "Eat",
+        "maxDeviationM": 0.23638109854799816,
+        "samples": 31
+      },
+      {
+        "name": "Gather",
+        "maxDeviationM": 0.1725217442516013,
+        "samples": 31
+      },
+      {
+        "name": "Give",
+        "maxDeviationM": 0.2618425865980957,
+        "samples": 31
+      },
+      {
+        "name": "Idle_Loop",
+        "maxDeviationM": 0.018419196991068,
+        "samples": 31
+      },
+      {
+        "name": "Run_Loop",
+        "maxDeviationM": 0.3618137992015351,
+        "samples": 31
+      },
+      {
+        "name": "Walk_Loop",
+        "maxDeviationM": 0.3042954570732915,
+        "samples": 31
+      },
+      {
+        "name": "Wave",
+        "maxDeviationM": 0.3672654738713108,
+        "samples": 31
+      },
+      {
+        "name": "Attack",
+        "maxDeviationM": 0.4459459114401622,
+        "samples": 31
+      },
+      {
+        "name": "Downed",
+        "maxDeviationM": 0.4827082965120476,
+        "samples": 31
+      }
+    ],
+    "maxDeviationM": 0.4827082965120476,
+    "maxCrossfadeDeviationM": 0.3617950490069504
+  },
+  {
+    "key": "cro-magnon-boy-braid",
+    "vertices": 7729,
+    "seamGroups": 240,
+    "maxSeamGapM": 0,
+    "clips": [
+      {
+        "name": "Craft",
+        "maxDeviationM": 0.03920482772991476,
+        "samples": 31
+      },
+      {
+        "name": "Eat",
+        "maxDeviationM": 0.046367569781149254,
+        "samples": 31
+      },
+      {
+        "name": "Gather",
+        "maxDeviationM": 0.052061462717814436,
+        "samples": 31
+      },
+      {
+        "name": "Give",
+        "maxDeviationM": 0.013080247294365983,
+        "samples": 31
+      },
+      {
+        "name": "Idle_Loop",
+        "maxDeviationM": 0.009125801718618001,
+        "samples": 31
+      },
+      {
+        "name": "Run_Loop",
+        "maxDeviationM": 0.3094630496773079,
+        "samples": 31
+      },
+      {
+        "name": "Walk_Loop",
+        "maxDeviationM": 0.267542299522276,
+        "samples": 31
+      },
+      {
+        "name": "Wave",
+        "maxDeviationM": 0.04858374693673731,
+        "samples": 31
+      },
+      {
+        "name": "Attack",
+        "maxDeviationM": 0.055539062895014056,
+        "samples": 31
+      },
+      {
+        "name": "Downed",
+        "maxDeviationM": 0.07418976732351105,
+        "samples": 31
+      }
+    ],
+    "maxDeviationM": 0.3094630496773079,
+    "maxCrossfadeDeviationM": 0.30945423957094803
+  },
+  {
+    "key": "cro-magnon-boy-topknot",
+    "vertices": 4803,
+    "seamGroups": 275,
+    "maxSeamGapM": 0,
+    "clips": [
+      {
+        "name": "Craft",
+        "maxDeviationM": 0.05827821665927085,
+        "samples": 31
+      },
+      {
+        "name": "Eat",
+        "maxDeviationM": 0.0672211920852519,
+        "samples": 31
+      },
+      {
+        "name": "Gather",
+        "maxDeviationM": 0.07738944718742319,
+        "samples": 31
+      },
+      {
+        "name": "Give",
+        "maxDeviationM": 0.019443824004962945,
+        "samples": 31
+      },
+      {
+        "name": "Idle_Loop",
+        "maxDeviationM": 0.010284033244422043,
+        "samples": 31
+      },
+      {
+        "name": "Run_Loop",
+        "maxDeviationM": 0.32897279903482474,
+        "samples": 31
+      },
+      {
+        "name": "Walk_Loop",
+        "maxDeviationM": 0.2638292317971009,
+        "samples": 31
+      },
+      {
+        "name": "Wave",
+        "maxDeviationM": 0.034254474563171565,
+        "samples": 31
+      },
+      {
+        "name": "Attack",
+        "maxDeviationM": 0.006107370612817112,
+        "samples": 31
+      },
+      {
+        "name": "Downed",
+        "maxDeviationM": 0.026909063753594756,
+        "samples": 31
+      }
+    ],
+    "maxDeviationM": 0.32897279903482474,
+    "maxCrossfadeDeviationM": 0.3271405766462014
+  }
+]

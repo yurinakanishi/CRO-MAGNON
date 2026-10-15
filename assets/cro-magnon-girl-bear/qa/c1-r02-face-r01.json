@@ -1,0 +1,115 @@
+{
+  "schema": "cro-magnon/skin-weight-repair@1",
+  "date": "2026-10-15",
+  "decision": "adopt",
+  "reviewedBy": "Codex",
+  "request": "大きい顔の子たちが歩行・走行中に顔の形を変えないようにする",
+  "modelKey": "cro-magnon-girl-bear",
+  "candidate": 1,
+  "revision": "c1-r02-face-r01",
+  "url": "/models/cro-magnon-girl-bear/model-c1-r02-face-r01.glb",
+  "sha256": "6b7f50acf42dbc010b9049b650274bdeb2323802954a42ba139fd461e7d60f37",
+  "bytes": 2959520,
+  "repair": {
+    "key": "cro-magnon-girl-bear",
+    "candidate": 1,
+    "previous": {
+      "url": "/models/cro-magnon-girl-bear/model-c1-r02.glb",
+      "sha256": "cbde8a6de4cfb0f3b1a5d3fce50c1965091765cb3c7a645ddf728d2a123b33a0",
+      "bytes": 2959520,
+      "revision": "c1-r02"
+    },
+    "low": 0.6814999849655519,
+    "high": 0.851279079914093,
+    "changed": [
+      {
+        "material": "BodySurface",
+        "vertices": 4917,
+        "rigid": 887,
+        "blended": 1553
+      },
+      {
+        "material": "SkinSurface",
+        "vertices": 313,
+        "rigid": 38,
+        "blended": 1
+      },
+      {
+        "material": "HeadSurface",
+        "vertices": 6256,
+        "rigid": 6256,
+        "blended": 0
+      }
+    ],
+    "sha256": "6b7f50acf42dbc010b9049b650274bdeb2323802954a42ba139fd461e7d60f37",
+    "bytes": 2959520,
+    "sourcePreservedExceptSkinWeights": true
+  },
+  "measurement": {
+    "key": "cro-magnon-girl-bear",
+    "vertices": 6066,
+    "seamGroups": 285,
+    "maxSeamGapM": 0,
+    "clips": [
+      {
+        "name": "Craft",
+        "maxDeviationM": 1.0016071625299566e-15,
+        "samples": 31
+      },
+      {
+        "name": "Eat",
+        "maxDeviationM": 1.1106566208239272e-15,
+        "samples": 31
+      },
+      {
+        "name": "Gather",
+        "maxDeviationM": 1.0007415106216803e-15,
+        "samples": 31
+      },
+      {
+        "name": "Give",
+        "maxDeviationM": 1.1116099371267112e-15,
+        "samples": 31
+      },
+      {
+        "name": "Idle_Loop",
+        "maxDeviationM": 1.2782640434660324e-15,
+        "samples": 31
+      },
+      {
+        "name": "Run_Loop",
+        "maxDeviationM": 1.1687042040479822e-15,
+        "samples": 31
+      },
+      {
+        "name": "Walk_Loop",
+        "maxDeviationM": 1.3889058933372215e-15,
+        "samples": 31
+      },
+      {
+        "name": "Wave",
+        "maxDeviationM": 1.1119563949618733e-15,
+        "samples": 31
+      },
+      {
+        "name": "Attack",
+        "maxDeviationM": 1.1157603309187458e-15,
+        "samples": 31
+      },
+      {
+        "name": "Downed",
+        "maxDeviationM": 9.424642647609475e-16,
+        "samples": 31
+      }
+    ],
+    "maxDeviationM": 1.3889058933372215e-15,
+    "maxCrossfadeDeviationM": 1.5588283455317893e-15
+  },
+  "visual": "assets/face-rigidity/20261015-r02/cro-magnon-girl-bear/comparison.png",
+  "previous": {
+    "manifest": "assets/cro-magnon-girl-bear/archive-manifest-c1-r02-20261015-face.json",
+    "url": "/models/cro-magnon-girl-bear/model-c1-r02.glb",
+    "sha256": "cbde8a6de4cfb0f3b1a5d3fce50c1965091765cb3c7a645ddf728d2a123b33a0"
+  },
+  "preserved": "Every byte outside JOINTS_0/WEIGHTS_0: original TRELLIS geometry, normals, UV, images, materials, skeleton, bind matrices and all clips."
+}

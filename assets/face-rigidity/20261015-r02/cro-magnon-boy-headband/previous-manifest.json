@@ -1,0 +1,177 @@
+{
+  "modelKey": "cro-magnon-boy-headband",
+  "name": "クロマニョン人 貝の鉢巻きの男の子",
+  "kind": "humanoid",
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred",
+    "upAxis": "Y",
+    "forwardAxis": "+Z"
+  },
+  "gender": "male",
+  "species": "cro",
+  "candidate": 1,
+  "status": "remake-candidate-1-adopted",
+  "revision": "c1-r01",
+  "url": "/models/cro-magnon-boy-headband/model-c1-r01.glb",
+  "sha256": "7d108d4a3c4c20818614c05aa3cefd1fdd2278fbe099fc5b2cbe3a075d08432b",
+  "bytes": 2984500,
+  "triangles": 8338,
+  "heightMetres": 1.4500000000000002,
+  "clips": [
+    {
+      "name": "Idle_Loop",
+      "loop": true,
+      "seconds": 4
+    },
+    {
+      "name": "Walk_Loop",
+      "loop": true,
+      "seconds": 0.6568627450980392,
+      "fps": 204,
+      "frames": 135,
+      "description": "CMU 35_01 human walking retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
+    },
+    {
+      "name": "Run_Loop",
+      "loop": true,
+      "seconds": 0.4888888888888889,
+      "fps": 180,
+      "frames": 89,
+      "description": "CMU 09_01 human running retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
+    },
+    {
+      "name": "Gather",
+      "loop": false,
+      "seconds": 1.5
+    },
+    {
+      "name": "Craft",
+      "loop": false,
+      "seconds": 2
+    },
+    {
+      "name": "Give",
+      "loop": false,
+      "seconds": 1.2
+    },
+    {
+      "name": "Eat",
+      "loop": false,
+      "seconds": 1.8
+    },
+    {
+      "name": "Wave",
+      "loop": false,
+      "seconds": 2
+    },
+    {
+      "name": "Attack",
+      "seconds": 0.7,
+      "loop": false
+    },
+    {
+      "name": "Downed",
+      "seconds": 1.8,
+      "loop": false
+    }
+  ],
+  "lods": [],
+  "bones": 22,
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.9329483537283549,
+      "strideMetres": 0.6128190166647037,
+      "cycleSeconds": 0.6568627450980392,
+      "dutyFactor": 0.61,
+      "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+    },
+    "Run_Loop": {
+      "metresPerSecond": 2.3564591785947293,
+      "strideMetres": 1.152046709535201,
+      "cycleSeconds": 0.4888888888888889,
+      "dutyFactor": 0.36,
+      "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+    }
+  },
+  "humanLocomotion": {
+    "revision": "r1",
+    "sourceDelivery": "/models/cro-magnon-boy-headband/model-downed-r01.glb",
+    "sourceSha256": "67a16152acd9c6835de3a75e331b5428fea59bfa7702b2b7a904e9511c9de586",
+    "status": "candidate-unreviewed",
+    "changes": [
+      {
+        "clip": "Walk_Loop",
+        "trial": "35_01",
+        "startFrame": 140,
+        "endFrame": 274,
+        "phaseOffsetFrames": 0,
+        "sampleRate": 120,
+        "frames": 135,
+        "seconds": 0.6568627450980392,
+        "legScale": 0.42516332031717075,
+        "strideMetres": 0.6128190166647037,
+        "cadence": 1.7
+      },
+      {
+        "clip": "Run_Loop",
+        "trial": "09_01",
+        "startFrame": 1,
+        "endFrame": 89,
+        "phaseOffsetFrames": 80,
+        "sampleRate": 120,
+        "frames": 89,
+        "seconds": 0.4888888888888889,
+        "legScale": 0.4317805754975661,
+        "strideMetres": 1.152046709535201,
+        "cadence": 1.5
+      }
+    ],
+    "reference": "assets/human-locomotion/README.md"
+  },
+  "spearThrust": {
+    "revision": "r1",
+    "status": "adopted",
+    "sourceSha256": "ea5a261146e5917fe13a71622c30a1bc6df082f1edbe5c603270c27f4965a409",
+    "sourceDelivery": "/models/cro-magnon-boy-headband/stage0.glb",
+    "clip": "Attack",
+    "seconds": 0.7,
+    "impactSeconds": 0.333,
+    "frames": 86,
+    "sampleRate": 120,
+    "leftStepMetres": 0.4060000000000001,
+    "handSpacingMetres": 0.29000000000000004,
+    "attachment": "authored-grip",
+    "author": "Claude Code (Opus 5.5) via the existing spear-thrust builder"
+  },
+  "downedMotion": {
+    "revision": "revision-01",
+    "sourceUrl": "/models/cro-magnon-boy-headband/stage0.glb",
+    "sourceSha256": "4919111f6d56f1732673f0e85956d571f2c1f4f409862d5a735bcb5dc83aa497",
+    "clip": "Downed",
+    "seconds": 1.8,
+    "fps": 60,
+    "review": "assets/downed-motion/README.md"
+  },
+  "notes": [
+    "Candidate 1 (2026-10-13): the first model of this character, a stylized low-poly design from a generated reference ([object Object]), reconstructed with TRELLIS-2 and reduced to 8338 triangles (body and head in separate 1024 atlases, the face painted from the reference), rigged with the 22-bone humanoid skeleton and all 10 clips. Review: assets/cro-magnon-boy-headband/qa/c1-r01.json."
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5); Codex built-in image_gen references; local TRELLIS-2 reconstruction",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex built-in image_gen",
+    "referenceImage": "assets/cro-magnon-boy-headband/source/c1-r01/cast1-b1.png",
+    "referenceSha256": "a820ed3b9c80ab5aacd7ed594f9d18350706d3563dc9a85b0359d0517b30a921",
+    "reconstruction": "local TRELLIS-2 C++ GGUF, res 1024, tex 1024, BiRefNet matte, xatlas atlas 2048",
+    "review": "assets/cro-magnon-boy-headband/qa/c1-r01.json",
+    "previousManifest": null
+  },
+  "portrait": {
+    "file": "public/models/cro-magnon-boy-headband/portrait.png",
+    "sha256": "d7e845b8da72879ad045eef0da02f2875c96d1793d57de0c6020348b74f758b7",
+    "modelSha256": "7d108d4a3c4c20818614c05aa3cefd1fdd2278fbe099fc5b2cbe3a075d08432b",
+    "renderer": "scripts/qa-female-faces.mjs (FACE_QA_PORTRAIT=1, Idle_Loop 20%, 420x480, three.js)"
+  }
+}

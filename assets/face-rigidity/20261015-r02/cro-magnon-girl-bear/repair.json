@@ -1,0 +1,35 @@
+{
+  "key": "cro-magnon-girl-bear",
+  "candidate": 1,
+  "previous": {
+    "url": "/models/cro-magnon-girl-bear/model-c1-r02.glb",
+    "sha256": "cbde8a6de4cfb0f3b1a5d3fce50c1965091765cb3c7a645ddf728d2a123b33a0",
+    "bytes": 2959520,
+    "revision": "c1-r02"
+  },
+  "low": 0.6814999849655519,
+  "high": 0.851279079914093,
+  "changed": [
+    {
+      "material": "BodySurface",
+      "vertices": 4917,
+      "rigid": 887,
+      "blended": 1553
+    },
+    {
+      "material": "SkinSurface",
+      "vertices": 313,
+      "rigid": 38,
+      "blended": 1
+    },
+    {
+      "material": "HeadSurface",
+      "vertices": 6256,
+      "rigid": 6256,
+      "blended": 0
+    }
+  ],
+  "sha256": "6b7f50acf42dbc010b9049b650274bdeb2323802954a42ba139fd461e7d60f37",
+  "bytes": 2959520,
+  "sourcePreservedExceptSkinWeights": true
+}

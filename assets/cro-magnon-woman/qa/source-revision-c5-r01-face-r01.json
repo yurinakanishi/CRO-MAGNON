@@ -1,0 +1,28 @@
+{
+  "schema": "cro-magnon/source-model-revision@1",
+  "modelKey": "cro-magnon-woman",
+  "decision": "adopt",
+  "previous": {
+    "adoption": "20261010-r07-a01",
+    "files": [
+      {
+        "url": "/models/cro-magnon-woman/startup.opt-f414686fe312f6e3.glb",
+        "sha256": "f414686fe312f6e3d67855644dc0d3b79a1c942484e2a60b0c977e4af370fb2b",
+        "bytes": 5023664
+      }
+    ],
+    "manifest": "assets/cro-magnon-woman/archive-manifest-20261010-r07-a01-20261011.json",
+    "manifestSha256": "2e247cc38e2c3ac3b858c2d8cf81153e7831a15ceda2af5fe58c0e990e2a86a1"
+  },
+  "files": [
+    {
+      "url": "/models/cro-magnon-woman/model-c5-r01-face-r01.glb",
+      "sha256": "2e72870b747bd51a55df6cd6f34d0b85104ecf017bf834ef34c14f2e5cba0d15",
+      "bytes": 2620260
+    }
+  ],
+  "review": {
+    "path": "assets/cro-magnon-woman/qa/c5-r01-face-r01.json",
+    "sha256": "b1caaf1d2a403a1c4f6325c41b4cc058bc903e4852013cf1f38484dd4498ede0"
+  }
+}

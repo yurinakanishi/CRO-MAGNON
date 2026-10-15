@@ -1,0 +1,35 @@
+{
+  "key": "cro-magnon-boy-headband",
+  "candidate": 1,
+  "previous": {
+    "url": "/models/cro-magnon-boy-headband/model-c1-r01.glb",
+    "sha256": "7d108d4a3c4c20818614c05aa3cefd1fdd2278fbe099fc5b2cbe3a075d08432b",
+    "bytes": 2984500,
+    "revision": "c1-r01"
+  },
+  "low": 0.8482499276870807,
+  "high": 0.8830500492251683,
+  "changed": [
+    {
+      "material": "BodySurface",
+      "vertices": 3827,
+      "rigid": 8,
+      "blended": 170
+    },
+    {
+      "material": "SkinSurface",
+      "vertices": 1066,
+      "rigid": 4,
+      "blended": 25
+    },
+    {
+      "material": "HeadSurface",
+      "vertices": 7591,
+      "rigid": 7425,
+      "blended": 166
+    }
+  ],
+  "sha256": "73aff89eac70b529b94c0da52f0fb3de2b7f643aa62498cd7f2db52b2b05de27",
+  "bytes": 2984500,
+  "sourcePreservedExceptSkinWeights": true
+}

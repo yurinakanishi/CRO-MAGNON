@@ -14,9 +14,9 @@
   "species": "cro",
   "candidate": 1,
   "status": "remake-candidate-1-adopted",
-  "revision": "c1-r01",
-  "url": "/models/cro-magnon-boy-braid/model-c1-r01.glb",
-  "sha256": "388cac91de779c584dce446ad156dd15f252c197efa22ec546a5a1ee8f96ee0e",
+  "revision": "c1-r01-face-r01",
+  "url": "/models/cro-magnon-boy-braid/model-c1-r01-face-r01.glb",
+  "sha256": "6346161bcb7727508d1986f6a11be4ee17754ec7654bafbfbba26c3dbe1cde4c",
   "bytes": 3135568,
   "triangles": 8314,
   "heightMetres": 1.4499999999999997,
@@ -173,5 +173,9 @@
     "sha256": "2b9ce3bd98b32f3d1fa0ec74b217a72f04c481d23943a54687bd424fafa04997",
     "modelSha256": "388cac91de779c584dce446ad156dd15f252c197efa22ec546a5a1ee8f96ee0e",
     "renderer": "scripts/qa-female-faces.mjs (FACE_QA_PORTRAIT=1, Idle_Loop 20%, 420x480, three.js)"
+  },
+  "faceRigidity": {
+    "review": "assets/cro-magnon-boy-braid/qa/c1-r01-face-r01.json",
+    "sha256": "3e8e632936599ff92ca0569133bf88975445e696b1974eb6bee110f75105b93e"
   }
 }

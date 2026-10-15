@@ -1,0 +1,352 @@
+[
+  {
+    "key": "cro-magnon-woman",
+    "candidate": 5,
+    "previous": {
+      "url": "/models/cro-magnon-woman/model-c5-r01.glb",
+      "sha256": "bc6493a2e8bd8cc3b6f2320b483851cd2c4151b5a0d0e3623fa7f4627690863e",
+      "bytes": 2620260,
+      "revision": "c5-r01"
+    },
+    "low": 0.877249971007449,
+    "high": 0.9163999331572512,
+    "changed": [
+      {
+        "material": "BodySurface",
+        "vertices": 3756,
+        "rigid": 2,
+        "blended": 111
+      },
+      {
+        "material": "SkinSurface",
+        "vertices": 252,
+        "rigid": 5,
+        "blended": 18
+      },
+      {
+        "material": "HeadSurface",
+        "vertices": 5470,
+        "rigid": 5195,
+        "blended": 270
+      }
+    ],
+    "sha256": "4cabb3d429e10335564d21e295e7af5fa38457d6cf810140a1338c508340615b",
+    "bytes": 2620260,
+    "sourcePreservedExceptSkinWeights": true
+  },
+  {
+    "key": "cro-magnon-girl-feather",
+    "candidate": 1,
+    "previous": {
+      "url": "/models/cro-magnon-girl-feather/model-c1-r02.glb",
+      "sha256": "75f9fe3b52f3875c59d74ed0a2f87e2d09cc71ac7ffe687010033c3f7728dd12",
+      "bytes": 3004656,
+      "revision": "c1-r02"
+    },
+    "low": 0.8917498210112028,
+    "high": 0.935249771008483,
+    "changed": [
+      {
+        "material": "BodySurface",
+        "vertices": 4602,
+        "rigid": 8,
+        "blended": 253
+      },
+      {
+        "material": "SkinSurface",
+        "vertices": 761,
+        "rigid": 2,
+        "blended": 29
+      },
+      {
+        "material": "HeadSurface",
+        "vertices": 6653,
+        "rigid": 6404,
+        "blended": 249
+      }
+    ],
+    "sha256": "310d0720641f3aad9ae2c307c9226cb1fb7bf6ef44ab0de28d5d1d1765a88cf6",
+    "bytes": 3004656,
+    "sourcePreservedExceptSkinWeights": true
+  },
+  {
+    "key": "cro-magnon-girl-bear",
+    "candidate": 1,
+    "previous": {
+      "url": "/models/cro-magnon-girl-bear/model-c1-r02.glb",
+      "sha256": "cbde8a6de4cfb0f3b1a5d3fce50c1965091765cb3c7a645ddf728d2a123b33a0",
+      "bytes": 2959520,
+      "revision": "c1-r02"
+    },
+    "low": 0.8699999591867901,
+    "high": 0.9062499261338876,
+    "changed": [
+      {
+        "material": "BodySurface",
+        "vertices": 4917,
+        "rigid": 97,
+        "blended": 429
+      },
+      {
+        "material": "SkinSurface",
+        "vertices": 313,
+        "rigid": 3,
+        "blended": 23
+      },
+      {
+        "material": "HeadSurface",
+        "vertices": 6256,
+        "rigid": 5966,
+        "blended": 268
+      }
+    ],
+    "sha256": "e35f00bb7120a3afa70756ff4f0df8fce8d84f14179c56cce790f1acb9086d6e",
+    "bytes": 2959520,
+    "sourcePreservedExceptSkinWeights": true
+  },
+  {
+    "key": "cro-magnon-girl-wolf",
+    "candidate": 1,
+    "previous": {
+      "url": "/models/cro-magnon-girl-wolf/model-c1-r02.glb",
+      "sha256": "af64bb45736b58b6a4f15c06e98a9dec4b7e93ec81f356aa653bb8fcf404cadb",
+      "bytes": 3273372,
+      "revision": "c1-r02"
+    },
+    "low": 0.862749948589571,
+    "high": 0.8960998588394951,
+    "changed": [
+      {
+        "material": "BodySurface",
+        "vertices": 4348,
+        "rigid": 32,
+        "blended": 220
+      },
+      {
+        "material": "SkinSurface",
+        "vertices": 406,
+        "rigid": 0,
+        "blended": 0
+      },
+      {
+        "material": "HeadSurface",
+        "vertices": 8575,
+        "rigid": 8366,
+        "blended": 193
+      }
+    ],
+    "sha256": "1c9ad1512631c667de892a1993a3d7fd2ef20c3bb08e3b298428d3c81b26eb8f",
+    "bytes": 3273372,
+    "sourcePreservedExceptSkinWeights": true
+  },
+  {
+    "key": "cro-magnon-girl-twintails",
+    "candidate": 1,
+    "previous": {
+      "url": "/models/cro-magnon-girl-twintails/model-c1-r01.glb",
+      "sha256": "81341522cfcb76789c08fb0bbc6d466ff3f98bc3b990db05ac3069456ec28f32",
+      "bytes": 2718092,
+      "revision": "c1-r01"
+    },
+    "low": 0.8699999592351699,
+    "high": 0.9163999670612522,
+    "changed": [
+      {
+        "material": "BodySurface",
+        "vertices": 5488,
+        "rigid": 2,
+        "blended": 251
+      },
+      {
+        "material": "SkinSurface",
+        "vertices": 745,
+        "rigid": 1,
+        "blended": 47
+      },
+      {
+        "material": "HeadSurface",
+        "vertices": 4644,
+        "rigid": 4507,
+        "blended": 137
+      }
+    ],
+    "sha256": "01efe8aa3cf9850bf5913b2d26e0c0004b6d4ee7b19dde0b2fc680b16efa453b",
+    "bytes": 2718092,
+    "sourcePreservedExceptSkinWeights": true
+  },
+  {
+    "key": "cro-magnon-girl-reindeer",
+    "candidate": 1,
+    "previous": {
+      "url": "/models/cro-magnon-girl-reindeer/model-c1-r02.glb",
+      "sha256": "dd54a2b5c5aff66a112246a12e16182731a05b132d124d74c368ab55c4471a36",
+      "bytes": 2750732,
+      "revision": "c1-r02"
+    },
+    "low": 0.8772499698062033,
+    "high": 0.9163999373673185,
+    "changed": [
+      {
+        "material": "BodySurface",
+        "vertices": 5169,
+        "rigid": 2,
+        "blended": 250
+      },
+      {
+        "material": "SkinSurface",
+        "vertices": 543,
+        "rigid": 3,
+        "blended": 33
+      },
+      {
+        "material": "HeadSurface",
+        "vertices": 5358,
+        "rigid": 5229,
+        "blended": 129
+      }
+    ],
+    "sha256": "ffb3442186456e4fb4599eaa46fcb9c63cfef2498215d926b3f82855db47ca82",
+    "bytes": 2750732,
+    "sourcePreservedExceptSkinWeights": true
+  },
+  {
+    "key": "cro-magnon-boy-headband",
+    "candidate": 1,
+    "previous": {
+      "url": "/models/cro-magnon-boy-headband/model-c1-r01.glb",
+      "sha256": "7d108d4a3c4c20818614c05aa3cefd1fdd2278fbe099fc5b2cbe3a075d08432b",
+      "bytes": 2984500,
+      "revision": "c1-r01"
+    },
+    "low": 0.8482499276870807,
+    "high": 0.8830500492251683,
+    "changed": [
+      {
+        "material": "BodySurface",
+        "vertices": 3827,
+        "rigid": 8,
+        "blended": 170
+      },
+      {
+        "material": "SkinSurface",
+        "vertices": 1066,
+        "rigid": 4,
+        "blended": 25
+      },
+      {
+        "material": "HeadSurface",
+        "vertices": 7591,
+        "rigid": 7425,
+        "blended": 166
+      }
+    ],
+    "sha256": "73aff89eac70b529b94c0da52f0fb3de2b7f643aa62498cd7f2db52b2b05de27",
+    "bytes": 2984500,
+    "sourcePreservedExceptSkinWeights": true
+  },
+  {
+    "key": "cro-magnon-boy-lion",
+    "candidate": 1,
+    "previous": {
+      "url": "/models/cro-magnon-boy-lion/model-c1-r01.glb",
+      "sha256": "51b96004e980b926d133fe7b37d3f542371063fb85150982d7ed390434ce5ad3",
+      "bytes": 3321608,
+      "revision": "c1-r01"
+    },
+    "low": 0.8699999594044875,
+    "high": 0.905525019463847,
+    "changed": [
+      {
+        "material": "BodySurface",
+        "vertices": 3138,
+        "rigid": 32,
+        "blended": 230
+      },
+      {
+        "material": "SkinSurface",
+        "vertices": 1068,
+        "rigid": 1,
+        "blended": 21
+      },
+      {
+        "material": "HeadSurface",
+        "vertices": 10043,
+        "rigid": 9818,
+        "blended": 213
+      }
+    ],
+    "sha256": "3cbbfae08ae5fc7cb5b768125bf1b028a7723676a14fe087f6a79efd6d0ba63b",
+    "bytes": 3321608,
+    "sourcePreservedExceptSkinWeights": true
+  },
+  {
+    "key": "cro-magnon-boy-braid",
+    "candidate": 1,
+    "previous": {
+      "url": "/models/cro-magnon-boy-braid/model-c1-r01.glb",
+      "sha256": "388cac91de779c584dce446ad156dd15f252c197efa22ec546a5a1ee8f96ee0e",
+      "bytes": 3135568,
+      "revision": "c1-r01"
+    },
+    "low": 0.8482499280577824,
+    "high": 0.8830499858228864,
+    "changed": [
+      {
+        "material": "BodySurface",
+        "vertices": 4305,
+        "rigid": 14,
+        "blended": 197
+      },
+      {
+        "material": "SkinSurface",
+        "vertices": 744,
+        "rigid": 2,
+        "blended": 49
+      },
+      {
+        "material": "HeadSurface",
+        "vertices": 7825,
+        "rigid": 7713,
+        "blended": 109
+      }
+    ],
+    "sha256": "1dd1a46f2587b9fd1f63b1da3751af6cb0327113d3942fbd3dad97dda974cf05",
+    "bytes": 3135568,
+    "sourcePreservedExceptSkinWeights": true
+  },
+  {
+    "key": "cro-magnon-boy-topknot",
+    "candidate": 1,
+    "previous": {
+      "url": "/models/cro-magnon-boy-topknot/model-c1-r01.glb",
+      "sha256": "77fc00a7b0024d68640536a01ce27561ddf398d83ebf18fed4c69bf2d09bdb3f",
+      "bytes": 2823484,
+      "revision": "c1-r01"
+    },
+    "low": 0.8134499365105184,
+    "high": 0.8482498831731716,
+    "changed": [
+      {
+        "material": "BodySurface",
+        "vertices": 5878,
+        "rigid": 1,
+        "blended": 125
+      },
+      {
+        "material": "SkinSurface",
+        "vertices": 859,
+        "rigid": 9,
+        "blended": 28
+      },
+      {
+        "material": "HeadSurface",
+        "vertices": 4827,
+        "rigid": 4793,
+        "blended": 34
+      }
+    ],
+    "sha256": "e597618223dd98abfe137b3aeb77b2dd814065b5c2b50ba6e5e600b52b10eede",
+    "bytes": 2823484,
+    "sourcePreservedExceptSkinWeights": true
+  }
+]

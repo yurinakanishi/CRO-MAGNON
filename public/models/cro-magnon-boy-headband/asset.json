@@ -14,9 +14,9 @@
   "species": "cro",
   "candidate": 1,
   "status": "remake-candidate-1-adopted",
-  "revision": "c1-r01",
-  "url": "/models/cro-magnon-boy-headband/model-c1-r01.glb",
-  "sha256": "7d108d4a3c4c20818614c05aa3cefd1fdd2278fbe099fc5b2cbe3a075d08432b",
+  "revision": "c1-r01-face-r01",
+  "url": "/models/cro-magnon-boy-headband/model-c1-r01-face-r01.glb",
+  "sha256": "931e731c38efba2fe1088d5831e4a5202652e2bd84712c78bed8d7e5367d4f89",
   "bytes": 2984500,
   "triangles": 8338,
   "heightMetres": 1.4500000000000002,
@@ -173,5 +173,9 @@
     "sha256": "d7e845b8da72879ad045eef0da02f2875c96d1793d57de0c6020348b74f758b7",
     "modelSha256": "7d108d4a3c4c20818614c05aa3cefd1fdd2278fbe099fc5b2cbe3a075d08432b",
     "renderer": "scripts/qa-female-faces.mjs (FACE_QA_PORTRAIT=1, Idle_Loop 20%, 420x480, three.js)"
+  },
+  "faceRigidity": {
+    "review": "assets/cro-magnon-boy-headband/qa/c1-r01-face-r01.json",
+    "sha256": "e1f41df35bd1e2f4d768bc066105c16011056f717878bedd88061972ba5fea77"
   }
 }

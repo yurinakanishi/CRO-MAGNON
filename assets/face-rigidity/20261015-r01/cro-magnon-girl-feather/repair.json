@@ -1,0 +1,35 @@
+{
+  "key": "cro-magnon-girl-feather",
+  "candidate": 1,
+  "previous": {
+    "url": "/models/cro-magnon-girl-feather/model-c1-r02.glb",
+    "sha256": "75f9fe3b52f3875c59d74ed0a2f87e2d09cc71ac7ffe687010033c3f7728dd12",
+    "bytes": 3004656,
+    "revision": "c1-r02"
+  },
+  "low": 0.8917498210112028,
+  "high": 0.935249771008483,
+  "changed": [
+    {
+      "material": "BodySurface",
+      "vertices": 4602,
+      "rigid": 8,
+      "blended": 253
+    },
+    {
+      "material": "SkinSurface",
+      "vertices": 761,
+      "rigid": 2,
+      "blended": 29
+    },
+    {
+      "material": "HeadSurface",
+      "vertices": 6653,
+      "rigid": 6404,
+      "blended": 249
+    }
+  ],
+  "sha256": "310d0720641f3aad9ae2c307c9226cb1fb7bf6ef44ab0de28d5d1d1765a88cf6",
+  "bytes": 3004656,
+  "sourcePreservedExceptSkinWeights": true
+}

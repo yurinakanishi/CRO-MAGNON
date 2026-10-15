@@ -1,0 +1,115 @@
+{
+  "schema": "cro-magnon/skin-weight-repair@1",
+  "date": "2026-10-15",
+  "decision": "adopt",
+  "reviewedBy": "Codex",
+  "request": "大きい顔の子たちが歩行・走行中に顔の形を変えないようにする",
+  "modelKey": "cro-magnon-girl-feather",
+  "candidate": 1,
+  "revision": "c1-r02-face-r01",
+  "url": "/models/cro-magnon-girl-feather/model-c1-r02-face-r01.glb",
+  "sha256": "4a5a16894ae719cdaf381514622684aafdb9cc278341b1567a3d9b017171bc7b",
+  "bytes": 3004656,
+  "repair": {
+    "key": "cro-magnon-girl-feather",
+    "candidate": 1,
+    "previous": {
+      "url": "/models/cro-magnon-girl-feather/model-c1-r02.glb",
+      "sha256": "75f9fe3b52f3875c59d74ed0a2f87e2d09cc71ac7ffe687010033c3f7728dd12",
+      "bytes": 3004656,
+      "revision": "c1-r02"
+    },
+    "low": 0.6814999356106275,
+    "high": 0.8934527039527893,
+    "changed": [
+      {
+        "material": "BodySurface",
+        "vertices": 4602,
+        "rigid": 250,
+        "blended": 1809
+      },
+      {
+        "material": "SkinSurface",
+        "vertices": 761,
+        "rigid": 28,
+        "blended": 25
+      },
+      {
+        "material": "HeadSurface",
+        "vertices": 6653,
+        "rigid": 6653,
+        "blended": 0
+      }
+    ],
+    "sha256": "4a5a16894ae719cdaf381514622684aafdb9cc278341b1567a3d9b017171bc7b",
+    "bytes": 3004656,
+    "sourcePreservedExceptSkinWeights": true
+  },
+  "measurement": {
+    "key": "cro-magnon-girl-feather",
+    "vertices": 6414,
+    "seamGroups": 390,
+    "maxSeamGapM": 0,
+    "clips": [
+      {
+        "name": "Craft",
+        "maxDeviationM": 1.263412338830099e-15,
+        "samples": 31
+      },
+      {
+        "name": "Eat",
+        "maxDeviationM": 1.3351557049740774e-15,
+        "samples": 31
+      },
+      {
+        "name": "Gather",
+        "maxDeviationM": 1.340625907590245e-15,
+        "samples": 31
+      },
+      {
+        "name": "Give",
+        "maxDeviationM": 1.450212225596951e-15,
+        "samples": 31
+      },
+      {
+        "name": "Idle_Loop",
+        "maxDeviationM": 1.3397636762388e-15,
+        "samples": 31
+      },
+      {
+        "name": "Run_Loop",
+        "maxDeviationM": 1.3644248025299342e-15,
+        "samples": 31
+      },
+      {
+        "name": "Walk_Loop",
+        "maxDeviationM": 1.340625907590245e-15,
+        "samples": 31
+      },
+      {
+        "name": "Wave",
+        "maxDeviationM": 1.333206940304085e-15,
+        "samples": 31
+      },
+      {
+        "name": "Attack",
+        "maxDeviationM": 1.238932732917155e-15,
+        "samples": 31
+      },
+      {
+        "name": "Downed",
+        "maxDeviationM": 1.231062254005993e-15,
+        "samples": 31
+      }
+    ],
+    "maxDeviationM": 1.450212225596951e-15,
+    "maxCrossfadeDeviationM": 1.4464931139291487e-15
+  },
+  "visual": "assets/face-rigidity/20261015-r02/cro-magnon-girl-feather/comparison.png",
+  "previous": {
+    "manifest": "assets/cro-magnon-girl-feather/archive-manifest-c1-r02-20261015-face.json",
+    "url": "/models/cro-magnon-girl-feather/model-c1-r02.glb",
+    "sha256": "75f9fe3b52f3875c59d74ed0a2f87e2d09cc71ac7ffe687010033c3f7728dd12"
+  },
+  "preserved": "Every byte outside JOINTS_0/WEIGHTS_0: original TRELLIS geometry, normals, UV, images, materials, skeleton, bind matrices and all clips."
+}

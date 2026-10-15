@@ -14,9 +14,9 @@
   "species": "cro",
   "candidate": 1,
   "status": "remake-candidate-1-adopted",
-  "revision": "c1-r01",
-  "url": "/models/cro-magnon-boy-topknot/model-c1-r01.glb",
-  "sha256": "77fc00a7b0024d68640536a01ce27561ddf398d83ebf18fed4c69bf2d09bdb3f",
+  "revision": "c1-r01-face-r01",
+  "url": "/models/cro-magnon-boy-topknot/model-c1-r01-face-r01.glb",
+  "sha256": "65d39fd4fa710650dd78b27c69c0a74df96d334066ea752a79b4f6645c13308a",
   "bytes": 2823484,
   "triangles": 8445,
   "heightMetres": 1.45,
@@ -173,5 +173,9 @@
     "sha256": "c05548146fae1d1630368fcbe6585c9faa4745b475a58076d0e982b63eed7aa7",
     "modelSha256": "77fc00a7b0024d68640536a01ce27561ddf398d83ebf18fed4c69bf2d09bdb3f",
     "renderer": "scripts/qa-female-faces.mjs (FACE_QA_PORTRAIT=1, Idle_Loop 20%, 420x480, three.js)"
+  },
+  "faceRigidity": {
+    "review": "assets/cro-magnon-boy-topknot/qa/c1-r01-face-r01.json",
+    "sha256": "c888f49c321f458afd587006804059c81dbee43357c112b192814ff175277f46"
   }
 }

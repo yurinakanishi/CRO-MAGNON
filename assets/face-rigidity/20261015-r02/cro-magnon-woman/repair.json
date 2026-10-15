@@ -1,0 +1,35 @@
+{
+  "key": "cro-magnon-woman",
+  "candidate": 5,
+  "previous": {
+    "url": "/models/cro-magnon-woman/model-c5-r01.glb",
+    "sha256": "bc6493a2e8bd8cc3b6f2320b483851cd2c4151b5a0d0e3623fa7f4627690863e",
+    "bytes": 2620260,
+    "revision": "c5-r01"
+  },
+  "low": 0.681499954133739,
+  "high": 0.8691486120223999,
+  "changed": [
+    {
+      "material": "BodySurface",
+      "vertices": 3756,
+      "rigid": 177,
+      "blended": 948
+    },
+    {
+      "material": "SkinSurface",
+      "vertices": 252,
+      "rigid": 44,
+      "blended": 18
+    },
+    {
+      "material": "HeadSurface",
+      "vertices": 5470,
+      "rigid": 5470,
+      "blended": 0
+    }
+  ],
+  "sha256": "2e72870b747bd51a55df6cd6f34d0b85104ecf017bf834ef34c14f2e5cba0d15",
+  "bytes": 2620260,
+  "sourcePreservedExceptSkinWeights": true
+}

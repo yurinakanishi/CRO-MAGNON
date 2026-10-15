@@ -1,0 +1,35 @@
+{
+  "key": "cro-magnon-boy-lion",
+  "candidate": 1,
+  "previous": {
+    "url": "/models/cro-magnon-boy-lion/model-c1-r01.glb",
+    "sha256": "51b96004e980b926d133fe7b37d3f542371063fb85150982d7ed390434ce5ad3",
+    "bytes": 3321608,
+    "revision": "c1-r01"
+  },
+  "low": 0.6814999851832493,
+  "high": 0.864905059337616,
+  "changed": [
+    {
+      "material": "BodySurface",
+      "vertices": 3138,
+      "rigid": 319,
+      "blended": 1519
+    },
+    {
+      "material": "SkinSurface",
+      "vertices": 1068,
+      "rigid": 31,
+      "blended": 502
+    },
+    {
+      "material": "HeadSurface",
+      "vertices": 10043,
+      "rigid": 10043,
+      "blended": 0
+    }
+  ],
+  "sha256": "6524f1bf1340a6c7af7fc5f3ab4ba6e0f5d3411fcedb35ddca079d9be8a169cd",
+  "bytes": 3321608,
+  "sourcePreservedExceptSkinWeights": true
+}

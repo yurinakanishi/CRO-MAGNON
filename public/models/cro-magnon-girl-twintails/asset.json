@@ -14,9 +14,9 @@
   "species": "cro",
   "candidate": 1,
   "status": "remake-candidate-1-adopted",
-  "revision": "c1-r01",
-  "url": "/models/cro-magnon-girl-twintails/model-c1-r01.glb",
-  "sha256": "81341522cfcb76789c08fb0bbc6d466ff3f98bc3b990db05ac3069456ec28f32",
+  "revision": "c1-r01-face-r01",
+  "url": "/models/cro-magnon-girl-twintails/model-c1-r01-face-r01.glb",
+  "sha256": "db2f08f4819894f6de0b71fa95a91e1593baba2a88a64f68cff786e28d862554",
   "bytes": 2718092,
   "triangles": 7940,
   "heightMetres": 1.4499999999999997,
@@ -173,5 +173,9 @@
     "sha256": "14517cc2a1dcf6c2e4910735136c0ebf7021b0df112c32fe457b6a29284bff23",
     "modelSha256": "81341522cfcb76789c08fb0bbc6d466ff3f98bc3b990db05ac3069456ec28f32",
     "renderer": "scripts/qa-female-faces.mjs (FACE_QA_PORTRAIT=1, Idle_Loop 20%, 420x480, three.js)"
+  },
+  "faceRigidity": {
+    "review": "assets/cro-magnon-girl-twintails/qa/c1-r01-face-r01.json",
+    "sha256": "380cb9a90f50b083bad3db195298d3357f78418ada8c331acde95dbdfebddb3a"
   }
 }

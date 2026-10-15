@@ -1,0 +1,177 @@
+{
+  "modelKey": "cro-magnon-girl-feather",
+  "name": "羽根飾りの女の子",
+  "kind": "humanoid",
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred",
+    "upAxis": "Y",
+    "forwardAxis": "+Z"
+  },
+  "gender": "female",
+  "species": "cro",
+  "candidate": 1,
+  "status": "remake-candidate-1-adopted",
+  "revision": "c1-r02",
+  "url": "/models/cro-magnon-girl-feather/model-c1-r02.glb",
+  "sha256": "75f9fe3b52f3875c59d74ed0a2f87e2d09cc71ac7ffe687010033c3f7728dd12",
+  "bytes": 3004656,
+  "triangles": 7872,
+  "heightMetres": 1.45,
+  "clips": [
+    {
+      "name": "Idle_Loop",
+      "loop": true,
+      "seconds": 4
+    },
+    {
+      "name": "Walk_Loop",
+      "loop": true,
+      "seconds": 0.6568627450980392,
+      "fps": 204,
+      "frames": 135,
+      "description": "CMU 35_01 human walking retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
+    },
+    {
+      "name": "Run_Loop",
+      "loop": true,
+      "seconds": 0.4888888888888889,
+      "fps": 180,
+      "frames": 89,
+      "description": "CMU 09_01 human running retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
+    },
+    {
+      "name": "Gather",
+      "loop": false,
+      "seconds": 1.5
+    },
+    {
+      "name": "Craft",
+      "loop": false,
+      "seconds": 2
+    },
+    {
+      "name": "Give",
+      "loop": false,
+      "seconds": 1.2
+    },
+    {
+      "name": "Eat",
+      "loop": false,
+      "seconds": 1.8
+    },
+    {
+      "name": "Wave",
+      "loop": false,
+      "seconds": 2
+    },
+    {
+      "name": "Attack",
+      "seconds": 0.7,
+      "loop": false
+    },
+    {
+      "name": "Downed",
+      "seconds": 1.8,
+      "loop": false
+    }
+  ],
+  "lods": [],
+  "bones": 22,
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.9324548050356527,
+      "strideMetres": 0.6124948229155758,
+      "cycleSeconds": 0.6568627450980392,
+      "dutyFactor": 0.61,
+      "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+    },
+    "Run_Loop": {
+      "metresPerSecond": 2.355212563664381,
+      "strideMetres": 1.1514372533470305,
+      "cycleSeconds": 0.4888888888888889,
+      "dutyFactor": 0.36,
+      "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+    }
+  },
+  "humanLocomotion": {
+    "revision": "r1",
+    "sourceDelivery": "/models/cro-magnon-girl-feather/model-downed-r01.glb",
+    "sourceSha256": "e522975e9b9f457fc3f3d2eb512a846065e20f5f43e81febd78f4bccb21ea6ef",
+    "status": "candidate-unreviewed",
+    "changes": [
+      {
+        "clip": "Walk_Loop",
+        "trial": "35_01",
+        "startFrame": 140,
+        "endFrame": 274,
+        "phaseOffsetFrames": 0,
+        "sampleRate": 120,
+        "frames": 135,
+        "seconds": 0.6568627450980392,
+        "legScale": 0.4249384002558524,
+        "strideMetres": 0.6124948229155758,
+        "cadence": 1.7
+      },
+      {
+        "clip": "Run_Loop",
+        "trial": "09_01",
+        "startFrame": 1,
+        "endFrame": 89,
+        "phaseOffsetFrames": 80,
+        "sampleRate": 120,
+        "frames": 89,
+        "seconds": 0.4888888888888889,
+        "legScale": 0.4315521547733969,
+        "strideMetres": 1.1514372533470305,
+        "cadence": 1.5
+      }
+    ],
+    "reference": "assets/human-locomotion/README.md"
+  },
+  "spearThrust": {
+    "revision": "r1",
+    "status": "adopted",
+    "sourceSha256": "5221bffc1e6670458a9410e6214f9704def9de1d7765c866c51cafc8f24a0cd4",
+    "sourceDelivery": "/models/cro-magnon-girl-feather/stage0.glb",
+    "clip": "Attack",
+    "seconds": 0.7,
+    "impactSeconds": 0.333,
+    "frames": 86,
+    "sampleRate": 120,
+    "leftStepMetres": 0.406,
+    "handSpacingMetres": 0.29,
+    "attachment": "authored-grip",
+    "author": "Claude Code (Opus 5.5) via the existing spear-thrust builder"
+  },
+  "downedMotion": {
+    "revision": "revision-01",
+    "sourceUrl": "/models/cro-magnon-girl-feather/stage0.glb",
+    "sourceSha256": "989c3d8b6c5e5b7649478c68baacfa1f242154c008b39276d055c1ad09b7d109",
+    "clip": "Downed",
+    "seconds": 1.8,
+    "fps": 60,
+    "review": "assets/downed-motion/README.md"
+  },
+  "notes": [
+    "Candidate 1 (2026-10-13): a new stylized low-poly design from a generated reference ([object Object]), reconstructed with TRELLIS-2 and reduced to 7872 triangles (body and head in separate 1024 atlases, the face painted from the reference), rigged with the 22-bone humanoid skeleton and all 10 clips. Review: assets/cro-magnon-girl-feather/qa/c1-r02.json."
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5); Codex built-in image_gen references; local TRELLIS-2 reconstruction",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex built-in image_gen",
+    "referenceImage": "assets/cro-magnon-girl-feather/source/c1-r02/cast1-g1.png",
+    "referenceSha256": "1589caedd718740a501aacdd3dcd490afaee31f04bbd1db193ff26989b540340",
+    "reconstruction": "local TRELLIS-2 C++ GGUF, res 1024, tex 1024, BiRefNet matte, xatlas atlas 2048",
+    "review": "assets/cro-magnon-girl-feather/qa/c1-r02.json",
+    "previousManifest": "assets/cro-magnon-girl-feather/archive-manifest-c1-r01-20261013.json"
+  },
+  "portrait": {
+    "file": "public/models/cro-magnon-girl-feather/portrait.png",
+    "sha256": "c7df4fe5c41445f016c5d6e0b8f84e4cda91e78fa27c60ae653a4f4f91b752cf",
+    "modelSha256": "75f9fe3b52f3875c59d74ed0a2f87e2d09cc71ac7ffe687010033c3f7728dd12",
+    "renderer": "scripts/qa-female-faces.mjs (FACE_QA_PORTRAIT=1, Idle_Loop 20%, 420x480, three.js)"
+  }
+}

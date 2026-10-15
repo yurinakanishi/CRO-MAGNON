@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-15",
+  "request": "タイトルimageの、右二人の男女を、最近追加したかわいい系のキャラクターの男女に変えたい。use gpt image",
+  "mode": "built-in image_gen; image edit; transparent_background=true",
+  "source": {
+    "path": "assets/title-credits/20261015-chibi-r01/generated.png",
+    "bytes": 2519873,
+    "sha256": "c878989eb7518742e946c909df649a59a693c5154176553ce517ef02b26108bf"
+  },
+  "prompt": {
+    "path": "assets/title-credits/20261015-chibi-r01/prompt.txt",
+    "bytes": 2968,
+    "sha256": "e3323fc4d45170af78d1fd14c0229ff128b34b0a9c7f42a8d0941b085d7955c1"
+  },
+  "references": [
+    {
+      "path": "assets/title-credits/20261015-chibi-r01/before/cro-magnon-mmo-transparent.png",
+      "bytes": 2463687,
+      "sha256": "74f97d00b9db805edbd35d25f86a299a8f387148e71737ecde753a104fe02876"
+    },
+    {
+      "path": "output/model-generation/models/chibi-cast/source/original/cast1-b1.png",
+      "bytes": 1803212,
+      "sha256": "a820ed3b9c80ab5aacd7ed594f9d18350706d3563dc9a85b0359d0517b30a921"
+    },
+    {
+      "path": "output/model-generation/models/chibi-cast/source/original/cast1-g1.png",
+      "bytes": 1706165,
+      "sha256": "1589caedd718740a501aacdd3dcd490afaee31f04bbd1db193ff26989b540340"
+    }
+  ],
+  "characters": ["cro-magnon-boy-headband", "cro-magnon-girl-feather"],
+  "outputs": [
+    {
+      "path": "public/title/cro-magnon-mmo-transparent.png",
+      "bytes": 2519873,
+      "sha256": "c878989eb7518742e946c909df649a59a693c5154176553ce517ef02b26108bf"
+    },
+    {
+      "path": "public/title/cro-magnon-mmo-transparent.webp",
+      "bytes": 360472,
+      "sha256": "2477250373c263fcbc9d5b7407dd960f52467a5f459f40d4b4c86530b25d522d"
+    }
+  ],
+  "previous": [
+    {
+      "path": "assets/title-credits/20261015-chibi-r01/before/cro-magnon-mmo-transparent.png",
+      "bytes": 2463687,
+      "sha256": "74f97d00b9db805edbd35d25f86a299a8f387148e71737ecde753a104fe02876"
+    },
+    {
+      "path": "assets/title-credits/20261015-chibi-r01/before/cro-magnon-mmo-transparent.webp",
+      "bytes": 319458,
+      "sha256": "b841c775f67039f2cf4885657a270b1da0423ad34aca7fbae32e8b2c8c0607d0"
+    }
+  ],
+  "size": [1536, 1024],
+  "alpha": {
+    "zero": 661200,
+    "partialBelow240": 139766,
+    "atLeast240": 771898
+  },
+  "encoding": {
+    "format": "webp",
+    "quality": 86,
+    "effort": 6,
+    "alphaQuality": 100,
+    "resize": false
+  },
+  "notes": "Generated PNG copied without image manipulation. WebP is encoding-only via sharp; alpha preserved. Existing public paths retained. Previous title assets archived. No runtime code changed."
+}

@@ -1,0 +1,111 @@
+{
+  "checkedAt": "2026-10-15T07:50:31.688Z",
+  "files": [
+    {
+      "key": "cro-magnon-woman",
+      "url": "/models/cro-magnon-woman/model-c5-r01-face-r01.glb",
+      "sha256": "2e72870b747bd51a55df6cd6f34d0b85104ecf017bf834ef34c14f2e5cba0d15",
+      "bytes": 2620260,
+      "manifestSha256": "d75c28601d0cc4d161d937cf8165f6a94c2aa5b5dd458db870daad36e21bb2f1"
+    },
+    {
+      "key": "cro-magnon-girl-feather",
+      "url": "/models/cro-magnon-girl-feather/model-c1-r02-face-r01.glb",
+      "sha256": "4a5a16894ae719cdaf381514622684aafdb9cc278341b1567a3d9b017171bc7b",
+      "bytes": 3004656,
+      "manifestSha256": "9135dd20f52621b9a4c9cce5bbe85c2a1ea9562bdda996c1f10ba53b59a70a4f"
+    },
+    {
+      "key": "cro-magnon-girl-bear",
+      "url": "/models/cro-magnon-girl-bear/model-c1-r02-face-r01.glb",
+      "sha256": "6b7f50acf42dbc010b9049b650274bdeb2323802954a42ba139fd461e7d60f37",
+      "bytes": 2959520,
+      "manifestSha256": "de6716c7fcc9bc140015c4b82343ee179dc25927e71dacfe54cad839a6753847"
+    },
+    {
+      "key": "cro-magnon-girl-wolf",
+      "url": "/models/cro-magnon-girl-wolf/model-c1-r02-face-r01.glb",
+      "sha256": "ccc4541003c27b9c2c9b84c7ff02390ac00cc6eba1a14d06c39b0a5ccad887a4",
+      "bytes": 3273372,
+      "manifestSha256": "da2506c6e64c8505f6e0a27ed50a3b7ca9dbc2a077ff8bafbdaa1a2216eaa331"
+    },
+    {
+      "key": "cro-magnon-girl-twintails",
+      "url": "/models/cro-magnon-girl-twintails/model-c1-r01-face-r01.glb",
+      "sha256": "db2f08f4819894f6de0b71fa95a91e1593baba2a88a64f68cff786e28d862554",
+      "bytes": 2718092,
+      "manifestSha256": "4165f130cc2e9fb7b0cb6c947b5d6045d6f86d16b9afce177ad6be56e749cc63"
+    },
+    {
+      "key": "cro-magnon-girl-reindeer",
+      "url": "/models/cro-magnon-girl-reindeer/model-c1-r02-face-r01.glb",
+      "sha256": "32c5277060ec9c9c6147a670f4a57499fb965e24f77cecb16ad1d980eb07f93e",
+      "bytes": 2750732,
+      "manifestSha256": "b1072b4f74fd88c0373e0a4614f2bd9e7f9959a0fe2193810879b52255f91d8a"
+    },
+    {
+      "key": "cro-magnon-boy-headband",
+      "url": "/models/cro-magnon-boy-headband/model-c1-r01-face-r01.glb",
+      "sha256": "931e731c38efba2fe1088d5831e4a5202652e2bd84712c78bed8d7e5367d4f89",
+      "bytes": 2984500,
+      "manifestSha256": "d2e41688817de325aeb0a6ebde3a340f528c4f5fc60e1e43e226791a63761d5d"
+    },
+    {
+      "key": "cro-magnon-boy-lion",
+      "url": "/models/cro-magnon-boy-lion/model-c1-r01-face-r01.glb",
+      "sha256": "6524f1bf1340a6c7af7fc5f3ab4ba6e0f5d3411fcedb35ddca079d9be8a169cd",
+      "bytes": 3321608,
+      "manifestSha256": "5fc58454e7920f90e0e27bf82425241857eeb412d44e9b7e8dc682dfad4ef79e"
+    },
+    {
+      "key": "cro-magnon-boy-braid",
+      "url": "/models/cro-magnon-boy-braid/model-c1-r01-face-r01.glb",
+      "sha256": "6346161bcb7727508d1986f6a11be4ee17754ec7654bafbfbba26c3dbe1cde4c",
+      "bytes": 3135568,
+      "manifestSha256": "2a665a05d88cbad9cf4798f7c78ef4fde2e09832b1e84761673e6b75da577a20"
+    },
+    {
+      "key": "cro-magnon-boy-topknot",
+      "url": "/models/cro-magnon-boy-topknot/model-c1-r01-face-r01.glb",
+      "sha256": "65d39fd4fa710650dd78b27c69c0a74df96d334066ea752a79b4f6645c13308a",
+      "bytes": 2823484,
+      "manifestSha256": "e23ec2d45eac5974e806c71f116f93ff1c4dc59ee2bacbadc170c09477ca71a2"
+    }
+  ],
+  "health": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 4,
+    "worldSize": 8192,
+    "worldWidth": 8192,
+    "worldDepth": 4096,
+    "epochYearsBP": 50000,
+    "rooms": 3,
+    "players": 0,
+    "maxPlayers": 5,
+    "save": {
+      "enabled": true,
+      "state": "saved",
+      "savedAt": 1792050623415,
+      "recovered": false
+    }
+  },
+  "status": {
+    "ok": true,
+    "boatingVersion": 2,
+    "adventureVersion": 1,
+    "gulfVersion": 3,
+    "localRoomReset": true,
+    "save": {
+      "enabled": true,
+      "state": "saved",
+      "savedAt": 1792050623415,
+      "recovered": false
+    }
+  },
+  "savedRoomsUnchanged": true,
+  "roomCount": 3
+}

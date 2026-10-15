@@ -53,6 +53,7 @@ export class SoloRuntime {
   private createGame() {
     return createGameCore({
       playerLimit: 1,
+      disconnectIdlePlayers: false,
       persistentSessions: true,
       keepEmptyRooms: true,
       maxSavedSessions: 1,

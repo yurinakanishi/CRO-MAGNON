@@ -14,9 +14,9 @@
   "species": "cro",
   "candidate": 5,
   "status": "remake-candidate-5-adopted",
-  "revision": "c5-r01",
-  "url": "/models/cro-magnon-woman/model-c5-r01.glb",
-  "sha256": "bc6493a2e8bd8cc3b6f2320b483851cd2c4151b5a0d0e3623fa7f4627690863e",
+  "revision": "c5-r01-face-r01",
+  "url": "/models/cro-magnon-woman/model-c5-r01-face-r01.glb",
+  "sha256": "2e72870b747bd51a55df6cd6f34d0b85104ecf017bf834ef34c14f2e5cba0d15",
   "bytes": 2620260,
   "triangles": 6913,
   "heightMetres": 1.45,
@@ -169,8 +169,8 @@
     "previousManifest": "assets/cro-magnon-woman/archive-manifest-c3-r03-20261013.json"
   },
   "sourceRevision": {
-    "record": "assets/cro-magnon-woman/qa/source-revision-c5-r01.json",
-    "sha256": "47d810cfd8b8138d9d7e2cbea4a4690071df30cfdc5d912e8c41cd7c2408aca2"
+    "record": "assets/cro-magnon-woman/qa/source-revision-c5-r01-face-r01.json",
+    "sha256": "5d1dbce7757d84aa473b0e46411360eea4113218c8b9de3ebd1ecdf3109f060e"
   },
   "portrait": {
     "file": "public/models/cro-magnon-woman/portrait.png",
@@ -178,5 +178,9 @@
     "modelSha256": "bc6493a2e8bd8cc3b6f2320b483851cd2c4151b5a0d0e3623fa7f4627690863e",
     "previousSha256": "879bde81b0b8fb65e0e28f774a3f9f576bc8cb627a3abdaf04d0664d3f1b867d",
     "renderer": "scripts/qa-female-faces.mjs (FACE_QA_PORTRAIT=1, Idle_Loop 20%, 420x480, three.js)"
+  },
+  "faceRigidity": {
+    "review": "assets/cro-magnon-woman/qa/c5-r01-face-r01.json",
+    "sha256": "b1caaf1d2a403a1c4f6325c41b4cc058bc903e4852013cf1f38484dd4498ede0"
   }
 }

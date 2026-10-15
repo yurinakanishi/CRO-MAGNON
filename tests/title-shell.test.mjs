@@ -162,7 +162,10 @@ test('the shell renders exactly the title and dialog the game renders without it
     /^<section id="screen-title" class="screen title-screen" data-variant="classic" hidden>/,
   );
   assert.match(title, /<button id="title-start" class="menu-item">ソロプレイで始める<\/button>/);
-  assert.match(title, /<button id="title-online"[^>]*disabled[^>]*>オンラインで始める<\/button>/);
+  assert.match(
+    title,
+    /<button id="title-online"[^>]*disabled[^>]*>オンラインで始める<small lang="en">Coming soon<\/small><\/button>/,
+  );
   assert.match(
     title,
     /<button id="title-contributors" class="menu-item">関わってくれた人たち<\/button>/,

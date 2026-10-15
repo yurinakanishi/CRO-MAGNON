@@ -1,0 +1,35 @@
+{
+  "key": "cro-magnon-boy-topknot",
+  "candidate": 1,
+  "previous": {
+    "url": "/models/cro-magnon-boy-topknot/model-c1-r01.glb",
+    "sha256": "77fc00a7b0024d68640536a01ce27561ddf398d83ebf18fed4c69bf2d09bdb3f",
+    "bytes": 2823484,
+    "revision": "c1-r01"
+  },
+  "low": 0.674249973887032,
+  "high": 0.8198438286781311,
+  "changed": [
+    {
+      "material": "BodySurface",
+      "vertices": 5878,
+      "rigid": 95,
+      "blended": 812
+    },
+    {
+      "material": "SkinSurface",
+      "vertices": 859,
+      "rigid": 36,
+      "blended": 42
+    },
+    {
+      "material": "HeadSurface",
+      "vertices": 4827,
+      "rigid": 4827,
+      "blended": 0
+    }
+  ],
+  "sha256": "65d39fd4fa710650dd78b27c69c0a74df96d334066ea752a79b4f6645c13308a",
+  "bytes": 2823484,
+  "sourcePreservedExceptSkinWeights": true
+}

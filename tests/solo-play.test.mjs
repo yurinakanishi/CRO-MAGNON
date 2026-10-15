@@ -114,6 +114,57 @@ test('a fresh solo runtime restores inventory, progress, location and companion,
   await next.close();
 });
 
+for (const resumed of [false, true])
+  test(`solo ${resumed ? 'resumed' : 'new'} play stays active and saves after long inactivity`, async (t) => {
+    let now = Date.now();
+    t.mock.method(Date, 'now', () => now);
+    const save = memorySave();
+    if (resumed) {
+      const previous = new SoloRuntime(save, () => {});
+      await previous.start(profile);
+      await previous.close();
+    }
+    const outputs = [];
+    const runtime = new SoloRuntime(save, (event) => outputs.push(event));
+    await runtime.start(profile);
+    const welcome = messages(outputs).find((message) => message.type === 'welcome');
+    const startedAt = now;
+    try {
+      for (const elapsed of [30000, 60000, 3600000, 86400000]) {
+        now = startedAt + elapsed;
+        const writes = save.writes;
+        await runtime.tick();
+        assert.equal(
+          outputs.some((event) => event.type === 'closed'),
+          false,
+        );
+        assert.equal(
+          messages(outputs).some((message) => message.code === 'IDLE_TIMEOUT'),
+          false,
+        );
+        const state = messages(outputs)
+          .filter((message) => message.type === 'state')
+          .at(-1);
+        assert.ok(state.players.some((player) => player.id === welcome.id));
+        assert.ok(save.writes > writes, 'autosave continues without input');
+        assert.equal(save.data.game.rooms[0].sessions[0].player.id, welcome.id);
+      }
+      await runtime.command(
+        JSON.stringify({ type: 'action', action: 'dyeClothes', targetId: 'teal' }),
+      );
+      const player = save.data.game.rooms[0].sessions[0].player;
+      assert.equal(player.dye, 'teal', 'input still works after the idle period');
+      assert.equal(player.mascot, profile.mascot);
+    } finally {
+      await runtime.close();
+    }
+    assert.equal(
+      outputs.find((event) => event.type === 'closed')?.code,
+      1000,
+      'manual exit still saves and closes',
+    );
+  });
+
 test('autosave failures preserve the committed state, report the error and avoid retrying every tick', async () => {
   const save = memorySave(),
     outputs = [];

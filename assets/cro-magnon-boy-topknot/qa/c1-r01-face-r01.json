@@ -1,0 +1,115 @@
+{
+  "schema": "cro-magnon/skin-weight-repair@1",
+  "date": "2026-10-15",
+  "decision": "adopt",
+  "reviewedBy": "Codex",
+  "request": "大きい顔の子たちが歩行・走行中に顔の形を変えないようにする",
+  "modelKey": "cro-magnon-boy-topknot",
+  "candidate": 1,
+  "revision": "c1-r01-face-r01",
+  "url": "/models/cro-magnon-boy-topknot/model-c1-r01-face-r01.glb",
+  "sha256": "65d39fd4fa710650dd78b27c69c0a74df96d334066ea752a79b4f6645c13308a",
+  "bytes": 2823484,
+  "repair": {
+    "key": "cro-magnon-boy-topknot",
+    "candidate": 1,
+    "previous": {
+      "url": "/models/cro-magnon-boy-topknot/model-c1-r01.glb",
+      "sha256": "77fc00a7b0024d68640536a01ce27561ddf398d83ebf18fed4c69bf2d09bdb3f",
+      "bytes": 2823484,
+      "revision": "c1-r01"
+    },
+    "low": 0.674249973887032,
+    "high": 0.8198438286781311,
+    "changed": [
+      {
+        "material": "BodySurface",
+        "vertices": 5878,
+        "rigid": 95,
+        "blended": 812
+      },
+      {
+        "material": "SkinSurface",
+        "vertices": 859,
+        "rigid": 36,
+        "blended": 42
+      },
+      {
+        "material": "HeadSurface",
+        "vertices": 4827,
+        "rigid": 4827,
+        "blended": 0
+      }
+    ],
+    "sha256": "65d39fd4fa710650dd78b27c69c0a74df96d334066ea752a79b4f6645c13308a",
+    "bytes": 2823484,
+    "sourcePreservedExceptSkinWeights": true
+  },
+  "measurement": {
+    "key": "cro-magnon-boy-topknot",
+    "vertices": 4803,
+    "seamGroups": 275,
+    "maxSeamGapM": 0,
+    "clips": [
+      {
+        "name": "Craft",
+        "maxDeviationM": 1.2325475812854657e-15,
+        "samples": 31
+      },
+      {
+        "name": "Eat",
+        "maxDeviationM": 1.2472263692215501e-15,
+        "samples": 31
+      },
+      {
+        "name": "Gather",
+        "maxDeviationM": 1.2659250794279332e-15,
+        "samples": 31
+      },
+      {
+        "name": "Give",
+        "maxDeviationM": 1.3802644315448593e-15,
+        "samples": 31
+      },
+      {
+        "name": "Idle_Loop",
+        "maxDeviationM": 1.2366035645442176e-15,
+        "samples": 31
+      },
+      {
+        "name": "Run_Loop",
+        "maxDeviationM": 1.3345966285053792e-15,
+        "samples": 31
+      },
+      {
+        "name": "Walk_Loop",
+        "maxDeviationM": 1.2555419931420473e-15,
+        "samples": 31
+      },
+      {
+        "name": "Wave",
+        "maxDeviationM": 1.1380632177521669e-15,
+        "samples": 31
+      },
+      {
+        "name": "Attack",
+        "maxDeviationM": 1.3608902904978695e-15,
+        "samples": 31
+      },
+      {
+        "name": "Downed",
+        "maxDeviationM": 1.1105699151271772e-15,
+        "samples": 31
+      }
+    ],
+    "maxDeviationM": 1.3802644315448593e-15,
+    "maxCrossfadeDeviationM": 1.2816495814253885e-15
+  },
+  "visual": "assets/face-rigidity/20261015-r02/cro-magnon-boy-topknot/comparison.png",
+  "previous": {
+    "manifest": "assets/cro-magnon-boy-topknot/archive-manifest-c1-r01-20261015-face.json",
+    "url": "/models/cro-magnon-boy-topknot/model-c1-r01.glb",
+    "sha256": "77fc00a7b0024d68640536a01ce27561ddf398d83ebf18fed4c69bf2d09bdb3f"
+  },
+  "preserved": "Every byte outside JOINTS_0/WEIGHTS_0: original TRELLIS geometry, normals, UV, images, materials, skeleton, bind matrices and all clips."
+}

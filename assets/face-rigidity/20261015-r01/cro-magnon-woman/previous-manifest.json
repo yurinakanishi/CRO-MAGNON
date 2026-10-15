@@ -1,0 +1,182 @@
+{
+  "modelKey": "cro-magnon-woman",
+  "name": "クロマニョン人 女性",
+  "kind": "humanoid",
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred",
+    "upAxis": "Y",
+    "forwardAxis": "+Z"
+  },
+  "gender": "female",
+  "species": "cro",
+  "candidate": 5,
+  "status": "remake-candidate-5-adopted",
+  "revision": "c5-r01",
+  "url": "/models/cro-magnon-woman/model-c5-r01.glb",
+  "sha256": "bc6493a2e8bd8cc3b6f2320b483851cd2c4151b5a0d0e3623fa7f4627690863e",
+  "bytes": 2620260,
+  "triangles": 6913,
+  "heightMetres": 1.45,
+  "clips": [
+    {
+      "name": "Idle_Loop",
+      "loop": true,
+      "seconds": 4
+    },
+    {
+      "name": "Walk_Loop",
+      "loop": true,
+      "seconds": 0.6568627450980392,
+      "fps": 204,
+      "frames": 135,
+      "description": "CMU 35_01 human walking retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
+    },
+    {
+      "name": "Run_Loop",
+      "loop": true,
+      "seconds": 0.4888888888888889,
+      "fps": 180,
+      "frames": 89,
+      "description": "CMU 09_01 human running retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
+    },
+    {
+      "name": "Gather",
+      "loop": false,
+      "seconds": 1.5
+    },
+    {
+      "name": "Craft",
+      "loop": false,
+      "seconds": 2
+    },
+    {
+      "name": "Give",
+      "loop": false,
+      "seconds": 1.2
+    },
+    {
+      "name": "Eat",
+      "loop": false,
+      "seconds": 1.8
+    },
+    {
+      "name": "Wave",
+      "loop": false,
+      "seconds": 2
+    },
+    {
+      "name": "Attack",
+      "seconds": 0.7,
+      "loop": false
+    },
+    {
+      "name": "Downed",
+      "seconds": 1.8,
+      "loop": false
+    }
+  ],
+  "lods": [],
+  "bones": 22,
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.9306544717733931,
+      "strideMetres": 0.6113122510668366,
+      "cycleSeconds": 0.6568627450980392,
+      "dutyFactor": 0.61,
+      "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+    },
+    "Run_Loop": {
+      "metresPerSecond": 2.3506652467379645,
+      "strideMetres": 1.1492141206274493,
+      "cycleSeconds": 0.4888888888888889,
+      "dutyFactor": 0.36,
+      "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+    }
+  },
+  "humanLocomotion": {
+    "revision": "r1",
+    "sourceDelivery": "/models/cro-magnon-woman/model-downed-r01.glb",
+    "sourceSha256": "cd113b512325d045f80e0341614de938fbd4732493d750de7fbb8f3e2a4d65d5",
+    "status": "candidate-unreviewed",
+    "changes": [
+      {
+        "clip": "Walk_Loop",
+        "trial": "35_01",
+        "startFrame": 140,
+        "endFrame": 274,
+        "phaseOffsetFrames": 0,
+        "sampleRate": 120,
+        "frames": 135,
+        "seconds": 0.6568627450980392,
+        "legScale": 0.4241179521952488,
+        "strideMetres": 0.6113122510668366,
+        "cadence": 1.7
+      },
+      {
+        "clip": "Run_Loop",
+        "trial": "09_01",
+        "startFrame": 1,
+        "endFrame": 89,
+        "phaseOffsetFrames": 80,
+        "sampleRate": 120,
+        "frames": 89,
+        "seconds": 0.4888888888888889,
+        "legScale": 0.43071893723358423,
+        "strideMetres": 1.1492141206274493,
+        "cadence": 1.5
+      }
+    ],
+    "reference": "assets/human-locomotion/README.md"
+  },
+  "spearThrust": {
+    "revision": "r1",
+    "status": "adopted",
+    "sourceSha256": "b8811bd69da7eac4ac92b87c482b5dbe22a4afe4570a78fd58ddf30d066e25b1",
+    "sourceDelivery": "/models/cro-magnon-woman/stage0.glb",
+    "clip": "Attack",
+    "seconds": 0.7,
+    "impactSeconds": 0.333,
+    "frames": 86,
+    "sampleRate": 120,
+    "leftStepMetres": 0.406,
+    "handSpacingMetres": 0.29,
+    "attachment": "authored-grip",
+    "author": "Claude Code (Opus 5.5) via the existing spear-thrust builder"
+  },
+  "downedMotion": {
+    "revision": "revision-01",
+    "sourceUrl": "/models/cro-magnon-woman/stage0.glb",
+    "sourceSha256": "0f146a0fd520cbfc61abb41aa19d50f682aa710a410c9d516c6a2c1e59df0e1f",
+    "clip": "Downed",
+    "seconds": 1.8,
+    "fps": 60,
+    "review": "assets/downed-motion/README.md"
+  },
+  "notes": [
+    "Candidate 5 (2026-10-13): a new stylized low-poly design from a generated reference (b (two round buns with bone hairpins, green eyes, sheepskin collar, long-sleeved hide tunic with a red-ochre zigzag hem, shell-and-tooth necklace, ochre cheek stripes, fur leg warmers)), reconstructed with TRELLIS-2 and reduced to 6913 triangles (body and head in separate 1024 atlases, the face painted from the reference), rigged with the 22-bone humanoid skeleton and all 10 clips. Review: assets/cro-magnon-woman/qa/c5-r01.json."
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5); Codex built-in image_gen references; local TRELLIS-2 reconstruction",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex built-in image_gen",
+    "referenceImage": "assets/cro-magnon-woman/source/c5-r01/candidate5-ref-b.png",
+    "referenceSha256": "12b79bc51309817feec2590879ffa3d3e45100afdf52653bb600829292a2ff11",
+    "reconstruction": "local TRELLIS-2 C++ GGUF, res 1024, tex 1024, BiRefNet matte, xatlas atlas 2048",
+    "review": "assets/cro-magnon-woman/qa/c5-r01.json",
+    "previousManifest": "assets/cro-magnon-woman/archive-manifest-c3-r03-20261013.json"
+  },
+  "sourceRevision": {
+    "record": "assets/cro-magnon-woman/qa/source-revision-c5-r01.json",
+    "sha256": "47d810cfd8b8138d9d7e2cbea4a4690071df30cfdc5d912e8c41cd7c2408aca2"
+  },
+  "portrait": {
+    "file": "public/models/cro-magnon-woman/portrait.png",
+    "sha256": "79dfea289ab49a54bbc354edff1b7397bdac98c362da7fb75bc2bc9b187a6de8",
+    "modelSha256": "bc6493a2e8bd8cc3b6f2320b483851cd2c4151b5a0d0e3623fa7f4627690863e",
+    "previousSha256": "879bde81b0b8fb65e0e28f774a3f9f576bc8cb627a3abdaf04d0664d3f1b867d",
+    "renderer": "scripts/qa-female-faces.mjs (FACE_QA_PORTRAIT=1, Idle_Loop 20%, 420x480, three.js)"
+  }
+}

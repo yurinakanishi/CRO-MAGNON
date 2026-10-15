@@ -1,0 +1,115 @@
+{
+  "schema": "cro-magnon/skin-weight-repair@1",
+  "date": "2026-10-15",
+  "decision": "adopt",
+  "reviewedBy": "Codex",
+  "request": "大きい顔の子たちが歩行・走行中に顔の形を変えないようにする",
+  "modelKey": "cro-magnon-boy-headband",
+  "candidate": 1,
+  "revision": "c1-r01-face-r01",
+  "url": "/models/cro-magnon-boy-headband/model-c1-r01-face-r01.glb",
+  "sha256": "931e731c38efba2fe1088d5831e4a5202652e2bd84712c78bed8d7e5367d4f89",
+  "bytes": 2984500,
+  "repair": {
+    "key": "cro-magnon-boy-headband",
+    "candidate": 1,
+    "previous": {
+      "url": "/models/cro-magnon-boy-headband/model-c1-r01.glb",
+      "sha256": "7d108d4a3c4c20818614c05aa3cefd1fdd2278fbe099fc5b2cbe3a075d08432b",
+      "bytes": 2984500,
+      "revision": "c1-r01"
+    },
+    "low": 0.6814999848786627,
+    "high": 0.848327100276947,
+    "changed": [
+      {
+        "material": "BodySurface",
+        "vertices": 3827,
+        "rigid": 178,
+        "blended": 762
+      },
+      {
+        "material": "SkinSurface",
+        "vertices": 1066,
+        "rigid": 29,
+        "blended": 102
+      },
+      {
+        "material": "HeadSurface",
+        "vertices": 7591,
+        "rigid": 7591,
+        "blended": 0
+      }
+    ],
+    "sha256": "931e731c38efba2fe1088d5831e4a5202652e2bd84712c78bed8d7e5367d4f89",
+    "bytes": 2984500,
+    "sourcePreservedExceptSkinWeights": true
+  },
+  "measurement": {
+    "key": "cro-magnon-boy-headband",
+    "vertices": 7437,
+    "seamGroups": 404,
+    "maxSeamGapM": 0,
+    "clips": [
+      {
+        "name": "Craft",
+        "maxDeviationM": 1.1188630228279524e-15,
+        "samples": 31
+      },
+      {
+        "name": "Eat",
+        "maxDeviationM": 1.196712792045923e-15,
+        "samples": 31
+      },
+      {
+        "name": "Gather",
+        "maxDeviationM": 1.2337969962857226e-15,
+        "samples": 31
+      },
+      {
+        "name": "Give",
+        "maxDeviationM": 1.227537204523176e-15,
+        "samples": 31
+      },
+      {
+        "name": "Idle_Loop",
+        "maxDeviationM": 1.2225062931717345e-15,
+        "samples": 31
+      },
+      {
+        "name": "Run_Loop",
+        "maxDeviationM": 1.279468816630226e-15,
+        "samples": 31
+      },
+      {
+        "name": "Walk_Loop",
+        "maxDeviationM": 1.3397636762388e-15,
+        "samples": 31
+      },
+      {
+        "name": "Wave",
+        "maxDeviationM": 1.2816495814253885e-15,
+        "samples": 31
+      },
+      {
+        "name": "Attack",
+        "maxDeviationM": 1.45630836527132e-15,
+        "samples": 31
+      },
+      {
+        "name": "Downed",
+        "maxDeviationM": 1.0133636298719597e-15,
+        "samples": 31
+      }
+    ],
+    "maxDeviationM": 1.45630836527132e-15,
+    "maxCrossfadeDeviationM": 1.306872095762474e-15
+  },
+  "visual": "assets/face-rigidity/20261015-r02/cro-magnon-boy-headband/comparison.png",
+  "previous": {
+    "manifest": "assets/cro-magnon-boy-headband/archive-manifest-c1-r01-20261015-face.json",
+    "url": "/models/cro-magnon-boy-headband/model-c1-r01.glb",
+    "sha256": "7d108d4a3c4c20818614c05aa3cefd1fdd2278fbe099fc5b2cbe3a075d08432b"
+  },
+  "preserved": "Every byte outside JOINTS_0/WEIGHTS_0: original TRELLIS geometry, normals, UV, images, materials, skeleton, bind matrices and all clips."
+}

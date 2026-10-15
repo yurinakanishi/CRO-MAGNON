@@ -1,0 +1,115 @@
+{
+  "schema": "cro-magnon/skin-weight-repair@1",
+  "date": "2026-10-15",
+  "decision": "adopt",
+  "reviewedBy": "Codex",
+  "request": "大きい顔の子たちが歩行・走行中に顔の形を変えないようにする",
+  "modelKey": "cro-magnon-woman",
+  "candidate": 5,
+  "revision": "c5-r01-face-r01",
+  "url": "/models/cro-magnon-woman/model-c5-r01-face-r01.glb",
+  "sha256": "2e72870b747bd51a55df6cd6f34d0b85104ecf017bf834ef34c14f2e5cba0d15",
+  "bytes": 2620260,
+  "repair": {
+    "key": "cro-magnon-woman",
+    "candidate": 5,
+    "previous": {
+      "url": "/models/cro-magnon-woman/model-c5-r01.glb",
+      "sha256": "bc6493a2e8bd8cc3b6f2320b483851cd2c4151b5a0d0e3623fa7f4627690863e",
+      "bytes": 2620260,
+      "revision": "c5-r01"
+    },
+    "low": 0.681499954133739,
+    "high": 0.8691486120223999,
+    "changed": [
+      {
+        "material": "BodySurface",
+        "vertices": 3756,
+        "rigid": 177,
+        "blended": 948
+      },
+      {
+        "material": "SkinSurface",
+        "vertices": 252,
+        "rigid": 44,
+        "blended": 18
+      },
+      {
+        "material": "HeadSurface",
+        "vertices": 5470,
+        "rigid": 5470,
+        "blended": 0
+      }
+    ],
+    "sha256": "2e72870b747bd51a55df6cd6f34d0b85104ecf017bf834ef34c14f2e5cba0d15",
+    "bytes": 2620260,
+    "sourcePreservedExceptSkinWeights": true
+  },
+  "measurement": {
+    "key": "cro-magnon-woman",
+    "vertices": 5202,
+    "seamGroups": 155,
+    "maxSeamGapM": 0,
+    "clips": [
+      {
+        "name": "Craft",
+        "maxDeviationM": 1.1106566208239272e-15,
+        "samples": 31
+      },
+      {
+        "name": "Eat",
+        "maxDeviationM": 1.3343621073704092e-15,
+        "samples": 31
+      },
+      {
+        "name": "Gather",
+        "maxDeviationM": 1.2468402668783907e-15,
+        "samples": 31
+      },
+      {
+        "name": "Give",
+        "maxDeviationM": 1.22156069063769e-15,
+        "samples": 31
+      },
+      {
+        "name": "Idle_Loop",
+        "maxDeviationM": 1.250310895681198e-15,
+        "samples": 31
+      },
+      {
+        "name": "Run_Loop",
+        "maxDeviationM": 1.1133411481696098e-15,
+        "samples": 31
+      },
+      {
+        "name": "Walk_Loop",
+        "maxDeviationM": 1.166394835686074e-15,
+        "samples": 31
+      },
+      {
+        "name": "Wave",
+        "maxDeviationM": 1.2232150153568437e-15,
+        "samples": 31
+      },
+      {
+        "name": "Attack",
+        "maxDeviationM": 1.2263599363857222e-15,
+        "samples": 31
+      },
+      {
+        "name": "Downed",
+        "maxDeviationM": 1.227242993363347e-15,
+        "samples": 31
+      }
+    ],
+    "maxDeviationM": 1.3343621073704092e-15,
+    "maxCrossfadeDeviationM": 1.3325567187647329e-15
+  },
+  "visual": "assets/face-rigidity/20261015-r02/cro-magnon-woman/comparison.png",
+  "previous": {
+    "manifest": "assets/cro-magnon-woman/archive-manifest-c5-r01-20261015-face.json",
+    "url": "/models/cro-magnon-woman/model-c5-r01.glb",
+    "sha256": "bc6493a2e8bd8cc3b6f2320b483851cd2c4151b5a0d0e3623fa7f4627690863e"
+  },
+  "preserved": "Every byte outside JOINTS_0/WEIGHTS_0: original TRELLIS geometry, normals, UV, images, materials, skeleton, bind matrices and all clips."
+}

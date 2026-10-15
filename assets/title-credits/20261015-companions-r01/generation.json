@@ -1,0 +1,95 @@
+{
+  "date": "2026-10-15",
+  "status": "alternate-version-created-not-adopted",
+  "method": "built-in image_gen; image edit; transparent_background=true",
+  "userRequest": "別バージョンとしてマンモスの下に猫と524を追加。524は浮き、かわいいキャラクターの頭より少し小さい。両方ともかわいい二人と同じ方向。",
+  "inputs": [
+    {
+      "path": "assets/title-credits/20261015-companions-r01/inputs/title-chibi.png",
+      "bytes": 2519873,
+      "sha256": "c878989eb7518742e946c909df649a59a693c5154176553ce517ef02b26108bf"
+    },
+    {
+      "path": "assets/title-credits/20261015-companions-r01/inputs/cat.png",
+      "bytes": 167805,
+      "sha256": "da95c2287d8d7311cd15fb8ed55bfd10f92d3d4fe7c9f22741de43afefdfe1df"
+    },
+    {
+      "path": "assets/title-credits/20261015-companions-r01/inputs/524.png",
+      "bytes": 40966,
+      "sha256": "d445adaa10510e98db22a41508d739cbe2e8c4919398c0700d50e1169cad58bc"
+    }
+  ],
+  "prompts": [
+    {
+      "path": "assets/title-credits/20261015-companions-r01/prompt-r01.txt",
+      "bytes": 3502,
+      "sha256": "ce6bc0fb92eadf616d868fe836adad2e97ef9d6edb18774bc28d9bf8770fbf48"
+    },
+    {
+      "path": "assets/title-credits/20261015-companions-r01/prompt-r02.txt",
+      "bytes": 1799,
+      "sha256": "15889ced9dcec3eb9fe048401a6f1dd92ac4371b97360dd8d5cf67286cf1cdda"
+    },
+    {
+      "path": "assets/title-credits/20261015-companions-r01/prompt-r03.txt",
+      "bytes": 1401,
+      "sha256": "5f18c209513de3dc527468424f2d1aa34cf9edff850bd4435c250badcbc96ddd"
+    }
+  ],
+  "revisions": [
+    {
+      "path": "assets/title-credits/20261015-companions-r01/revisions/r01.png",
+      "bytes": 2654913,
+      "sha256": "3a0bd76ce612f4dd8e05bead6b8780e1edf45997b294d4ffb5755a2d93462b87",
+      "selected": false,
+      "note": "Mascot placement accepted; logo became brighter than source."
+    },
+    {
+      "path": "assets/title-credits/20261015-companions-r01/revisions/r02.png",
+      "bytes": 2495123,
+      "sha256": "601e68e82f072a5b1779e35e844dfa13d906b530b0dbd1c89e55ab56ae72b9f9",
+      "selected": false,
+      "note": "Dark logo restored but transparent background had unwanted semi-transparent haze; alpha check failed."
+    },
+    {
+      "path": "assets/title-credits/20261015-companions-r01/cro-magnon-mmo-companions-r03.png",
+      "bytes": 2650184,
+      "sha256": "3ed25b16ea1152c1fa7537c0cff34f866318ea263b569111ef015c658624ab27",
+      "selected": true,
+      "note": "Transparency cleaned with image_gen. Placement, direction, floating pose, numerals and overall composition visually checked. Foreground colours are not pixel-identical to original due to generative editing."
+    }
+  ],
+  "outputs": [
+    {
+      "path": "assets/title-credits/20261015-companions-r01/cro-magnon-mmo-companions-r03.png",
+      "bytes": 2650184,
+      "sha256": "3ed25b16ea1152c1fa7537c0cff34f866318ea263b569111ef015c658624ab27"
+    },
+    {
+      "path": "assets/title-credits/20261015-companions-r01/cro-magnon-mmo-companions-r03.webp",
+      "bytes": 384038,
+      "sha256": "fa7156bbae68170924bff806beac421d8d08b92c58f5517e6087b0139d28b0aa"
+    }
+  ],
+  "size": [1536, 1024],
+  "alpha": {
+    "transparent": 634308,
+    "partialBelow240": 141267,
+    "atLeast240": 797289
+  },
+  "encoding": {
+    "format": "webp",
+    "quality": 86,
+    "effort": 6,
+    "alphaQuality": 100,
+    "resize": false
+  },
+  "activeTitleUnchanged": true,
+  "activeTitle": {
+    "path": "public/title/cro-magnon-mmo-transparent.png",
+    "bytes": 2519873,
+    "sha256": "c878989eb7518742e946c909df649a59a693c5154176553ce517ef02b26108bf"
+  },
+  "notes": "Generated PNG copied unmodified; WebP format conversion only. Current game title retained. No 3D assets or runtime code changed."
+}

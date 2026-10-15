@@ -10,7 +10,7 @@ const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
 );
-const out = process.argv[2] ?? 'output/playwright/cave-running-20261012/after';
+const out = process.argv[2] ?? 'output/playwright/cave-running-20261015/after';
 const observe = process.argv.includes('--observe');
 await mkdir(out, { recursive: true });
 const game = createGameServer({ port: 0, host: '127.0.0.1' });
@@ -56,6 +56,7 @@ async function open(mobile = false) {
   await click('#title-start');
   await click('.character-choice:has(input[value="cro-male"])');
   await click('#setup-flow-yes');
+  await click('#mascot-start');
   await page.locator('#loading-cave[data-ready="true"]').waitFor({ timeout: 180000 });
   await page.locator('#loading-screen').waitFor({ state: 'hidden', timeout: 180000 });
   return context;
@@ -168,6 +169,63 @@ try {
   await page.keyboard.up('w');
   await page.keyboard.down('w');
   await sample('fresh input after blur walks', 'Walk_Loop');
+  await page.keyboard.up('w');
+  await sleep(350);
+  await place();
+  await page.keyboard.press('w');
+  await page.keyboard.down('w');
+  const dash = await sample(
+    'double-tapped movement runs after the second press is held',
+    'Run_Loop',
+  );
+  if (!(dash.speed > walk.speed * 1.5))
+    issues.push('double-tapped movement does not increase actual travel speed');
+  await page.screenshot({ path: `${out}/double-tap-run.png` });
+  await page.keyboard.up('w');
+  await sample('releasing double-tapped movement stops travel', 'Idle_Loop');
+  await page.keyboard.down('w');
+  await sample('next single press walks after dash release', 'Walk_Loop');
+  await page.keyboard.down('w');
+  await page.keyboard.down('w');
+  await sample('held movement repeat does not start a dash', 'Walk_Loop');
+  await page.keyboard.up('w');
+  await page.keyboard.press('ArrowUp');
+  await page.keyboard.down('ArrowUp');
+  await sample('double-tapped arrow key runs', 'Run_Loop');
+  await page.keyboard.down('d');
+  await page.keyboard.up('ArrowUp');
+  await sample('dash continues while another direction remains held', 'Run_Loop');
+  await page.keyboard.up('d');
+  await sample('releasing all directions ends the dash', 'Idle_Loop');
+  await place();
+  await page.keyboard.press('w');
+  await sleep(350);
+  await page.keyboard.down('w');
+  await sample('taps more than 300ms apart walk', 'Walk_Loop');
+  await page.keyboard.up('w');
+  await page.keyboard.press('a');
+  await page.keyboard.down('d');
+  await sample('two different direction keys do not start a dash', 'Walk_Loop');
+  await page.keyboard.up('d');
+  await page.keyboard.press('w');
+  await page.keyboard.down('w');
+  await sample('double-tapped dash before dialog', 'Run_Loop');
+  await page.locator('[data-cave-murals]').click();
+  await page.keyboard.up('w');
+  await sample('dialog stops the dash', 'Idle_Loop');
+  await page.locator('#modal-close').click();
+  await page.keyboard.down('w');
+  await sample('fresh movement after dialog walks', 'Walk_Loop');
+  await page.keyboard.up('w');
+  await sleep(350);
+  await page.keyboard.press('w');
+  await page.keyboard.down('w');
+  await sample('double-tapped dash before blur', 'Run_Loop');
+  await page.evaluate(() => window.dispatchEvent(new Event('blur')));
+  await sample('blur stops the dash', 'Idle_Loop');
+  await page.keyboard.up('w');
+  await page.keyboard.down('w');
+  await sample('fresh movement after dash blur walks', 'Walk_Loop');
   await page.keyboard.up('w');
   release();
   await desktop.close();

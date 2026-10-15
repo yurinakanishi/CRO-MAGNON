@@ -1,0 +1,124 @@
+{
+  "status": "passed",
+  "connections": 5,
+  "chromeClients": 2,
+  "websocketPeers": 3,
+  "records": [
+    {
+      "key": "cro-magnon-woman",
+      "label": "walk",
+      "clip": "Walk_Loop",
+      "localFrames": 52,
+      "remoteFrames": 53
+    },
+    {
+      "key": "cro-magnon-woman",
+      "label": "double-tap-run",
+      "clip": "Run_Loop",
+      "localFrames": 56,
+      "remoteFrames": 55
+    },
+    {
+      "key": "cro-magnon-girl-bear",
+      "label": "walk",
+      "clip": "Walk_Loop",
+      "localFrames": 53,
+      "remoteFrames": 53
+    },
+    {
+      "key": "cro-magnon-girl-bear",
+      "label": "double-tap-run",
+      "clip": "Run_Loop",
+      "localFrames": 54,
+      "remoteFrames": 54
+    }
+  ],
+  "rendered": [
+    [
+      {
+        "name": "Face 0",
+        "key": "cro-magnon-woman",
+        "sha256": "2e72870b747bd51a55df6cd6f34d0b85104ecf017bf834ef34c14f2e5cba0d15",
+        "clip": "Idle_Loop",
+        "vertices": 41,
+        "maxDeviationM": 7.322090240730558e-14
+      },
+      {
+        "name": "Face 1",
+        "key": "cro-magnon-girl-bear",
+        "sha256": "6b7f50acf42dbc010b9049b650274bdeb2323802954a42ba139fd461e7d60f37",
+        "clip": "Idle_Loop",
+        "vertices": 41,
+        "maxDeviationM": 7.147516113533603e-14
+      },
+      {
+        "name": "Face 2",
+        "key": "cro-magnon-girl-wolf",
+        "sha256": "ccc4541003c27b9c2c9b84c7ff02390ac00cc6eba1a14d06c39b0a5ccad887a4",
+        "clip": "Idle_Loop",
+        "vertices": 41,
+        "maxDeviationM": 8.530675149520015e-14
+      },
+      {
+        "name": "Face 3",
+        "key": "cro-magnon-boy-lion",
+        "sha256": "6524f1bf1340a6c7af7fc5f3ab4ba6e0f5d3411fcedb35ddca079d9be8a169cd",
+        "clip": "Idle_Loop",
+        "vertices": 41,
+        "maxDeviationM": 7.244002117316514e-14
+      },
+      {
+        "name": "Face 4",
+        "key": "cro-magnon-boy-topknot",
+        "sha256": "65d39fd4fa710650dd78b27c69c0a74df96d334066ea752a79b4f6645c13308a",
+        "clip": "Idle_Loop",
+        "vertices": 41,
+        "maxDeviationM": 7.280896430443987e-14
+      }
+    ],
+    [
+      {
+        "name": "Face 0",
+        "key": "cro-magnon-woman",
+        "sha256": "2e72870b747bd51a55df6cd6f34d0b85104ecf017bf834ef34c14f2e5cba0d15",
+        "clip": "Idle_Loop",
+        "vertices": 41,
+        "maxDeviationM": 8.644153977145479e-14
+      },
+      {
+        "name": "Face 1",
+        "key": "cro-magnon-girl-bear",
+        "sha256": "6b7f50acf42dbc010b9049b650274bdeb2323802954a42ba139fd461e7d60f37",
+        "clip": "Idle_Loop",
+        "vertices": 41,
+        "maxDeviationM": 6.555432163479413e-14
+      },
+      {
+        "name": "Face 2",
+        "key": "cro-magnon-girl-wolf",
+        "sha256": "ccc4541003c27b9c2c9b84c7ff02390ac00cc6eba1a14d06c39b0a5ccad887a4",
+        "clip": "Idle_Loop",
+        "vertices": 41,
+        "maxDeviationM": 6.360870681658738e-14
+      },
+      {
+        "name": "Face 3",
+        "key": "cro-magnon-boy-lion",
+        "sha256": "6524f1bf1340a6c7af7fc5f3ab4ba6e0f5d3411fcedb35ddca079d9be8a169cd",
+        "clip": "Idle_Loop",
+        "vertices": 41,
+        "maxDeviationM": 7.106973939209292e-14
+      },
+      {
+        "name": "Face 4",
+        "key": "cro-magnon-boy-topknot",
+        "sha256": "65d39fd4fa710650dd78b27c69c0a74df96d334066ea752a79b4f6645c13308a",
+        "clip": "Idle_Loop",
+        "vertices": 41,
+        "maxDeviationM": 7.45223508268219e-14
+      }
+    ]
+  ],
+  "errors": [],
+  "fixtures": "Isolated in-memory room with a LAN client config; seeded profiles, positions, no enemies and idle keepalives. Walk and double-tap run use real keyboard events in Chrome. No user save loaded or written; no exhibition build created."
+}

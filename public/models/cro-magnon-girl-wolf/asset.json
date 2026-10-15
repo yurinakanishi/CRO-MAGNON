@@ -14,9 +14,9 @@
   "species": "cro",
   "candidate": 1,
   "status": "remake-candidate-1-adopted",
-  "revision": "c1-r02",
-  "url": "/models/cro-magnon-girl-wolf/model-c1-r02.glb",
-  "sha256": "af64bb45736b58b6a4f15c06e98a9dec4b7e93ec81f356aa653bb8fcf404cadb",
+  "revision": "c1-r02-face-r01",
+  "url": "/models/cro-magnon-girl-wolf/model-c1-r02-face-r01.glb",
+  "sha256": "ccc4541003c27b9c2c9b84c7ff02390ac00cc6eba1a14d06c39b0a5ccad887a4",
   "bytes": 3273372,
   "triangles": 7477,
   "heightMetres": 1.45,
@@ -173,5 +173,9 @@
     "sha256": "b0114b6e8077ef1285b1bfae779de7037a85594957df353e63e935856990971a",
     "modelSha256": "af64bb45736b58b6a4f15c06e98a9dec4b7e93ec81f356aa653bb8fcf404cadb",
     "renderer": "scripts/qa-female-faces.mjs (FACE_QA_PORTRAIT=1, Idle_Loop 20%, 420x480, three.js)"
+  },
+  "faceRigidity": {
+    "review": "assets/cro-magnon-girl-wolf/qa/c1-r02-face-r01.json",
+    "sha256": "3309c430e16f8cb62dce7a12f54dad74a0f1fa492d3333b1435d84a5832e9a99"
   }
 }

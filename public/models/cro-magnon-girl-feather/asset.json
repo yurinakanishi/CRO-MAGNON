@@ -14,9 +14,9 @@
   "species": "cro",
   "candidate": 1,
   "status": "remake-candidate-1-adopted",
-  "revision": "c1-r02",
-  "url": "/models/cro-magnon-girl-feather/model-c1-r02.glb",
-  "sha256": "75f9fe3b52f3875c59d74ed0a2f87e2d09cc71ac7ffe687010033c3f7728dd12",
+  "revision": "c1-r02-face-r01",
+  "url": "/models/cro-magnon-girl-feather/model-c1-r02-face-r01.glb",
+  "sha256": "4a5a16894ae719cdaf381514622684aafdb9cc278341b1567a3d9b017171bc7b",
   "bytes": 3004656,
   "triangles": 7872,
   "heightMetres": 1.45,
@@ -173,5 +173,9 @@
     "sha256": "c7df4fe5c41445f016c5d6e0b8f84e4cda91e78fa27c60ae653a4f4f91b752cf",
     "modelSha256": "75f9fe3b52f3875c59d74ed0a2f87e2d09cc71ac7ffe687010033c3f7728dd12",
     "renderer": "scripts/qa-female-faces.mjs (FACE_QA_PORTRAIT=1, Idle_Loop 20%, 420x480, three.js)"
+  },
+  "faceRigidity": {
+    "review": "assets/cro-magnon-girl-feather/qa/c1-r02-face-r01.json",
+    "sha256": "60c1e4fe4cf33866c5456077ea12dbb9bd811841fd0d836ce7ab0d1d45439e78"
   }
 }

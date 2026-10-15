@@ -14,9 +14,9 @@
   "species": "cro",
   "candidate": 1,
   "status": "remake-candidate-1-adopted",
-  "revision": "c1-r01",
-  "url": "/models/cro-magnon-boy-lion/model-c1-r01.glb",
-  "sha256": "51b96004e980b926d133fe7b37d3f542371063fb85150982d7ed390434ce5ad3",
+  "revision": "c1-r01-face-r01",
+  "url": "/models/cro-magnon-boy-lion/model-c1-r01-face-r01.glb",
+  "sha256": "6524f1bf1340a6c7af7fc5f3ab4ba6e0f5d3411fcedb35ddca079d9be8a169cd",
   "bytes": 3321608,
   "triangles": 7730,
   "heightMetres": 1.45,
@@ -173,5 +173,9 @@
     "sha256": "0af92c30b62458299f10a58433f0b533c03df1e97144f11911a943fdf6208869",
     "modelSha256": "51b96004e980b926d133fe7b37d3f542371063fb85150982d7ed390434ce5ad3",
     "renderer": "scripts/qa-female-faces.mjs (FACE_QA_PORTRAIT=1, Idle_Loop 20%, 420x480, three.js)"
+  },
+  "faceRigidity": {
+    "review": "assets/cro-magnon-boy-lion/qa/c1-r01-face-r01.json",
+    "sha256": "c621736e99f527e96600e9193eb1f21ddf43ee37749c598e827dda1630d9067b"
   }
 }

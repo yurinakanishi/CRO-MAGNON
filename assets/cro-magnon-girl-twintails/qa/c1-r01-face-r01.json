@@ -1,0 +1,115 @@
+{
+  "schema": "cro-magnon/skin-weight-repair@1",
+  "date": "2026-10-15",
+  "decision": "adopt",
+  "reviewedBy": "Codex",
+  "request": "大きい顔の子たちが歩行・走行中に顔の形を変えないようにする",
+  "modelKey": "cro-magnon-girl-twintails",
+  "candidate": 1,
+  "revision": "c1-r01-face-r01",
+  "url": "/models/cro-magnon-girl-twintails/model-c1-r01-face-r01.glb",
+  "sha256": "db2f08f4819894f6de0b71fa95a91e1593baba2a88a64f68cff786e28d862554",
+  "bytes": 2718092,
+  "repair": {
+    "key": "cro-magnon-girl-twintails",
+    "candidate": 1,
+    "previous": {
+      "url": "/models/cro-magnon-girl-twintails/model-c1-r01.glb",
+      "sha256": "81341522cfcb76789c08fb0bbc6d466ff3f98bc3b990db05ac3069456ec28f32",
+      "bytes": 2718092,
+      "revision": "c1-r01"
+    },
+    "low": 0.6814999850139317,
+    "high": 0.8775148391723633,
+    "changed": [
+      {
+        "material": "BodySurface",
+        "vertices": 5488,
+        "rigid": 221,
+        "blended": 1465
+      },
+      {
+        "material": "SkinSurface",
+        "vertices": 745,
+        "rigid": 33,
+        "blended": 205
+      },
+      {
+        "material": "HeadSurface",
+        "vertices": 4644,
+        "rigid": 4644,
+        "blended": 0
+      }
+    ],
+    "sha256": "db2f08f4819894f6de0b71fa95a91e1593baba2a88a64f68cff786e28d862554",
+    "bytes": 2718092,
+    "sourcePreservedExceptSkinWeights": true
+  },
+  "measurement": {
+    "key": "cro-magnon-girl-twintails",
+    "vertices": 4510,
+    "seamGroups": 342,
+    "maxSeamGapM": 0,
+    "clips": [
+      {
+        "name": "Craft",
+        "maxDeviationM": 9.9968247365978e-16,
+        "samples": 31
+      },
+      {
+        "name": "Eat",
+        "maxDeviationM": 1.1989637652951122e-15,
+        "samples": 31
+      },
+      {
+        "name": "Gather",
+        "maxDeviationM": 1.1945381935277343e-15,
+        "samples": 31
+      },
+      {
+        "name": "Give",
+        "maxDeviationM": 1.1102504681534602e-15,
+        "samples": 31
+      },
+      {
+        "name": "Idle_Loop",
+        "maxDeviationM": 1.1158466332997326e-15,
+        "samples": 31
+      },
+      {
+        "name": "Run_Loop",
+        "maxDeviationM": 1.1157603309187458e-15,
+        "samples": 31
+      },
+      {
+        "name": "Walk_Loop",
+        "maxDeviationM": 1.3334958258850063e-15,
+        "samples": 31
+      },
+      {
+        "name": "Wave",
+        "maxDeviationM": 1.1113500228710729e-15,
+        "samples": 31
+      },
+      {
+        "name": "Attack",
+        "maxDeviationM": 1.1106566208239272e-15,
+        "samples": 31
+      },
+      {
+        "name": "Downed",
+        "maxDeviationM": 1.0221629003393126e-15,
+        "samples": 31
+      }
+    ],
+    "maxDeviationM": 1.3334958258850063e-15,
+    "maxCrossfadeDeviationM": 1.2218759727930594e-15
+  },
+  "visual": "assets/face-rigidity/20261015-r02/cro-magnon-girl-twintails/comparison.png",
+  "previous": {
+    "manifest": "assets/cro-magnon-girl-twintails/archive-manifest-c1-r01-20261015-face.json",
+    "url": "/models/cro-magnon-girl-twintails/model-c1-r01.glb",
+    "sha256": "81341522cfcb76789c08fb0bbc6d466ff3f98bc3b990db05ac3069456ec28f32"
+  },
+  "preserved": "Every byte outside JOINTS_0/WEIGHTS_0: original TRELLIS geometry, normals, UV, images, materials, skeleton, bind matrices and all clips."
+}

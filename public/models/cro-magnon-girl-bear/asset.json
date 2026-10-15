@@ -14,9 +14,9 @@
   "species": "cro",
   "candidate": 1,
   "status": "remake-candidate-1-adopted",
-  "revision": "c1-r02",
-  "url": "/models/cro-magnon-girl-bear/model-c1-r02.glb",
-  "sha256": "cbde8a6de4cfb0f3b1a5d3fce50c1965091765cb3c7a645ddf728d2a123b33a0",
+  "revision": "c1-r02-face-r01",
+  "url": "/models/cro-magnon-girl-bear/model-c1-r02-face-r01.glb",
+  "sha256": "6b7f50acf42dbc010b9049b650274bdeb2323802954a42ba139fd461e7d60f37",
   "bytes": 2959520,
   "triangles": 7632,
   "heightMetres": 1.4500000000000002,
@@ -173,5 +173,9 @@
     "sha256": "8f4f7c027c821104ca9b2ea99a3e55377d46e4e6eac2fa065840603675e776dd",
     "modelSha256": "cbde8a6de4cfb0f3b1a5d3fce50c1965091765cb3c7a645ddf728d2a123b33a0",
     "renderer": "scripts/qa-female-faces.mjs (FACE_QA_PORTRAIT=1, Idle_Loop 20%, 420x480, three.js)"
+  },
+  "faceRigidity": {
+    "review": "assets/cro-magnon-girl-bear/qa/c1-r02-face-r01.json",
+    "sha256": "e159b9317f182a0f752a18f8a632f73edea705d9e47b460b7dba2ead5cad83d0"
   }
 }

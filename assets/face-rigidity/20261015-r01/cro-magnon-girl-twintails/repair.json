@@ -1,0 +1,35 @@
+{
+  "key": "cro-magnon-girl-twintails",
+  "candidate": 1,
+  "previous": {
+    "url": "/models/cro-magnon-girl-twintails/model-c1-r01.glb",
+    "sha256": "81341522cfcb76789c08fb0bbc6d466ff3f98bc3b990db05ac3069456ec28f32",
+    "bytes": 2718092,
+    "revision": "c1-r01"
+  },
+  "low": 0.8699999592351699,
+  "high": 0.9163999670612522,
+  "changed": [
+    {
+      "material": "BodySurface",
+      "vertices": 5488,
+      "rigid": 2,
+      "blended": 251
+    },
+    {
+      "material": "SkinSurface",
+      "vertices": 745,
+      "rigid": 1,
+      "blended": 47
+    },
+    {
+      "material": "HeadSurface",
+      "vertices": 4644,
+      "rigid": 4507,
+      "blended": 137
+    }
+  ],
+  "sha256": "01efe8aa3cf9850bf5913b2d26e0c0004b6d4ee7b19dde0b2fc680b16efa453b",
+  "bytes": 2718092,
+  "sourcePreservedExceptSkinWeights": true
+}

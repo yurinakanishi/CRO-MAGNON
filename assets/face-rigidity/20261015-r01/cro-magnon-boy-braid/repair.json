@@ -1,0 +1,35 @@
+{
+  "key": "cro-magnon-boy-braid",
+  "candidate": 1,
+  "previous": {
+    "url": "/models/cro-magnon-boy-braid/model-c1-r01.glb",
+    "sha256": "388cac91de779c584dce446ad156dd15f252c197efa22ec546a5a1ee8f96ee0e",
+    "bytes": 3135568,
+    "revision": "c1-r01"
+  },
+  "low": 0.8482499280577824,
+  "high": 0.8830499858228864,
+  "changed": [
+    {
+      "material": "BodySurface",
+      "vertices": 4305,
+      "rigid": 14,
+      "blended": 197
+    },
+    {
+      "material": "SkinSurface",
+      "vertices": 744,
+      "rigid": 2,
+      "blended": 49
+    },
+    {
+      "material": "HeadSurface",
+      "vertices": 7825,
+      "rigid": 7713,
+      "blended": 109
+    }
+  ],
+  "sha256": "1dd1a46f2587b9fd1f63b1da3751af6cb0327113d3942fbd3dad97dda974cf05",
+  "bytes": 3135568,
+  "sourcePreservedExceptSkinWeights": true
+}

@@ -1,0 +1,7 @@
+{
+  "file": "scripts/verify-world-assets.mjs:51",
+  "model": "neanderthal-hunter",
+  "headManifestSha256": "c5c93e0298d70f684fd274aef29bf655a89733d1d0b23bb0341ceb534d4c6ed6",
+  "headReviewSha256": "6910fd3396bcde7934e9af23fa2130ca5c1bca9a08da0d00fe5582076b94352b",
+  "alreadyPresentAtHEAD": true
+}
