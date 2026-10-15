@@ -4,6 +4,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { createGameCore } from '../dist/application/game-core.mjs';
 import { createGameServer } from '../dist/server.mjs';
 import { PLAYABLE_CHARACTER_MODELS as CHARACTER_MODELS } from '../dist/shared/characters.mjs';
+import { cardValue } from '../dist/src/character-selection.js';
 const { chromium } =
   await import('file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs');
 const output = 'output/playwright/character-switch';
@@ -14,6 +15,11 @@ const address = await game.listen(),
   url = `http://127.0.0.1:${address.port}/?room=SWITCH-QA`;
 const errors = [],
   checks = [];
+// Keep the unattended peer connected while every model is loaded on both screens.
+const keepActive = setInterval(() => {
+  for (const room of core.rooms.values())
+    for (const player of room.players.values()) player.lastActivityAt = Date.now();
+}, 1000);
 let browser;
 const passed = (text) => {
   checks.push(text);
@@ -81,7 +87,7 @@ try {
     await page.waitForSelector('#character-switch-form');
   };
   const choose = async (model) =>
-    page.locator(`#character-switch-form input[value="${model.species}-${model.gender}"]`).check();
+    page.locator(`#character-switch-form input[value="${cardValue(model)}"]`).check();
   const rendered = async (targetPage, model) =>
     targetPage.waitForFunction(
       ({ id, key }) => {
@@ -106,36 +112,25 @@ try {
   assert.equal(await page.locator('#character-confirm').count(), 0);
   await choose(last);
   assert.equal(me().species, 'cro');
-  await page.waitForSelector('#character-confirm');
-  assert.equal(
-    await page.locator('#character-confirm-yes').evaluate((el) => document.activeElement === el),
-    true,
-    'はい is focused as soon as a card is picked',
-  );
+  assert.equal(await page.locator('#character-confirm').count(), 0);
+  assert.equal(await page.locator('#character-switch-apply').innerText(), 'これにする');
   await page.waitForTimeout(250);
   await page.screenshot({ path: `${output}/desktop.png` });
-  await page.locator('#character-confirm-no').click();
-  assert.equal(await page.locator('#character-confirm').count(), 0);
+  await page.locator('#modal-close').click();
+  await open();
   assert.equal(
     await page.locator('#character-switch-form input:checked').inputValue(),
     'cro-female',
   );
-  assert.equal(
-    await page
-      .locator(`#character-switch-form input[value="${last.species}-${last.gender}"]`)
-      .evaluate((el) => document.activeElement === el),
-    true,
-    'declining returns focus to the declined card',
-  );
   await page.locator('#modal-close').click();
   assert.equal(me().species, 'cro');
   passed(
-    'One image card per playable character, no submit button; the worn one asks nothing, another asks はい/いいえ with はい focused, いいえ and back do not change character',
+    'Cards only choose a draft; one apply button commits it, and Back leaves the worn character unchanged',
   );
   for (const model of [...CHARACTER_MODELS.slice(1), CHARACTER_MODELS[0]]) {
     await open();
     await choose(model);
-    await page.locator('#character-confirm-yes').click();
+    await page.locator('#character-switch-apply').click();
     await page.waitForFunction(() => !document.querySelector('#modal').open);
     await Promise.all([rendered(page, model), rendered(other, model)]);
     assert.equal(me().id, id);
@@ -168,20 +163,20 @@ try {
       await page.locator('#modal').evaluate((el) => el.scrollWidth > el.clientWidth + 1),
       false,
     );
+    await page.locator('#character-switch-apply').scrollIntoViewIfNeeded();
     assert.equal(
-      await page.locator('#character-confirm').evaluate((el) => {
-        const r = el.querySelector('.character-confirm-card').getBoundingClientRect();
+      await page.locator('#character-switch-apply').evaluate((el) => {
+        const r = el.getBoundingClientRect();
         return r.left >= 0 && r.right <= innerWidth && r.top >= 0 && r.bottom <= innerHeight;
       }),
       true,
-      'confirmation card fits the small screen',
+      'apply button fits the small screen',
     );
     await page.screenshot({ path: `${output}/${viewport.width}x${viewport.height}.png` });
-    await page.locator('#character-confirm-no').click();
     await page.locator('#modal-close').click();
   }
   passed(
-    'Portrait and landscape small screens: usable selection and confirmation without horizontal overflow',
+    'Portrait and landscape small screens: usable selection and apply without horizontal overflow',
   );
   await page.setViewportSize({ width: 1440, height: 900 });
   await open();
@@ -189,30 +184,27 @@ try {
   await page.keyboard.press('Enter');
   assert.equal(await page.locator('#character-switch-form input:checked').inputValue(), 'cro-male');
   assert.equal(me().gender, 'female');
-  assert.equal(
-    await page.locator('#character-confirm-yes').evaluate((el) => document.activeElement === el),
-    true,
-  );
+  assert.equal(await page.locator('#character-confirm').count(), 0);
   await page.keyboard.press('Escape');
   assert.equal(
     await page.locator('#modal').evaluate((el) => el.open),
-    true,
-    'Escape only closes the confirmation',
+    false,
+    'Escape leaves the menu without applying the draft',
   );
   assert.equal(await page.locator('#character-confirm').count(), 0);
+  await open();
   assert.equal(
     await page.locator('#character-switch-form input:checked').inputValue(),
     'cro-female',
   );
+  await page.keyboard.press('ArrowRight');
   await page.keyboard.press('Enter');
-  await page.waitForSelector('#character-confirm');
   assert.equal(await page.locator('#character-switch-form input:checked').inputValue(), 'cro-male');
+  await page.locator('#character-switch-apply').focus();
   await page.keyboard.press('Enter');
   await page.waitForFunction(() => !document.querySelector('#modal').open);
   await rendered(page, CHARACTER_MODELS[1]);
-  passed(
-    'Keyboard arrows + Enter pick a card, Escape declines, Enter on the focused はい confirms',
-  );
+  passed('Keyboard arrows + Enter pick a card, Escape discards it, and Enter on apply commits it');
   await page.reload();
   await page.locator('#title-start').click();
   // The start screen offers the changed character, already chosen.
@@ -241,6 +233,7 @@ try {
   passed('Manual movement and attack still work after switching and reloading');
   assert.deepEqual(errors, []);
 } finally {
+  clearInterval(keepActive);
   await writeFile(`${output}/summary.json`, JSON.stringify({ checks, errors }, null, 2));
   await browser?.close();
   await game.close();

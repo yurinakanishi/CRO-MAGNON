@@ -1,7 +1,11 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { CHARACTER_MODELS } from '../../shared/characters.mjs';
-import { characterSpeciesReleased } from '../../shared/character-roster.mjs';
+import {
+  CHARACTER_ROSTER,
+  characterModelReleased,
+  characterSpeciesReleased,
+} from '../../shared/character-roster.mjs';
 import {
   ALL_CONTENT,
   visibleCharacters,
@@ -54,6 +58,7 @@ export async function localContentOverride(
       !characterSpeciesReleased(model.species) ||
       visibility.hiddenCharacters.includes(model.species),
   ).map((model) => model.key);
+  for (const entry of CHARACTER_ROSTER) if (!entry.enabled) hiddenModels.push(...entry.modelKeys);
   if (visibility.hideMae) hiddenModels.push('mae');
   if (!hiddenModels.length) return undefined;
   const normalized = servedPath.toLowerCase();
@@ -64,6 +69,7 @@ export async function localContentOverride(
     );
     catalog.assets = catalog.assets.filter(
       (asset: { modelKey: string; species?: string }) =>
+        characterModelReleased(asset.modelKey) &&
         !hiddenModels.includes(asset.modelKey) &&
         !visibility.hiddenCharacters.includes(asset.species ?? ''),
     );

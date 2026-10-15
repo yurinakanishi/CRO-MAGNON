@@ -13,6 +13,7 @@ import {
 } from '../dist/shared/clothing-dye.mjs';
 import { ALL_CONTENT, visibleCharacters } from '../dist/shared/content-visibility.mjs';
 import { CHARACTER_MODELS } from '../dist/shared/character-profiles.mjs';
+import { CHARACTER_ROSTER } from '../dist/shared/character-roster.mjs';
 import {
   CLOTHING_DYE_RULES,
   ClothingDye,
@@ -228,7 +229,10 @@ test('every playable character has a dye rule naming clothing materials its deli
 
 test('the public build ships the dye rules without an excluded character’s, the shader as built', async () => {
   const release = JSON.parse(readFileSync('cloudflare/public-release.json', 'utf8'));
-  const excludedSpecies = new Set(release.excludedCharacters);
+  const excludedSpecies = new Set([
+    ...release.excludedCharacters,
+    ...CHARACTER_ROSTER.filter((entry) => !entry.enabled).map((entry) => entry.species),
+  ]);
   const excludedKeys = new Set(
     CHARACTER_MODELS.filter((model) => excludedSpecies.has(model.species)).map(({ key }) => key),
   );
@@ -248,7 +252,8 @@ test('the public build ships the dye rules without an excluded character’s, th
   // The build writes that copy in place of the local table, before it bundles the browser code.
   const build = readFileSync('scripts/cloudflare-public-build.mjs', 'utf8');
   assert.match(build, /file === 'dist\/src\/clothing-dye-rules\.js'/);
-  assert.match(build, /publicClothingDyeRulesModule\(CLOTHING_DYE_RULES, excludedKeys\)/);
+  assert.match(build, /publicClothingDyeRulesModule\(\s*CLOTHING_DYE_RULES,/);
+  assert.match(build, /CHARACTER_ROSTER\.filter\(\(entry\) => !entry.enabled\)\.flatMap/);
   assert.ok(
     build.indexOf("'/src/clothing-dye-rules.js'") < build.indexOf('bundleBrowser(staging)'),
   );

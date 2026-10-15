@@ -1,9 +1,14 @@
-/** Retained characters. Set enabled to true to restore both playable looks and
- * their trader; source GLBs, portraits, animations and saved appearances stay intact. */
+/** Retained characters. Set enabled to true to restore playable looks and their
+ * associated assets; source GLBs, portraits, animations and saved appearances stay intact. */
 export const CHARACTER_ROSTER = [
   {
     species: 'nea',
     modelKeys: ['neanderthal-woman', 'neanderthal-hunter'],
+    enabled: false,
+  },
+  {
+    species: 'cat',
+    modelKeys: ['cat-kunoichi', 'kunoichi-katana'],
     enabled: false,
   },
 ] as const;

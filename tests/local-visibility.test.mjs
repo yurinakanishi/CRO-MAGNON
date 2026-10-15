@@ -207,8 +207,9 @@ test('three local toggles independently control the served catalog and direct mo
           const { CHARACTER_MODELS } = await import(
             `data:text/javascript,${encodeURIComponent(module)}`
           );
-          // The five released looks and the chibi cast members added so far, with maruimo when shown.
-          assert.equal(CHARACTER_MODELS.length, 14 + Number(maruimo));
+          // The released looks and chibi cast, with the retained kunoichi always excluded.
+          assert.equal(CHARACTER_MODELS.length, 13 + Number(maruimo));
+          assert.ok(CHARACTER_MODELS.every((model) => model.species !== 'cat'));
           assert.equal(
             CHARACTER_MODELS.some((p) => p.species === 'maruimo'),
             maruimo,

@@ -123,11 +123,11 @@ try {
   await a.page.locator('#setup-back').click();
   await a.page.locator('#title-start').click();
   await a.page.locator('#setup-form .character-choice:has(input[value="bear-female"])').click();
-  await shot(a.page, '03-confirmation');
-  assert.equal(await a.page.locator('#setup-flow').getAttribute('data-step'), 'confirm');
-  assert.equal(await a.page.locator('[data-choose-difficulty]').count(), 0);
-  await a.page.locator('#setup-flow-no').click();
+  await shot(a.page, '03-choice');
   assert.equal(await a.page.locator('#setup-flow').count(), 0);
+  assert.equal(await a.page.locator('[data-choose-difficulty]').count(), 0);
+  await a.page.locator('#setup-back').click();
+  await a.page.locator('#title-start').click();
   await a.page.locator('#setup-form .character-choice:has(input[value="bear-female"])').click();
   await a.page.locator('#setup-flow-yes').click();
   await until(() => room.players.has(a.player.id), 'title start reconnects');
@@ -147,7 +147,7 @@ try {
   assert.equal(room.resources[0].amount, 1);
   await shot(a.page, '04-new-character-at-camp');
   pass(
-    'Title Start asks character and confirmation with normal difficulty, supports Back, and returns to camp with supplies and the peer unchanged',
+    'Title Start applies the chosen character directly with normal difficulty, supports Back, and returns to camp with supplies and the peer unchanged',
   );
 
   await a.page.locator('#world').focus();
@@ -173,8 +173,11 @@ try {
   await a.page.locator('#title-start').click();
   await a.page.setViewportSize({ width: 390, height: 844 });
   await shot(a.page, '05-small-setup');
-  await select(a.page, 'cat-female');
-  await until(() => room.players.has(a.player.id) && a.player.species === 'cat', 'second start');
+  await select(a.page, 'cro-male');
+  await until(
+    () => room.players.has(a.player.id) && a.player.species === 'cro' && a.player.gender === 'male',
+    'second start',
+  );
   assert.equal(a.player.difficulty, 'normal');
   assert.deepEqual(a.player.inventory, inventory);
   assert.ok(Math.hypot(a.player.x - 49.1, a.player.z - 58) < 1);

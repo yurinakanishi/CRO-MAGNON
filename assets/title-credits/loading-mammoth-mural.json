@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-15",
+  "description": "Reuse the original mammoth, bison and horse mural for the loading screen. Lossless format conversion only; no new or edited painting.",
+  "encoding": "sharp(source).webp({ lossless: true, effort: 6 })",
+  "source": {
+    "file": "public/models/camp-cave/mural.png",
+    "bytes": 1973515,
+    "sha256": "6cf92e8ddb0f90fa0a23f538e3e568e333c80b9498e52172aa46742a8517c20e"
+  },
+  "output": {
+    "file": "public/title/loading-mammoth-mural.webp",
+    "bytes": 977590,
+    "sha256": "a94d2bf03afb0429b9a3f5104a7a2fdf18b5cbb8c3c6999358ed5cdadbea2e55",
+    "width": 1536,
+    "height": 1024
+  },
+  "identicalVisiblePixelsAndAlpha": true,
+  "hiddenRgb": "RGB values under fully transparent pixels are discarded by the WebP encoder."
+}

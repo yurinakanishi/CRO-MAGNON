@@ -76,6 +76,13 @@ test('contributors link only to verified x.com profiles', () => {
 test('the dialog lists every contributor without QR codes and exhibition cards have no links', () => {
   const dialog = contributorsDialogMarkup();
   const people = titleContributors();
+  assert.deepEqual(
+    [...dialog.matchAll(/<h3>(.*?)<\/h3>/g)].map((match) => match[1]),
+    ['制作', '関わってくれた人たち'],
+  );
+  assert.doesNotMatch(dialog, /監修|友情出演|開発者/);
+  assert.doesNotMatch(dialog, /<h2>/);
+  assert.equal((dialog.match(/関わってくれた人たち/g) ?? []).length, 1);
   assert.equal((dialog.match(/<strong translate="no">/g) ?? []).length, people.length);
   assert.equal(
     (dialog.match(/<a class="contributor"/g) ?? []).length,

@@ -8,7 +8,7 @@ import { localVerificationSettings } from '../dist/infrastructure/node/local-ver
 import { SPAWN_SITES } from '../dist/shared/spawn-sites.mjs';
 import { WARP_POINTS } from '../dist/shared/warp-sites.mjs';
 import { LOADING_TIPS } from '../dist/src/loading-tips.js';
-import { LOADING_TIMING } from '../dist/src/loading-screen.js';
+import { LOADING_MURAL, LOADING_TIMING } from '../dist/src/loading-screen.js';
 import { muralPeople } from '../dist/src/title-credits.js';
 const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
@@ -332,13 +332,78 @@ try {
   await page
     .locator('#loading-screen .loading-tip')
     .evaluate((card) => Promise.all(card.getAnimations().map((a) => a.finished)));
+  await page.locator('.loading-screen-art.loaded').waitFor();
+  const motion = await page.evaluate(async () => {
+    const track = document.querySelector('.loading-mural-track');
+    const spinner = document.querySelector('.loading-screen-spinner');
+    const before = track.getBoundingClientRect().x;
+    const rotationBefore = getComputedStyle(spinner).transform;
+    await new Promise((done) => setTimeout(done, 350));
+    const animation = track.getAnimations()[0];
+    return {
+      dx: track.getBoundingClientRect().x - before,
+      rotationChanged: getComputedStyle(spinner).transform !== rotationBefore,
+      duration: animation.effect.getTiming().duration,
+      images: [...track.querySelectorAll('img')].map((img) => ({
+        src: img.getAttribute('src'),
+        ready: img.complete && img.naturalWidth > 0,
+      })),
+    };
+  });
+  assert.ok(motion.dx > 1 && motion.dx < 10, JSON.stringify(motion));
+  assert.equal(motion.duration, 120000);
+  assert.equal(motion.rotationChanged, true);
+  assert.deepEqual(
+    motion.images,
+    Array.from({ length: 2 }, () => ({ src: LOADING_MURAL, ready: true })),
+  );
   await page.screenshot({ path: `${out}/cave-loading-desktop.png` });
+  const firstTip = await page.locator('.loading-screen-tip strong').innerText();
+  await page.waitForFunction(
+    (first) => document.querySelector('.loading-screen-tip strong').textContent !== first,
+    firstTip,
+    { timeout: LOADING_TIMING.tipMs + 2000 },
+  );
+  await page
+    .locator('#loading-screen .loading-tip')
+    .evaluate((card) => Promise.all(card.getAnimations().map((a) => a.finished)));
+  for (const viewport of [
+    { width: 320, height: 568 },
+    { width: 844, height: 390 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await fit(page, [
+      '.loading-screen-place strong',
+      '.loading-screen-tip',
+      '.loading-screen-status',
+    ]);
+    assert.equal(
+      await page.evaluate(() => document.scrollingElement.scrollWidth <= innerWidth),
+      true,
+    );
+    await page.screenshot({ path: `${out}/loading-mural-${viewport.width}.png` });
+  }
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  assert.equal(
+    await page
+      .locator('.loading-mural-track, .loading-screen-spinner')
+      .evaluateAll((elements) =>
+        elements.every((element) => getComputedStyle(element).animationName === 'none'),
+      ),
+    true,
+  );
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  pass(
+    'Mammoth mural drifts left to right, spinner rotates, tips advance, narrow screens and reduced motion fit',
+    motion,
+  );
   releaseCave();
   await caveReady(page);
   const caveLoad = await coverRun(page, since);
   assert.equal(caveLoad.shown.eyebrow, '');
   assert.equal(caveLoad.shown.place, site('cave').name);
-  assert.equal(caveLoad.shown.image, '/spawn/cave.jpg');
+  assert.equal(caveLoad.shown.image, LOADING_MURAL);
   // Lifted once the cave is shown: inside the cave there are no tips.
   assert.equal(await page.locator('#loading-screen').isVisible(), false);
   assert.equal(await page.locator('#loading-cave .loading-tip').count(), 0);
@@ -427,7 +492,7 @@ try {
   });
   pass('A after closing the dialog proceeds as before; the cave entry shows no loading screen');
 
-  // A warp to a pictured sight: the destination, its photo and a tip until it is drawn.
+  // A warp to a sight: the destination name, the shared mural and a tip until it is drawn.
   const room = game.rooms.get('COVERQA');
   const me = () => room.players.get(desktop.seen.id);
   const castle = site('castle');
@@ -443,7 +508,7 @@ try {
   // One deck: a tip read in the cave does not come back so soon.
   assert.notEqual(warpCastle.shown.tip, caveLoad.shown.tip);
   assert.equal(warpCastle.shown.place, castle.name);
-  assert.equal(warpCastle.shown.image, '/spawn/castle.jpg');
+  assert.equal(warpCastle.shown.image, LOADING_MURAL);
   assert.equal(warpCastle.shown.art, true);
   assert.ok(gap(me(), castle) <= 8, 'arrived at the castle');
   const arrival = JSON.parse(await page.locator('#world').getAttribute('data-arrival-landmarks'));
@@ -467,12 +532,12 @@ try {
   await page.locator('.pause-menu').waitFor({ timeout: 3000 });
   await page.keyboard.press('Escape');
   await page.waitForFunction(() => !document.querySelector('#modal').open);
-  pass('Sight warp: castle name, photo and a tip; input held, landmarks drawn, play resumes', {
+  pass('Sight warp: castle name, mural and a tip; input held, landmarks drawn, play resumes', {
     shownMs: covers.at(-1).shownMs,
     arrival,
   });
 
-  // A far map fire in another region: no photo, a new biome's ground to stream, and
+  // A far map fire in another region: the same mural, a new biome's ground to stream, and
   // the region's banner only once the screen lifts.
   // Its glacier landmarks are held back, so the screen deterministically stays up while
   // every kind of input is tried behind it.
@@ -520,7 +585,8 @@ try {
     navigator.getGamepads = () => [];
   });
   assert.equal(warpFire.shown.place, fire.name);
-  assert.equal(warpFire.shown.art, false);
+  assert.equal(warpFire.shown.art, true);
+  assert.equal(warpFire.shown.image, LOADING_MURAL);
   assert.ok(gap(me(), fire) <= 8);
   const fireArrival = JSON.parse(
     await page.locator('#world').getAttribute('data-arrival-landmarks'),
@@ -533,7 +599,7 @@ try {
   await page.locator('#area-banner:not([hidden])').waitFor({ timeout: 3000 });
   assert.match(await page.locator('#area-banner strong').innerText(), new RegExp(fire.name));
   await page.screenshot({ path: `${out}/warp-fire-arrived.png` });
-  pass('Map fire warp: named without a photo; the new region is announced after the screen', {
+  pass('Map fire warp: name and mural; the new region is announced after the screen', {
     fire: fire.name,
     shownMs: covers.at(-1).shownMs,
     arrival: fireArrival,
@@ -611,7 +677,7 @@ try {
     '.loading-screen-tip',
     '.loading-screen-status',
   ]);
-  // The page never scrolls sideways (the art's slight zoom is clipped by the screen).
+  // The page never scrolls sideways (the moving mural is clipped by the screen).
   assert.equal(
     await phone.page.evaluate(() => document.scrollingElement.scrollWidth <= window.innerWidth + 1),
     true,
@@ -619,7 +685,7 @@ try {
   await phone.page.screenshot({ path: `${out}/warp-cave-phone.png` });
   const warpCave = await coverRun(phone.page, since);
   assert.equal(warpCave.shown.place, cave.name);
-  assert.equal(warpCave.shown.image, '/spawn/cave.jpg');
+  assert.equal(warpCave.shown.image, LOADING_MURAL);
   const phoneMe = game.rooms.get('COVERPHONE').players.get(phone.seen.id);
   assert.ok(gap(phoneMe, cave) <= 8);
   await phone.page.screenshot({ path: `${out}/warp-cave-phone-arrived.png` });

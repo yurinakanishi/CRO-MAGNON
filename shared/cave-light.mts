@@ -9,7 +9,8 @@ export const CAVE_LIGHT = Object.freeze({
   sun: '#e4e9df',
   sunDirection: [-45, 47, -32] as const,
   background: '#1b2328',
-  hemisphere: 1.2,
+  // A small lift to the diffuse fill keeps faces readable without a stronger torch hotspot.
+  hemisphere: 1.4,
   directional: 0.22,
   stoneDaylight: 0.5,
   fogNear: 12,

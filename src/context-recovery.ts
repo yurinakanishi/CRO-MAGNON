@@ -72,15 +72,17 @@ type Program = { isReady(): boolean | null };
 /** renderer.compileAsync() without its lost-context hang. Programs are compiled
  * now; the wait ends when they are ready, or when the context is lost (polling a
  * lost context never completes) or replaced by a restore, after which programs
- * are compiled again on first use. */
+ * are compiled again on first use. Materials disposed while waiting are dropped too.
+ * An optional target scene supplies the lights for a detached actor. */
 export function compileScene(
   renderer: THREE.WebGLRenderer,
   scene: THREE.Object3D,
   camera: THREE.Camera,
+  targetScene?: THREE.Scene,
 ): Promise<void> {
   const gl = renderer.getContext();
   if (gl.isContextLost()) return Promise.resolve();
-  const materials = renderer.compile(scene, camera),
+  const materials = renderer.compile(scene, camera, targetScene),
     properties = renderer.properties;
   return new Promise((resolve) => {
     const check = () => {

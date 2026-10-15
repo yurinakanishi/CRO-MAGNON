@@ -537,28 +537,31 @@ progress::-moz-progress-bar {
   opacity: 0;
   transition: opacity 0.45s ease;
 }
-.loading-screen-art[hidden] {
-  display: none;
-}
 .loading-screen-art.loaded {
   opacity: 1;
 }
-.loading-screen-art img {
-  width: 100%;
+.loading-mural-track {
+  --mural-span: max(100vw, 150vh);
+  display: flex;
+  width: calc(var(--mural-span) * 2);
   height: 100%;
-  object-fit: cover;
-  opacity: 0.36;
-  /* Softened, so the picture reads as the destination's art rather than the live view. */
-  filter: saturate(0.75) sepia(0.25) blur(2px);
-  transform: scale(1.04);
+  margin-left: calc((100vw - var(--mural-span)) / 2);
+  opacity: 0.8;
+  animation: loading-mural-drift 120s linear infinite;
+}
+.loading-mural-track img {
+  flex: none;
+  width: 50%;
+  height: 100%;
+  object-fit: contain;
 }
 .loading-screen-art::after {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 50% 42%, transparent 25%, #0c0b08d0 88%),
-    linear-gradient(#0c0b0899, transparent 30%, transparent 45%, #0c0b08f2 90%);
+    radial-gradient(ellipse at 50% 42%, transparent 25%, #0c0b0899 88%),
+    linear-gradient(#0c0b0855, transparent 25%, transparent 55%, #0c0b08f2 90%);
 }
 .loading-screen-place {
   display: flex;
@@ -625,13 +628,15 @@ progress::-moz-progress-bar {
   letter-spacing: 0.12em;
   white-space: nowrap;
 }
-.loading-screen-ember .icon {
+.loading-screen-spinner {
   display: block;
-  width: 26px;
-  height: 26px;
-  color: #f0b25e;
-  filter: drop-shadow(0 0 8px #f0a04c99);
-  animation: loading-ember 1.6s ease-in-out infinite;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #e0b07040;
+  border-top-color: #f0d29a;
+  border-radius: 50%;
+  animation: loading-screen-spin 0.9s linear infinite;
 }
 .loading-screen-status progress {
   width: 120px;
@@ -641,15 +646,17 @@ progress::-moz-progress-bar {
 .loading-screen-status progress[hidden] {
   display: none;
 }
-@keyframes loading-ember {
-  0%,
-  100% {
-    transform: scale(1) rotate(-3deg);
-    opacity: 0.8;
+@keyframes loading-mural-drift {
+  from {
+    transform: translateX(-50%);
   }
-  50% {
-    transform: scale(1.12) rotate(3deg);
-    opacity: 1;
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes loading-screen-spin {
+  to {
+    transform: rotate(1turn);
   }
 }
 @keyframes loading-tip-in {
@@ -687,7 +694,8 @@ progress::-moz-progress-bar {
     transition: none;
   }
   .loading-tip.turned,
-  .loading-screen-ember .icon {
+  .loading-mural-track,
+  .loading-screen-spinner {
     animation: none;
   }
 }
@@ -923,6 +931,7 @@ body[data-screen] .world-labels {
   text-transform: uppercase;
 }
 .setup-screen {
+  grid-template-columns: minmax(0, 1fr);
   padding: 24px;
   background:
     radial-gradient(120% 90% at 50% 110%, #1a2a20e6 0%, #07100ce6 60%),
@@ -933,10 +942,11 @@ body[data-screen] .world-labels {
 /* Character setup: a cinematic sheet, not a boxed web form. */
 .setup-card {
   width: min(1240px, 100%);
+  min-width: 0;
   margin: auto;
   display: flex;
   flex-direction: column;
-  gap: 26px;
+  gap: 18px;
   padding: 28px 36px 26px;
   border: 1px solid #e0b07026;
   border-radius: 18px;
@@ -2322,9 +2332,49 @@ dialog:has(.character-switch) {
   aspect-ratio: 7/8;
   object-fit: contain;
 }
-/* Confirmation raised over the grid the moment a card is picked; はい is focused first. */
+.character-choice-controls {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  flex-shrink: 0;
+  margin-top: 18px;
+  padding: 16px 0 4px;
+  border-top: 1px solid #e0b07033;
+  background: #101a14;
+}
+.character-choice-controls .dye-picker {
+  margin-bottom: 16px;
+}
+.character-choice-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.character-choice-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  color: var(--cream);
+}
+.character-choice-summary small {
+  color: #d6c79a;
+}
+.character-choice-actions > .button {
+  flex-shrink: 0;
+  min-height: 48px;
+  padding: 12px 24px;
+}
+.character-choice-note {
+  margin: 12px 0 0;
+  color: #e0b4a3;
+  font-size: 14px;
+}
+/* Overlays retained for equipment and the exhibition starting sights. */
 .equipment-confirm,
-.character-confirm {
+.setup-flow {
   position: fixed;
   inset: 0;
   z-index: 6;
@@ -2392,84 +2442,12 @@ dialog:has(.character-switch) {
   color: #edc98c;
   font-weight: 700;
 }
-.character-confirm-card {
-  position: relative;
-  display: flex;
-  align-items: stretch;
-  gap: 32px;
-  width: min(760px, 100%);
-  padding: 30px 36px 30px 30px;
-  border-radius: 20px;
-  border: 1px solid #e0b07055;
-  background: linear-gradient(160deg, #182319f8, #0c140ff8);
-  box-shadow:
-    0 0 0 1px #00000088,
-    0 40px 120px #000e,
-    0 0 80px #e0b07022,
-    inset 0 1px 0 #ffffff12;
-  animation: title-rise 0.3s ease-out;
-}
-.character-confirm-card:before {
-  content: '';
-  position: absolute;
-  inset: 8px;
-  border: 1px solid #e0b07022;
-  border-radius: 14px;
-  pointer-events: none;
-}
-.character-confirm-art {
-  width: 230px;
-  height: auto;
-  aspect-ratio: 7/8;
-  flex-shrink: 0;
-  object-fit: cover;
-  object-position: 50% 0;
-  border-radius: 14px;
-  border: 1px solid #e0b07077;
-  background: radial-gradient(70% 60% at 50% 30%, #2a3a2c, #0d1712);
-  box-shadow: 0 16px 40px #000a;
-}
-.character-confirm-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 14px;
-  min-width: 0;
-  flex: 1;
-}
 .setup-flow-eyebrow {
   margin: 0;
   font: 500 12px/1 var(--display);
   letter-spacing: 0.45em;
   color: var(--accent);
   text-transform: uppercase;
-}
-.character-confirm-body h3 {
-  margin: 0;
-  font: 500 30px/1.25 var(--display);
-  letter-spacing: 0.12em;
-  color: #f7ecd0;
-  text-shadow: 0 2px 16px #000b;
-}
-.character-confirm-body h3 strong {
-  font-weight: 500;
-}
-.character-confirm-body h3 small {
-  margin-left: 0.2em;
-  font-size: 16px;
-  letter-spacing: 0.2em;
-  color: #d6c79a;
-}
-.setup-flow-question {
-  margin: 4px 0 0;
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  color: #e6e9d8;
-}
-/* The colour the character will wear, under its name. */
-.character-confirm-dye {
-  margin: 0;
 }
 .dye-label {
   display: inline-flex;
@@ -2489,49 +2467,6 @@ dialog:has(.character-switch) {
 }
 .dye-chip.dye-own {
   background: linear-gradient(135deg, #7d5d3c 0 50%, #d9c59d 50% 100%);
-}
-.character-confirm-note {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.7;
-  color: #e0b4a3;
-}
-.character-confirm-actions {
-  display: grid;
-  gap: 12px;
-  margin-top: 6px;
-  grid-template-columns: 1fr 1fr;
-}
-.character-confirm-actions .button {
-  min-height: 62px;
-  padding: 12px 16px;
-  border-radius: 12px;
-  font: 500 21px/1 var(--display);
-  letter-spacing: 0.2em;
-  padding-left: calc(16px + 0.2em);
-}
-.character-confirm-actions .button-outline {
-  background: #ffffff05;
-  border: 1px solid #e0b07033;
-  color: #e6e0c8;
-}
-.character-confirm-actions .button-outline:hover {
-  background: #e0b07012;
-  border-color: #e0b07077;
-}
-.character-confirm-actions .button-accent {
-  border: 1px solid #f7dfb0;
-  background: linear-gradient(180deg, #f2cf94 0%, #dcab6d 55%, #c8925a 100%);
-  box-shadow:
-    0 2px 0 #7a5530,
-    0 10px 30px #0008,
-    0 0 40px #e0b07040,
-    inset 0 1px 0 #fff6;
-}
-.character-confirm-actions .button:focus-visible,
-.character-confirm-actions .button.gamepad-focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
 }
 /* Exhibition start: a grid of pictured sights; picking one begins the game. */
 .spawn-picker {
@@ -2641,28 +2576,6 @@ dialog:has(.character-switch) {
     font-size: 11px;
   }
 }
-@media (max-width: 640px) {
-  .character-confirm-card {
-    flex-direction: column;
-    align-items: center;
-    gap: 18px;
-    padding: 24px 20px;
-    text-align: center;
-  }
-  .character-confirm-body {
-    align-items: center;
-  }
-  .character-confirm-art {
-    width: 150px;
-  }
-  .character-confirm-body h3 {
-    font-size: 24px;
-  }
-  .character-confirm-actions .button {
-    min-height: 54px;
-    font-size: 17px;
-  }
-}
 @media (max-width: 760px) {
   dialog:has(.character-switch) .modal-top:before {
     inset: -18px -18px 0;
@@ -2690,6 +2603,15 @@ dialog:has(.character-switch) {
   grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: 14px;
 }
+/* Keep the starting companion visible below one row of people on desktop too. */
+.setup-card .character-choice-grid {
+  grid-template-columns: none;
+  grid-auto-columns: 140px;
+  grid-auto-flow: column;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 6px;
+}
 .character-choice {
   position: relative;
   display: flex;
@@ -2700,6 +2622,7 @@ dialog:has(.character-switch) {
   background: radial-gradient(80% 60% at 50% 20%, #1c2a20, #0a1310);
   overflow: hidden;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   box-shadow: 0 10px 30px #0006;
   transition:
     transform 0.2s,
@@ -2715,17 +2638,16 @@ dialog:has(.character-switch) {
   opacity: 0;
   cursor: pointer;
   z-index: 2;
+  -webkit-tap-highlight-color: transparent;
 }
 .character-art {
   display: block;
   width: 100%;
-  height: clamp(170px, calc(100dvh - 330px), 320px);
-  object-fit: cover;
-  object-position: 50% 0;
-  filter: saturate(0.7) brightness(0.72);
-  transition:
-    filter 0.2s,
-    transform 0.4s;
+  height: auto;
+  aspect-ratio: 7 / 8;
+  object-fit: contain;
+  object-position: center;
+  transition: transform 0.4s;
 }
 .character-name {
   position: relative;
@@ -2733,10 +2655,10 @@ dialog:has(.character-switch) {
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  margin-top: -44px;
-  padding: 44px 6px 14px;
+  margin-top: 0;
+  padding: 12px 6px 14px;
   text-align: center;
-  background: linear-gradient(180deg, transparent, #070d09 55%);
+  background: #070d0988;
 }
 .character-name strong {
   font: 500 16px/1.3 var(--display);
@@ -2762,7 +2684,7 @@ dialog:has(.character-switch) {
 }
 .character-choice:focus-within .character-art {
   filter: none;
-  transform: scale(1.05);
+  transform: none;
 }
 .character-choice:focus-within .character-name strong {
   color: #f7ecd0;
@@ -2782,17 +2704,11 @@ dialog:has(.character-switch) {
   .character-choice-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
-  .character-art {
-    height: clamp(140px, 22vw, 220px);
-  }
 }
 @media (max-width: 640px) {
   .character-choice-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
-  }
-  .character-art {
-    height: clamp(120px, 32vw, 180px);
   }
   .character-name strong {
     font-size: 13px;
@@ -3757,9 +3673,6 @@ dialog:has(.earth-map) {
 @media (max-width: 430px) {
   .character-choice-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .character-art {
-    height: clamp(140px, 44vw, 200px);
   }
   .character-name strong {
     font-size: 11px;

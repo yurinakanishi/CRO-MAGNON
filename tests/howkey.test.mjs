@@ -68,7 +68,7 @@ test('Howkey retains its original scientist rig metadata but is no longer a play
   assert.equal(isCarryable({ species: 'howkey' }), false);
   assert.equal(attackProfile({ species: 'howkey', spearHead: 'obsidian' }).key, 'science');
   assert.doesNotMatch(characterChoicesMarkup(), /value="howkey-female"/);
-  assert.doesNotMatch(characterChoicesMarkup(), /models\/howkey-scientist\/portrait.png/);
+  assert.doesNotMatch(characterChoicesMarkup(), /models\/howkey-scientist\//);
 });
 
 test('science pulse obeys server windup, damage, one hit, energy and recharge', () => {

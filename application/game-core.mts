@@ -1,6 +1,7 @@
 import {
   MASCOT_KEYS,
   cancelMascotPets,
+  chooseMascot,
   formerMascotBonds,
   mascotSelectable,
   syncMascots,
@@ -341,7 +342,7 @@ export function createGameCore({
         socket,
         sessionToken: resumable ? runtime.token() : null,
         difficulty: normalizeDifficulty(params.get('difficulty')),
-        // A newcomer travels alone until choosing a companion in the menu.
+        // The confirmed setup may choose one after a valid arrival point is found.
         mascot: null,
         intro: '',
         // The clothing colour last chosen on this browser, or the character's own.
@@ -438,6 +439,13 @@ export function createGameCore({
     Object.assign(player, spawn);
     if (startAtCamp && site !== CAMP_SPAWN) player.facing = spawnFacing(player, site);
     room.players.set(player.id, player);
+    // Only an explicit title start or a new visitor applies this draft. Automatic
+    // reconnections retain the server's choice, even if a browser cache is stale.
+    if ((!resumed || startAtCamp) && params.has('mascot')) {
+      const choice = params.get('mascot');
+      if (choice === 'none' || choice === '') chooseMascot(room, player, null, now);
+      else if (mascotSelectable(room, choice)) chooseMascot(room, player, choice, now);
+    }
     // The chosen companion arrives beside them, as it does on every return.
     syncMascots(room, now);
     send(socket, {
@@ -460,6 +468,7 @@ export function createGameCore({
         character: player.character,
         difficulty: player.difficulty,
         dye: player.dye ?? null,
+        mascot: player.mascot ?? null,
       },
     });
     broadcast(room, snapshot(room, true));

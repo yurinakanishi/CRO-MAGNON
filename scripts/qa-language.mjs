@@ -61,7 +61,8 @@ try {
   await expectText('#title-start', 'Start');
   assert.equal(await page.locator('html').getAttribute('lang'), 'en');
   await page.locator('#title-contributors').click();
-  await expectText('.contributors-dialog h2', 'Contributors');
+  await expectText('.contributors-dialog .contributor-group:last-child h3', 'Contributors');
+  assert.equal(await page.locator('.contributors-dialog h2').count(), 0);
   // The credits are only a list: no way into the cave from here.
   assert.equal(await page.locator('.contributors-dialog button, #contributors-cave').count(), 0);
   assert.ok((await page.locator('.contributor strong[translate="no"]').count()) > 0);
@@ -109,8 +110,8 @@ try {
   await page.locator('input[name="name"]').fill('はい');
   await englishOnly('#screen-setup');
   await page.locator('.character-choice:has(input[value="cro-female"])').click();
-  await englishOnly('#setup-flow');
-  await shot('03-confirm-en');
+  await englishOnly('.character-choice-controls');
+  await shot('03-choice-en');
   await page.locator('#setup-flow-yes').click();
   await page.locator('#loading-screen').waitFor({ state: 'visible' });
   assert.equal(await page.locator('.loading-screen-tip figcaption').count(), 0);
@@ -224,7 +225,7 @@ try {
   await page.locator('#title-language').click();
   await expectText('#title-start', 'はじめる');
   await page.locator('#title-contributors').click();
-  await expectText('.contributors-dialog h2', '関わってくれた人たち');
+  await expectText('.contributors-dialog .contributor-group:last-child h3', '関わってくれた人たち');
   await page.locator('#modal-close').click();
   await page.reload({ waitUntil: 'domcontentloaded' });
   await expectText('#title-start', 'はじめる');
@@ -322,10 +323,10 @@ try {
     await mobile.locator('#title-start').tap();
     await expectText('.setup-heading h2', 'Choose a character', mobile);
     await mobile.locator('.character-choice:has(input[value="cro-female"])').tap();
-    await englishOnly('#setup-flow', mobile);
-    await shot(`09-touch-confirm-${width}x${height}`, mobile);
+    await englishOnly('.character-choice-controls', mobile);
+    await shot(`09-touch-choice-${width}x${height}`, mobile);
     await mobile.close();
-    pass(`Touch toggle and English confirmation fit ${width}×${height}`);
+    pass(`Touch toggle and English outfit choice fit ${width}×${height}`);
   }
   assert.deepEqual(errors, []);
   console.log(`Evidence: ${out}`);

@@ -1,4 +1,3 @@
-import { icon } from './icons.js';
 import type { LoadingTip } from './loading-tips.js';
 
 /** What the screen is loading toward: a warp's destination, or the world itself. */
@@ -6,11 +5,11 @@ export interface LoadingPlace {
   /** The action above a destination name (ワープ); empty for startup. */
   eyebrow: string;
   name: string;
-  /** A photo of the destination, for the pictured sights. */
-  image?: string;
 }
 
 export const LOADING_TEXT = '読み込み中';
+/** Original mammoth, bison and horse painting, without the later guest characters. */
+export const LOADING_MURAL = '/title/loading-mammoth-mural.webp';
 
 /** Tips in shuffled rounds: none repeats before every other one was shown, and a
  * new round never starts with the tip that ended the last one. */
@@ -212,31 +211,27 @@ export function loadingScreenView(parent: HTMLElement): LoadingView {
   root.className = 'loading-screen';
   root.hidden = true;
   root.setAttribute('aria-label', LOADING_TEXT);
-  root.innerHTML = `<div class="loading-screen-art" aria-hidden="true"><img alt="" decoding="async" draggable="false"></div>
+  root.innerHTML = `<div class="loading-screen-art" aria-hidden="true"><div class="loading-mural-track"><img alt="" decoding="async" draggable="false"><img alt="" decoding="async" draggable="false"></div></div>
     <header class="loading-screen-place"><small></small><strong></strong></header>
     <div class="loading-screen-bottom">
-      <div class="loading-screen-status"><span class="loading-screen-ember">${icon('flame')}</span><span role="status" data-loading-status>${LOADING_TEXT}</span><progress max="1" value="0" aria-label="読み込みの進み具合" hidden></progress></div>
+      <div class="loading-screen-status"><span class="loading-screen-spinner" aria-hidden="true"></span><span role="status" data-loading-status>${LOADING_TEXT}</span><progress max="1" value="0" aria-label="読み込みの進み具合" hidden></progress></div>
     </div>`;
   const tip = tipCard('loading-screen-tip');
   root.querySelector('.loading-screen-bottom')!.prepend(tip.element);
   parent.append(root);
   const art = root.querySelector<HTMLElement>('.loading-screen-art')!;
-  const image = art.querySelector('img')!;
+  const images = art.querySelectorAll('img');
   const place = root.querySelector('.loading-screen-place')!;
   const statusText = root.querySelector<HTMLElement>('[data-loading-status]')!;
   const progress = root.querySelector('progress')!;
-  image.addEventListener('load', () => art.classList.add('loaded'));
+  images[0].addEventListener('load', () => art.classList.add('loaded'));
   return {
     content(next, nextTip) {
       place.querySelector('small')!.textContent = next.eyebrow;
       place.querySelector('small')!.hidden = !next.eyebrow;
       place.querySelector('strong')!.textContent = next.name;
-      if ((next.image ?? '') !== (image.getAttribute('src') ?? '')) {
-        art.classList.remove('loaded');
-        if (next.image) image.src = next.image;
-        else image.removeAttribute('src');
-      }
-      art.hidden = !next.image;
+      // Fetch once, when first needed; every destination shares the same looping wall.
+      if (!images[0].getAttribute('src')) images.forEach((image) => (image.src = LOADING_MURAL));
       tip.show(nextTip);
     },
     status(text, value) {

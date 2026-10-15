@@ -4,15 +4,9 @@ import { spawnCardsMarkup } from './spawn-picker.js';
 import { parseCharacterValue } from './character-selection.js';
 
 /**
- * Start flow without a fixed launch button: picking a character card immediately
- * shows one final "これでいいですか？" whose はい submits the setup form. Escape,
- * いいえ, the backdrop and the controller's cancel button each return to the card
- * grid with the pick still highlighted.
- *
- * The exhibition build instead asks where to begin, as a grid of pictured sights,
- * and picking one starts the game at once.
+ * Character cards and colours only edit the draft. The apply button starts directly.
+ * The retained exhibition flow asks for a starting sight after that button.
  */
-type Step = 'confirm' | 'spawn';
 
 interface SetupFlowOptions {
   form: HTMLFormElement;
@@ -55,32 +49,14 @@ export function closeSetupFlow() {
   overlay(current.form)?.remove();
 }
 
-function render(step: Step) {
+function openSpawn() {
   if (!current) return;
   const { form } = current;
   const card = pickedCard(form);
   if (!card) return;
   const model = characterModel(parseCharacterValue(card.value));
   const [name, variant] = model.name.split(' ');
-  if (step === 'spawn') return renderSpawn(`${name}${variant ? ` ${variant}` : ''}`);
-  const who = `<h3 id="setup-flow-title"><strong>${name}</strong>${variant ? `<small>${variant}</small>` : ''}</h3>`;
-  const body = `${who}<p class="setup-flow-question">これでいいですか？</p><div class="character-confirm-actions"><button id="setup-flow-yes" class="button button-accent" type="submit">はい</button><button id="setup-flow-no" class="button button-outline" type="button">いいえ</button></div>`;
-  overlay(form)?.remove();
-  form.insertAdjacentHTML(
-    'beforeend',
-    `<div id="setup-flow" class="character-confirm setup-flow" role="dialog" aria-modal="true" aria-labelledby="setup-flow-title" data-focus-scope data-step="${step}"><div class="character-confirm-card"><img class="character-confirm-art" src="/models/${model.key}/portrait.png" width="420" height="480" alt="" draggable="false"><div class="character-confirm-body">${body}</div></div></div>`,
-  );
-  const flow = overlay(form)!;
-  flow.onclick = (event) => {
-    const target = event.target as HTMLElement;
-    if (target === flow) {
-      setupFlowBack();
-      return;
-    }
-    if (target.closest('#setup-flow-no')) setupFlowBack();
-  };
-  flow.querySelector<HTMLElement>('#setup-flow-yes')?.focus({ preventScroll: true });
-  current.settle?.();
+  renderSpawn(`${name}${variant ? ` ${variant}` : ''}`);
 }
 
 function renderSpawn(who: string) {
@@ -90,7 +66,7 @@ function renderSpawn(who: string) {
   overlay(form)?.remove();
   form.insertAdjacentHTML(
     'beforeend',
-    `<div id="setup-flow" class="character-confirm setup-flow" role="dialog" aria-modal="true" aria-labelledby="setup-flow-title" data-focus-scope data-step="spawn"><div class="spawn-picker"><p class="setup-flow-eyebrow">${who}</p><h3 id="setup-flow-title">どこから はじめますか？</h3><div class="spawn-grid" role="group" aria-label="はじめる場所">${spawnCardsMarkup(picked)}</div></div></div>`,
+    `<div id="setup-flow" class="setup-flow" role="dialog" aria-modal="true" aria-labelledby="setup-flow-title" data-focus-scope data-step="spawn"><div class="spawn-picker"><p class="setup-flow-eyebrow">${who}</p><h3 id="setup-flow-title">どこから はじめますか？</h3><div class="spawn-grid" role="group" aria-label="はじめる場所">${spawnCardsMarkup(picked)}</div></div></div>`,
   );
   const flow = overlay(form)!;
   flow.onclick = (event) => {
@@ -116,14 +92,12 @@ export function bindSetupFlow(options: SetupFlowOptions) {
   const { form } = options;
   if (!hiddenSpawn(form))
     form.insertAdjacentHTML('afterbegin', '<input type="hidden" name="spawn">');
-  const open = () => {
-    // The name and room fields are validated before the questions start.
-    if (!form.reportValidity()) return;
-    render(options.spawnChoice?.() ? 'spawn' : 'confirm');
-  };
   form.addEventListener('click', (event) => {
     const target = event.target as HTMLElement;
-    if (target.matches('input[name="character"]') && !overlay(form)) open();
+    if (target.closest('#setup-flow-yes') && options.spawnChoice?.()) {
+      event.preventDefault();
+      if (form.reportValidity()) openSpawn();
+    }
   });
   form.addEventListener('keydown', (event) => {
     const target = event.target as HTMLElement;
@@ -131,9 +105,6 @@ export function bindSetupFlow(options: SetupFlowOptions) {
       event.preventDefault();
       event.stopPropagation();
       setupFlowBack();
-    } else if (event.key === 'Enter' && target.matches('input[type="radio"]')) {
-      event.preventDefault();
-      target.click();
     } else if (event.key === 'Enter' && target.matches('input[name="name"],input[name="room"]')) {
       // Enter in a text field moves on to the cards instead of submitting nothing.
       event.preventDefault();

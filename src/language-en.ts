@@ -406,6 +406,8 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   さんかくbot: 'Triangle bot',
   ハートbot: 'Heart bot',
   連れていく仲間: 'Traveling companions',
+  '1匹': 'Choose one',
+  前回の仲間: 'Previous companion',
   // A traveler's profile card and one's own self-introduction.
   あなたの自己紹介: 'Your self-introduction',
   保存する: 'Save',
@@ -419,6 +421,7 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   境界を渡る者: 'Crosser of Boundaries',
   // Clothing colours (CLOTHING_DYES).
   服の色: 'Clothing color',
+  これにする: 'Use this',
   元の色: 'Original',
   赤: 'Red',
   黄: 'Yellow',

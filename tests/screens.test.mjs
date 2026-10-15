@@ -103,9 +103,10 @@ test('the game opens on a title screen and only joins after Start or ?autostart=
   assert.doesNotMatch(main, /data-panel=/, 'no top navigation dock');
 });
 
-test('setup asks character → final はい with no difficulty controls', async () => {
+test('setup chooses an outfit then applies it directly, with no confirmation or difficulty controls', async () => {
   const main = await readFile(new URL('src/main.ts', root), 'utf8');
   const flow = await readFile(new URL('src/setup-flow.ts', root), 'utf8');
+  const picker = await readFile(new URL('src/character-choice-ui.ts', root), 'utf8');
   const css = await readFile(new URL('src/style.css', root), 'utf8');
   assert.match(main, /bindSetupFlow\(\{/);
   assert.doesNotMatch(
@@ -116,8 +117,13 @@ test('setup asks character → final はい with no difficulty controls', async 
   assert.doesNotMatch(main, /敵の動きと攻撃時間は(?:仲間)?全員で共通です/);
   assert.doesNotMatch(main, /setup-submit|この谷へ出発する|difficultyChoicesMarkup/);
   assert.doesNotMatch(flow, /難易度|difficulty|data-choose-difficulty/);
-  assert.match(flow, /これでいいですか/);
-  assert.match(flow, /id="setup-flow-yes"[^>]*type="submit"/);
+  assert.doesNotMatch(flow, /これでいいですか|setup-flow-no|step === 'confirm'/);
+  assert.match(
+    main,
+    /characterPickerMarkup\(\s*fixedIdentity \? null : profile.dye,\s*'setup-flow-yes',/,
+  );
+  assert.match(picker, /type="submit">これにする<\/button>/);
+  assert.match(main, /dye: pickedCharacterChoice\(form\).dye \?\? profile.dye/);
   assert.doesNotMatch(css, /\.setup-flow-choices|\.setup-flow-summary/);
   assert.doesNotMatch(css, /\.difficulty-choice-grid|\.setup-launch/);
 });

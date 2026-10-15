@@ -1,0 +1,572 @@
+[
+  {
+    "key": "cro-magnon-woman",
+    "manifest": "public/models/cro-magnon-woman/asset.json",
+    "master": {
+      "url": "/models/cro-magnon-woman/model-c5-r01.glb",
+      "sha256": "bc6493a2e8bd8cc3b6f2320b483851cd2c4151b5a0d0e3623fa7f4627690863e",
+      "bytes": 2620260
+    },
+    "delivered": {
+      "modelKey": "cro-magnon-woman",
+      "url": "/models/cro-magnon-woman/model-c5-r01.cook-2be1cee3230ad11b.glb",
+      "sha256": "2be1cee3230ad11b889d0403a029d5397cfce3d3b2aac5b5e90e451896696ff5",
+      "bytes": 1716184,
+      "scene": 0,
+      "bounds": {
+        "min": [
+          -0.37725889155447756,
+          -0.000025022648699501646,
+          -0.2332325407798739
+        ],
+        "max": [
+          0.37733167972303006,
+          1.4506510631834963,
+          0.2720605388127881
+        ]
+      },
+      "camera": {
+        "center": [
+          0.000036394084276247796,
+          0.7253130202673984,
+          0.019413999016457087
+        ],
+        "verticalSpan": 1.682784259565347
+      },
+      "clip": "Idle_Loop",
+      "time": 0.4
+    }
+  },
+  {
+    "key": "cro-magnon-hunter",
+    "manifest": "public/models/cro-magnon-hunter/asset.json",
+    "master": {
+      "url": "/models/cro-magnon-hunter/startup.opt-d9197fbdf6e1ae99.glb",
+      "sha256": "d9197fbdf6e1ae9968c5b88422761a5420b14db1f085c611906abb8f9a6e9b9f",
+      "bytes": 6359688
+    },
+    "delivered": {
+      "modelKey": "cro-magnon-hunter",
+      "url": "/models/cro-magnon-hunter/startup.cook-75e63f3b98269fba.glb",
+      "sha256": "75e63f3b98269fbaf70755c66f3e6b2bb3ddf48f375175ba968da5d557bb5b79",
+      "bytes": 4075956,
+      "scene": 0,
+      "bounds": {
+        "min": [
+          -0.4300377567533134,
+          4.14965117935319e-7,
+          -0.20941189661691548
+        ],
+        "max": [
+          0.432246106816204,
+          1.8021022325905647,
+          0.2173009286749963
+        ]
+      },
+      "camera": {
+        "center": [
+          0.0011041750314453036,
+          0.9010513237778414,
+          0.003944516029040418
+        ],
+        "verticalSpan": 2.090438108445518
+      },
+      "clip": "Idle_Loop",
+      "time": 0.4
+    }
+  },
+  {
+    "key": "cat-kunoichi",
+    "manifest": "public/models/cat-kunoichi/asset.json",
+    "master": {
+      "url": "/models/cat-kunoichi/startup.opt-ca2213d32f027f41.glb",
+      "sha256": "ca2213d32f027f41011d32ee2d35401f9ceeea0e2ad58cb8558e2cf1b599006a",
+      "bytes": 6616668
+    },
+    "delivered": {
+      "modelKey": "cat-kunoichi",
+      "url": "/models/cat-kunoichi/startup.cook-b945f91b5cafa996.glb",
+      "sha256": "b945f91b5cafa996f1a20e3b52dd8335edea2d9dbe1b7ef752171362bd116f8c",
+      "bytes": 4066200,
+      "scene": 0,
+      "bounds": {
+        "min": [
+          -0.4092979827110101,
+          0.000020674273065940575,
+          -0.22941010015086516
+        ],
+        "max": [
+          0.409637475488433,
+          1.6866814144064417,
+          0.15493292062942263
+        ]
+      },
+      "camera": {
+        "center": [
+          0.0001697463887114503,
+          0.8433510443397538,
+          -0.037238589760721266
+        ],
+        "verticalSpan": 1.9565264585547157
+      },
+      "clip": "Idle_Loop",
+      "time": 0.4
+    }
+  },
+  {
+    "key": "desert-fennec-mage",
+    "manifest": "public/models/desert-fennec-mage/asset.json",
+    "master": {
+      "url": "/models/desert-fennec-mage/startup.opt-3a6ce65bf5d2c4ab.glb",
+      "sha256": "3a6ce65bf5d2c4ab9da606555fa3183fe5491139717d46dee651be5f4ff41616",
+      "bytes": 4126308
+    },
+    "delivered": {
+      "modelKey": "desert-fennec-mage",
+      "url": "/models/desert-fennec-mage/startup.cook-bdca43dd987694c5.glb",
+      "sha256": "bdca43dd987694c5fac56e200f230a73e84b14528361162cdb41781104470ae2",
+      "bytes": 2622816,
+      "scene": 0,
+      "bounds": {
+        "min": [
+          -0.21306211311734458,
+          0.000045419546802847975,
+          -0.25803625595967683
+        ],
+        "max": [
+          0.17826345933128157,
+          0.7823778031701001,
+          0.12320704849861039
+        ]
+      },
+      "camera": {
+        "center": [
+          -0.017399326893031503,
+          0.39121161135845145,
+          -0.06741460373053322
+        ],
+        "verticalSpan": 0.9075055650030248
+      },
+      "clip": "Idle_Loop",
+      "time": 0.4
+    }
+  },
+  {
+    "key": "giant-ape",
+    "manifest": "public/models/giant-ape/asset.json",
+    "master": {
+      "url": "/models/giant-ape/startup.opt-4aabd7de98030824.glb",
+      "sha256": "4aabd7de9803082467b19f2709bfdd182cc652c9ae43416a3c8757e4b0953843",
+      "bytes": 4886300
+    },
+    "delivered": {
+      "modelKey": "giant-ape",
+      "url": "/models/giant-ape/startup.cook-b888ea3df2e92a91.glb",
+      "sha256": "b888ea3df2e92a91a894d15c1216e985b0dfd1d68f2166eed6f66fc33d9f1d0b",
+      "bytes": 3055532,
+      "scene": 0,
+      "bounds": {
+        "min": [
+          -0.7545206796092458,
+          0.00007916625413546894,
+          -0.47908457658673653
+        ],
+        "max": [
+          0.7537363735907532,
+          2.000760526448552,
+          0.23443058219797946
+        ]
+      },
+      "camera": {
+        "center": [
+          -0.0003921530092463321,
+          1.0004198463513436,
+          -0.12232699719437853
+        ],
+        "verticalSpan": 2.320790377825523
+      },
+      "clip": "Idle_Loop",
+      "time": 0.4
+    }
+  },
+  {
+    "key": "maruimo-octopus",
+    "manifest": "public/models/maruimo-octopus/asset.json",
+    "master": {
+      "url": "/models/maruimo-octopus/model-c2.glb",
+      "sha256": "12886dd609a4415736390ffb46521b20887967037f8255c54107c58cd3d34c59",
+      "bytes": 10811624
+    },
+    "delivered": {
+      "modelKey": "maruimo-octopus",
+      "url": "/models/maruimo-octopus/model-c2.cook-16652c29ec47b809.glb",
+      "sha256": "16652c29ec47b809902888818735b1899cf7904388473f9b4fd36ab8bc15d6e9",
+      "bytes": 6218020,
+      "scene": 0,
+      "bounds": {
+        "min": [
+          -0.8621566088323096,
+          0.0014310704743121941,
+          -0.583252574335301
+        ],
+        "max": [
+          0.8166280779385825,
+          1.5491123275203142,
+          0.7339349660005048
+        ]
+      },
+      "camera": {
+        "center": [
+          -0.022764265446863552,
+          0.7752716989973132,
+          0.0753411958326019
+        ],
+        "verticalSpan": 2.225588841890554
+      },
+      "clip": "Idle_Loop",
+      "time": 0.4
+    }
+  },
+  {
+    "key": "cro-magnon-girl-feather",
+    "manifest": "public/models/cro-magnon-girl-feather/asset.json",
+    "master": {
+      "url": "/models/cro-magnon-girl-feather/model-c1-r02.glb",
+      "sha256": "75f9fe3b52f3875c59d74ed0a2f87e2d09cc71ac7ffe687010033c3f7728dd12",
+      "bytes": 3004656
+    },
+    "delivered": {
+      "modelKey": "cro-magnon-girl-feather",
+      "url": "/models/cro-magnon-girl-feather/model-c1-r02.cook-b53f69fa039456f1.glb",
+      "sha256": "b53f69fa039456f15fb4c2922c65d2105eb4d0abb1349fb28fb54adf3d293f56",
+      "bytes": 1984320,
+      "scene": 0,
+      "bounds": {
+        "min": [
+          -0.3973683033726191,
+          -0.00007986247855846357,
+          -0.409009929895468
+        ],
+        "max": [
+          0.3961348422347176,
+          1.4567708691437458,
+          0.19007210106155958
+        ]
+      },
+      "camera": {
+        "center": [
+          -0.0006167305689507296,
+          0.7283455033325936,
+          -0.10946891441695422
+        ],
+        "verticalSpan": 1.689946848681873
+      },
+      "clip": "Idle_Loop",
+      "time": 0.4
+    }
+  },
+  {
+    "key": "cro-magnon-girl-bear",
+    "manifest": "public/models/cro-magnon-girl-bear/asset.json",
+    "master": {
+      "url": "/models/cro-magnon-girl-bear/model-c1-r02.glb",
+      "sha256": "cbde8a6de4cfb0f3b1a5d3fce50c1965091765cb3c7a645ddf728d2a123b33a0",
+      "bytes": 2959520
+    },
+    "delivered": {
+      "modelKey": "cro-magnon-girl-bear",
+      "url": "/models/cro-magnon-girl-bear/model-c1-r02.cook-9ea97416ccc47378.glb",
+      "sha256": "9ea97416ccc4737852188aa9ff3d078f6a6a9a87e8480cf974791f69fabebafd",
+      "bytes": 1968228,
+      "scene": 0,
+      "bounds": {
+        "min": [
+          -0.40253029424580383,
+          -0.0001475195612717869,
+          -0.46318431449356007
+        ],
+        "max": [
+          0.39063713368307795,
+          1.457367886788125,
+          0.20214247212919198
+        ]
+      },
+      "camera": {
+        "center": [
+          -0.00594658028136294,
+          0.7286101836134267,
+          -0.13052092118218406
+        ],
+        "verticalSpan": 1.6907178713653
+      },
+      "clip": "Idle_Loop",
+      "time": 0.4
+    }
+  },
+  {
+    "key": "cro-magnon-girl-wolf",
+    "manifest": "public/models/cro-magnon-girl-wolf/asset.json",
+    "master": {
+      "url": "/models/cro-magnon-girl-wolf/model-c1-r02.glb",
+      "sha256": "af64bb45736b58b6a4f15c06e98a9dec4b7e93ec81f356aa653bb8fcf404cadb",
+      "bytes": 3273372
+    },
+    "delivered": {
+      "modelKey": "cro-magnon-girl-wolf",
+      "url": "/models/cro-magnon-girl-wolf/model-c1-r02.cook-1d6682dabf0ab8bc.glb",
+      "sha256": "1d6682dabf0ab8bca3df7a2b2391d918af9806287f950b740431060d7647516d",
+      "bytes": 2194008,
+      "scene": 0,
+      "bounds": {
+        "min": [
+          -0.3825119278317492,
+          0.000053920068394861225,
+          -0.6292760063560038
+        ],
+        "max": [
+          0.38570517678695865,
+          1.452306498181926,
+          0.20651172772872595
+        ]
+      },
+      "camera": {
+        "center": [
+          0.0015966244776047245,
+          0.7261802091251605,
+          -0.21138213931363892
+        ],
+        "verticalSpan": 1.684612990611696
+      },
+      "clip": "Idle_Loop",
+      "time": 0.4
+    }
+  },
+  {
+    "key": "cro-magnon-girl-twintails",
+    "manifest": "public/models/cro-magnon-girl-twintails/asset.json",
+    "master": {
+      "url": "/models/cro-magnon-girl-twintails/model-c1-r01.glb",
+      "sha256": "81341522cfcb76789c08fb0bbc6d466ff3f98bc3b990db05ac3069456ec28f32",
+      "bytes": 2718092
+    },
+    "delivered": {
+      "modelKey": "cro-magnon-girl-twintails",
+      "url": "/models/cro-magnon-girl-twintails/model-c1-r01.cook-940d13aab5d52440.glb",
+      "sha256": "940d13aab5d52440079ccb9885b7f8212ed51d7f273af911e702e4eb79206ccd",
+      "bytes": 1748716,
+      "scene": 0,
+      "bounds": {
+        "min": [
+          -0.38005809892131825,
+          -0.0000012866366471014391,
+          -0.2472009662124572
+        ],
+        "max": [
+          0.38058075213878706,
+          1.4508271358322276,
+          0.24823922661105632
+        ]
+      },
+      "camera": {
+        "center": [
+          0.0002613266087344024,
+          0.7254129245977903,
+          0.0005191301992995556
+        ],
+        "verticalSpan": 1.6829609700638943
+      },
+      "clip": "Idle_Loop",
+      "time": 0.4
+    }
+  },
+  {
+    "key": "cro-magnon-girl-reindeer",
+    "manifest": "public/models/cro-magnon-girl-reindeer/asset.json",
+    "master": {
+      "url": "/models/cro-magnon-girl-reindeer/model-c1-r02.glb",
+      "sha256": "dd54a2b5c5aff66a112246a12e16182731a05b132d124d74c368ab55c4471a36",
+      "bytes": 2750732
+    },
+    "delivered": {
+      "modelKey": "cro-magnon-girl-reindeer",
+      "url": "/models/cro-magnon-girl-reindeer/model-c1-r02.cook-89584b479e4b9ece.glb",
+      "sha256": "89584b479e4b9eceaaaa16d588211156cc2e89f065607d8ed397684d149723f8",
+      "bytes": 1774224,
+      "scene": 0,
+      "bounds": {
+        "min": [
+          -0.3924228640329328,
+          0.00007772908992608081,
+          -0.37411468820198374
+        ],
+        "max": [
+          0.3952457408638461,
+          1.453732629235737,
+          0.178577131209038
+        ]
+      },
+      "camera": {
+        "center": [
+          0.0014114384154566562,
+          0.7269051791628316,
+          -0.09776877849647286
+        ],
+        "verticalSpan": 1.6862396841691407
+      },
+      "clip": "Idle_Loop",
+      "time": 0.4
+    }
+  },
+  {
+    "key": "cro-magnon-boy-headband",
+    "manifest": "public/models/cro-magnon-boy-headband/asset.json",
+    "master": {
+      "url": "/models/cro-magnon-boy-headband/model-c1-r01.glb",
+      "sha256": "7d108d4a3c4c20818614c05aa3cefd1fdd2278fbe099fc5b2cbe3a075d08432b",
+      "bytes": 2984500
+    },
+    "delivered": {
+      "modelKey": "cro-magnon-boy-headband",
+      "url": "/models/cro-magnon-boy-headband/model-c1-r01.cook-7cb6d58d1142c461.glb",
+      "sha256": "7cb6d58d1142c4614d4f3619c68720314b6e6e90d96b54ee9366d04251509ba3",
+      "bytes": 1948252,
+      "scene": 0,
+      "bounds": {
+        "min": [
+          -0.3861292073964639,
+          -0.00007353011981684393,
+          -0.3544223679926423
+        ],
+        "max": [
+          0.3948533802185036,
+          1.4532406564464155,
+          0.22857207047347278
+        ]
+      },
+      "camera": {
+        "center": [
+          0.004362086411019844,
+          0.7265835631632993,
+          -0.06292514875958477
+        ],
+        "verticalSpan": 1.6858444564168296
+      },
+      "clip": "Idle_Loop",
+      "time": 0.4
+    }
+  },
+  {
+    "key": "cro-magnon-boy-lion",
+    "manifest": "public/models/cro-magnon-boy-lion/asset.json",
+    "master": {
+      "url": "/models/cro-magnon-boy-lion/model-c1-r01.glb",
+      "sha256": "51b96004e980b926d133fe7b37d3f542371063fb85150982d7ed390434ce5ad3",
+      "bytes": 3321608
+    },
+    "delivered": {
+      "modelKey": "cro-magnon-boy-lion",
+      "url": "/models/cro-magnon-boy-lion/model-c1-r01.cook-760855543a517604.glb",
+      "sha256": "760855543a51760463890b047ed5a8074f209ae1a12de3e154e93f6b7bd8eca3",
+      "bytes": 2200940,
+      "scene": 0,
+      "bounds": {
+        "min": [
+          -0.37568619680237725,
+          0.00004337725969054407,
+          -0.415050526375271
+        ],
+        "max": [
+          0.3751941713055188,
+          1.4526274290895616,
+          0.22102511618633663
+        ]
+      },
+      "camera": {
+        "center": [
+          -0.00024601274842922516,
+          0.7263354031746261,
+          -0.09701270509446719
+        ],
+        "verticalSpan": 1.6849975001226503
+      },
+      "clip": "Idle_Loop",
+      "time": 0.4
+    }
+  },
+  {
+    "key": "cro-magnon-boy-braid",
+    "manifest": "public/models/cro-magnon-boy-braid/asset.json",
+    "master": {
+      "url": "/models/cro-magnon-boy-braid/model-c1-r01.glb",
+      "sha256": "388cac91de779c584dce446ad156dd15f252c197efa22ec546a5a1ee8f96ee0e",
+      "bytes": 3135568
+    },
+    "delivered": {
+      "modelKey": "cro-magnon-boy-braid",
+      "url": "/models/cro-magnon-boy-braid/model-c1-r01.cook-523b272cd42e52e5.glb",
+      "sha256": "523b272cd42e52e51d1a8e85116d3e97b557ff0991debf6359fb20e3901db782",
+      "bytes": 2078228,
+      "scene": 0,
+      "bounds": {
+        "min": [
+          -0.383715612529933,
+          -0.00006941181428139764,
+          -0.41963849904293404
+        ],
+        "max": [
+          0.38732061334503004,
+          1.4550413472539758,
+          0.16994512460254585
+        ]
+      },
+      "camera": {
+        "center": [
+          0.0018025004075485074,
+          0.7274859677198472,
+          -0.1248466872201941
+        ],
+        "verticalSpan": 1.6879284805191783
+      },
+      "clip": "Idle_Loop",
+      "time": 0.4
+    }
+  },
+  {
+    "key": "cro-magnon-boy-topknot",
+    "manifest": "public/models/cro-magnon-boy-topknot/asset.json",
+    "master": {
+      "url": "/models/cro-magnon-boy-topknot/model-c1-r01.glb",
+      "sha256": "77fc00a7b0024d68640536a01ce27561ddf398d83ebf18fed4c69bf2d09bdb3f",
+      "bytes": 2823484
+    },
+    "delivered": {
+      "modelKey": "cro-magnon-boy-topknot",
+      "url": "/models/cro-magnon-boy-topknot/model-c1-r01.cook-d5109576fb49b560.glb",
+      "sha256": "d5109576fb49b560c4b0d1bd0154e5a650fb07ffe6d026fba7b86b3d9e88b4cb",
+      "bytes": 1831292,
+      "scene": 0,
+      "bounds": {
+        "min": [
+          -0.3840223118516324,
+          -0.00012769174134480142,
+          -0.35361094089314526
+        ],
+        "max": [
+          0.38336475164578915,
+          1.4613302071489138,
+          0.17786159782769095
+        ]
+      },
+      "camera": {
+        "center": [
+          -0.0003287801029216164,
+          0.7306012577037845,
+          -0.08787467153272716
+        ],
+        "verticalSpan": 1.6952911627126999
+      },
+      "clip": "Idle_Loop",
+      "time": 0.4
+    }
+  }
+]

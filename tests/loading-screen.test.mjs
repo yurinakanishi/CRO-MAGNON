@@ -52,7 +52,7 @@ const tips = [
   { title: 'b', text: 'B' },
   { title: 'c', text: 'C' },
 ];
-const warp = { eyebrow: 'ワープ', name: 'アプデの洞窟', image: '/spawn/cave.jpg' };
+const warp = { eyebrow: 'ワープ', name: 'アプデの洞窟' };
 
 test('the Cro-Magnon tips are short, distinct and fit a phone held upright', () => {
   assert.ok(LOADING_TIPS.length >= 20);
@@ -288,7 +288,7 @@ test('own warps and entries without the cave are covered; the title, setup and f
   );
 });
 
-test('a warp names its destination, with a photo only for the pictured sights', async () => {
+test('a warp names its destination without replacing the shared loading mural', async () => {
   const start = main.indexOf('function warpPlace(');
   const source = main.slice(start, main.indexOf('\n}\n', start) + 2);
   const { warpDestination } = await import('../dist/shared/warp-sites.mjs');
@@ -296,7 +296,7 @@ test('a warp names its destination, with a photo only for the pictured sights', 
     vm.runInNewContext(`${source}\nwarpPlace(target)`, { target, warpDestination });
   assert.deepEqual(
     { ...place('spawn-cave') },
-    { eyebrow: 'ワープ', name: warpDestination('spawn-cave').name, image: '/spawn/cave.jpg' },
+    { eyebrow: 'ワープ', name: warpDestination('spawn-cave').name },
   );
   assert.deepEqual({ ...place('fire-50-50') }, { eyebrow: 'ワープ', name: 'はじまりの焚き火' });
   assert.deepEqual({ ...place('') }, { eyebrow: 'ワープ', name: '' });

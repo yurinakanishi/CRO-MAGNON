@@ -78,7 +78,7 @@ export function titleContributors(): Contributor[] {
       : {}),
   });
   return [
-    person(TITLE_CREDITS[0], TITLE_CREDITS.length > 1 ? '制作' : '開発者'),
+    person(TITLE_CREDITS[0], '制作'),
     ...TITLE_CREDITS.slice(1).map((credit) => person(credit, '監修')),
     ...[TITLE_GUEST, TITLE_SUPPORT, ...TITLE_FRIENDS]
       .filter((credit) => mascotCreditReleased(credit.qr))
@@ -103,16 +103,20 @@ export function contributorsDialogMarkup(
   people = titleContributors(),
   { links = true }: { links?: boolean } = {},
 ): string {
-  const roles: Contributor['role'][] = ['制作', '開発者', '監修', '友情出演'];
-  const groups = roles
-    .map((role) => [role, people.filter((p) => p.role === role)] as const)
+  // Keep the source roles for release auditing; the dialog has just two groups.
+  const creator = (person: Contributor) => person.role === '制作' || person.role === '開発者';
+  const groups = [
+    ['制作', people.filter(creator)],
+    ['関わってくれた人たち', people.filter((person) => !creator(person))],
+  ] as const;
+  const markup = groups
     .filter(([, list]) => list.length)
     .map(
       ([role, list]) =>
         `<section class="contributor-group"><h3>${role}</h3><ul class="contributor-list">${list.map((person) => personCard(person, links)).join('')}</ul></section>`,
     )
     .join('');
-  return `<div class="contributors-dialog"><h2>関わってくれた人たち</h2>${groups}</div>`;
+  return `<div class="contributors-dialog">${markup}</div>`;
 }
 
 /**

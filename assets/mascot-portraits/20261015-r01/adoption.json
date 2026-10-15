@@ -1,0 +1,18 @@
+{
+  "status": "adopted",
+  "review": "review.png",
+  "files": [
+    {
+      "key": "rimo-neko",
+      "url": "/models/rimo-neko/portraits/companion-r01.webp",
+      "sha256": "592eac201c2846afb4fa3e9635fc9dc0619c23c8e85466d7a61388621009e102",
+      "bytes": 34166
+    },
+    {
+      "key": "524",
+      "url": "/models/yellow-524-mascot/portraits/companion-r01.webp",
+      "sha256": "36fb867b1c4759bfb9d8827d523919e364a431f4a84368406ddf095b46bb62ec",
+      "bytes": 14800
+    }
+  ]
+}

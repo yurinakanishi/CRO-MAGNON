@@ -33,6 +33,8 @@ import './build.mjs';
 if (process.exitCode) throw new Error('TypeScript build failed');
 const { CHARACTER_MODELS } = await import('../dist/shared/characters.mjs');
 const { CLOTHING_DYE_RULES } = await import('../dist/src/clothing-dye-rules.js');
+const { characterPortraitUrls } = await import('../dist/src/character-portraits.js');
+const { MASCOT_PORTRAITS } = await import('../dist/src/mascot-portraits.js');
 const { CHARACTER_ROSTER, characterModelReleased, characterSpeciesReleased } =
   await import('../dist/shared/character-roster.mjs');
 const { GROUND_MASCOTS } = await import('../dist/shared/friend-mascots.mjs');
@@ -191,7 +193,15 @@ await publish(
 );
 await publish(
   '/src/clothing-dye-rules.js',
-  Buffer.from(publicClothingDyeRulesModule(CLOTHING_DYE_RULES, excludedKeys)),
+  Buffer.from(
+    publicClothingDyeRulesModule(
+      CLOTHING_DYE_RULES,
+      new Set([
+        ...excludedKeys,
+        ...CHARACTER_ROSTER.filter((entry) => !entry.enabled).flatMap((entry) => entry.modelKeys),
+      ]),
+    ),
+  ),
 );
 for (const directory of ['dist/src', 'dist/shared']) await collect(directory, /\.(js|mjs|css)$/);
 await collect('public/vendor', /\.(js|mjs|wasm|txt)$/);
@@ -406,9 +416,15 @@ const portrait = async (url) =>
   declaredTextures.has(url)
     ? await readFile(path.join(root, `public${url}`))
     : (await cookedFixedPng(root, `public${url}`)).bytes;
-for (const { key } of publicCharacters)
+for (const { key } of publicCharacters) {
   await publish(`/models/${key}/portrait.png`, await portrait(`/models/${key}/portrait.png`));
+  for (const url of characterPortraitUrls(key))
+    await publish(url, await readFile(path.join(root, `public${url}`)));
+}
 for (const url of runtimeBotPortraitUrls(assets)) await publish(url, await portrait(url));
+for (const { modelKey, url } of MASCOT_PORTRAITS)
+  if (assets.some((asset) => asset.modelKey === modelKey))
+    await publish(url, await readFile(path.join(root, `public${url}`)));
 // Every released walking companion's selection card picture.
 for (const friend of GROUND_MASCOTS.filter((friend) => ACTIVE_MASCOT_MODELS.includes(friend.key))) {
   const url = friend.portrait ?? `/models/${friend.key}/portrait.png`;

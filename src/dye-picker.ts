@@ -10,7 +10,7 @@ const dyeName = (dye: unknown) => dyeEntry(dye)?.name ?? OWN_COLOURS;
  * The clothing colours as one row of round swatches, the character's own colours first. In the
  * players' list a tap dyes at once, for everyone nearby to see; there is nothing to confirm or
  * save. With `choice`, beside the character cards, a tap only picks the colour, worn with the
- * card's confirmation. The swatches are large enough to tap on a phone and wrap onto a second
+ * apply button. The swatches are large enough to tap on a phone and wrap onto a second
  * row on a narrow screen.
  */
 export function dyePickerMarkup(current: unknown, { choice = false } = {}) {
@@ -20,7 +20,7 @@ export function dyePickerMarkup(current: unknown, { choice = false } = {}) {
   return `<fieldset class="dye-picker"${choice ? ' data-dye-choice' : ''}><legend>服の色<span class="dye-name">${dyeName(current)}</span></legend><div class="dye-swatches">${swatch('', OWN_COLOURS)}${CLOTHING_DYES.map((dye) => swatch(dye.key, dye.name, dye.color)).join('')}</div></fieldset>`;
 }
 
-/** The colour a confirmation will dress in: a small swatch and its name. */
+/** The draft outfit's colour: a small swatch and its name. */
 export function dyeLabelMarkup(dye: unknown) {
   const color = dyeEntry(dye)?.color;
   return `<span class="dye-label"><i class="dye-chip${color ? '' : ' dye-own'}" aria-hidden="true"${color ? ` style="--dye: ${color}"` : ''}></i>服の色<span class="dye-name">${dyeName(dye)}</span></span>`;

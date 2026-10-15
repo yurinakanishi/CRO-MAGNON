@@ -4,6 +4,7 @@ import { BOT_DESIGNS } from '../shared/orb-bots.mjs';
 import { GROUND_MASCOTS } from '../shared/friend-mascots.mjs';
 import { activeMascot, mascotKeyOf, mascotName } from '../shared/mascot-selection.mjs';
 import type { ViewState } from './view-state.js';
+import { mascotPortrait } from './mascot-portraits.js';
 
 const portraits: Record<string, { name: string; image: string; color: string }> = {
   ...Object.fromEntries(
@@ -16,14 +17,19 @@ const portraits: Record<string, { name: string; image: string; color: string }> 
 
 export { mascotName };
 
-function mascotCard(key: string) {
+export function mascotPictureMarkup(key: string) {
   const portrait = portraits[key];
   const design = BOT_DESIGNS[key as keyof typeof BOT_DESIGNS];
-  const name = mascotName(key);
-  const image = portrait?.image ?? (design && 'image' in design ? design.image : null);
+  const photo = mascotPortrait(key);
+  const image = photo ?? portrait?.image ?? (design && 'image' in design ? design.image : null);
   const face = design?.face ?? '';
   const color = portrait?.color ?? design?.color ?? '#d2c9c2';
-  return `<button type="button" class="mascot-card" data-mascot="${key}" aria-label="${name}を連れて行く" aria-pressed="false" style="--mascot-color:${color}"><span class="mascot-picture">${image ? `<img src="${image}" alt="" draggable="false">` : `<span aria-hidden="true">${face}</span>`}</span><strong>${name}</strong><small class="mascot-card-status" hidden></small></button>`;
+  return `<span class="mascot-picture${photo ? ' mascot-photo' : ''}" style="--mascot-color:${color}">${image ? `<img src="${image}" alt="" draggable="false">` : `<span aria-hidden="true">${face}</span>`}</span>`;
+}
+
+function mascotCard(key: string) {
+  const name = mascotName(key);
+  return `<button type="button" class="mascot-card" data-mascot="${key}" aria-label="${name}を連れて行く" aria-pressed="false">${mascotPictureMarkup(key)}<strong>${name}</strong><small class="mascot-card-status" hidden></small></button>`;
 }
 
 /** One companion each, chosen from every mascot this build offers. Any number of

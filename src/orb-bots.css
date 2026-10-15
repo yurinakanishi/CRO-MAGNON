@@ -98,6 +98,62 @@
   object-fit: cover;
 }
 
+.mascot-picture.mascot-photo {
+  width: 112px;
+  height: 94px;
+  border-radius: 0;
+  background: transparent;
+}
+.mascot-photo img {
+  object-fit: contain;
+  transform: scale(1.3);
+}
+
+[data-starting-mascot-picker] {
+  min-width: 0;
+}
+.starting-mascot {
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+.starting-mascot legend {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  margin-bottom: 8px;
+  color: var(--cream);
+}
+.starting-mascot legend small {
+  color: #b8ba9d;
+  font-size: 12px;
+}
+.starting-mascot-cards {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 112px;
+  gap: 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding: 4px 2px;
+}
+.starting-mascot .mascot-card {
+  min-height: 112px;
+  padding: 8px 4px;
+  gap: 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+.starting-mascot .mascot-picture {
+  width: 92px;
+  height: 76px;
+}
+.starting-mascot-choice {
+  margin: 6px 0 0;
+  color: #d6c79a;
+  font-size: 12px;
+}
+
 .mascot-card strong {
   font-size: 12px;
   line-height: 1.3;

@@ -104,8 +104,14 @@ for (const file of [
 const manifest = JSON.parse(
   await readFile(path.join(root, 'public/models/world-assets.json'), 'utf8'),
 );
-const { CHARACTER_MODELS } = await import('../dist/shared/characters.mjs');
-for (const { key } of CHARACTER_MODELS)
+const { CHARACTER_MODELS, PLAYABLE_CHARACTER_MODELS } =
+  await import('../dist/shared/characters.mjs');
+const { characterPortraitUrls } = await import('../dist/src/character-portraits.js');
+const { MASCOT_PORTRAITS } = await import('../dist/src/mascot-portraits.js');
+const { characterModelReleased } = await import('../dist/shared/character-roster.mjs');
+manifest.assets = manifest.assets.filter((asset) => characterModelReleased(asset.modelKey));
+const releasedCharacters = CHARACTER_MODELS.filter((model) => characterModelReleased(model.key));
+for (const { key } of releasedCharacters)
   if (!manifest.assets.some((asset) => asset.modelKey === key))
     manifest.assets.push(
       JSON.parse(await readFile(path.join(root, `public/models/${key}/asset.json`), 'utf8')),
@@ -142,9 +148,9 @@ const deliveredJson = async (file, rewrite) => {
 };
 await deliveredJson('public/models/world-assets.json', (catalog) => ({
   ...catalog,
-  assets: catalog.assets.map((asset) =>
-    deliveredAsset(asset, delivery.deliveries, delivery.textures),
-  ),
+  assets: catalog.assets
+    .filter((asset) => characterModelReleased(asset.modelKey))
+    .map((asset) => deliveredAsset(asset, delivery.deliveries, delivery.textures)),
 }));
 const glbs = physicalModels.files.length,
   compressedModels = physicalModels.compressed;
@@ -210,8 +216,12 @@ const declaredTextures = new Set(
     runtimeTextureRecords(asset).map((texture) => `public${texture.url}`),
   ),
 );
+for (const { key } of PLAYABLE_CHARACTER_MODELS)
+  for (const url of characterPortraitUrls(key)) add(`public${url}`);
+for (const { modelKey, url } of MASCOT_PORTRAITS)
+  if (manifest.assets.some((asset) => asset.modelKey === modelKey)) add(`public${url}`);
 for (const file of [
-  ...CHARACTER_MODELS.map(({ key }) => `public/models/${key}/portrait.png`),
+  ...releasedCharacters.map(({ key }) => `public/models/${key}/portrait.png`),
   ...runtimeBotPortraitUrls(manifest.assets).map((url) => `public${url}`),
 ]) {
   if (declaredTextures.has(file)) {

@@ -14,7 +14,6 @@ import { installMapWarp, updateMapWarp, type MapInput } from './map-warp-ui.js';
 import {
   bindCharacterSwitch,
   characterSwitchMarkup,
-  closeCharacterConfirm,
   updateCharacterSwitch,
 } from './character-switch-ui.js';
 import {
@@ -35,11 +34,12 @@ import { attackProfile } from '../shared/combat-profiles.mjs';
 import type { EquipmentId } from '../shared/types.mjs';
 import { equippedItem, equipmentInfo, ownsEquipment } from '../shared/equipment.mjs';
 import { installEquipmentUI } from './equipment-ui.js';
+import { parseCharacterValue } from './character-selection.js';
 import {
-  characterChoicesMarkup,
-  bindCharacterSelection,
-  parseCharacterValue,
-} from './character-selection.js';
+  bindCharacterPicker,
+  characterPickerMarkup,
+  pickedCharacterChoice,
+} from './character-choice-ui.js';
 import { WorldRenderer } from './world3d.js';
 import { LoadingCave } from './loading-cave.js';
 import {
@@ -72,6 +72,7 @@ import {
 import { withinAttackReach } from '../shared/combat.mjs';
 import { OrbBotUI } from './orb-bot-ui.js';
 import { bindMascotMenu, mascotMenuMarkup, mascotName, updateMascotMenu } from './mascot-menu.js';
+import { STARTING_MASCOTS, bindStartingMascot, pickedStartingMascot } from './starting-mascot.js';
 import { nearOrbBot, canHandleBot, canThrowBot, nextOrbBot } from '../shared/orb-bots.mjs';
 import { nearCompanion } from '../shared/companions.mjs';
 import {
@@ -189,6 +190,7 @@ let profile = {
     : cleanRoom(query.get('room') || multiplayer.room || readSaved('cro-room', 'EMBER')) || 'EMBER',
   // The clothing colour last worn on this browser; '' is the character's own colours.
   dye: fixedIdentity ? '' : (normalizeDye(readSaved('cro-dye', '')) ?? ''),
+  mascot: fixedIdentity ? 'none' : readSaved('cro-mascot', 'keep'),
 };
 let state: ViewState = {
   players: [],
@@ -240,7 +242,11 @@ const joinFields = () =>
   (fixedIdentity
     ? `<input type="hidden" name="name"><input type="hidden" name="room">`
     : `<div class="setup-identity"><label>あなたの名前<input name="name" maxlength="16" required autocomplete="off" autofocus></label><label>部屋のコード<span>英数字・ハイフン・アンダースコア / 最大16文字</span><input name="room" maxlength="16" pattern="[A-Za-z0-9_\\-]+" required autocomplete="off"></label></div>`) +
-  characterChoicesMarkup();
+  characterPickerMarkup(
+    fixedIdentity ? null : profile.dye,
+    'setup-flow-yes',
+    '<div data-starting-mascot-picker></div>',
+  );
 // The title shell's title and dialog stay the same nodes: the title artwork is not
 // requested again and an open contributors dialog stays open (TitleHandoff).
 const titleHandoff = takeTitleShell();
@@ -445,7 +451,7 @@ let dashing = false;
 // Room tuning from the server's welcome: the exhibition floor always runs, faster.
 let tuning = { alwaysRun: false, speedScale: 1 };
 /** The mascots this server offers, in card order (its welcome names them). */
-let availableMascots: readonly string[] = MASCOT_KEYS;
+let availableMascots: readonly string[] = STARTING_MASCOTS;
 // The sight chosen in the setup flow; only a room with spawnChoice honours it.
 let spawnChoice = spawnSite(readSaved('cro-spawn', 'camp')).id;
 // Play is offered only once the local character is drawn in a ready world
@@ -465,12 +471,9 @@ let warpRequest: { target: string; at: number } | null = null;
 const WARP_REQUEST_MS = 15000;
 function warpPlace(target: string): LoadingPlace {
   const destination = warpDestination(target);
-  // The six pictured sights have a photo; the map's fires do not.
-  const sight = destination && 'look' in destination ? destination : null;
   return {
     eyebrow: 'ワープ',
     name: destination?.name ?? '',
-    ...(sight ? { image: `/spawn/${sight.id}.jpg` } : {}),
   };
 }
 /** Resolves after the next frame has been painted. */
@@ -928,6 +931,7 @@ async function connect(automatic = false) {
           message.profile?.dye === undefined
             ? profile.dye
             : (normalizeDye(message.profile.dye) ?? ''),
+        mascot: message.profile?.mascot ?? 'none',
       };
       persistentSession = message.persistentSession === true;
       resumeStored = saveSession(sessionKey(profile.room), message.session, persistentSession);
@@ -1006,6 +1010,11 @@ async function connect(automatic = false) {
         if ($('#character-switch-form')) $('#modal').close();
       }
       const wornDye = normalizeDye(player()?.dye) ?? '';
+      const companion = player()?.mascot ?? 'none';
+      if (player() && companion !== profile.mascot) {
+        profile = { ...profile, mascot: companion };
+        if (!fixedIdentity) save('cro-mascot', companion);
+      }
       if (player() && !fixedIdentity && wornDye !== profile.dye) {
         profile = { ...profile, dye: wornDye };
         save('cro-dye', wornDye);
@@ -1819,7 +1828,8 @@ function applyProfileForm(form: HTMLFormElement) {
     room,
     ...parseCharacterValue(data.get('character')),
     difficulty: FIXED_DIFFICULTY,
-    dye: profile.dye,
+    dye: pickedCharacterChoice(form).dye ?? profile.dye,
+    mascot: pickedStartingMascot(form),
   };
   spawnChoice = spawnSite(data.get('spawn')).id;
   save('cro-spawn', spawnChoice);
@@ -1847,7 +1857,13 @@ function showSetup(error = '') {
   const form = $('#setup-form');
   form.name.value = profile.name;
   form.room.value = profile.room;
-  bindCharacterSelection(form, profile);
+  bindCharacterPicker(form, profile);
+  bindStartingMascot(
+    form,
+    availableMascots,
+    profile.mascot,
+    !!savedSession(sessionKey(profile.room)),
+  );
   closeSetupFlow();
   $('#setup-error').hidden = !error;
   $('#setup-error').textContent = error;
@@ -2311,12 +2327,11 @@ function bindIntroForm() {
 }
 /**
  * The clothing colours, for a character whose dye rule is tuned; nothing in the exhibition.
- * With `choice` they only pick, for the character change to wear with its confirmation.
  */
-function dyeMarkup(choice = false) {
+function dyeMarkup() {
   const me = player();
   return !fixedIdentity && clothingDyeAvailable(characterModel(me ?? profile).key)
-    ? dyePickerMarkup(me ? me.dye : profile.dye, { choice })
+    ? dyePickerMarkup(me ? me.dye : profile.dye)
     : '';
 }
 /** A cosmetic change: allowed on a mount or a boat and while recovering. */
@@ -2526,7 +2541,7 @@ function openPauseMenu(tab?: string) {
       )}</nav><div class="pause-exits" role="group" aria-label="メニューの操作">${exits.map(menuButton).join('')}</div></div></aside><div class="pause-panels">${panel(
       'inventory',
       inventoryMarkup(),
-    )}${panel('character', characterSwitchMarkup(dyeMarkup(true)))}${panel('warp', exhibitionWarpMarkup())}${panel('mascots', mascotMenuMarkup(availableMascots))}${panel(
+    )}${panel('character', characterSwitchMarkup(fixedIdentity ? null : (normalizeDye(player()?.dye) ?? profile.dye)))}${panel('warp', exhibitionWarpMarkup())}${panel('mascots', mascotMenuMarkup(availableMascots))}${panel(
       'settings',
       `<h2>設定</h2><div class="settings-list">${audioSettingsMarkup(renderer.audio.settings)}<div class="settings-item"><div><strong>全画面表示</strong></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未接続'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
     )}</div></div>`,
@@ -2643,7 +2658,7 @@ function openPauseMenu(tab?: string) {
     action,
     settle: () => gamepadControls?.suspend(),
   };
-  // A colour alone changes nothing that would close the menu, so its はい leaves it.
+  // Applying only a colour (or the current outfit) also returns to play.
   bindCharacterSwitch({ ...menuActions, chooseDye, done: () => $('#modal').close() }, false);
   bindExhibitionWarp(menuActions);
   updateModalHUD();
@@ -2782,8 +2797,9 @@ bindSetupFlow({
 });
 $('#setup-form').onsubmit = (e) => {
   e.preventDefault();
-  // Only the final はい of the setup flow submits; a stray Enter elsewhere does nothing.
-  if (!setupFlowOpen()) return;
+  // Only the apply button (or a retained exhibition spawn card) starts the game.
+  const submitter = e.submitter as HTMLElement | null;
+  if (fixedIdentity ? !setupFlowOpen() : submitter?.id !== 'setup-flow-yes') return;
   applyProfileForm(e.currentTarget);
   closeSetupFlow();
   enterGame();
@@ -2792,7 +2808,7 @@ $('#modal-close').onclick = () => {
   if (!equipmentUI.close() && !cancelRoomReset()) $('#modal').close();
 };
 $('#modal').addEventListener('cancel', (event) => {
-  if (equipmentUI.close() || cancelRoomReset() || closeCharacterConfirm()) event.preventDefault();
+  if (equipmentUI.close() || cancelRoomReset()) event.preventDefault();
 });
 $('#modal').addEventListener('click', (e) => {
   if (e.target === $('#modal')) {
@@ -2959,10 +2975,6 @@ gamepadControls = new GamepadControls({
     if (chatUI?.dialog.open) return chatUI.setOpen(false);
     if (equipmentUI.close()) return;
     if (cancelRoomReset()) return;
-    if (closeCharacterConfirm()) {
-      gamepadControls?.suspend();
-      return;
-    }
     if (screens.active === 'setup' && setupFlowBack()) return;
     if (closeItemActions()) return;
     if ($('#modal').open) $('#modal').close();

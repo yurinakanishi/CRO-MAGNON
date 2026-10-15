@@ -357,12 +357,20 @@ test('a fade dithers linked copies, spares the actors sharing them and gives the
     body = new THREE.Mesh(new THREE.BoxGeometry(), shared),
     parts = new THREE.Mesh(new THREE.BoxGeometry(), [shared, accent]);
   actor.add(body, parts);
-  // A renderer stand-in: compileAsync sees what the meshes wear while it compiles.
+  // A renderer stand-in: compilation sees what the meshes wear and the scene's lights.
   const compiled = [],
     renderer = {
-      compileAsync(root) {
+      getContext: () => ({ isContextLost: () => false }),
+      extensions: { has: () => true },
+      properties: { get: () => ({ currentProgram: { isReady: () => true } }) },
+      compile(root, camera, targetScene) {
+        assert.equal(targetScene, link.scene);
         compiled.push(body.material);
-        return Promise.resolve(root);
+        const materials = new Set();
+        root.traverse((node) => {
+          if (node.material) for (const material of [node.material].flat()) materials.add(material);
+        });
+        return materials;
       },
     },
     link = { renderer, scene: new THREE.Scene(), camera: new THREE.PerspectiveCamera() };

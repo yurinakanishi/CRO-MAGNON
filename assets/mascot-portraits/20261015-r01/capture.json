@@ -1,0 +1,510 @@
+{
+  "ok": true,
+  "width": 384,
+  "height": 320,
+  "span": 0.78,
+  "browser": "154.0.8037.93",
+  "inputs": {
+    "scripts/capture-mascot-portraits.mjs": "dc29cd2bcbec0bb0d1708d572658ebb06359e4731ed1101671abff9bcea3c479",
+    "src/world-assets.ts": "534f5c9f1239ab02aec3c58836c96957881889895955a98ba3fc19d4037633c1",
+    "shared/companion-524.mts": "cf0d5c5d0e0b9e8a60f22f3a494ddb8137af13ee070bc40115dd44e777566762",
+    "shared/rimo-neko.mts": "af087ecc29d63ae8115a4e1476d4a6a2c6c8ee270f9767e283085d1db060a874"
+  },
+  "records": [
+    {
+      "key": "rimo-neko",
+      "modelKey": "rimo-neko",
+      "url": "/models/rimo-neko/portraits/companion-r01.webp",
+      "asset": {
+        "modelKey": "rimo-neko",
+        "name": "りもねこ",
+        "kind": "companion",
+        "candidate": 2,
+        "status": "remake-candidate-2-integrated",
+        "url": "/models/rimo-neko/model-c2.cook-2f72ab2075924de5.glb",
+        "sha256": "2f72ab2075924de55a7e7a185ba7217ecf96c153c363d3a71b0ed1439378379a",
+        "bytes": 2343344,
+        "triangles": 25590,
+        "upAxis": "Y",
+        "forwardAxis": "+Z",
+        "heightMetres": 0.5199786842176763,
+        "widthMetres": 0.31134676933288574,
+        "lengthMetres": 0.5939089804887772,
+        "placement": {
+          "pivot": "ground-between-four-paws",
+          "scale": 1
+        },
+        "clips": [
+          {
+            "name": "Idle_Loop",
+            "seconds": 3,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 120
+          },
+          {
+            "name": "Walk_Loop",
+            "seconds": 0.6833333333333333,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 120
+          },
+          {
+            "name": "Run_Loop",
+            "seconds": 0.5,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 120
+          },
+          {
+            "name": "Pet",
+            "seconds": 1.6,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 120
+          },
+          {
+            "name": "Happy",
+            "seconds": 1.6,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 120
+          },
+          {
+            "name": "Hit",
+            "seconds": 0.5,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 120
+          },
+          {
+            "name": "Hiss",
+            "seconds": 2.1,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 120
+          }
+        ],
+        "locomotion": {
+          "Walk_Loop": {
+            "metresPerSecond": 0.4677073170731707,
+            "cycleSeconds": 0.6833333333333333,
+            "dutyFactor": 0.6,
+            "touchdownPhases": {
+              "BL": 0,
+              "FL": 0.75,
+              "BR": 0.5,
+              "FR": 0.25
+            }
+          },
+          "Run_Loop": {
+            "metresPerSecond": 2,
+            "cycleSeconds": 0.5,
+            "dutyFactor": 0.23333333333333334,
+            "touchdownPhases": {
+              "FL": 0,
+              "FR": 0.06666666666666667,
+              "BR": 0.5,
+              "BL": 0.5666666666666667
+            }
+          }
+        },
+        "lods": [
+          {
+            "url": "/models/rimo-neko/lod-c2.cook-dc9da4b8ffcdf0f0.glb",
+            "sha256": "dc9da4b8ffcdf0f0575f2fae77823726a75df16d73470275df82c9561b79cd3d",
+            "bytes": 356908,
+            "triangles": 8241,
+            "distanceMetres": 6,
+            "purpose": "animated-medium-lod-geometry"
+          }
+        ],
+        "provenance": {
+          "provider": "Claude Code (Opus 5.5)",
+          "claudeUsed": true,
+          "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+          "referenceImage": "public/models/rimo-neko/model-c02-r03.glb",
+          "referenceSha256": "2b303eb5967bcc5bb0fc1cc13c922ddc959fd08ddfc736366c6e05392fd2063f",
+          "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+          "denseFile": "public/models/rimo-neko/model-c02-r03.glb",
+          "denseSha256": "2b303eb5967bcc5bb0fc1cc13c922ddc959fd08ddfc736366c6e05392fd2063f",
+          "processReport": "output/model-generation/models/rimo-neko/work/candidate-02/transfer/t06/report.json",
+          "rigReport": null,
+          "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+          "previousDelivery": {
+            "url": "/models/rimo-neko/model-c02-r03.glb",
+            "sha256": "2b303eb5967bcc5bb0fc1cc13c922ddc959fd08ddfc736366c6e05392fd2063f",
+            "triangles": 140226,
+            "bytes": 26079184,
+            "candidate": 2,
+            "revision": null
+          },
+          "previousProvenance": {
+            "provider": "Codex built-in imagegen; local TRELLIS-2; measured surface reduction and body-specific quadruped rig",
+            "claudeUsed": false,
+            "source": "output/model-generation/models/rimo-neko/candidate-2/work/rig/revision-03/candidate.glb",
+            "sourceSha256": "2b303eb5967bcc5bb0fc1cc13c922ddc959fd08ddfc736366c6e05392fd2063f",
+            "surface": "Candidate 2 / surface01, head and tail aligned at user request",
+            "sourceSurfaceSha256": "284095b15d1e08fdfa7a7157ba5806c322e52d280d03a0f0436c8f2311761850",
+            "referenceImage": "assets/rimo-neko/source/reference-v2.png",
+            "referenceSha256": "8e4854b4d1a397a9b485fe2e5a063ae8f5ca0f59ce05b9eb7a43f0ae491ee5f2",
+            "visualReview": "assets/rimo-neko/adoption.json",
+            "straightening": {
+              "request": "Face forward and tail centred, retaining the selected C2 surface",
+              "sourceSha256": "c336d59a52a5fc5594969ee97d8b4393b7e7f5a3ba7a8b176a6375ada41a3f57",
+              "headYawCorrectionDegrees": 32.3144481643561,
+              "headTranslationMetres": [
+                0.013073072871152253,
+                0,
+                0
+              ],
+              "oldTailCentres": [
+                [
+                  -0.003,
+                  0.171,
+                  0.23
+                ],
+                [
+                  -0.018,
+                  0.238,
+                  0.219
+                ],
+                [
+                  -0.046,
+                  0.282,
+                  0.268
+                ],
+                [
+                  -0.06,
+                  0.28,
+                  0.345
+                ],
+                [
+                  -0.063,
+                  0.269,
+                  0.409
+                ],
+                [
+                  -0.054,
+                  0.257,
+                  0.453
+                ]
+              ],
+              "newTailCentres": [
+                [
+                  0,
+                  0.171,
+                  0.23
+                ],
+                [
+                  0,
+                  0.238,
+                  0.219
+                ],
+                [
+                  0,
+                  0.282,
+                  0.268
+                ],
+                [
+                  0,
+                  0.28,
+                  0.345
+                ],
+                [
+                  0,
+                  0.269,
+                  0.409
+                ],
+                [
+                  0,
+                  0.257,
+                  0.453
+                ]
+              ],
+              "rigidFaceVertices": 12528,
+              "maximumRigidFaceError": 0,
+              "vertexCount": 62694,
+              "triangles": 140226,
+              "movedVertices": 46041,
+              "fixedSoleVertices": 4707,
+              "maximumSoleChange": 1.5515838457795457e-17,
+              "edgeLengthRatioQuantiles": [
+                0.2559098365593649,
+                0.7258925929010137,
+                1,
+                1.7340039958352773,
+                2.5013996233255953
+              ],
+              "method": "Rigid face yaw and centring with broad smooth neck transition; continuous lateral centreline correction retaining tail Y/Z and cross sections",
+              "topologyUvImageAndWeightsRetained": true
+            }
+          },
+          "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+          "visualReview": "assets/asset-remake/reviews/rimo-neko.json"
+        },
+        "notes": [
+          "Remake C2 of the user-selected C2 surface 01 (rig03): same surface reduced from 140,226 triangles; 29 bones and 7 clips unchanged. Clips copied verbatim from the previous delivery (scripts/remake/copy_animations.mjs) after the 120 fps re-export shortened an off-grid clip. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 27474 triangles (was 140226), textures 2048 WebP + baked normal."
+        ],
+        "revision": "c2-t06",
+        "runtimeOptimization": {
+          "adoption": "20261010-r07-a01",
+          "candidateRevision": "assets/optimized-runtime/20261010-r07",
+          "selection": "ordinary-compressed",
+          "original": {
+            "url": "/models/rimo-neko/model-c2.glb",
+            "sha256": "2ee2164b4c47ddbf89d73c1b58d9a61adea868ef7998967023cca6ebba056048",
+            "bytes": 7705604,
+            "triangles": 27474,
+            "lods": [
+              {
+                "url": "/models/rimo-neko/lod-c2.glb",
+                "sha256": "343908970676da4b9c4f86a3f30503cdc460049b8594da5b146bb8f589fe1ae0",
+                "bytes": 881680,
+                "triangles": 8241,
+                "distanceMetres": 6,
+                "purpose": "animated-medium-lod-geometry"
+              }
+            ]
+          },
+          "adoptedBy": "20261010-r07-a01",
+          "supersedes": {
+            "adoption": "20261009-r04-a01",
+            "candidateRevision": "assets/optimized-runtime/20261009-r04",
+            "url": "/models/rimo-neko/model-c2.opt-858fbf0413ae556b.glb",
+            "sha256": "858fbf0413ae556b29fcf681f3c1a8459ae920fd1dccf7bd5b0df6de6dfd604d",
+            "bytes": 3600960,
+            "lods": [
+              {
+                "url": "/models/rimo-neko/lod-c2.opt-3a81eb41a2d86949.glb",
+                "sha256": "3a81eb41a2d86949cdff870d6db601f7c285628175b50f32e7482e484cd717db",
+                "bytes": 688620
+              }
+            ]
+          }
+        }
+      },
+      "clip": "Idle_Loop",
+      "time": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "bounds": {
+        "min": [
+          -0.15811488622962658,
+          0.0009146458478433549,
+          -0.3492481323646533
+        ],
+        "max": [
+          0.15413970363053806,
+          0.506065573737971,
+          0.24136986238613498
+        ]
+      },
+      "camera": {
+        "position": [
+          0.7480124087004557,
+          0.6034901097929072,
+          1.946060865010741
+        ],
+        "target": [
+          -0.0019875912995442613,
+          0.2534901097929072,
+          -0.05393913498925916
+        ],
+        "verticalSpan": 0.78
+      },
+      "source": {
+        "url": "/models/rimo-neko/model-c2.opt-5787091de92988bd.glb",
+        "sha256": "5787091de92988bd62db552ad5519c80792438e49f3be06874e352a779a5798e"
+      },
+      "visiblePixels": 23721,
+      "pixelBounds": {
+        "left": 106,
+        "right": 256,
+        "top": 64,
+        "bottom": 275
+      },
+      "files": {
+        "png": {
+          "file": "rimo-neko.png",
+          "bytes": 67537,
+          "sha256": "1581bc393259eb8ac0eb50904c1ddffc8ca08dd272c374556af5c947fd6be064"
+        },
+        "webp": {
+          "file": "rimo-neko.webp",
+          "bytes": 34166,
+          "sha256": "592eac201c2846afb4fa3e9635fc9dc0619c23c8e85466d7a61388621009e102"
+        }
+      }
+    },
+    {
+      "key": "524",
+      "modelKey": "yellow-524-mascot",
+      "url": "/models/yellow-524-mascot/portraits/companion-r01.webp",
+      "asset": {
+        "modelKey": "yellow-524-mascot",
+        "name": "524",
+        "kind": "companion",
+        "candidate": 2,
+        "status": "remake-candidate-2-integrated",
+        "url": "/models/yellow-524-mascot/model-c2.cook-8a0b7ae4b973bba9.glb",
+        "sha256": "8a0b7ae4b973bba93e020b74f2438c984c3c3ad0eec57417b84b4890e60d5dda",
+        "bytes": 618680,
+        "triangles": 24997,
+        "upAxis": "Y",
+        "forwardAxis": "+Z",
+        "heightMetres": 0.3,
+        "widthMetres": 0.3449484712228878,
+        "placement": {
+          "pivot": "original-body-centre",
+          "scale": 0.3326795608548851,
+          "hoverHeightMetres": 0.94,
+          "hoverAmplitudeMetres": 0.12,
+          "hoverPeriodMs": 4000
+        },
+        "clips": [
+          {
+            "name": "Floating_Ripple",
+            "seconds": 4,
+            "loop": true
+          }
+        ],
+        "lods": [
+          {
+            "url": "/models/yellow-524-mascot/lod-c2.cook-4bbc0711bd053d78.glb",
+            "sha256": "4bbc0711bd053d78a7430eec88ff2608e8b40bf2b634436db37e5a12545f68bc",
+            "bytes": 125620,
+            "triangles": 7498,
+            "distanceMetres": 3.5,
+            "purpose": "animated-medium-lod-geometry"
+          }
+        ],
+        "notes": [
+          "Remake C2 of the user-adopted midpoint-colour 524: same surface reduced from 449,022 triangles; Floating_Ripple and the 20-bone rig unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 24997 triangles (was 449022), textures 1024 WebP + baked normal."
+        ],
+        "provenance": {
+          "provider": "Claude Code (Opus 5.5)",
+          "claudeUsed": true,
+          "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+          "referenceImage": "public/models/yellow-524-mascot/model-midpoint-r01.glb",
+          "referenceSha256": "77faeb7e7b0a34cd1aa6e23b728cbaf295227998791bb437977a8ff2abfbb3b9",
+          "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+          "denseFile": "public/models/yellow-524-mascot/model-midpoint-r01.glb",
+          "denseSha256": "77faeb7e7b0a34cd1aa6e23b728cbaf295227998791bb437977a8ff2abfbb3b9",
+          "processReport": "output/model-generation/models/yellow-524-mascot/work/candidate-02/transfer/t02/report.json",
+          "rigReport": null,
+          "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+          "previousDelivery": {
+            "url": "/models/yellow-524-mascot/model-midpoint-r01.glb",
+            "sha256": "77faeb7e7b0a34cd1aa6e23b728cbaf295227998791bb437977a8ff2abfbb3b9",
+            "triangles": 449022,
+            "bytes": 19046100,
+            "candidate": 14,
+            "revision": "midpoint-r01"
+          },
+          "previousProvenance": {
+            "provider": "Codex imagegen and local TRELLIS-2 lineage; original C13/C14 midpoint color baked by Codex",
+            "claudeUsed": false,
+            "source": "../threed-model-creation/models/yellow-524-mascot/work/low-poly/batch-016/run-01/attempt-01/candidate.glb",
+            "sourceSha256": "2652765f480973f6d974d0c51b2bd294c6e4c81e32e369814e09ba6c03c3e418",
+            "referenceImage": "assets/companion-524/reference.png",
+            "referenceSha256": "1327aec1bebbe9f1df13bfb0000ad8aee9d967c38687588c401a5d870e32fb41",
+            "visualReview": "assets/companion-524/adoption-midpoint-r01.json",
+            "colorSources": [
+              "../threed-model-creation/models/yellow-524-mascot/work/low-poly/batch-015/run-01/attempt-01/candidate.glb",
+              "../threed-model-creation/models/yellow-524-mascot/work/low-poly/batch-016/run-01/attempt-01/candidate.glb"
+            ],
+            "colorSourceHashes": [
+              "04b54fad6ab5f59ee342f3b98dbd902ef8a4f4fe9bb53816fc91879291e32b3a",
+              "2652765f480973f6d974d0c51b2bd294c6e4c81e32e369814e09ba6c03c3e418"
+            ]
+          },
+          "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+          "visualReview": "assets/asset-remake/reviews/yellow-524-mascot.json"
+        },
+        "revision": "c2-t02",
+        "runtimeOptimization": {
+          "adoption": "20261010-r07-a01",
+          "candidateRevision": "assets/optimized-runtime/20261009-r04",
+          "selection": "ordinary-compressed",
+          "original": {
+            "url": "/models/yellow-524-mascot/model-c2.glb",
+            "sha256": "cc25400bd45deb7b7fabf7723698c445b150710eb0b5921f92e43a30de45a143",
+            "bytes": 1648020,
+            "triangles": 24997,
+            "lods": [
+              {
+                "url": "/models/yellow-524-mascot/lod-c2.glb",
+                "sha256": "15e3e89a7e41df4bfdc8583a4b3ce648543ddba7aa400c8ba3ea105d404d5586",
+                "bytes": 401716,
+                "triangles": 7498,
+                "distanceMetres": 3.5,
+                "purpose": "animated-medium-lod-geometry"
+              }
+            ]
+          },
+          "adoptedBy": "20261009-r04-a01"
+        }
+      },
+      "clip": "Floating_Ripple",
+      "time": 0,
+      "scale": [
+        0.3326795608548851,
+        0.3326795608548851,
+        0.3326795608548851
+      ],
+      "bounds": {
+        "min": [
+          -0.1712590270252757,
+          -0.14327052800334433,
+          -0.1458845288552218
+        ],
+        "max": [
+          0.1736435382800579,
+          0.1658403105885357,
+          0.14920879612163557
+        ]
+      },
+      "camera": {
+        "position": [
+          0.7511922556273911,
+          0.36128489129259567,
+          2.0016621336332068
+        ],
+        "target": [
+          0.0011922556273911006,
+          0.011284891292595689,
+          0.001662133633206886
+        ],
+        "verticalSpan": 0.78
+      },
+      "source": {
+        "url": "/models/yellow-524-mascot/model-c2.opt-b5f96efd14f833f9.glb",
+        "sha256": "b5f96efd14f833f94ccf9bf12a5563fe4ab9e976dd9ab899b75a2bb83f81064d"
+      },
+      "visiblePixels": 13407,
+      "pixelBounds": {
+        "left": 122,
+        "right": 262,
+        "top": 99,
+        "bottom": 228
+      },
+      "files": {
+        "png": {
+          "file": "yellow-524-mascot.png",
+          "bytes": 32841,
+          "sha256": "180cb95deb36f30340a5c85ec61a866e767e01c25aa5faca345675b58033ae1d"
+        },
+        "webp": {
+          "file": "yellow-524-mascot.webp",
+          "bytes": 14800,
+          "sha256": "36fb867b1c4759bfb9d8827d523919e364a431f4a84368406ddf095b46bb62ec"
+        }
+      }
+    }
+  ],
+  "errors": []
+}

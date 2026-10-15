@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { skinnedDistance } from './skinned-bounds.js';
 import { isMesh, isSkinnedMesh } from './three-types.js';
+import { compileScene } from './context-recovery.js';
 
 type Worn = THREE.Material | THREE.Material[];
 
@@ -107,7 +108,7 @@ export class ActorFade {
 
   /**
    * Draw the actor at this opacity, every frame it may change. With `link`, copies not yet
-   * linked are compiled in the background with that scene's lights (compileAsync); without
+   * linked are compiled in the background with that scene's lights; without
    * it, nothing is compiled.
    */
   set(
@@ -157,8 +158,9 @@ export class ActorFade {
     for (const [mesh, copies] of meshes) mesh.material = copies;
     let compiled: Promise<unknown>;
     try {
-      // compileAsync compiles before it first waits: the meshes take back what they wore.
-      compiled = Promise.all(this.roots.map((root) => renderer.compileAsync(root, camera, scene)));
+      // Compile before restoring the worn materials. A character switch may dispose the
+      // copies while their programs are pending, so use the disposal-aware waiter.
+      compiled = Promise.all(this.roots.map((root) => compileScene(renderer, root, camera, scene)));
     } finally {
       for (const [mesh, material] of worn) mesh.material = material;
     }

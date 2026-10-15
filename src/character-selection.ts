@@ -5,6 +5,7 @@ import {
   normalizeCharacter,
 } from '../shared/characters.mjs';
 import type { CharacterModel, CharacterProfile } from '../shared/types.mjs';
+import { characterPortraitUrl } from './character-portraits.js';
 
 // One card per playable look. Humans are listed as separate female/male cards so the player
 // never has to pick a species first and a gender second. The first look of a species and gender
@@ -27,11 +28,11 @@ export function parseCharacterValue(value: unknown) {
   return normalizeCharacter({ species, gender });
 }
 
-export function characterChoicesMarkup() {
+export function characterChoicesMarkup(dye: unknown = null) {
   return `<fieldset class="character-options"><legend class="character-legend">キャラクターを選ぶ</legend><div class="character-choice-grid">${PLAYABLE_CHARACTER_MODELS.map(
     (model) => {
       const [name, variant] = model.name.split(' ');
-      return `<label class="character-choice"><input type="radio" name="character" value="${cardValue(model)}" required><img class="character-art" src="/models/${model.key}/portrait.png" width="420" height="480" alt="" draggable="false"><span class="character-name"><strong>${name}</strong>${variant ? `<small>${variant}</small>` : ''}</span></label>`;
+      return `<label class="character-choice"><input type="radio" name="character" value="${cardValue(model)}" required><img class="character-art" data-character-image="${model.key}" src="${characterPortraitUrl(model.key, dye)}" width="336" height="384" alt="" decoding="async" draggable="false"><span class="character-name"><strong>${name}</strong>${variant ? `<small>${variant}</small>` : ''}</span></label>`;
     },
   ).join('')}</div><p class="character-scroll-hint">左右にスワイプして選ぶ</p></fieldset>`;
 }

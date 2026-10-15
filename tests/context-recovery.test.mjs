@@ -125,6 +125,23 @@ test('compiling never hangs on a lost or restored context', async () => {
   await serialCompile;
 });
 
+test('a character removed while compiling releases its pending program without an error or hang', async () => {
+  const actor = new THREE.Group();
+  const material = new THREE.MeshStandardMaterial();
+  actor.add(new THREE.Mesh(new THREE.BoxGeometry(), material));
+  const renderer = compilingRenderer();
+  material.addEventListener('dispose', () => renderer.programs.delete(material));
+  let done = false;
+  const pending = compileScene(renderer, actor, new THREE.PerspectiveCamera()).then(
+    () => (done = true),
+  );
+  await wait(20);
+  assert.equal(done, false, 'the shader is still compiling');
+  material.dispose();
+  await pending;
+  assert.equal(done, true, 'a disposed character no longer waits for its deleted shader');
+});
+
 /** A playing world without WebGL: the real lifecycle methods and frame loop body. */
 function playingWorld() {
   const events = [],
