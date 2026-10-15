@@ -28,13 +28,29 @@ export function parseCharacterValue(value: unknown) {
   return normalizeCharacter({ species, gender });
 }
 
+export function characterChoiceName(model: Readonly<CharacterModel>) {
+  const [name, variant] = model.name.split(' ');
+  if (!variant) return name;
+  const child = variant.match(/^(.+)の(女の子|男の子)$/);
+  return child ? `${child[1]}の${name}${child[2]}` : `${name}（${variant}）`;
+}
+
+// Only the picker order changes. The model roster's first female/male looks still
+// resolve old saved choices, so never reorder that shared roster for presentation.
+const isCroGirl = (model: Readonly<CharacterModel>) =>
+  model.species === 'cro' && model.gender === 'female';
+const characterChoices = [
+  ...PLAYABLE_CHARACTER_MODELS.filter((model) => !isCroGirl(model)),
+  ...PLAYABLE_CHARACTER_MODELS.filter(isCroGirl),
+];
+
 export function characterChoicesMarkup(dye: unknown = null) {
-  return `<fieldset class="character-options"><legend class="character-legend">キャラクターを選ぶ</legend><div class="character-choice-grid">${PLAYABLE_CHARACTER_MODELS.map(
-    (model) => {
-      const [name, variant] = model.name.split(' ');
-      return `<label class="character-choice"><input type="radio" name="character" value="${cardValue(model)}" required><img class="character-art" data-character-image="${model.key}" src="${characterPortraitUrl(model.key, dye)}" width="336" height="384" alt="" decoding="async" draggable="false"><span class="character-name"><strong>${name}</strong>${variant ? `<small>${variant}</small>` : ''}</span></label>`;
-    },
-  ).join('')}</div><p class="character-scroll-hint">左右にスワイプして選ぶ</p></fieldset>`;
+  return `<fieldset class="character-options"><legend class="character-legend">キャラクターを選ぶ</legend><div class="character-choice-grid">${characterChoices
+    .map(
+      (model) =>
+        `<label class="character-choice"><input type="radio" name="character" value="${cardValue(model)}" required><img class="character-art" data-character-image="${model.key}" src="${characterPortraitUrl(model.key, dye)}" width="336" height="384" alt="" decoding="async" draggable="false"><span class="character-name"><strong>${characterChoiceName(model)}</strong></span></label>`,
+    )
+    .join('')}</div><p class="character-scroll-hint">左右にスワイプして選ぶ</p></fieldset>`;
 }
 
 export function bindCharacterSelection(form: HTMLFormElement, profile: CharacterProfile) {

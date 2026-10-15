@@ -1,3 +1,5 @@
+import { BOT_KINDS } from '../shared/orb-bots.mjs';
+
 /** Photographs of the delivered companion GLBs, kept apart from their source portraits. */
 export const MASCOT_PORTRAITS = [
   {
@@ -10,6 +12,11 @@ export const MASCOT_PORTRAITS = [
     modelKey: 'yellow-524-mascot',
     url: '/models/yellow-524-mascot/portraits/companion-r01.webp',
   },
+  ...BOT_KINDS.map((key) => ({
+    key,
+    modelKey: `orb-bot-${key}`,
+    url: `/models/orb-bot-${key}/portraits/companion-r01.webp`,
+  })),
 ] as const;
 
 export const mascotPortrait = (key: string) =>

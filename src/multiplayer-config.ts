@@ -1,7 +1,7 @@
 import { parseControllerLayout, type ControllerLayout } from '../shared/controller-layout.mjs';
 
 export interface MultiplayerConfig {
-  mode: 'online' | 'lan';
+  mode: 'solo' | 'online' | 'lan';
   serverUrl: string;
   room?: string;
   guestName?: string;
@@ -13,8 +13,8 @@ export interface MultiplayerConfig {
 export function parseMultiplayerConfig(value: unknown): MultiplayerConfig {
   if (!value || typeof value !== 'object') throw new Error('接続設定を読み込めません。');
   const config = value as Record<string, unknown>;
-  if (config.mode !== 'lan' && config.mode !== 'online')
-    throw new Error('MULTIPLAYER_MODE は lan または online にしてください。');
+  if (!['solo', 'lan', 'online'].includes(String(config.mode)))
+    throw new Error('MULTIPLAYER_MODE は solo、lan、online のいずれかにしてください。');
   const serverUrl = typeof config.serverUrl === 'string' ? config.serverUrl : '';
   if (
     config.movementRefreshMs !== undefined &&
@@ -32,7 +32,7 @@ export function parseMultiplayerConfig(value: unknown): MultiplayerConfig {
       throw new Error('展示LANでは ws:// を使用してください。');
   }
   return {
-    mode: config.mode,
+    mode: config.mode as MultiplayerConfig['mode'],
     serverUrl,
     room: typeof config.room === 'string' ? config.room : undefined,
     guestName: typeof config.guestName === 'string' ? config.guestName : undefined,
@@ -49,6 +49,7 @@ export function multiplayerUrl(
   origin: string,
   params: Record<string, string>,
 ) {
+  if (config.mode === 'solo') throw new Error('Solo play has no network connection');
   const url = new URL(config.serverUrl || '/ws', origin.replace(/^http/, 'ws'));
   for (const [key, value] of Object.entries(params)) url.searchParams.set(key, value);
   if (config.mode === 'lan') url.searchParams.set('build', config.buildId || '');
@@ -56,7 +57,11 @@ export function multiplayerUrl(
 }
 
 export function multiplayerSessionKey(config: MultiplayerConfig, room: string) {
-  return config.mode === 'lan' ? `lan:${config.serverUrl}:${room}` : room;
+  return config.mode === 'solo'
+    ? 'solo:SOLO'
+    : config.mode === 'lan'
+      ? `lan:${config.serverUrl}:${room}`
+      : room;
 }
 
 export async function loadMultiplayerConfig(): Promise<MultiplayerConfig> {
@@ -65,7 +70,9 @@ export async function loadMultiplayerConfig(): Promise<MultiplayerConfig> {
     signal: AbortSignal.timeout(8000),
   });
   // Old online deployments do not yet have a runtime config file.
-  if (response.status === 404) return { mode: 'online', serverUrl: '' };
+  if (response.status === 404) return { mode: 'solo', serverUrl: '', room: 'SOLO' };
   if (!response.ok) throw new Error('接続設定を読み込めません。起動ウィンドウを確認してください。');
-  return parseMultiplayerConfig(await response.json());
+  const config = parseMultiplayerConfig(await response.json());
+  // Online entry is currently disabled, including old deployments' cached config.
+  return config.mode === 'lan' ? config : { ...config, mode: 'solo', serverUrl: '', room: 'SOLO' };
 }

@@ -86,6 +86,7 @@ async function open(name, options) {
     await page.locator('#title-start').click();
     await page.locator('#setup-form .character-choice:has(input:checked)').click();
     await page.locator('#setup-flow-yes').click();
+    await page.locator('#mascot-start').click();
     await page.waitForFunction(() => globalThis.qaCave?.actor, undefined, { timeout: 180000 });
     who.cave = await page.evaluate(() => ({
       dye: globalThis.qaCave.actor.clothing?.dye ?? null,

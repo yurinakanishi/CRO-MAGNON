@@ -43,6 +43,8 @@
     "src/chat-ui.ts",
     "src/companion-view.ts",
     "src/multiplayer-config.ts",
+    "src/solo-connection.ts",
+    "infrastructure/browser/solo-save.mts",
     "src/screens.ts",
     "src/character-selection.ts",
     "src/view-update-gate.ts",

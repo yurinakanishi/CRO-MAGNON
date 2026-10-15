@@ -9,9 +9,9 @@ export async function bundleBrowser(directory) {
   const profiles = path.join(root, 'shared/character-profiles.mjs');
   const result = await build({
     absWorkingDir: root,
-    entryPoints: ['src/boot.js'],
+    entryPoints: { 'boot-bundle': 'src/boot.js', 'solo-worker': 'src/solo-worker.js' },
     outdir: 'src',
-    entryNames: '[name]-bundle',
+    entryNames: '[name]',
     chunkNames: 'runtime-[name]-[hash]',
     bundle: true,
     splitting: true,
@@ -41,7 +41,7 @@ export async function bundleBrowser(directory) {
   });
   const files = result.outputFiles.map((file) => {
     const name = path.relative(root, file.path).split(path.sep).join('/');
-    assert.match(name, /^src\/(?:boot-bundle|runtime-[A-Za-z0-9_-]+)\.js$/);
+    assert.match(name, /^src\/(?:boot-bundle|solo-worker|runtime-[A-Za-z0-9_-]+)\.js$/);
     return { name, bytes: Buffer.from(file.contents) };
   });
   assert.ok(files.some((file) => file.name === 'src/boot-bundle.js'));

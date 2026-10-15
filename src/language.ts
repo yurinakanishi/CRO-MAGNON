@@ -103,6 +103,8 @@ export function translateText(source: string, selected = language): string {
 
 registerTranslations({
   はじめる: 'Start',
+  ソロプレイで始める: 'Start solo play',
+  オンラインで始める: 'Start online play',
   関わってくれた人たち: 'Contributors',
   戻る: 'Back',
   全画面表示: 'Fullscreen',

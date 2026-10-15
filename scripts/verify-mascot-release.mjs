@@ -5,14 +5,8 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { EventEmitter } from 'node:events';
 import { MASCOT_ROSTER, mascotCreditReleased } from '../dist/shared/mascot-roster.mjs';
-import {
-  TITLE_CREDITS,
-  TITLE_GUEST,
-  TITLE_SUPPORT,
-  TITLE_DOTS,
-  TITLE_FRIENDS,
-} from '../dist/src/title-credit-profiles.js';
-import { muralPeople } from '../dist/src/title-credits.js';
+import { TITLE_CREDITS, TITLE_DOTS, TITLE_FRIENDS } from '../dist/src/title-credit-profiles.js';
+import { muralPeople, titleContributors } from '../dist/src/title-credits.js';
 import { runtimeTextureRecords } from './environment-assets.mjs';
 
 const buildRoot = process.argv[2] || '.';
@@ -58,18 +52,18 @@ assert.deepEqual(
 );
 // The dots are in every build, so their credit always ships.
 assert.deepEqual(profiles.TITLE_DOTS, TITLE_DOTS);
-const guestCredits = [TITLE_GUEST, TITLE_SUPPORT, ...TITLE_FRIENDS]
-  .filter((person) => mascotCreditReleased(person.qr))
-  .map((person) => person.qr);
-// The credits hold dormant companions back, but the update cave's 「壁画の人々」 lists everyone
-// painted, so a painted friend's profile ships and an unpainted dormant one's does not.
+const guestCredits = titleContributors()
+  .filter((person) => person.role === '友情出演')
+  .map((person) => person.key);
+// Asahina is explicitly credited; other dormant friends appear only in the cave's
+// 「壁画の人々」 list. A painted friend's profile ships independently of their mascot.
 const painted = muralPeople().map((person) => person.key);
 assert.deepEqual(
   profiles.TITLE_FRIENDS,
   TITLE_FRIENDS.filter((p) => mascotCreditReleased(p.qr) || painted.includes(p.qr)),
 );
 // What the shipped title modules show: everyone painted (supervisors only with full credits),
-// while the credits still name only released companions.
+// and the same explicitly credited people as the source title.
 const shipped = await import(
   pathToFileURL(path.resolve(buildRoot, 'dist-cloudflare/src/title-credits.js')).href
 );
@@ -87,7 +81,7 @@ assert.deepEqual(
     .titleContributors()
     .filter((person) => person.role === '友情出演')
     .map((person) => person.key),
-  [...guestCredits, TITLE_DOTS.qr],
+  guestCredits,
 );
 const sourceCave = JSON.parse(await readFile('public/models/camp-cave/asset.json', 'utf8'));
 const textures = runtimeTextureRecords(sourceCave);

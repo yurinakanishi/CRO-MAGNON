@@ -96,13 +96,18 @@ test('each dormant selection survives hidden saves and appears only when enabled
   }
 });
 
-test('guest profiles are limited to rimo, 524 and the always-present dots, with adviser credits retained', () => {
+test('guest credits include Asahina without releasing Rei, with adviser credits retained', () => {
   const people = titleContributors();
   assert.deepEqual(
     people.filter((p) => p.role === '友情出演').map((p) => p.key),
-    ['r524', 'rimo', 'dots'],
+    ['r524', 'rimo', 'asahina', 'dots'],
   );
-  for (const key of ['maruimo', 'mae', 'risa', 'saber', 'fairy', 'sagasa', 'hawkie', 'asahina'])
+  const asahina = people.find((person) => person.key === 'asahina');
+  assert.equal(asahina.name, '朝日南');
+  assert.equal(asahina.profile, 'https://x.com/asahina_AIauto');
+  assert.equal(asahina.appears, undefined);
+  assert.equal(MASCOT_ROSTER.find((entry) => entry.modelKey === 'rei-mascot').enabled, false);
+  for (const key of ['maruimo', 'mae', 'risa', 'saber', 'fairy', 'sagasa', 'hawkie'])
     assert.ok(!people.some((person) => person.key === key), key);
   for (const key of ['otani', 'urata', 'nukonuko']) {
     const adviser = people.find((p) => p.key === key);

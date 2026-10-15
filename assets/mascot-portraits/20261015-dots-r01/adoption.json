@@ -1,0 +1,60 @@
+{
+  "status": "adopted",
+  "review": "review.png",
+  "files": [
+    {
+      "key": "white",
+      "url": "/models/orb-bot-white/portraits/companion-r01.webp",
+      "sha256": "99dede88b0204deb1fcb90b9abe0b5fe5644d36f3ebffff4cd025c267ca36db0",
+      "bytes": 6864
+    },
+    {
+      "key": "blue",
+      "url": "/models/orb-bot-blue/portraits/companion-r01.webp",
+      "sha256": "593d547cd63060949737b919a024ebb57560e4c03f8517caeb8170cfb681e202",
+      "bytes": 7936
+    },
+    {
+      "key": "green",
+      "url": "/models/orb-bot-green/portraits/companion-r01.webp",
+      "sha256": "2d7c887683f6c40c83ab0da6922075ac344e675dca662d51f2456a049c7ec918",
+      "bytes": 8230
+    },
+    {
+      "key": "purple",
+      "url": "/models/orb-bot-purple/portraits/companion-r01.webp",
+      "sha256": "34fc54dc7f8750c4fa789fb8e7d5c06e75ebbc5c38bdd22cecddc33e1b7f1be6",
+      "bytes": 9076
+    },
+    {
+      "key": "orange",
+      "url": "/models/orb-bot-orange/portraits/companion-r01.webp",
+      "sha256": "a19c493ba0efbe0377b2bf95d351a855dcf7fc155661fbc60e6d402047b7779a",
+      "bytes": 7448
+    },
+    {
+      "key": "beret",
+      "url": "/models/orb-bot-beret/portraits/companion-r01.webp",
+      "sha256": "87b59795f273c6fb7350da6c1aeed7ec8609ff6b30bacf320d83d5863e356a9e",
+      "bytes": 9078
+    },
+    {
+      "key": "frog",
+      "url": "/models/orb-bot-frog/portraits/companion-r01.webp",
+      "sha256": "7129a825d25917782425884a1b4e1d793c23c6b9be0fb53611ab80d35df61bbf",
+      "bytes": 10882
+    },
+    {
+      "key": "triangle",
+      "url": "/models/orb-bot-triangle/portraits/companion-r01.webp",
+      "sha256": "59f8076a4d5e319d10a31a99bbd3f777946b67e24bda0723aa93f5cddd44ed69",
+      "bytes": 8856
+    },
+    {
+      "key": "heart",
+      "url": "/models/orb-bot-heart/portraits/companion-r01.webp",
+      "sha256": "c1308137c9d22c4a76cedd1fc92330621817644e05ee4250468317f45d0fb018",
+      "bytes": 9160
+    }
+  ]
+}

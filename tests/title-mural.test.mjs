@@ -43,14 +43,14 @@ test('the title mural is the baked strip of the unmodified cave friezes', async 
 test('contributors link only to verified x.com profiles', () => {
   const people = titleContributors();
   assert.equal(people[0].name, 'yuri');
-  assert.equal(people.length, TITLE_CREDITS.length + 3);
+  assert.equal(people.length, TITLE_CREDITS.length + 4);
   assert.deepEqual(
     people.filter((p) => p.role === '監修').map((p) => p.key),
     ['ryuichi', 'nukonuko', 'otani', 'urata'],
   );
   assert.deepEqual(
     people.filter((p) => p.role === '友情出演').map((p) => p.key),
-    ['r524', 'rimo', 'dots'],
+    ['r524', 'rimo', 'asahina', 'dots'],
   );
   // OpenAI's dots, which the camp's dots follow, have no X profile: a card without a link.
   const dots = people.find((p) => p.key === 'dots');
@@ -70,6 +70,7 @@ test('contributors link only to verified x.com profiles', () => {
     nukonuko: 'ぬこぬこ',
     r524: '524',
     rimo: 'りもねこ',
+    asahina: '怜ちゃん',
   });
 });
 
@@ -176,7 +177,7 @@ test('the public build rewrites every credit table the dialog imports, including
   for (const name of imported) assert.match(written, new RegExp(`export const ${name} =`), name);
 });
 
-test('the public build ships everyone painted for the cave’s mural list; the credits still hold dormant friends back', async () => {
+test('the public build carries painted profiles and credits Asahina independently of mascot release', async () => {
   const build = await readFile(new URL('scripts/cloudflare-public-build.mjs', root), 'utf8');
   assert.match(
     build,
@@ -201,10 +202,14 @@ test('the public build ships everyone painted for the cave’s mural list; the c
   const supervisors = TITLE_CREDITS.slice(1).map((credit) => credit.qr);
   for (const key of painted)
     assert.equal(shipped.has(key), release.credits === 'full' || !supervisors.includes(key), key);
-  // The credits read the release state themselves, so shipping a profile credits no one.
+  // Shipping a profile does not itself credit it; Asahina is an explicit credit.
   const credited = titleContributors().map((person) => person.key);
   for (const friend of TITLE_FRIENDS)
-    assert.equal(credited.includes(friend.qr), mascotCreditReleased(friend.qr), friend.qr);
+    assert.equal(
+      credited.includes(friend.qr),
+      friend.qr === 'asahina' || mascotCreditReleased(friend.qr),
+      friend.qr,
+    );
 });
 
 test('every title offers contributors immediately without home credit cards or a loading gate', async () => {

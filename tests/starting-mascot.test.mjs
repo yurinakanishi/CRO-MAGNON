@@ -119,6 +119,7 @@ test('a failed arrival leaves the saved companion and possessions available for 
 
 test('setup offers the released roster, exactly one chosen card, and the same real photos as the menu', () => {
   assert.equal(STARTING_MASCOTS.length, 11);
+  assert.deepEqual(new Set(MASCOT_PORTRAITS.map((photo) => photo.key)), new Set(STARTING_MASCOTS));
   assert.ok(!STARTING_MASCOTS.includes('mae'));
   const markup = startingMascotMarkup(STARTING_MASCOTS, '524', false);
   assert.equal((markup.match(/aria-pressed="true"/g) || []).length, 1);
@@ -142,29 +143,39 @@ test('setup offers the released roster, exactly one chosen card, and the same re
   );
 });
 
-test('adopted photographs retain verified model provenance and exact visible PNG pixels', async () => {
-  const folder = 'assets/mascot-portraits/20261015-r01';
-  const capture = JSON.parse(await readFile(`${folder}/capture.json`, 'utf8'));
-  const adoption = JSON.parse(await readFile(`${folder}/adoption.json`, 'utf8'));
-  assert.equal(capture.ok, true);
-  assert.equal(capture.records.length, 2);
-  const sha = (bytes) => createHash('sha256').update(bytes).digest('hex');
-  for (const record of capture.records) {
-    const source = JSON.parse(
-      await readFile(`public/models/${record.modelKey}/asset.json`, 'utf8'),
-    );
-    assert.equal(source.sha256, record.source.sha256);
-    const png = await readFile(`${folder}/${record.files.png.file}`);
-    const webp = await readFile(`public${record.url}`);
-    assert.equal(sha(webp), record.files.webp.sha256);
-    assert.equal(sha(webp), adoption.files.find((file) => file.key === record.key).sha256);
-    const a = await sharp(png).ensureAlpha().raw().toBuffer();
-    const b = await sharp(webp).ensureAlpha().raw().toBuffer();
-    for (let i = 0; i < a.length; i += 4) {
-      assert.equal(a[i + 3], b[i + 3]);
-      if (a[i + 3]) assert.ok(a.subarray(i, i + 3).equals(b.subarray(i, i + 3)));
+for (const [revision, count] of [
+  ['20261015-r01', 2],
+  ['20261015-dots-r01', 9],
+])
+  test(`adopted photographs ${revision} retain verified model provenance and exact visible PNG pixels`, async () => {
+    const folder = `assets/mascot-portraits/${revision}`;
+    const capture = JSON.parse(await readFile(`${folder}/capture.json`, 'utf8'));
+    const adoption = JSON.parse(await readFile(`${folder}/adoption.json`, 'utf8'));
+    assert.equal(capture.ok, true);
+    assert.equal(capture.records.length, count);
+    const sha = (bytes) => createHash('sha256').update(bytes).digest('hex');
+    for (const record of capture.records) {
+      const source = JSON.parse(
+        await readFile(`public/models/${record.modelKey}/asset.json`, 'utf8'),
+      );
+      assert.equal(source.sha256, record.source.sha256);
+      const png = await readFile(`${folder}/${record.files.png.file}`);
+      const webp = await readFile(`public${record.url}`);
+      assert.equal(sha(webp), record.files.webp.sha256);
+      assert.equal(sha(webp), adoption.files.find((file) => file.key === record.key).sha256);
+      const a = await sharp(png).ensureAlpha().raw().toBuffer();
+      const b = await sharp(webp).ensureAlpha().raw().toBuffer();
+      for (let i = 0; i < a.length; i += 4) {
+        assert.equal(a[i + 3], b[i + 3]);
+        if (a[i + 3]) assert.ok(a.subarray(i, i + 3).equals(b.subarray(i, i + 3)));
+      }
+      assert.equal(record.clip, record.key === '524' ? 'Floating_Ripple' : 'Idle_Loop');
+      assert.equal(record.camera.verticalSpan, 0.78);
+      if (revision.includes('dots')) {
+        assert.ok(record.modelKey.startsWith('orb-bot-'));
+        assert.deepEqual(record.scale, [1, 1, 1]);
+        if (!['triangle', 'heart'].includes(record.key)) assert.equal(record.blink.closure, 0);
+      }
+      assert.ok(record.pixelBounds.left >= 6 && record.pixelBounds.top >= 6);
     }
-    assert.equal(record.clip, record.key === '524' ? 'Floating_Ripple' : 'Idle_Loop');
-    assert.ok(record.pixelBounds.left >= 6 && record.pixelBounds.top >= 6);
-  }
-});
+  });

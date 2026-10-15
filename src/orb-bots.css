@@ -131,27 +131,75 @@
 }
 .starting-mascot-cards {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 112px;
-  gap: 8px;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
   padding: 4px 2px;
 }
 .starting-mascot .mascot-card {
-  min-height: 112px;
+  min-height: 140px;
   padding: 8px 4px;
   gap: 4px;
   -webkit-tap-highlight-color: transparent;
 }
 .starting-mascot .mascot-picture {
-  width: 92px;
-  height: 76px;
+  width: 112px;
+  max-width: 100%;
+  height: 94px;
 }
 .starting-mascot-choice {
   margin: 6px 0 0;
   color: #d6c79a;
   font-size: 12px;
+}
+
+.mascot-setup-card {
+  width: min(1040px, 100%);
+  max-height: calc(var(--screen-height, 100dvh) - 48px);
+}
+#starting-mascot-form {
+  overflow: hidden;
+}
+.mascot-setup-card > [data-starting-mascot-picker] {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: thin;
+}
+.mascot-setup-card .setup-heading {
+  flex-shrink: 0;
+}
+.mascot-setup-card .starting-mascot legend span {
+  display: none;
+}
+.mascot-setup-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-shrink: 0;
+  padding: 12px 0 0;
+  background: #0a120ef5;
+}
+.mascot-setup-actions .button {
+  min-height: 48px;
+}
+@media (max-width: 640px) {
+  .starting-mascot-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .starting-mascot .mascot-card {
+    min-height: 114px;
+    font-size: 12px;
+  }
+  .starting-mascot .mascot-picture {
+    width: 92px;
+    height: 76px;
+  }
+}
+@media (max-width: 360px) {
+  .starting-mascot-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .mascot-card strong {

@@ -97,8 +97,8 @@ if (!publicCharacters.some((model) => model.species === 'cro'))
   throw new Error('Missing default public character');
 const hasOctopus = publicCharacters.some((model) => model.bodyPlan === 'octopus');
 const credits = release.credits === 'full' ? TITLE_CREDITS : TITLE_CREDITS.slice(0, 1);
-// The credits name only released companions, but the update cave's 「壁画の人々」 lists
-// everyone painted on its walls (user instruction 2026-10-13), so their profiles ship too.
+// The cave's 「壁画の人々」 lists everyone painted (2026-10-13), so their profiles ship
+// independently of mascot release. This also includes the explicitly credited Asahina.
 const painted = new Set(muralPeople().map((person) => person.key));
 const friends = TITLE_FRIENDS.filter(
   (person) => mascotCreditReleased(person.qr) || painted.has(person.qr),
@@ -150,6 +150,11 @@ async function collect(directory, extensions, keep = () => true) {
       )
         continue;
       let bytes = await readFile(path.join(root, file));
+      if (file === 'dist/src/solo-worker.js') {
+        // Input for the final filtered bundle; only its bundled output enters the ledger.
+        await writeFile(path.join(staging, 'src/solo-worker.js'), bytes);
+        continue;
+      }
       if (!hasOctopus && file === 'dist/src/character-assets.js') {
         const source = bytes.toString('utf8');
         const optionalImport =
@@ -219,9 +224,9 @@ await publish(
   Buffer.from(
     JSON.stringify(
       {
-        mode: 'online',
+        mode: 'solo',
         serverUrl: '',
-        room: 'EMBER',
+        room: 'SOLO',
         movementRefreshMs: 140,
       },
       null,

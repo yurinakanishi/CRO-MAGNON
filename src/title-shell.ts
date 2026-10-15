@@ -23,7 +23,8 @@ export function titleScreenMarkup(): string {
           <div class="title-logo" style="--title-art: url('${titleArtPath}')"><h1>${GAME_TITLE}</h1><img class="title-art" src="${titleArtPath}" width="1536" height="1024" alt="${GAME_TITLE} — 氷河時代の旅人たちとマンモス" fetchpriority="high"></div>
           <div class="title-welcome">
           <nav class="title-menu" aria-label="タイトルメニュー">
-            <button id="title-start" class="menu-item">はじめる</button>
+            <button id="title-start" class="menu-item">${BUILD_PROFILE.environment === 'exhibition' ? 'はじめる' : 'ソロプレイで始める'}</button>
+            ${BUILD_PROFILE.environment === 'exhibition' ? '' : '<button id="title-online" class="menu-item" type="button" disabled aria-disabled="true">オンラインで始める</button>'}
             <button id="title-contributors" class="menu-item">関わってくれた人たち</button>
             <button id="title-language" class="menu-item title-language" type="button" translate="no" aria-label="Switch to English" aria-pressed="false"><span lang="ja">日本語</span><span aria-hidden="true"> / </span><span lang="en">English</span></button>
           </nav>

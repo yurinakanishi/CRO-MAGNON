@@ -46,6 +46,7 @@ try {
     await page.locator('#title-start').click();
     await page.locator(`#setup-form .character-choice:has(input[value="${character}"])`).click();
     await page.locator('#setup-flow-yes').click();
+    await page.locator('#mascot-start').click();
     await page.locator('#loading-cave[data-ready="true"]').waitFor({ timeout: 180000 });
     await page.locator('#loading-screen').waitFor({ state: 'hidden', timeout: 180000 });
     await page.evaluate(() => {

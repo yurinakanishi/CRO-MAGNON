@@ -149,6 +149,7 @@ import { startupMarks } from './startup-marks.js';
 import { registerTranslations } from './language.js';
 import { bindLanguageToggle, installLanguageUI } from './language-ui.js';
 import { ENGLISH_GAME } from './language-en.js';
+import { SoloConnection } from './solo-connection.js';
 
 registerTranslations(ENGLISH_GAME);
 
@@ -165,10 +166,11 @@ const sessionKey = (room: string) => multiplayerSessionKey(multiplayer, room);
 // The exhibition LAN build never asks for a name or room: each PC is a fixed
 // player in the fixed exhibition room, and only the character is chosen.
 const fixedIdentity = multiplayer.mode === 'lan';
+const solo = multiplayer.mode === 'solo';
 // Online starts use the loading cave; exhibition starts retain their existing flow.
 const onlineTitle = !fixedIdentity && BUILD_PROFILE.environment !== 'exhibition';
 const hudPlayerLimit = () =>
-  fixedIdentity ? EXHIBITION_PLAYER_LIMIT : (state.playerLimit ?? WORLD.maxPlayers);
+  solo ? 1 : fixedIdentity ? EXHIBITION_PLAYER_LIMIT : (state.playerLimit ?? WORLD.maxPlayers);
 const cleanRoom = (value: string) =>
   value
     .toUpperCase()
@@ -185,9 +187,12 @@ let profile = {
     character: readSaved('cro-character', ''),
   }),
   difficulty: FIXED_DIFFICULTY,
-  room: fixedIdentity
-    ? cleanRoom(multiplayer.room || '') || 'EXHIBITION'
-    : cleanRoom(query.get('room') || multiplayer.room || readSaved('cro-room', 'EMBER')) || 'EMBER',
+  room: solo
+    ? 'SOLO'
+    : fixedIdentity
+      ? cleanRoom(multiplayer.room || '') || 'EXHIBITION'
+      : cleanRoom(query.get('room') || multiplayer.room || readSaved('cro-room', 'EMBER')) ||
+        'EMBER',
   // The clothing colour last worn on this browser; '' is the character's own colours.
   dye: fixedIdentity ? '' : (normalizeDye(readSaved('cro-dye', '')) ?? ''),
   mascot: fixedIdentity ? 'none' : readSaved('cro-mascot', 'keep'),
@@ -233,6 +238,7 @@ let mapInput: MapInput | undefined;
 let usingGamepad = false;
 const controllerHints = () => fixedIdentity || usingGamepad;
 document.body.classList.toggle('exhibition-mode', fixedIdentity);
+document.body.classList.toggle('solo-mode', solo);
 document.body.classList.toggle('touch-mode', touchMode());
 let selectedAnimalId = null,
   stateReceivedAt = performance.now(),
@@ -241,12 +247,10 @@ let selectedAnimalId = null,
 const joinFields = () =>
   (fixedIdentity
     ? `<input type="hidden" name="name"><input type="hidden" name="room">`
-    : `<div class="setup-identity"><label>あなたの名前<input name="name" maxlength="16" required autocomplete="off" autofocus></label><label>部屋のコード<span>英数字・ハイフン・アンダースコア / 最大16文字</span><input name="room" maxlength="16" pattern="[A-Za-z0-9_\\-]+" required autocomplete="off"></label></div>`) +
-  characterPickerMarkup(
-    fixedIdentity ? null : profile.dye,
-    'setup-flow-yes',
-    '<div data-starting-mascot-picker></div>',
-  );
+    : solo
+      ? `<div class="setup-identity solo-identity"><label>あなたの名前<input name="name" maxlength="16" required autocomplete="off" autofocus></label><input type="hidden" name="room" value="SOLO"></div>`
+      : `<div class="setup-identity"><label>あなたの名前<input name="name" maxlength="16" required autocomplete="off" autofocus></label><label>部屋のコード<span>英数字・ハイフン・アンダースコア / 最大16文字</span><input name="room" maxlength="16" pattern="[A-Za-z0-9_\\-]+" required autocomplete="off"></label></div>`) +
+  characterPickerMarkup(fixedIdentity ? null : profile.dye, 'setup-flow-yes', '次へ');
 // The title shell's title and dialog stay the same nodes: the title artwork is not
 // requested again and an open contributors dialog stays open (TitleHandoff).
 const titleHandoff = takeTitleShell();
@@ -261,13 +265,16 @@ const viewportMarkup = `
     <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="energy-track" id="energy-track" data-level="ok"><span id="energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="energy-label">100 / 100</span></em></span><span class="status-main"><span class="portrait cro cro-magnon-woman" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name" translate="no"></strong><small><span id="room-label" translate="no"></span><i>·</i><b id="online-count">0/${hudPlayerLimit()}</b></small></span></span></button>
     <div class="map-hud"><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [${fixedIdentity ? controllerLabels().map : 'M'}]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span>${fixedIdentity ? '' : '<kbd class="map-key">M</kbd>'}</button><span class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></span></div>
     <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
-    ${fixedIdentity ? '' : `<div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>チャット</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>`}
+    ${fixedIdentity || solo ? '' : `<div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>チャット</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>`}
     <div class="hotbar-wrap"><div class="interaction-hint" id="interaction-hint" hidden><kbd>E</kbd><span></span></div></div>
     <div id="prompt-bar" class="prompt-bar" aria-label="操作の案内"></div>
     <div id="screens" class="screens">
       ${titleHandoff ? '' : titleScreenMarkup()}
       <section id="screen-setup" class="screen setup-screen" hidden>
         <form id="setup-form" class="setup-card"><header class="setup-heading"><h2>キャラクターを選ぶ</h2></header><p class="form-error" id="setup-error" hidden></p>${joinFields()}<div class="setup-actions"><button type="button" id="setup-back" class="button button-outline setup-back">戻る</button></div></form>
+      </section>
+      <section id="screen-mascot" class="screen setup-screen" hidden>
+        <form id="starting-mascot-form" class="setup-card mascot-setup-card"><header class="setup-heading"><h2>連れていく仲間</h2></header><div data-starting-mascot-picker></div><div class="mascot-setup-actions"><button type="button" id="mascot-back" class="button button-outline setup-back">戻る</button><button type="submit" id="mascot-start" class="button button-accent">これにする</button></div></form>
       </section>
     </div>
   </section>`;
@@ -310,21 +317,22 @@ const screens = new ScreenManager($('#screens'), (id) => {
   else $('#world').focus({ preventScroll: true });
 });
 inputCues = new InputCues($('.game-viewport'), performCue);
-const chatUI = fixedIdentity
-  ? null
-  : new ChatUI($('.chat-panel'), {
-      touch: touchMode,
-      stop: stopInput,
-      resume: () => $('#world').focus({ preventScroll: true }),
-      submit: (text) => {
-        if (!joined) {
-          notify('チャットの送信には接続が必要です。', 'error');
-          return false;
-        }
-        send({ type: 'chat', text });
-        return true;
-      },
-    });
+const chatUI =
+  fixedIdentity || solo
+    ? null
+    : new ChatUI($('.chat-panel'), {
+        touch: touchMode,
+        stop: stopInput,
+        resume: () => $('#world').focus({ preventScroll: true }),
+        submit: (text) => {
+          if (!joined) {
+            notify('チャットの送信には接続が必要です。', 'error');
+            return false;
+          }
+          send({ type: 'chat', text });
+          return true;
+        },
+      });
 function performCue(command: TouchAction) {
   if (
     !joined ||
@@ -731,7 +739,7 @@ $('.hotbar-wrap').insertAdjacentHTML(
 );
 renderer.setState(state, selfId);
 $('#profile-name').textContent = profile.name;
-$('#room-label').textContent = profile.room;
+$('#room-label').textContent = solo ? 'ソロプレイ' : profile.room;
 
 function send(message) {
   if (socket?.readyState !== WebSocket.OPEN) return;
@@ -794,7 +802,7 @@ function notify(text, tone = 'info') {
   if ($('#toast-stack').children.length > 3) $('#toast-stack').firstChild.remove();
 }
 function addChat(message) {
-  if (fixedIdentity) return;
+  if (fixedIdentity || solo) return;
   const p = document.createElement('p');
   if (message.system) {
     p.className = 'chat-system';
@@ -820,8 +828,14 @@ function connection(connected, label) {
   if (!connected) renderer.prediction?.reset();
   $('#connection-dot').classList.toggle('offline', !connected);
   $('#connection-label').textContent =
-    multiplayer.mode === 'lan' ? (connected ? 'LAN: Connected' : `LAN: ${label}`) : label;
-  $('#connection-label').title = multiplayer.serverUrl || location.origin;
+    solo && connected
+      ? 'ソロプレイ'
+      : multiplayer.mode === 'lan'
+        ? connected
+          ? 'LAN: Connected'
+          : `LAN: ${label}`
+        : label;
+  $('#connection-label').title = solo ? '' : multiplayer.serverUrl || location.origin;
   updateMapWarp(
     player(),
     (state.serverTime ?? Date.now()) + performance.now() - stateReceivedAt,
@@ -864,22 +878,24 @@ async function connect(automatic = false) {
   }
   try {
     localRoomReset = false;
-    const response = await fetch('/api/status', {
-      cache: 'no-store',
-      signal: AbortSignal.timeout(8000),
-    });
-    if (attempt !== connectAttempt || manualLeave) return;
-    if (response.status !== 404) {
-      if (!response.ok)
-        throw new Error(
-          '現在ゲームに接続できません。無料の利用上限または一時的な停止の可能性があります。時間をおいて再接続してください。',
-        );
-      const status = await response.json();
-      localRoomReset = status.localRoomReset === true && !multiplayer.serverUrl;
-      if (!status.ok) throw new Error(status.text || '現在ゲームは停止中です。');
-      if (status.room && profile.room !== status.room) {
-        profile.room = status.room;
-        notify('無料公開版では EMBER の谷に参加します。');
+    if (!solo) {
+      const response = await fetch('/api/status', {
+        cache: 'no-store',
+        signal: AbortSignal.timeout(8000),
+      });
+      if (attempt !== connectAttempt || manualLeave) return;
+      if (response.status !== 404) {
+        if (!response.ok)
+          throw new Error(
+            '現在ゲームに接続できません。無料の利用上限または一時的な停止の可能性があります。時間をおいて再接続してください。',
+          );
+        const status = await response.json();
+        localRoomReset = status.localRoomReset === true && !multiplayer.serverUrl;
+        if (!status.ok) throw new Error(status.text || '現在ゲームは停止中です。');
+        if (status.room && profile.room !== status.room) {
+          profile.room = status.room;
+          notify('無料公開版では EMBER の谷に参加します。');
+        }
       }
     }
   } catch (error) {
@@ -897,19 +913,20 @@ async function connect(automatic = false) {
   }
   if (attempt !== connectAttempt || manualLeave) return;
   startupMarks.mark('status', marks);
-  const ws = new WebSocket(
-    multiplayerUrl(multiplayer, location.origin, {
-      ...profile,
-      resume: '1',
-      session: savedSession(sessionKey(profile.room)),
-      ...(startAtCamp ? { startAtCamp: '1', spawn: spawnChoice } : {}),
-    }),
-  );
+  const connectionProfile = {
+    ...profile,
+    resume: '1',
+    session: savedSession(sessionKey(profile.room)),
+    ...(startAtCamp ? { startAtCamp: '1', spawn: spawnChoice } : {}),
+  };
+  const ws = solo
+    ? new SoloConnection(connectionProfile)
+    : new WebSocket(multiplayerUrl(multiplayer, location.origin, connectionProfile));
   socket = ws;
   ws.addEventListener('open', () => {
     if (ws === socket) startupMarks.mark('socket-open', marks);
   });
-  ws.addEventListener('message', ({ data }) => {
+  ws.addEventListener('message', ({ data }: MessageEvent) => {
     if (ws !== socket) return;
     let message;
     try {
@@ -934,7 +951,9 @@ async function connect(automatic = false) {
         mascot: message.profile?.mascot ?? 'none',
       };
       persistentSession = message.persistentSession === true;
-      resumeStored = saveSession(sessionKey(profile.room), message.session, persistentSession);
+      const tokenStored = saveSession(sessionKey(profile.room), message.session, persistentSession);
+      // Solo keeps its authoritative resume token in the same IndexedDB transaction as the world.
+      resumeStored = solo || tokenStored;
       if (persistentSession && !resumeStored)
         notify(
           'このブラウザーに再開情報を保存できません。閉じると同じ人物へ戻れない場合があります。',
@@ -942,7 +961,7 @@ async function connect(automatic = false) {
         );
       for (const [key, value] of Object.entries(profile)) save(`cro-${key}`, value);
       $('#profile-name').textContent = profile.name;
-      $('#room-label').textContent = profile.room;
+      $('#room-label').textContent = solo ? 'ソロプレイ' : profile.room;
       tuning = { alwaysRun: false, speedScale: 1, ...message.rules };
       if (Array.isArray(message.mascots))
         availableMascots = message.mascots.filter((key) => MASCOT_KEYS.includes(key));
@@ -1102,7 +1121,7 @@ async function connect(automatic = false) {
       }
     }
   });
-  ws.addEventListener('close', (event) => {
+  ws.addEventListener('close', (event: CloseEvent) => {
     if (ws !== socket) return;
     // A suspended tab may miss the explanation frame; the close code still stops retrying.
     if (event.code === IDLE_CLOSE_CODE) {
@@ -1217,7 +1236,11 @@ function updateHUD() {
   setText($('#interaction-hint span'), target?.label ?? '');
   setAttr($('#my-portrait'), 'class', `portrait ${profile.species} ${characterModel(profile).key}`);
   updateProfileCard();
-  setAttr($('#status-plate'), 'title', `${characterModel(profile).name} · 部族の仲間と招待`);
+  setAttr(
+    $('#status-plate'),
+    'title',
+    solo ? characterModel(profile).name : `${characterModel(profile).name} · 部族の仲間と招待`,
+  );
   updateHuntingHUD();
   const biome = biomeAt(me?.x ?? 50, me?.z ?? 50);
   const region = regionAt(me?.x ?? 50, me?.z ?? 50);
@@ -1812,7 +1835,11 @@ function openModal(content) {
 }
 function applyProfileForm(form: HTMLFormElement) {
   const data = new FormData(form);
-  const room = fixedIdentity ? profile.room : String(data.get('room')).toUpperCase();
+  const room = solo
+    ? 'SOLO'
+    : fixedIdentity
+      ? profile.room
+      : String(data.get('room')).toUpperCase();
   // A title start changes the traveller and spawn, but keeps their possessions.
   // Joining a different room while playing retains the explicit fresh-join path.
   startAtCamp = !joined;
@@ -1829,13 +1856,17 @@ function applyProfileForm(form: HTMLFormElement) {
     ...parseCharacterValue(data.get('character')),
     difficulty: FIXED_DIFFICULTY,
     dye: pickedCharacterChoice(form).dye ?? profile.dye,
-    mascot: pickedStartingMascot(form),
+    mascot: pickedStartingMascot($('#starting-mascot-form')),
   };
-  spawnChoice = spawnSite(data.get('spawn')).id;
+  spawnChoice = spawnSite(new FormData($('#starting-mascot-form')).get('spawn')).id;
   save('cro-spawn', spawnChoice);
   if (!keepSession) saveSession(sessionKey(profile.room), null);
   for (const [k, v] of Object.entries(profile)) save(`cro-${k}`, v);
-  history.replaceState({}, '', `?room=${encodeURIComponent(profile.room)}`);
+  history.replaceState(
+    {},
+    '',
+    solo ? location.pathname : `?room=${encodeURIComponent(profile.room)}`,
+  );
   $('#profile-name').textContent = profile.name;
 }
 function showTitle() {
@@ -1859,7 +1890,7 @@ function showSetup(error = '') {
   form.room.value = profile.room;
   bindCharacterPicker(form, profile);
   bindStartingMascot(
-    form,
+    $('#starting-mascot-form'),
     availableMascots,
     profile.mascot,
     !!savedSession(sessionKey(profile.room)),
@@ -2017,6 +2048,7 @@ function showIdleExit() {
   }
 }
 async function openInvite() {
+  if (solo) return;
   openModal(
     `<span class="modal-illustration">${icon('people')}</span><h2>招待</h2><div class="invite-code"><small>ROOM CODE</small><strong id="invite-code"></strong><span>現在の部屋の接続上限は ${hudPlayerLimit()}人</span></div><label>招待リンク<input id="invite-url" readonly aria-label="招待リンク"></label><button id="copy-invite" class="button button-accent wide">${icon('link')} 招待リンクをコピー</button><p id="invite-note" class="form-note">このPCと同じWi-Fi・LANにいる仲間が参加できます。インターネット越しの参加には、サーバーの公開が必要です。</p><button id="change-room" class="text-button">別の部屋に参加する ${icon('arrow')}</button>`,
   );
@@ -2406,7 +2438,7 @@ function updateSaveStatus() {
     : localSaveStatus?.state === 'error'
       ? '自動保存に失敗しています。最後に成功した保存は保持しています。'
       : localSaveStatus?.savedAt
-        ? `自動保存済み ${new Date(localSaveStatus.savedAt).toLocaleTimeString()} · タイトルへ戻っても続きから再開できます。${localSaveStatus.recovered ? ' 予備の保存から復元しました。' : ''}`
+        ? `自動保存済み ${new Date(localSaveStatus.savedAt).toLocaleTimeString()} · ${solo ? 'このブラウザーで続きから再開できます。' : 'タイトルへ戻っても続きから再開できます。'}${localSaveStatus.recovered ? ' 予備の保存から復元しました。' : ''}`
         : '自動保存を準備しています。';
 }
 /**
@@ -2509,7 +2541,7 @@ function openPauseMenu(tab?: string) {
         ]
       : []),
     // Back to exploring is the 戻る at the top right; the character is a tab.
-    ...(!fixedIdentity
+    ...(!fixedIdentity && !solo
       ? [
           ['profile', 'people', '部屋を変える（参加し直す）', () => showSetup()] as [
             string,
@@ -2789,18 +2821,39 @@ document.addEventListener('fullscreenchange', () => {
   $('#title-fullscreen').setAttribute('aria-label', active ? '全画面表示を終了' : '全画面表示');
 });
 $('#setup-back').onclick = () => (joined ? screens.hide() : showTitle());
+$('#mascot-back').onclick = () => {
+  if (setupFlowBack()) return;
+  screens.show('setup');
+  $('#setup-form input[name="character"]:checked')?.focus({ preventScroll: true });
+  gamepadControls?.suspend();
+};
 bindSetupFlow({
-  form: $('#setup-form'),
+  form: $('#starting-mascot-form'),
+  characterForm: $('#setup-form'),
   spawnChoice: () => fixedIdentity,
   spawn: () => spawnChoice,
   settle: () => gamepadControls?.suspend(),
 });
 $('#setup-form').onsubmit = (e) => {
   e.preventDefault();
-  // Only the apply button (or a retained exhibition spawn card) starts the game.
+  if ((e.submitter as HTMLElement | null)?.id !== 'setup-flow-yes') return;
+  // Keep the character, colour and companion drafts until the final screen applies them.
+  screens.show('mascot');
+  $('[data-starting-mascot-picker]').scrollTop = 0;
+  gamepadControls?.suspend();
+};
+$('#starting-mascot-form').onsubmit = (e) => {
+  e.preventDefault();
+  // Only the final apply button (or a retained exhibition spawn card) starts the game.
   const submitter = e.submitter as HTMLElement | null;
-  if (fixedIdentity ? !setupFlowOpen() : submitter?.id !== 'setup-flow-yes') return;
-  applyProfileForm(e.currentTarget);
+  if (
+    screens.active !== 'mascot' ||
+    (fixedIdentity
+      ? !setupFlowOpen() || !submitter?.matches('[data-choose-spawn]')
+      : submitter?.id !== 'mascot-start')
+  )
+    return;
+  applyProfileForm($('#setup-form'));
   closeSetupFlow();
   enterGame();
 };
@@ -2819,6 +2872,11 @@ $('#modal').addEventListener('click', (e) => {
 });
 document.addEventListener('keydown', (e) => {
   if (loadingCave) return;
+  if (e.key === 'Escape' && screens.active === 'mascot' && !$('#modal').open) {
+    e.preventDefault();
+    $('#mascot-back').click();
+    return;
+  }
   // The map key is a toggle: M with the atlas open closes it (2026-09-12).
   if (
     $('#modal').open &&
@@ -2969,13 +3027,14 @@ gamepadControls = new GamepadControls({
   closeMenu: () => {
     if (chatUI?.dialog.open) chatUI.setOpen(false);
     else if ($('#modal').open) $('#modal').close();
-    else if (screens.active === 'setup' && !setupFlowBack()) $('#setup-back').click();
+    else if (screens.active === 'mascot') $('#mascot-back').click();
+    else if (screens.active === 'setup') $('#setup-back').click();
   },
   cancelMenu: () => {
     if (chatUI?.dialog.open) return chatUI.setOpen(false);
     if (equipmentUI.close()) return;
     if (cancelRoomReset()) return;
-    if (screens.active === 'setup' && setupFlowBack()) return;
+    if (screens.active === 'mascot') return $('#mascot-back').click();
     if (closeItemActions()) return;
     if ($('#modal').open) $('#modal').close();
     else if (screens.active === 'setup') $('#setup-back').click();
@@ -3099,7 +3158,7 @@ function touchPlayable(command?: TouchAction) {
 }
 touchControls = new TouchControls($('.game-viewport'), {
   icon,
-  chat: !fixedIdentity,
+  chat: !fixedIdentity && !solo,
   available: touchPlayable,
   perform: performCue,
   move: updateMovementInput,

@@ -15,6 +15,13 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   'どこから はじめますか？': 'Where would you like to start?',
   はじめる場所: 'Starting place',
   プレイヤー: 'Player',
+  ソロプレイ: 'Solo play',
+  'ソロの保存を開けませんでした。保存データは消していません。通常のブラウザーで開き直してください。':
+    'Could not open the solo save. Your saved data has been kept. Try reopening in a normal browser window.',
+  '別のタブでソロプレイ中です。そのタブをタイトルへ戻してから、もう一度始めてください。':
+    'Solo play is open in another tab. Return that tab to the title, then try again.',
+  'ソロプレイを開始できませんでした。再読み込みしてください。':
+    'Could not start solo play. Please reload.',
   旅人: 'Traveler',
   クロマニョン人: 'Cro-Magnon',
   ネアンデルタール人: 'Neanderthal',
@@ -24,6 +31,21 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   'クロマニョン人 男性': 'Cro-Magnon · Male',
   'ネアンデルタール人 女性': 'Neanderthal · Female',
   'ネアンデルタール人 男性': 'Neanderthal · Male',
+  'クロマニョン人（女性）': 'Cro-Magnon (Female)',
+  'クロマニョン人（男性）': 'Cro-Magnon (Male)',
+  'ネアンデルタール人（女性）': 'Neanderthal (Female)',
+  'ネアンデルタール人（男性）': 'Neanderthal (Male)',
+  羽根飾りのクロマニョン人女の子: 'Cro-Magnon Feathered Girl',
+  子グマずきんのクロマニョン人女の子: 'Cro-Magnon Bear-Cub Hood Girl',
+  子オオカミずきんのクロマニョン人女の子: 'Cro-Magnon Wolf-Pup Hood Girl',
+  赤毛ふたつ結びのクロマニョン人女の子: 'Cro-Magnon Red Twin-Tail Girl',
+  トナカイ革パーカーのクロマニョン人女の子: 'Cro-Magnon Reindeer Parka Girl',
+  貝の鉢巻きのクロマニョン人男の子: 'Cro-Magnon Shell Headband Boy',
+  子ライオンずきんのクロマニョン人男の子: 'Cro-Magnon Lion-Cub Hood Boy',
+  三つ編みのクロマニョン人男の子: 'Cro-Magnon Braided Boy',
+  ちょんまげのクロマニョン人男の子: 'Cro-Magnon Topknot Boy',
+  'Howkey（科学使い）': 'Howkey (Scientist)',
+  'まるぃも（タコ人間）': 'Maruimo (Octopus Person)',
   羽根飾りの女の子: 'Feathered Girl',
   'クロマニョン人 羽根飾りの女の子': 'Cro-Magnon · Feathered Girl',
   子グマずきんの女の子: 'Bear-Cub Hood Girl',
@@ -422,6 +444,7 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   // Clothing colours (CLOTHING_DYES).
   服の色: 'Clothing color',
   これにする: 'Use this',
+  次へ: 'Next',
   元の色: 'Original',
   赤: 'Red',
   黄: 'Yellow',
@@ -828,6 +851,8 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   '自動保存を準備しています。': 'Preparing autosave.',
   '自動保存済み {time} · タイトルへ戻っても続きから再開できます。':
     'Autosaved at {time} · You can resume after returning to the title.',
+  '自動保存済み {time} · このブラウザーで続きから再開できます。':
+    'Autosaved at {time} · Resume your journey in this browser.',
   '予備の保存から復元しました。': 'Restored from the backup save.',
   '接続が戻りました。持ち物と進行を復元しました。':
     'Reconnected. Your items and progress have been restored.',

@@ -897,6 +897,20 @@ body[data-screen] .world-labels {
 .menu-item[hidden] {
   display: none;
 }
+.menu-item:disabled {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
+.solo-mode .setup-identity.solo-identity {
+  grid-template-columns: minmax(0, 1fr);
+}
+.solo-mode #ping-label,
+.solo-mode #online-count,
+.solo-mode .status-text small i,
+.solo-mode #tribe-invite {
+  display: none;
+}
 .title-hint {
   margin: 34px 0 0;
   font-size: 10px;
@@ -2359,9 +2373,6 @@ dialog:has(.character-switch) {
   margin: 0;
   color: var(--cream);
 }
-.character-choice-summary small {
-  color: #d6c79a;
-}
 .character-choice-actions > .button {
   flex-shrink: 0;
   min-height: 48px;
@@ -2603,7 +2614,7 @@ dialog:has(.character-switch) {
   grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: 14px;
 }
-/* Keep the starting companion visible below one row of people on desktop too. */
+/* Keep the character picker compact on desktop as well as on touch screens. */
 .setup-card .character-choice-grid {
   grid-template-columns: none;
   grid-auto-columns: 140px;
@@ -2652,25 +2663,20 @@ dialog:has(.character-switch) {
 .character-name {
   position: relative;
   display: flex;
-  flex-direction: column;
+  flex: 1;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
   margin-top: 0;
   padding: 12px 6px 14px;
   text-align: center;
   background: #070d0988;
 }
 .character-name strong {
-  font: 500 16px/1.3 var(--display);
-  letter-spacing: 0.12em;
-  color: #e6e0c8;
+  font: 600 16px/1.35 var(--display);
+  letter-spacing: 0.02em;
+  color: #f7ecd0;
+  overflow-wrap: anywhere;
   text-shadow: 0 2px 8px #000c;
-}
-.character-name small {
-  font-size: 12px;
-  line-height: 1.3;
-  letter-spacing: 0.2em;
-  color: #aab4a7;
 }
 /* The stored radio choice is not a second cursor. Only the currently focused
    card is highlighted; pointer movement hands it the same focus as keys/pad. */
@@ -3673,12 +3679,6 @@ dialog:has(.earth-map) {
 @media (max-width: 430px) {
   .character-choice-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .character-name strong {
-    font-size: 11px;
-  }
-  .character-name small {
-    font-size: 9px;
   }
 }
 @media (max-width: 650px) {

@@ -113,6 +113,10 @@ try {
   await englishOnly('.character-choice-controls');
   await shot('03-choice-en');
   await page.locator('#setup-flow-yes').click();
+  await expectText('#mascot-start', 'Use this');
+  await englishOnly('#screen-mascot');
+  await shot('03a-companions-en');
+  await page.locator('#mascot-start').click();
   await page.locator('#loading-screen').waitFor({ state: 'visible' });
   assert.equal(await page.locator('.loading-screen-tip figcaption').count(), 0);
   await englishOnly('#loading-screen');

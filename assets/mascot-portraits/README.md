@@ -1,8 +1,8 @@
 # マスコット選択用の実物写真
 
-2026-10-15のユーザー指定により、りもねこと524を実際の配信GLBから撮影した。開始前の「連れていく仲間」と、ゲーム中の同じタブで共通の写真を表示する。
+2026-10-15のユーザー指定により、りもねこ・524とDots全9種類を実際の配信GLBから撮影した。人物選択の次に開く「連れていく仲間」の画面と、ゲーム中の同じタブで共通の写真を表示する。
 
-採用revisionは [20261015-r01](20261015-r01/capture.json)。384×320、透明背景、可逆WebPの2枚で計48,966 bytes。元のGLB・材質・リグ・動作・旧肖像は変更していない。
+採用revisionは、りもねこ・524の [20261015-r01](20261015-r01/capture.json)（2枚48,966 bytes）と、Dotsの [20261015-dots-r01](20261015-dots-r01/capture.json)（9枚77,530 bytes）。384×320、透明背景、可逆WebPの計11枚126,496 bytes。元のGLB・材質・リグ・動作・旧肖像は変更していない。
 
 ## 撮影
 
@@ -21,6 +21,12 @@
 
 ## 再撮影と検証
 
-`npm run build` の後、`node scripts/capture-mascot-portraits.mjs assets/mascot-portraits/<新しいrevision>` を実行する。元候補は上書きせず、画像を目視した後に別名で採用する。新しい3Dモデルの生成は必要ない。
+Dotsは `Idle_Loop` の0.4秒を、ゲームと同じ `installDotBlink` を通した材質、目を開けた状態で撮影した。しろ・あお・みどり・むらさき・オレンジ・ベレーぼう・かえる・さんかく・ハートの9種類。大きさは実行時のまま、縦0.78mの範囲・照明・カメラはりもねこ／524と共通。参照イラストを撮影結果の代わりに使わない。
+
+- [Dotsの撮影・SHA](20261015-dots-r01/capture.json)・[採用・配信先](20261015-dots-r01/adoption.json)
+- [Dots全9枚の確認画像](20261015-dots-r01/review.png)
+- 同フォルダーの各PNG／WebPと、撮影時点のスクリプトを保存。配信先は各 `public/models/orb-bot-*/portraits/companion-r01.webp`。
+
+`npm run build` の後、`node scripts/capture-mascot-portraits.mjs assets/mascot-portraits/<新しいrevision>` を実行する。末尾へ `--dots` を付けるとDotsの9種類だけを撮る。元候補は上書きせず、画像を目視した後に別名で採用する。新しい3Dモデルの生成は必要ない。
 
 `tests/starting-mascot.test.mjs` は元モデルのSHA・採用画像のSHA・PNG/WebPの一致を確認する。`scripts/qa-starting-mascot.mjs` は写真の表示と、入場後の実際のモデルのSHAが撮影した配信モデルと一致することを検証する。2026-10-15にいずれも合格。PCとスマホ幅の画像を目視した。

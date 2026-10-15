@@ -3,6 +3,7 @@ import { readdir, readFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { removeStaleTemporaries, writeFileAtomic, writeFilesAtomic } from './atomic-write.mjs';
+import { build as bundle } from 'esbuild';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const checkOnly = process.argv.includes('--check');
@@ -44,6 +45,31 @@ else if (!checkOnly) {
       ),
     );
   await writeFilesAtomic(emitted);
+  // Only the browser adapter and application are bundled here. Domain modules
+  // still come from this host's filtered /shared tables and world data.
+  const solo = await bundle({
+    entryPoints: [path.join(root, 'dist/infrastructure/browser/solo-worker.mjs')],
+    outfile: path.join(root, 'dist/src/solo-worker.js'),
+    bundle: true,
+    format: 'esm',
+    platform: 'browser',
+    target: 'es2022',
+    write: false,
+    plugins: [
+      {
+        name: 'solo-shared-modules',
+        setup(builder) {
+          builder.onResolve({ filter: /^\./ }, (args) => {
+            const destination = path.resolve(args.resolveDir, args.path);
+            const shared = path.relative(path.join(root, 'dist/shared'), destination);
+            if (!shared.startsWith('..') && !path.isAbsolute(shared))
+              return { path: `../shared/${shared.split(path.sep).join('/')}`, external: true };
+          });
+        },
+      },
+    ],
+  });
+  await writeFileAtomic(path.join(root, 'dist/src/solo-worker.js'), solo.outputFiles[0].contents);
   // Removed journal and graphics-selector modules must not survive incremental builds or be packaged.
   for (const file of [
     'adventure-ui.js',

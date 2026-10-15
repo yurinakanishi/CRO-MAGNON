@@ -2,6 +2,7 @@ import { characterModel } from '../shared/characters.mjs';
 import type { CharacterProfile } from '../shared/types.mjs';
 import {
   bindCharacterSelection,
+  characterChoiceName,
   characterChoicesMarkup,
   parseCharacterValue,
 } from './character-selection.js';
@@ -16,8 +17,8 @@ export interface CharacterChoice {
   dye: string | null;
 }
 
-export function characterPickerMarkup(dye: string | null, applyId: string, extra = '') {
-  return `${characterChoicesMarkup(dye)}${extra}<div class="character-choice-controls">${dye === null ? '' : dyePickerMarkup(dye, { choice: true })}<div class="character-choice-actions"><p class="character-choice-summary" aria-live="polite"><span><strong data-choice-name></strong> <small data-choice-variant></small></span><span data-choice-dye></span></p><button id="${applyId}" class="button button-accent" type="submit">これにする</button></div><p class="character-choice-note" role="status" hidden></p></div>`;
+export function characterPickerMarkup(dye: string | null, applyId: string, label = 'これにする') {
+  return `${characterChoicesMarkup(dye)}<div class="character-choice-controls">${dye === null ? '' : dyePickerMarkup(dye, { choice: true })}<div class="character-choice-actions"><p class="character-choice-summary" aria-live="polite"><strong data-choice-name></strong><span data-choice-dye></span></p><button id="${applyId}" class="button button-accent" type="submit">${label}</button></div><p class="character-choice-note" role="status" hidden></p></div>`;
 }
 
 export function pickedCharacterChoice(form: HTMLFormElement): CharacterChoice {
@@ -36,11 +37,8 @@ export function bindCharacterPicker(
   bindCharacterSelection(form, profile);
   const update = () => {
     const choice = pickedCharacterChoice(form);
-    const [name, variant = ''] = characterModel(parseCharacterValue(choice.character)).name.split(
-      ' ',
-    );
+    const name = characterChoiceName(characterModel(parseCharacterValue(choice.character)));
     setLocalizedText(form.querySelector('[data-choice-name]'), name);
-    setLocalizedText(form.querySelector('[data-choice-variant]'), variant);
     const dye = form.querySelector<HTMLElement>('[data-choice-dye]');
     if (dye) dye.innerHTML = choice.dye === null ? '' : dyeLabelMarkup(choice.dye);
     for (const image of form.querySelectorAll<HTMLImageElement>('[data-character-image]')) {

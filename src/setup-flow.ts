@@ -4,12 +4,13 @@ import { spawnCardsMarkup } from './spawn-picker.js';
 import { parseCharacterValue } from './character-selection.js';
 
 /**
- * Character cards and colours only edit the draft. The apply button starts directly.
- * The retained exhibition flow asks for a starting sight after that button.
+ * Character cards and colours only edit the first draft screen. Companions come next.
+ * The retained exhibition flow asks for a starting sight after the companion button.
  */
 
 interface SetupFlowOptions {
   form: HTMLFormElement;
+  characterForm: HTMLFormElement;
   /** True when the room lets the visitor choose a starting sight instead. */
   spawnChoice?: () => boolean;
   /** Starting sight to preselect (the visitor's last choice). */
@@ -39,7 +40,7 @@ export function setupFlowBack(): boolean {
   const flow = overlay(form);
   if (!flow) return false;
   flow.remove();
-  pickedCard(form)?.focus({ preventScroll: true });
+  form.querySelector<HTMLElement>('#mascot-start')?.focus({ preventScroll: true });
   current.settle?.();
   return true;
 }
@@ -51,8 +52,7 @@ export function closeSetupFlow() {
 
 function openSpawn() {
   if (!current) return;
-  const { form } = current;
-  const card = pickedCard(form);
+  const card = pickedCard(current.characterForm);
   if (!card) return;
   const model = characterModel(parseCharacterValue(card.value));
   const [name, variant] = model.name.split(' ');
@@ -94,22 +94,28 @@ export function bindSetupFlow(options: SetupFlowOptions) {
     form.insertAdjacentHTML('afterbegin', '<input type="hidden" name="spawn">');
   form.addEventListener('click', (event) => {
     const target = event.target as HTMLElement;
-    if (target.closest('#setup-flow-yes') && options.spawnChoice?.()) {
+    if (target.closest('#mascot-start') && options.spawnChoice?.()) {
       event.preventDefault();
       if (form.reportValidity()) openSpawn();
     }
   });
   form.addEventListener('keydown', (event) => {
-    const target = event.target as HTMLElement;
     if (event.key === 'Escape' && overlay(form)) {
       event.preventDefault();
       event.stopPropagation();
       setupFlowBack();
-    } else if (event.key === 'Enter' && target.matches('input[name="name"],input[name="room"]')) {
+    }
+  });
+  options.characterForm.addEventListener('keydown', (event) => {
+    const target = event.target as HTMLElement;
+    if (event.key === 'Enter' && target.matches('input[name="name"],input[name="room"]')) {
       // Enter in a text field moves on to the cards instead of submitting nothing.
       event.preventDefault();
       target.blur();
-      (pickedCard(form) ?? form.querySelector<HTMLElement>('input[name="character"]'))?.focus({
+      (
+        pickedCard(options.characterForm) ??
+        options.characterForm.querySelector<HTMLElement>('input[name="character"]')
+      )?.focus({
         preventScroll: true,
       });
     }

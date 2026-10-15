@@ -1,0 +1,2304 @@
+{
+  "ok": true,
+  "width": 384,
+  "height": 320,
+  "span": 0.78,
+  "browser": "154.0.8037.93",
+  "inputs": {
+    "scripts/capture-mascot-portraits.mjs": "4b8c39e70119d7470482bc488b01a59ecccb673f85004edb8fe715540c4f71a7",
+    "src/world-assets.ts": "534f5c9f1239ab02aec3c58836c96957881889895955a98ba3fc19d4037633c1",
+    "shared/companion-524.mts": "cf0d5c5d0e0b9e8a60f22f3a494ddb8137af13ee070bc40115dd44e777566762",
+    "shared/rimo-neko.mts": "af087ecc29d63ae8115a4e1476d4a6a2c6c8ee270f9767e283085d1db060a874",
+    "src/mascot-portraits.ts": "b7f10161565c9050249b23a8b1a977e50d75eadfc98e97e7ae814997113be574",
+    "src/dot-blink.ts": "c75e7b5f19247b465c7465518f973e24cde67a4aa0b7b6af450ea1460bfe6b4e",
+    "src/orb-bot-renderer.ts": "3ad8d6f9460f8fc279390961391efe9fe612ce283e68d9262cf7916d37c596c1"
+  },
+  "records": [
+    {
+      "key": "white",
+      "modelKey": "orb-bot-white",
+      "url": "/models/orb-bot-white/portraits/companion-r01.webp",
+      "asset": {
+        "modelKey": "orb-bot-white",
+        "name": "しろbot",
+        "kind": "companion",
+        "candidate": 2,
+        "revision": "c2-t01",
+        "status": "remake-candidate-2-integrated",
+        "url": "/models/orb-bot-white/model-c2.cook-377fe560f160a4e1.glb",
+        "sha256": "377fe560f160a4e159ad7d980ff4527287fb6c3869c354d18911cb410f73bdd9",
+        "bytes": 91440,
+        "triangles": 1400,
+        "bones": 2,
+        "upAxis": "Y",
+        "forwardAxis": "+Z",
+        "heightMetres": 0.28,
+        "widthMetres": 0.279801645179628,
+        "lengthMetres": 0.27981644827973373,
+        "placement": {
+          "pivot": "ground-centred",
+          "scale": 1
+        },
+        "clips": [
+          {
+            "name": "Catch",
+            "seconds": 0.30000001192092896,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Held_Loop",
+            "seconds": 1.2000000476837158,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Idle_Loop",
+            "seconds": 2.4000000953674316,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Land",
+            "seconds": 0.4166666567325592,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Run_Loop",
+            "seconds": 0.4000000059604645,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Thrown_Loop",
+            "seconds": 0.8999999761581421,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Walk_Loop",
+            "seconds": 0.6000000238418579,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          }
+        ],
+        "locomotion": {
+          "Walk_Loop": {
+            "metresPerSecond": 3,
+            "cycleSeconds": 0.6
+          },
+          "Run_Loop": {
+            "metresPerSecond": 3,
+            "cycleSeconds": 0.4
+          }
+        },
+        "lods": [
+          {
+            "url": "/models/orb-bot-white/lod-c2.cook-17c2f4fa064b0ef3.glb",
+            "sha256": "17c2f4fa064b0ef3659aa8d143f46b47d34399330615da65f99862dae3dc8cfe",
+            "bytes": 24256,
+            "triangles": 1600,
+            "distanceMetres": 9,
+            "purpose": "animated-medium-lod-geometry"
+          }
+        ],
+        "provenance": {
+          "provider": "Claude Code (Opus 5.5)",
+          "claudeUsed": true,
+          "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+          "referenceImage": "public/models/orb-bot-white/model-r03.glb",
+          "referenceSha256": "0e68d2dda0a2d11396a50a853cefcd3897e53abd9b18e2023bd1e2bc6f4d266a",
+          "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+          "denseFile": "public/models/orb-bot-white/model-r03.glb",
+          "denseSha256": "0e68d2dda0a2d11396a50a853cefcd3897e53abd9b18e2023bd1e2bc6f4d266a",
+          "processReport": "output/model-generation/models/orb-bot-white/work/candidate-02/transfer/t01/report.json",
+          "rigReport": null,
+          "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+          "previousDelivery": {
+            "url": "/models/orb-bot-white/model-r03.glb",
+            "sha256": "0e68d2dda0a2d11396a50a853cefcd3897e53abd9b18e2023bd1e2bc6f4d266a",
+            "triangles": 5175,
+            "bytes": 535824,
+            "candidate": 1,
+            "revision": "03"
+          },
+          "previousProvenance": {
+            "provider": "Codex",
+            "claudeUsed": false,
+            "referenceGenerator": "Built-in imagegen",
+            "referenceImage": "assets/orb-bots/source/white-reference-v1.png",
+            "referenceSha256": "c5aa0cf8a7761b2a036ab222bf2d57702a5c68c7f41d06bf7993e778ef3c7f90",
+            "userReference": "assets/orb-bots/source/user-reference.png",
+            "userReferenceSha256": "c26fcc4d555b7cf586249114fb0a118c82baade3c3836e3cd745babe2c076a40",
+            "reconstruction": "Local TRELLIS-2 v0.8.1 official Vulkan / 512 / seed42; adaptive source-preserving surface reduction; immutable reference-PNG face ink rebaked into repaired UVs.",
+            "denseSha256": "dcf990622b6044b25d801ff163c2afe92b8a93c54001105e3d0e2eca9a5df166",
+            "materialRepair": {
+              "method": "Source-PNG ink projection on the source-derived TRELLIS surface, lighting removed, front-normal mask; Cycles emission bake",
+              "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\orb-bots\\source\\white-reference-v1.png",
+              "sourceAlphaBounds": [
+                0.12041467304625199,
+                0.8763955342902712,
+                0.10526315789473684,
+                0.8524720893141946
+              ],
+              "atlas": 4096,
+              "inferredBackColour": "f5f3ee",
+              "unusedAtlasColour": "f5f3ee",
+              "sourcePngUnmodified": true,
+              "analyticEyes": false
+            },
+            "candidateFile": "output/model-generation/models/orb-bot-white/work/rig/revision-03/candidate.glb",
+            "visualReview": "assets/orb-bots/reviews/white-r03.json"
+          },
+          "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+          "visualReview": "assets/asset-remake/reviews/orb-bot-white.json"
+        },
+        "notes": [
+          "Remake C2 of the delivered orb bot: same surface reduced to at most 4,000 triangles, 4096 texture replaced by 1024 albedo + baked normal; 2 bones and 7 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 4000 triangles (was 5175), textures 1024 WebP + baked normal."
+        ],
+        "gameQA": "output/playwright/orb-bots/verified-20261001",
+        "runtimeOptimization": {
+          "adoption": "20261010-r07-a01",
+          "candidateRevision": "assets/optimized-runtime/20261010-r07",
+          "selection": "ordinary-compressed",
+          "original": {
+            "url": "/models/orb-bot-white/model-c2.glb",
+            "sha256": "ce163f967da25e0382cee50008ee9dd5e36bd6bd3723f3647bf106d8477efcab",
+            "bytes": 280084,
+            "triangles": 4000,
+            "lods": [
+              {
+                "url": "/models/orb-bot-white/lod-c2.glb",
+                "sha256": "165d3024d63719843f5f48b9730f29becdf57b39d8783d7d3f0f1f78d359bc2b",
+                "bytes": 75232,
+                "triangles": 1600,
+                "distanceMetres": 9,
+                "purpose": "animated-medium-lod-geometry"
+              }
+            ]
+          },
+          "supersedes": {
+            "adoption": "20261010-r05-a02",
+            "candidateRevision": "assets/optimized-runtime/20261010-r05",
+            "url": "/models/orb-bot-white/model-c2.opt-c7b6b6878646330a.glb",
+            "sha256": "c7b6b6878646330a8769fa0f0e1f5ea829d75fd480ed3031c049f58a8aec1236",
+            "bytes": 176448,
+            "lods": [
+              {
+                "url": "/models/orb-bot-white/lod-c2.opt-551e0f7e3a90b7a3.glb",
+                "sha256": "551e0f7e3a90b7a3b1d82a8712f1c8b699a91919f42dd5c99af79b46f1222379",
+                "bytes": 41664
+              }
+            ]
+          },
+          "adoptedBy": "20261010-r07-a01"
+        }
+      },
+      "clip": "Idle_Loop",
+      "time": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "blink": {
+        "closure": 0
+      },
+      "bounds": {
+        "min": [
+          -0.1386249519835084,
+          0.0008537821136562543,
+          -0.1383322138838627
+        ],
+        "max": [
+          0.137754903995038,
+          0.28335376020213915,
+          0.13851391954324965
+        ]
+      },
+      "camera": {
+        "position": [
+          0.7495649760057648,
+          0.4921037711578977,
+          2.0000908528296937
+        ],
+        "target": [
+          -0.00043502399423520077,
+          0.1421037711578977,
+          0.00009085282969348296
+        ],
+        "verticalSpan": 0.78
+      },
+      "source": {
+        "url": "/models/orb-bot-white/model-c2.opt-01e43c87f62b8fd1.glb",
+        "sha256": "01e43c87f62b8fd17b95bee23c3d7d3af2ad7d12d4ea80076e67f16abdc3a74d"
+      },
+      "visiblePixels": 10490,
+      "pixelBounds": {
+        "left": 135,
+        "right": 248,
+        "top": 102,
+        "bottom": 217
+      },
+      "files": {
+        "png": {
+          "file": "orb-bot-white.png",
+          "bytes": 20481,
+          "sha256": "89c63cb0cff427a53046dbfb572f0ea07b816e1c4ab3eba132a85e4f8e9421e6"
+        },
+        "webp": {
+          "file": "orb-bot-white.webp",
+          "bytes": 6864,
+          "sha256": "99dede88b0204deb1fcb90b9abe0b5fe5644d36f3ebffff4cd025c267ca36db0"
+        }
+      }
+    },
+    {
+      "key": "blue",
+      "modelKey": "orb-bot-blue",
+      "url": "/models/orb-bot-blue/portraits/companion-r01.webp",
+      "asset": {
+        "modelKey": "orb-bot-blue",
+        "name": "あおbot",
+        "kind": "companion",
+        "candidate": 2,
+        "revision": "c2-t01",
+        "status": "remake-candidate-2-integrated",
+        "url": "/models/orb-bot-blue/model-c2.cook-d442ff69daf25615.glb",
+        "sha256": "d442ff69daf256158cf83e92e8960c4ff27abdfdfae40ded706ffd378d5a379e",
+        "bytes": 98576,
+        "triangles": 1400,
+        "bones": 2,
+        "upAxis": "Y",
+        "forwardAxis": "+Z",
+        "heightMetres": 0.28,
+        "widthMetres": 0.279848153626971,
+        "lengthMetres": 0.27982392237600645,
+        "placement": {
+          "pivot": "ground-centred",
+          "scale": 1
+        },
+        "clips": [
+          {
+            "name": "Catch",
+            "seconds": 0.30000001192092896,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Held_Loop",
+            "seconds": 1.2000000476837158,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Idle_Loop",
+            "seconds": 2.4000000953674316,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Land",
+            "seconds": 0.4166666567325592,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Run_Loop",
+            "seconds": 0.4000000059604645,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Thrown_Loop",
+            "seconds": 0.8999999761581421,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Walk_Loop",
+            "seconds": 0.6000000238418579,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          }
+        ],
+        "locomotion": {
+          "Walk_Loop": {
+            "metresPerSecond": 3,
+            "cycleSeconds": 0.6
+          },
+          "Run_Loop": {
+            "metresPerSecond": 3,
+            "cycleSeconds": 0.4
+          }
+        },
+        "lods": [
+          {
+            "url": "/models/orb-bot-blue/lod-c2.cook-02e910e8e2f4b424.glb",
+            "sha256": "02e910e8e2f4b4246a326e3d6e6aa7ade39d42899a4ec44694decc8030ffb5de",
+            "bytes": 22984,
+            "triangles": 1599,
+            "distanceMetres": 9,
+            "purpose": "animated-medium-lod-geometry"
+          }
+        ],
+        "provenance": {
+          "provider": "Claude Code (Opus 5.5)",
+          "claudeUsed": true,
+          "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+          "referenceImage": "public/models/orb-bot-blue/model-r03.glb",
+          "referenceSha256": "dee691fc7c35bde8079cd394744a2bdf050380528d30e86ec823cf8269806304",
+          "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+          "denseFile": "public/models/orb-bot-blue/model-r03.glb",
+          "denseSha256": "dee691fc7c35bde8079cd394744a2bdf050380528d30e86ec823cf8269806304",
+          "processReport": "output/model-generation/models/orb-bot-blue/work/candidate-02/transfer/t01/report.json",
+          "rigReport": null,
+          "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+          "previousDelivery": {
+            "url": "/models/orb-bot-blue/model-r03.glb",
+            "sha256": "dee691fc7c35bde8079cd394744a2bdf050380528d30e86ec823cf8269806304",
+            "triangles": 5227,
+            "bytes": 508596,
+            "candidate": 1,
+            "revision": "03"
+          },
+          "previousProvenance": {
+            "provider": "Codex",
+            "claudeUsed": false,
+            "referenceGenerator": "Built-in imagegen",
+            "referenceImage": "assets/orb-bots/source/blue-reference-v1.png",
+            "referenceSha256": "970b5110a724b5dfb86b80b2f0adecbf6896d9e995c8f4a0dd3108ee2c13a7c1",
+            "userReference": "assets/orb-bots/source/user-reference.png",
+            "userReferenceSha256": "c26fcc4d555b7cf586249114fb0a118c82baade3c3836e3cd745babe2c076a40",
+            "reconstruction": "Local TRELLIS-2 v0.8.1 official Vulkan / 512 / seed42; adaptive source-preserving surface reduction; immutable reference-PNG face ink rebaked into repaired UVs.",
+            "denseSha256": "8b554f55512a3b209db107f5db799c449663e8ce43c5cc5068dd60bd11a0d1c1",
+            "materialRepair": {
+              "method": "Source-PNG ink projection on the source-derived TRELLIS surface, lighting removed, front-normal mask; Cycles emission bake",
+              "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\orb-bots\\source\\blue-reference-v1.png",
+              "sourceAlphaBounds": [
+                0.1076555023923445,
+                0.8915470494417863,
+                0.09968102073365231,
+                0.8851674641148325
+              ],
+              "atlas": 4096,
+              "inferredBackColour": "1172ef",
+              "unusedAtlasColour": "1172ef",
+              "sourcePngUnmodified": true,
+              "analyticEyes": false
+            },
+            "candidateFile": "output/model-generation/models/orb-bot-blue/work/rig/revision-03/candidate.glb",
+            "visualReview": "assets/orb-bots/reviews/blue-r03.json"
+          },
+          "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+          "visualReview": "assets/asset-remake/reviews/orb-bot-blue.json"
+        },
+        "notes": [
+          "Remake C2 of the delivered orb bot: same surface reduced to at most 4,000 triangles, 4096 texture replaced by 1024 albedo + baked normal; 2 bones and 7 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 4000 triangles (was 5227), textures 1024 WebP + baked normal."
+        ],
+        "gameQA": "output/playwright/orb-bots/verified-20261001",
+        "runtimeOptimization": {
+          "adoption": "20261010-r07-a01",
+          "candidateRevision": "assets/optimized-runtime/20261010-r07",
+          "selection": "ordinary-compressed",
+          "original": {
+            "url": "/models/orb-bot-blue/model-c2.glb",
+            "sha256": "58aafc5fd984e95a1286aa73c284bebd2acedf2285eae8cbb77eaad517786988",
+            "bytes": 281820,
+            "triangles": 4000,
+            "lods": [
+              {
+                "url": "/models/orb-bot-blue/lod-c2.glb",
+                "sha256": "ddda5aa8619bb28c6f4193c280c62af69f49e8c07dc20f857afbaea567a79177",
+                "bytes": 71116,
+                "triangles": 1599,
+                "distanceMetres": 9,
+                "purpose": "animated-medium-lod-geometry"
+              }
+            ]
+          },
+          "supersedes": {
+            "adoption": "20261010-r05-a02",
+            "candidateRevision": "assets/optimized-runtime/20261010-r05",
+            "url": "/models/orb-bot-blue/model-c2.opt-26b5c7764ea04bdd.glb",
+            "sha256": "26b5c7764ea04bddf7ed18328a587ee1d51f7662ea5b0a24a94031044538a877",
+            "bytes": 181036,
+            "lods": [
+              {
+                "url": "/models/orb-bot-blue/lod-c2.opt-cb6345d01b995260.glb",
+                "sha256": "cb6345d01b995260a2909cc0c7f2def24f537ebf70b2c0ce1f70f5b6157fff42",
+                "bytes": 39444
+              }
+            ]
+          },
+          "adoptedBy": "20261010-r07-a01"
+        }
+      },
+      "clip": "Idle_Loop",
+      "time": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "blink": {
+        "closure": 0
+      },
+      "bounds": {
+        "min": [
+          -0.13861077508532327,
+          0.0010696833004348978,
+          -0.13823104587862997
+        ],
+        "max": [
+          0.13770972714616486,
+          0.28501115676985533,
+          0.1379285792879143
+        ]
+      },
+      "camera": {
+        "position": [
+          0.7495494760304208,
+          0.4930404200351451,
+          1.999848766704642
+        ],
+        "target": [
+          -0.00045052396957920293,
+          0.1430404200351451,
+          -0.00015123329535783603
+        ],
+        "verticalSpan": 0.78
+      },
+      "source": {
+        "url": "/models/orb-bot-blue/model-c2.opt-b0e706f21eed20c8.glb",
+        "sha256": "b0e706f21eed20c849383b1d0342050f320a12ecd9fbe4cb66a15a648cb8e836"
+      },
+      "visiblePixels": 10516,
+      "pixelBounds": {
+        "left": 135,
+        "right": 248,
+        "top": 101,
+        "bottom": 217
+      },
+      "files": {
+        "png": {
+          "file": "orb-bot-blue.png",
+          "bytes": 21345,
+          "sha256": "aa33538648ee660f7d59efc8722fcb457035fcf8b4d2336b42557fe354cc0cbd"
+        },
+        "webp": {
+          "file": "orb-bot-blue.webp",
+          "bytes": 7936,
+          "sha256": "593d547cd63060949737b919a024ebb57560e4c03f8517caeb8170cfb681e202"
+        }
+      }
+    },
+    {
+      "key": "green",
+      "modelKey": "orb-bot-green",
+      "url": "/models/orb-bot-green/portraits/companion-r01.webp",
+      "asset": {
+        "modelKey": "orb-bot-green",
+        "name": "みどりbot",
+        "kind": "companion",
+        "candidate": 2,
+        "revision": "c2-t01",
+        "status": "remake-candidate-2-integrated",
+        "url": "/models/orb-bot-green/model-c2.cook-d5174c54ae36341c.glb",
+        "sha256": "d5174c54ae36341c266d77f65e03c3c02bd0349cd10338c5f0a3830c630f3f2f",
+        "bytes": 86512,
+        "triangles": 1400,
+        "bones": 2,
+        "upAxis": "Y",
+        "forwardAxis": "+Z",
+        "heightMetres": 0.28,
+        "widthMetres": 0.27988458366990276,
+        "lengthMetres": 0.2798688018929965,
+        "placement": {
+          "pivot": "ground-centred",
+          "scale": 1
+        },
+        "clips": [
+          {
+            "name": "Catch",
+            "seconds": 0.30000001192092896,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Held_Loop",
+            "seconds": 1.2000000476837158,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Idle_Loop",
+            "seconds": 2.4000000953674316,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Land",
+            "seconds": 0.4166666567325592,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Run_Loop",
+            "seconds": 0.4000000059604645,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Thrown_Loop",
+            "seconds": 0.8999999761581421,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Walk_Loop",
+            "seconds": 0.6000000238418579,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          }
+        ],
+        "locomotion": {
+          "Walk_Loop": {
+            "metresPerSecond": 3,
+            "cycleSeconds": 0.6
+          },
+          "Run_Loop": {
+            "metresPerSecond": 3,
+            "cycleSeconds": 0.4
+          }
+        },
+        "lods": [
+          {
+            "url": "/models/orb-bot-green/lod-c2.cook-221cc859d5e34656.glb",
+            "sha256": "221cc859d5e34656c54d69bbbfecd8d498005704793fda97c56b9ad173250d1d",
+            "bytes": 23608,
+            "triangles": 1599,
+            "distanceMetres": 9,
+            "purpose": "animated-medium-lod-geometry"
+          }
+        ],
+        "provenance": {
+          "provider": "Claude Code (Opus 5.5)",
+          "claudeUsed": true,
+          "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+          "referenceImage": "public/models/orb-bot-green/model-r03.glb",
+          "referenceSha256": "4f7461ab063fce7aae319745520523bb2d84938ba7a11b765f3ea6b34dbb12ce",
+          "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+          "denseFile": "public/models/orb-bot-green/model-r03.glb",
+          "denseSha256": "4f7461ab063fce7aae319745520523bb2d84938ba7a11b765f3ea6b34dbb12ce",
+          "processReport": "output/model-generation/models/orb-bot-green/work/candidate-02/transfer/t01/report.json",
+          "rigReport": null,
+          "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+          "previousDelivery": {
+            "url": "/models/orb-bot-green/model-r03.glb",
+            "sha256": "4f7461ab063fce7aae319745520523bb2d84938ba7a11b765f3ea6b34dbb12ce",
+            "triangles": 5214,
+            "bytes": 497696,
+            "candidate": 1,
+            "revision": "03"
+          },
+          "previousProvenance": {
+            "provider": "Codex",
+            "claudeUsed": false,
+            "referenceGenerator": "Built-in imagegen",
+            "referenceImage": "assets/orb-bots/source/green-reference-v1.png",
+            "referenceSha256": "c63615b4f2bdbe72efc3121d75a382a3c97b97e4461f10f983bf0547c7728a38",
+            "userReference": "assets/orb-bots/source/user-reference.png",
+            "userReferenceSha256": "c26fcc4d555b7cf586249114fb0a118c82baade3c3836e3cd745babe2c076a40",
+            "reconstruction": "Local TRELLIS-2 v0.8.1 official Vulkan / 512 / seed42; adaptive source-preserving surface reduction; immutable reference-PNG face ink rebaked into repaired UVs.",
+            "denseSha256": "5a574e2f4a74f4dca416bb39dde14dca10c8f07953bdcfde7c78ff76f9d3de60",
+            "materialRepair": {
+              "method": "Source-PNG ink projection on the source-derived TRELLIS surface, lighting removed, front-normal mask; Cycles emission bake",
+              "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\orb-bots\\source\\green-reference-v1.png",
+              "sourceAlphaBounds": [
+                0.10366826156299841,
+                0.8851674641148325,
+                0.09728867623604466,
+                0.8763955342902712
+              ],
+              "atlas": 4096,
+              "inferredBackColour": "18b653",
+              "unusedAtlasColour": "18b653",
+              "sourcePngUnmodified": true,
+              "analyticEyes": false
+            },
+            "candidateFile": "output/model-generation/models/orb-bot-green/work/rig/revision-03/candidate.glb",
+            "visualReview": "assets/orb-bots/reviews/green-r03.json"
+          },
+          "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+          "visualReview": "assets/asset-remake/reviews/orb-bot-green.json"
+        },
+        "notes": [
+          "Remake C2 of the delivered orb bot: same surface reduced to at most 4,000 triangles, 4096 texture replaced by 1024 albedo + baked normal; 2 bones and 7 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 4000 triangles (was 5214), textures 1024 WebP + baked normal."
+        ],
+        "gameQA": "output/playwright/orb-bots/verified-20261001",
+        "runtimeOptimization": {
+          "adoption": "20261010-r07-a01",
+          "candidateRevision": "assets/optimized-runtime/20261010-r07",
+          "selection": "ordinary-compressed",
+          "original": {
+            "url": "/models/orb-bot-green/model-c2.glb",
+            "sha256": "7688b80b2910f2fd6b95bb281ed66f7c558c06bf801c8ce62b843e74dddf0238",
+            "bytes": 272528,
+            "triangles": 4000,
+            "lods": [
+              {
+                "url": "/models/orb-bot-green/lod-c2.glb",
+                "sha256": "f0ec7ee96a73ffeb4331a18dee19dfb4e7824d70e1c8810d4643360182f509b9",
+                "bytes": 72728,
+                "triangles": 1599,
+                "distanceMetres": 9,
+                "purpose": "animated-medium-lod-geometry"
+              }
+            ]
+          },
+          "supersedes": {
+            "adoption": "20261010-r05-a02",
+            "candidateRevision": "assets/optimized-runtime/20261010-r05",
+            "url": "/models/orb-bot-green/model-c2.opt-be0f8d03776ccd9c.glb",
+            "sha256": "be0f8d03776ccd9c193d264634689c45f7a9412f3dde328c2c2a3ac3449d96b8",
+            "bytes": 169800,
+            "lods": [
+              {
+                "url": "/models/orb-bot-green/lod-c2.opt-0b7eb03299dc34a4.glb",
+                "sha256": "0b7eb03299dc34a43bdcda1a62bbaaf682bdc2998ee0127121baf5e4eb5cf1e9",
+                "bytes": 40304
+              }
+            ]
+          },
+          "adoptedBy": "20261010-r07-a01"
+        }
+      },
+      "clip": "Idle_Loop",
+      "time": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "blink": {
+        "closure": 0
+      },
+      "bounds": {
+        "min": [
+          -0.1382444396655863,
+          0.0016466555629703387,
+          -0.1390396048157657
+        ],
+        "max": [
+          0.13755304306901905,
+          0.2836973321580699,
+          0.13837261279041174
+        ]
+      },
+      "camera": {
+        "position": [
+          0.7496543017017163,
+          0.4926719938605201,
+          1.999666503987323
+        ],
+        "target": [
+          -0.0003456982982836254,
+          0.14267199386052012,
+          -0.00033349601267697315
+        ],
+        "verticalSpan": 0.78
+      },
+      "source": {
+        "url": "/models/orb-bot-green/model-c2.opt-84eaabe0bc40a985.glb",
+        "sha256": "84eaabe0bc40a9850b82b56ea63809b7def006728d7cbf8fcf26104fdbcbd771"
+      },
+      "visiblePixels": 10518,
+      "pixelBounds": {
+        "left": 135,
+        "right": 248,
+        "top": 102,
+        "bottom": 217
+      },
+      "files": {
+        "png": {
+          "file": "orb-bot-green.png",
+          "bytes": 21756,
+          "sha256": "f8cb6a1984e0fa3cc2f1f624390bacac55acd05558f89179a5a4960e710d8157"
+        },
+        "webp": {
+          "file": "orb-bot-green.webp",
+          "bytes": 8230,
+          "sha256": "2d7c887683f6c40c83ab0da6922075ac344e675dca662d51f2456a049c7ec918"
+        }
+      }
+    },
+    {
+      "key": "purple",
+      "modelKey": "orb-bot-purple",
+      "url": "/models/orb-bot-purple/portraits/companion-r01.webp",
+      "asset": {
+        "modelKey": "orb-bot-purple",
+        "name": "むらさきbot",
+        "kind": "companion",
+        "candidate": 2,
+        "revision": "c2-t01",
+        "status": "remake-candidate-2-integrated",
+        "url": "/models/orb-bot-purple/model-c2.cook-65fc4ec9e639c221.glb",
+        "sha256": "65fc4ec9e639c22140beb464a78a1b5aac24a60e215cec91fd3fc65b856d36ce",
+        "bytes": 92728,
+        "triangles": 1400,
+        "bones": 2,
+        "upAxis": "Y",
+        "forwardAxis": "+Z",
+        "heightMetres": 0.28,
+        "widthMetres": 0.27967384568484327,
+        "lengthMetres": 0.27967429954076806,
+        "placement": {
+          "pivot": "ground-centred",
+          "scale": 1
+        },
+        "clips": [
+          {
+            "name": "Catch",
+            "seconds": 0.30000001192092896,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Held_Loop",
+            "seconds": 1.2000000476837158,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Idle_Loop",
+            "seconds": 2.4000000953674316,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Land",
+            "seconds": 0.4166666567325592,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Run_Loop",
+            "seconds": 0.4000000059604645,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Thrown_Loop",
+            "seconds": 0.8999999761581421,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Walk_Loop",
+            "seconds": 0.6000000238418579,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          }
+        ],
+        "locomotion": {
+          "Walk_Loop": {
+            "metresPerSecond": 3,
+            "cycleSeconds": 0.6
+          },
+          "Run_Loop": {
+            "metresPerSecond": 3,
+            "cycleSeconds": 0.4
+          }
+        },
+        "lods": [
+          {
+            "url": "/models/orb-bot-purple/lod-c2.cook-ac0df7c1276f9514.glb",
+            "sha256": "ac0df7c1276f9514209032164cc6ec98da4da29d7135eca7d623a983bac31c8b",
+            "bytes": 23316,
+            "triangles": 1599,
+            "distanceMetres": 9,
+            "purpose": "animated-medium-lod-geometry"
+          }
+        ],
+        "provenance": {
+          "provider": "Claude Code (Opus 5.5)",
+          "claudeUsed": true,
+          "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+          "referenceImage": "public/models/orb-bot-purple/model-r03.glb",
+          "referenceSha256": "5cc2232ba84cacbd2616ec6979757f41822cb4d845c7cbe873888756f6059e96",
+          "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+          "denseFile": "public/models/orb-bot-purple/model-r03.glb",
+          "denseSha256": "5cc2232ba84cacbd2616ec6979757f41822cb4d845c7cbe873888756f6059e96",
+          "processReport": "output/model-generation/models/orb-bot-purple/work/candidate-02/transfer/t01/report.json",
+          "rigReport": null,
+          "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+          "previousDelivery": {
+            "url": "/models/orb-bot-purple/model-r03.glb",
+            "sha256": "5cc2232ba84cacbd2616ec6979757f41822cb4d845c7cbe873888756f6059e96",
+            "triangles": 5206,
+            "bytes": 549020,
+            "candidate": 1,
+            "revision": "03"
+          },
+          "previousProvenance": {
+            "provider": "Codex",
+            "claudeUsed": false,
+            "referenceGenerator": "Built-in imagegen",
+            "referenceImage": "assets/orb-bots/source/purple-reference-v1.png",
+            "referenceSha256": "81b9a6cde2e80a5131cb7a9629303a1e91692b3ca72aa6e93b62b9567fe78110",
+            "userReference": "assets/orb-bots/source/user-reference.png",
+            "userReferenceSha256": "c26fcc4d555b7cf586249114fb0a118c82baade3c3836e3cd745babe2c076a40",
+            "reconstruction": "Local TRELLIS-2 v0.8.1 official Vulkan / 512 / seed42; adaptive source-preserving surface reduction; immutable reference-PNG face ink rebaked into repaired UVs.",
+            "denseSha256": "275b914e5df9aacbf7cda9014d8e87a059b2064c586da2fb04c791cf5f67ba42",
+            "materialRepair": {
+              "method": "Source-PNG ink projection on the source-derived TRELLIS surface, lighting removed, front-normal mask; Cycles emission bake",
+              "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\orb-bots\\source\\purple-reference-v1.png",
+              "sourceAlphaBounds": [
+                0.11722488038277512,
+                0.8819776714513556,
+                0.10685805422647528,
+                0.8676236044657097
+              ],
+              "atlas": 4096,
+              "inferredBackColour": "a23ee8",
+              "unusedAtlasColour": "a23ee8",
+              "sourcePngUnmodified": true,
+              "analyticEyes": false
+            },
+            "candidateFile": "output/model-generation/models/orb-bot-purple/work/rig/revision-03/candidate.glb",
+            "visualReview": "assets/orb-bots/reviews/purple-r03.json"
+          },
+          "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+          "visualReview": "assets/asset-remake/reviews/orb-bot-purple.json"
+        },
+        "notes": [
+          "Remake C2 of the delivered orb bot: same surface reduced to at most 4,000 triangles, 4096 texture replaced by 1024 albedo + baked normal; 2 bones and 7 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 4000 triangles (was 5206), textures 1024 WebP + baked normal."
+        ],
+        "gameQA": "output/playwright/orb-bots/verified-20261001",
+        "runtimeOptimization": {
+          "adoption": "20261010-r07-a01",
+          "candidateRevision": "assets/optimized-runtime/20261010-r07",
+          "selection": "ordinary-compressed",
+          "original": {
+            "url": "/models/orb-bot-purple/model-c2.glb",
+            "sha256": "d6ed48cf1f7a8b5e7a2cd1fa492312350b2987c33a4cf5027dbca863d2b04847",
+            "bytes": 277544,
+            "triangles": 4000,
+            "lods": [
+              {
+                "url": "/models/orb-bot-purple/lod-c2.glb",
+                "sha256": "28dcfec64fba9abea1510339af25a972fd3d32379eacdcc7b60b46183c89b672",
+                "bytes": 71796,
+                "triangles": 1599,
+                "distanceMetres": 9,
+                "purpose": "animated-medium-lod-geometry"
+              }
+            ]
+          },
+          "supersedes": {
+            "adoption": "20261010-r05-a02",
+            "candidateRevision": "assets/optimized-runtime/20261010-r05",
+            "url": "/models/orb-bot-purple/model-c2.opt-8ed72224b184825f.glb",
+            "sha256": "8ed72224b184825f7d0ccd9f27cb42f9e5793b2883e3742adbb07f98ea4db04c",
+            "bytes": 176072,
+            "lods": [
+              {
+                "url": "/models/orb-bot-purple/lod-c2.opt-29d4b43ec880dadc.glb",
+                "sha256": "29d4b43ec880dadc08f1e70acd46227866dca0e66bb51dff16000146ed641f42",
+                "bytes": 39868
+              }
+            ]
+          },
+          "adoptedBy": "20261010-r07-a01"
+        }
+      },
+      "clip": "Idle_Loop",
+      "time": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "blink": {
+        "closure": 0
+      },
+      "bounds": {
+        "min": [
+          -0.13847930087627522,
+          0.001890390915384776,
+          -0.13822061796183663
+        ],
+        "max": [
+          0.13808377878026024,
+          0.28430526131807893,
+          0.13822062832961846
+        ]
+      },
+      "camera": {
+        "position": [
+          0.7498022389519925,
+          0.4930978261167318,
+          2.000000005183891
+        ],
+        "target": [
+          -0.0001977610480074915,
+          0.14309782611673186,
+          5.183890913751377e-9
+        ],
+        "verticalSpan": 0.78
+      },
+      "source": {
+        "url": "/models/orb-bot-purple/model-c2.opt-96892c56a05dbc1e.glb",
+        "sha256": "96892c56a05dbc1e288becde3b2cf06036475ba97f168566c2fc248da8379d35"
+      },
+      "visiblePixels": 10522,
+      "pixelBounds": {
+        "left": 135,
+        "right": 248,
+        "top": 102,
+        "bottom": 218
+      },
+      "files": {
+        "png": {
+          "file": "orb-bot-purple.png",
+          "bytes": 23381,
+          "sha256": "edd8ce88908f79d9d50966b3abbaf083a7c11e672e13cb238a607d4f02aa68f3"
+        },
+        "webp": {
+          "file": "orb-bot-purple.webp",
+          "bytes": 9076,
+          "sha256": "34fc54dc7f8750c4fa789fb8e7d5c06e75ebbc5c38bdd22cecddc33e1b7f1be6"
+        }
+      }
+    },
+    {
+      "key": "orange",
+      "modelKey": "orb-bot-orange",
+      "url": "/models/orb-bot-orange/portraits/companion-r01.webp",
+      "asset": {
+        "modelKey": "orb-bot-orange",
+        "name": "オレンジbot",
+        "kind": "companion",
+        "candidate": 2,
+        "revision": "c2-t02",
+        "status": "remake-candidate-2-integrated",
+        "url": "/models/orb-bot-orange/model-c2.cook-8202932c0f467b54.glb",
+        "sha256": "8202932c0f467b54c3cf85b81a5d4be28c178cbdcb089252322a4ac8fc0b59fd",
+        "bytes": 71656,
+        "triangles": 885,
+        "bones": 2,
+        "upAxis": "Y",
+        "forwardAxis": "+Z",
+        "heightMetres": 0.28,
+        "widthMetres": 0.2835914118287309,
+        "lengthMetres": 0.2727892712736467,
+        "placement": {
+          "pivot": "ground-centred",
+          "scale": 1
+        },
+        "clips": [
+          {
+            "name": "Catch",
+            "seconds": 0.30000001192092896,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Held_Loop",
+            "seconds": 1.2000000476837158,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Idle_Loop",
+            "seconds": 2.4000000953674316,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Land",
+            "seconds": 0.4166666567325592,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Run_Loop",
+            "seconds": 0.4000000059604645,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Thrown_Loop",
+            "seconds": 0.8999999761581421,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Walk_Loop",
+            "seconds": 0.6000000238418579,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          }
+        ],
+        "locomotion": {
+          "Walk_Loop": {
+            "metresPerSecond": 3,
+            "cycleSeconds": 0.6
+          },
+          "Run_Loop": {
+            "metresPerSecond": 3,
+            "cycleSeconds": 0.4
+          }
+        },
+        "lods": [
+          {
+            "url": "/models/orb-bot-orange/lod-c2.cook-ca06decfdb41eb43.glb",
+            "sha256": "ca06decfdb41eb437a5dc6c3a03dab8ad1efa4715aa0230d3aff59344892d847",
+            "bytes": 15112,
+            "triangles": 1012,
+            "distanceMetres": 9,
+            "purpose": "animated-medium-lod-geometry"
+          }
+        ],
+        "provenance": {
+          "provider": "Claude Code (Opus 5.5)",
+          "claudeUsed": true,
+          "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+          "referenceImage": "public/models/orb-bot-orange/model-r08.glb",
+          "referenceSha256": "35a5de83fc555c537e918000b6c2f0fabed5ce6ac2f837aa78930e7547f99d55",
+          "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+          "denseFile": "public/models/orb-bot-orange/model-r08.glb",
+          "denseSha256": "35a5de83fc555c537e918000b6c2f0fabed5ce6ac2f837aa78930e7547f99d55",
+          "processReport": "output/model-generation/models/orb-bot-orange/work/candidate-02/transfer/t02/report.json",
+          "rigReport": null,
+          "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+          "previousDelivery": {
+            "url": "/models/orb-bot-orange/model-r08.glb",
+            "sha256": "35a5de83fc555c537e918000b6c2f0fabed5ce6ac2f837aa78930e7547f99d55",
+            "triangles": 2531,
+            "bytes": 454820,
+            "candidate": 1,
+            "revision": "08"
+          },
+          "previousProvenance": {
+            "provider": "Codex",
+            "claudeUsed": false,
+            "referenceGenerator": "Built-in imagegen",
+            "referenceImage": "assets/orb-bots/source/orange-reference-v1.png",
+            "referenceSha256": "63b79e6486d03482e32c33ca00eb9d3e44a04441796adb7e62098460e2c78352",
+            "userReference": "assets/orb-bots/source/user-reference.png",
+            "userReferenceSha256": "c26fcc4d555b7cf586249114fb0a118c82baade3c3836e3cd745babe2c076a40",
+            "reconstruction": "Local TRELLIS-2 v0.8.1 official Vulkan / 512 / seed42; adaptive source-preserving surface reduction; immutable reference-PNG face ink rebaked into repaired UVs.",
+            "denseSha256": "6e1de6960f1da83841ce40f0b6d615240060c1ee136d2c70cf1d22b38d99fbb9",
+            "materialRepair": {
+              "method": "Source-PNG ink projection on the source-derived TRELLIS surface, lighting removed, front-normal mask; Cycles emission bake",
+              "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\orb-bots\\source\\orange-reference-v1.png",
+              "sourceAlphaBounds": [
+                0.05980861244019139,
+                0.9362041467304625,
+                0.058213716108452954,
+                0.9258373205741627
+              ],
+              "atlas": 4096,
+              "inferredBackColour": "f58b28",
+              "unusedAtlasColour": "f58b28",
+              "sourcePngUnmodified": true,
+              "analyticEyes": false
+            },
+            "surfaceRepair": {
+              "method": "Constrained local eye topology replacement; depth interpolated from unchanged TRELLIS neighbourhood",
+              "boxesNormalized": [
+                [
+                  -0.31859617137648133,
+                  -0.09617137648131269,
+                  -0.013812154696132617,
+                  0.047882136279926324
+                ],
+                [
+                  0.0724703737465816,
+                  0.3003646308113036,
+                  -0.0036832412523020164,
+                  0.05432780847145491
+                ]
+              ],
+              "removedTriangles": 77886,
+              "originalTriangles": 143055,
+              "invisibleInteriorTrianglesRemoved": 64134,
+              "patches": [
+                {
+                  "boundaryVertices": 130,
+                  "triangles": 3628
+                },
+                {
+                  "boundaryVertices": 118,
+                  "triangles": 3568
+                }
+              ],
+              "outsidePositionsExact": true,
+              "boundaryPositionsExact": true,
+              "newNonManifoldEdges": 0,
+              "fittedPrimitive": false
+            },
+            "candidateFile": "output/model-generation/models/orb-bot-orange/work/rig/revision-08/candidate.glb",
+            "visualReview": "assets/orb-bots/reviews/orange-r08.json"
+          },
+          "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+          "visualReview": "assets/asset-remake/reviews/orb-bot-orange.json"
+        },
+        "notes": [
+          "Remake C2 of the delivered orb bot: same surface reduced to at most 4,000 triangles, 4096 texture replaced by 1024 albedo + baked normal; 2 bones and 7 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 2531 triangles (was 2531), textures 1024 WebP + baked normal."
+        ],
+        "gameQA": "output/playwright/orb-bots/verified-20261001",
+        "runtimeOptimization": {
+          "adoption": "20261010-r07-a01",
+          "candidateRevision": "assets/optimized-runtime/20261010-r07",
+          "selection": "ordinary-compressed",
+          "original": {
+            "url": "/models/orb-bot-orange/model-c2.glb",
+            "sha256": "1a92cdfe97bc542f5c96cc09f902bc99842114b1460fc87cb1d49d23242830be",
+            "bytes": 189144,
+            "triangles": 2531,
+            "lods": [
+              {
+                "url": "/models/orb-bot-orange/lod-c2.glb",
+                "sha256": "df77e30e57f304da22e312971c82e3dde686d7f4219acd77ecbab2df03e239c6",
+                "bytes": 42996,
+                "triangles": 1012,
+                "distanceMetres": 9,
+                "purpose": "animated-medium-lod-geometry"
+              }
+            ]
+          },
+          "supersedes": {
+            "adoption": "20261010-r05-a02",
+            "candidateRevision": "assets/optimized-runtime/20261010-r05",
+            "url": "/models/orb-bot-orange/model-c2.opt-8cb2e35cbf824478.glb",
+            "sha256": "8cb2e35cbf824478ec035b52eb8e81fe6ae6c65666ba8d04b13c1f6628439852",
+            "bytes": 124640,
+            "lods": [
+              {
+                "url": "/models/orb-bot-orange/lod-c2.opt-22329782023eb470.glb",
+                "sha256": "22329782023eb470cb18cdb279b87e396e9cd4f2f13939a82ceffa9110a522d8",
+                "bytes": 24804
+              }
+            ]
+          },
+          "adoptedBy": "20261010-r07-a01"
+        }
+      },
+      "clip": "Idle_Loop",
+      "time": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "blink": {
+        "closure": 0
+      },
+      "bounds": {
+        "min": [
+          -0.1404530717111228,
+          0.0014132793962947916,
+          -0.13506551776521933
+        ],
+        "max": [
+          0.14050526922835055,
+          0.28348646678942646,
+          0.13567256297831792
+        ]
+      },
+      "camera": {
+        "position": [
+          0.7500260987586138,
+          0.4924498730928606,
+          2.0003035226065493
+        ],
+        "target": [
+          0.000026098758613868345,
+          0.1424498730928606,
+          0.0003035226065492974
+        ],
+        "verticalSpan": 0.78
+      },
+      "source": {
+        "url": "/models/orb-bot-orange/model-c2.opt-bfd5e993edc3a174.glb",
+        "sha256": "bfd5e993edc3a174c1e6bdcbeddf44a5c8d296426b628e13e81af6791f0c4e5c"
+      },
+      "visiblePixels": 10540,
+      "pixelBounds": {
+        "left": 134,
+        "right": 249,
+        "top": 102,
+        "bottom": 218
+      },
+      "files": {
+        "png": {
+          "file": "orb-bot-orange.png",
+          "bytes": 21034,
+          "sha256": "7d16b1378bbb4f3e6b581bb4f641298964fcbc6165c30e5327636c7970685b35"
+        },
+        "webp": {
+          "file": "orb-bot-orange.webp",
+          "bytes": 7448,
+          "sha256": "a19c493ba0efbe0377b2bf95d351a855dcf7fc155661fbc60e6d402047b7779a"
+        }
+      }
+    },
+    {
+      "key": "beret",
+      "modelKey": "orb-bot-beret",
+      "url": "/models/orb-bot-beret/portraits/companion-r01.webp",
+      "asset": {
+        "modelKey": "orb-bot-beret",
+        "name": "ベレーbot",
+        "kind": "companion",
+        "candidate": 2,
+        "revision": "c2-t01",
+        "status": "remake-candidate-2-integrated",
+        "url": "/models/orb-bot-beret/model-c2.cook-7528afe18d7de5b8.glb",
+        "sha256": "7528afe18d7de5b8c08e17ba5a8c96e3b9f1bf4482cf00ffd8f9b19bfce470b2",
+        "bytes": 379736,
+        "triangles": 2672,
+        "bones": 2,
+        "upAxis": "Y",
+        "forwardAxis": "+Z",
+        "heightMetres": 0.28,
+        "widthMetres": 0.2553956419059432,
+        "lengthMetres": 0.21192581770742053,
+        "placement": {
+          "pivot": "ground-centred",
+          "scale": 1
+        },
+        "portrait": {
+          "url": "/models/orb-bot-beret/portrait.png",
+          "sha256": "0b9b7c2accf86d2a0fcbe3db4a586ba716bcd15c5519ef189758a06202c3e33d",
+          "bytes": 1357885
+        },
+        "clips": [
+          {
+            "name": "Catch",
+            "seconds": 0.30000001192092896,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Held_Loop",
+            "seconds": 1.2000000476837158,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Idle_Loop",
+            "seconds": 2.4000000953674316,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Land",
+            "seconds": 0.4166666567325592,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Run_Loop",
+            "seconds": 0.4000000059604645,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Thrown_Loop",
+            "seconds": 0.8999999761581421,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Walk_Loop",
+            "seconds": 0.6000000238418579,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          }
+        ],
+        "locomotion": {
+          "Walk_Loop": {
+            "metresPerSecond": 3,
+            "cycleSeconds": 0.6
+          },
+          "Run_Loop": {
+            "metresPerSecond": 3,
+            "cycleSeconds": 0.4
+          }
+        },
+        "lods": [
+          {
+            "url": "/models/orb-bot-beret/lod-c2.cook-90d7180a6779d47c.glb",
+            "sha256": "90d7180a6779d47c476343356a4e2857243a44991003fa2d60c51745ae3049cc",
+            "bytes": 32320,
+            "triangles": 1565,
+            "distanceMetres": 9,
+            "purpose": "animated-medium-lod-geometry"
+          }
+        ],
+        "provenance": {
+          "provider": "Claude Code (Opus 5.5)",
+          "claudeUsed": true,
+          "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+          "referenceImage": "public/models/orb-bot-beret/model-r03.glb",
+          "referenceSha256": "0c18e377dc69de6c1fce9bd2baaade3fb20914f2e547d382ec5a6a8b24e304e0",
+          "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+          "denseFile": "public/models/orb-bot-beret/model-r03.glb",
+          "denseSha256": "0c18e377dc69de6c1fce9bd2baaade3fb20914f2e547d382ec5a6a8b24e304e0",
+          "processReport": "output/model-generation/models/orb-bot-beret/work/candidate-02/transfer/t01/report.json",
+          "rigReport": null,
+          "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+          "previousDelivery": {
+            "url": "/models/orb-bot-beret/model-r03.glb",
+            "sha256": "0c18e377dc69de6c1fce9bd2baaade3fb20914f2e547d382ec5a6a8b24e304e0",
+            "triangles": 23581,
+            "bytes": 17676368,
+            "candidate": 1,
+            "revision": "03"
+          },
+          "previousProvenance": {
+            "provider": "Codex",
+            "claudeUsed": false,
+            "referenceGenerator": "Built-in imagegen",
+            "referenceImage": "assets/shape-bots/source/beret-reference-v1.png",
+            "referenceSha256": "0b9b7c2accf86d2a0fcbe3db4a586ba716bcd15c5519ef189758a06202c3e33d",
+            "userReference": "assets/shape-bots/source/user-reference.png",
+            "userReferenceSha256": "9836ed1b161feba83535854a67235b74ceb1c4dbe26a2098e53a33559c69ad77",
+            "reconstruction": "Local TRELLIS-2 v0.8.1 official Vulkan / 512 / seed42; measured source-preserving reduction and squash/hop rig.",
+            "denseSha256": "d310b8466391c55d1c69c790f1ea44acc67ac6db7e8cd51bb6f851cf26e39036",
+            "sourceUvAndAlbedoPreserved": false,
+            "sourceUvPreserved": true,
+            "materialRepair": {
+              "method": "Reference-derived body-colour calibration of source albedo; neutral white/black features retained",
+              "records": [
+                {
+                  "reference": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\shape-bots\\source\\beret-reference-v1.png",
+                  "targetHsv": [
+                    0.5953333377838135,
+                    1,
+                    0.960784375667572
+                  ],
+                  "denseHsv": [
+                    0.5362319350242615,
+                    0.9709302186965942,
+                    0.8431373238563538
+                  ],
+                  "hueShift": 0.059101402759552,
+                  "changedPixels": 12362109,
+                  "unchangedPixels": 4415107,
+                  "alphaExact": true,
+                  "originalUVsExact": true
+                }
+              ]
+            },
+            "candidateFile": "output/model-generation/models/orb-bot-beret/work/rig/revision-03/candidate.glb",
+            "visualReview": "assets/shape-bots/reviews/beret-r03.json"
+          },
+          "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+          "visualReview": "assets/asset-remake/reviews/orb-bot-beret.json"
+        },
+        "notes": [
+          "Remake C2 of the delivered orb bot: same surface reduced to at most 4,000 triangles, 4096 texture replaced by 1024 albedo + baked normal; 2 bones and 7 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 3914 triangles (was 23581), textures 1024 WebP + baked normal."
+        ],
+        "gameQA": "output/playwright/shape-bots/game-1790867552591",
+        "runtimeOptimization": {
+          "adoption": "20261010-r07-a01",
+          "candidateRevision": "assets/optimized-runtime/20261010-r07",
+          "selection": "ordinary-compressed",
+          "original": {
+            "url": "/models/orb-bot-beret/model-c2.glb",
+            "sha256": "5a6a97633fb56bbe95eead6e976a1bb13b596833bbf2ea5ed6812d155006722e",
+            "bytes": 600312,
+            "triangles": 3914,
+            "lods": [
+              {
+                "url": "/models/orb-bot-beret/lod-c2.glb",
+                "sha256": "2688cfd8f92371ab35805e111797128119802c902f57070731d50e01d00024a0",
+                "bytes": 103312,
+                "triangles": 1565,
+                "distanceMetres": 9,
+                "purpose": "animated-medium-lod-geometry"
+              }
+            ]
+          },
+          "adoptedBy": "20261010-r07-a01",
+          "supersedes": {
+            "adoption": "20261009-r04-a01",
+            "candidateRevision": "assets/optimized-runtime/20261009-r04",
+            "url": "/models/orb-bot-beret/model-c2.opt-67aa3569b08433a9.glb",
+            "sha256": "67aa3569b08433a9d061e3902e3ac9fe358eaea1eec8756350265681034c43c5",
+            "bytes": 469592,
+            "lods": [
+              {
+                "url": "/models/orb-bot-beret/lod-c2.opt-f4899300099cd789.glb",
+                "sha256": "f4899300099cd789cf6fc1f0f91cd47c603e7aa307dab057ac37294b38381fbe",
+                "bytes": 58004
+              }
+            ]
+          }
+        }
+      },
+      "clip": "Idle_Loop",
+      "time": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "blink": {
+        "closure": 0
+      },
+      "bounds": {
+        "min": [
+          -0.12392416694403234,
+          0.0010089070316952322,
+          -0.10461447871767315
+        ],
+        "max": [
+          0.12851526822490025,
+          0.28277699591991284,
+          0.10434141869449998
+        ]
+      },
+      "camera": {
+        "position": [
+          0.752295550640434,
+          0.49189295147580403,
+          1.9998634699884135
+        ],
+        "target": [
+          0.0022955506404339562,
+          0.14189295147580402,
+          -0.00013653001158658862
+        ],
+        "verticalSpan": 0.78
+      },
+      "source": {
+        "url": "/models/orb-bot-beret/model-c2.opt-822ea8338b5d8c90.glb",
+        "sha256": "822ea8338b5d8c9091a8e2b3a2e799af76749f78332e7154543b43404fe3c167"
+      },
+      "visiblePixels": 9145,
+      "pixelBounds": {
+        "left": 141,
+        "right": 242,
+        "top": 102,
+        "bottom": 219
+      },
+      "files": {
+        "png": {
+          "file": "orb-bot-beret.png",
+          "bytes": 21997,
+          "sha256": "0e6da3478f3c07d9b51d46a5bbb4eec7ede156e52b2e9dc72d9d488a662ba3ad"
+        },
+        "webp": {
+          "file": "orb-bot-beret.webp",
+          "bytes": 9078,
+          "sha256": "87b59795f273c6fb7350da6c1aeed7ec8609ff6b30bacf320d83d5863e356a9e"
+        }
+      }
+    },
+    {
+      "key": "frog",
+      "modelKey": "orb-bot-frog",
+      "url": "/models/orb-bot-frog/portraits/companion-r01.webp",
+      "asset": {
+        "modelKey": "orb-bot-frog",
+        "name": "かえるbot",
+        "kind": "companion",
+        "candidate": 2,
+        "revision": "c2-t03",
+        "status": "remake-candidate-2-integrated",
+        "url": "/models/orb-bot-frog/model-c2.cook-7bf69ebb20faf643.glb",
+        "sha256": "7bf69ebb20faf643c7b3f24cdfb897ed081f7b89843647e68991e2240e94dd4b",
+        "bytes": 504424,
+        "triangles": 3624,
+        "bones": 2,
+        "upAxis": "Y",
+        "forwardAxis": "+Z",
+        "heightMetres": 0.2678865952403118,
+        "widthMetres": 0.28,
+        "lengthMetres": 0.2797204143383655,
+        "placement": {
+          "pivot": "ground-centred",
+          "scale": 1
+        },
+        "portrait": {
+          "url": "/models/orb-bot-frog/portrait.png",
+          "sha256": "0930a7dcb766477aae7bc44c54e53981af7758a2148cc79e8535fa4311380211",
+          "bytes": 1816488
+        },
+        "clips": [
+          {
+            "name": "Catch",
+            "seconds": 0.30000001192092896,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Held_Loop",
+            "seconds": 1.2000000476837158,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Idle_Loop",
+            "seconds": 2.4000000953674316,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Land",
+            "seconds": 0.4166666567325592,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Run_Loop",
+            "seconds": 0.4000000059604645,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Thrown_Loop",
+            "seconds": 0.8999999761581421,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Walk_Loop",
+            "seconds": 0.6000000238418579,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          }
+        ],
+        "locomotion": {
+          "Walk_Loop": {
+            "metresPerSecond": 3,
+            "cycleSeconds": 0.6
+          },
+          "Run_Loop": {
+            "metresPerSecond": 3,
+            "cycleSeconds": 0.4
+          }
+        },
+        "lods": [
+          {
+            "url": "/models/orb-bot-frog/lod-c2.cook-1e41a90fbd7e2f37.glb",
+            "sha256": "1e41a90fbd7e2f37dd874f2b95e93868535a881abab75e05dbe3f11ae3f23a2c",
+            "bytes": 31368,
+            "triangles": 1448,
+            "distanceMetres": 9,
+            "purpose": "animated-medium-lod-geometry"
+          }
+        ],
+        "provenance": {
+          "provider": "Claude Code (Opus 5.5)",
+          "claudeUsed": true,
+          "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+          "referenceImage": "public/models/orb-bot-frog/model-r01.glb",
+          "referenceSha256": "cdd25740bb82c8553f3acc174d29e1b016729af1eb60ddf2e0d4ce7f479b5741",
+          "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+          "denseFile": "public/models/orb-bot-frog/model-r01.glb",
+          "denseSha256": "cdd25740bb82c8553f3acc174d29e1b016729af1eb60ddf2e0d4ce7f479b5741",
+          "processReport": "output/model-generation/models/orb-bot-frog/work/candidate-02/transfer/t03/report.json",
+          "rigReport": null,
+          "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+          "previousDelivery": {
+            "url": "/models/orb-bot-frog/model-r01.glb",
+            "sha256": "cdd25740bb82c8553f3acc174d29e1b016729af1eb60ddf2e0d4ce7f479b5741",
+            "triangles": 41638,
+            "bytes": 27659764,
+            "candidate": 1,
+            "revision": "01"
+          },
+          "previousProvenance": {
+            "provider": "Codex",
+            "claudeUsed": false,
+            "referenceGenerator": "Built-in imagegen",
+            "referenceImage": "assets/shape-bots/source/frog-reference-v1.png",
+            "referenceSha256": "0930a7dcb766477aae7bc44c54e53981af7758a2148cc79e8535fa4311380211",
+            "userReference": "assets/shape-bots/source/user-reference.png",
+            "userReferenceSha256": "9836ed1b161feba83535854a67235b74ceb1c4dbe26a2098e53a33559c69ad77",
+            "reconstruction": "Local TRELLIS-2 v0.8.1 official Vulkan / 512 / seed42; measured source-preserving reduction and squash/hop rig.",
+            "denseSha256": "54e7c94d5213d5f209faefaa9468c0f2fb21c7b72139a763b9fd079b1f3692fd",
+            "sourceUvAndAlbedoPreserved": false,
+            "sourceUvPreserved": true,
+            "materialRepair": {
+              "method": "Reference-derived body-colour calibration of source albedo; neutral white/black features retained",
+              "records": [
+                {
+                  "reference": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\shape-bots\\source\\frog-reference-v1.png",
+                  "targetHsv": [
+                    0.20806099474430084,
+                    0.850649356842041,
+                    0.7058823704719543
+                  ],
+                  "denseHsv": [
+                    0.2389558106660843,
+                    0.8350515961647034,
+                    0.7647059559822083
+                  ],
+                  "hueShift": -0.030894815921783447,
+                  "changedPixels": 14570072,
+                  "unchangedPixels": 2207144,
+                  "alphaExact": true,
+                  "originalUVsExact": true
+                }
+              ]
+            },
+            "candidateFile": "output/model-generation/models/orb-bot-frog/work/rig/revision-01/candidate.glb",
+            "visualReview": "assets/shape-bots/reviews/frog-r01.json"
+          },
+          "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+          "visualReview": "assets/asset-remake/reviews/orb-bot-frog.json"
+        },
+        "notes": [
+          "Remake C2 of the delivered orb bot: same surface reduced to at most 4,000 triangles, 4096 texture replaced by 1024 albedo + baked normal; 2 bones and 7 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 3624 triangles (was 41638), textures 1024 WebP + baked normal."
+        ],
+        "gameQA": "output/playwright/shape-bots/game-1790867552591",
+        "runtimeOptimization": {
+          "adoption": "20261010-r07-a01",
+          "candidateRevision": "assets/optimized-runtime/20261009-r04",
+          "selection": "ordinary-compressed",
+          "original": {
+            "url": "/models/orb-bot-frog/model-c2.glb",
+            "sha256": "db6173c04dbfee63acec4d76291414a3cfaa9068ee5e9dcfcf796ac189a7c7a5",
+            "bytes": 737732,
+            "triangles": 3624,
+            "lods": [
+              {
+                "url": "/models/orb-bot-frog/lod-c2.glb",
+                "sha256": "2ed6f85dfc70e29b58454d6ada2e28fb310c15f327e37a2be221961918600b82",
+                "bytes": 104640,
+                "triangles": 1448,
+                "distanceMetres": 9,
+                "purpose": "animated-medium-lod-geometry"
+              }
+            ]
+          },
+          "adoptedBy": "20261009-r04-a01"
+        }
+      },
+      "clip": "Idle_Loop",
+      "time": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "blink": {
+        "closure": 0
+      },
+      "bounds": {
+        "min": [
+          -0.13547591672542186,
+          0.0014861453816409805,
+          -0.13817055331834707
+        ],
+        "max": [
+          0.14071018883574438,
+          0.27362904759872453,
+          0.13792857728559027
+        ]
+      },
+      "camera": {
+        "position": [
+          0.7526171360551612,
+          0.4875575964901827,
+          1.9998790119836216
+        ],
+        "target": [
+          0.0026171360551612566,
+          0.13755759649018276,
+          -0.00012098801637840106
+        ],
+        "verticalSpan": 0.78
+      },
+      "source": {
+        "url": "/models/orb-bot-frog/model-c2.opt-0840299e1a568e62.glb",
+        "sha256": "0840299e1a568e62caaa4d4c419d983f904c9d2a9587cdecf573b7fc34bbabad"
+      },
+      "visiblePixels": 10646,
+      "pixelBounds": {
+        "left": 135,
+        "right": 248,
+        "top": 105,
+        "bottom": 219
+      },
+      "files": {
+        "png": {
+          "file": "orb-bot-frog.png",
+          "bytes": 26966,
+          "sha256": "3a0991d9752fc63763090777ed395cd7c1d72dae50d7531bb442612ba70e3cee"
+        },
+        "webp": {
+          "file": "orb-bot-frog.webp",
+          "bytes": 10882,
+          "sha256": "7129a825d25917782425884a1b4e1d793c23c6b9be0fb53611ab80d35df61bbf"
+        }
+      }
+    },
+    {
+      "key": "triangle",
+      "modelKey": "orb-bot-triangle",
+      "url": "/models/orb-bot-triangle/portraits/companion-r01.webp",
+      "asset": {
+        "modelKey": "orb-bot-triangle",
+        "name": "さんかくbot",
+        "kind": "companion",
+        "candidate": 2,
+        "revision": "c2-t01",
+        "status": "remake-candidate-2-integrated",
+        "url": "/models/orb-bot-triangle/model-c2.cook-cbcc3af113654f9c.glb",
+        "sha256": "cbcc3af113654f9cde10c423f6ef6afa0ebab56f25a448cfdab25ffc1adb6a69",
+        "bytes": 294380,
+        "triangles": 3993,
+        "bones": 2,
+        "upAxis": "Y",
+        "forwardAxis": "+Z",
+        "heightMetres": 0.25344121781436846,
+        "widthMetres": 0.28,
+        "lengthMetres": 0.2782609707940249,
+        "placement": {
+          "pivot": "ground-centred",
+          "scale": 1
+        },
+        "portrait": {
+          "url": "/models/orb-bot-triangle/portrait.png",
+          "sha256": "abb0d9213901714801ea6d10d09d73b00fe52cd0c6cd83248f4c6126627c3bf9",
+          "bytes": 1637486
+        },
+        "clips": [
+          {
+            "name": "Catch",
+            "seconds": 0.30000001192092896,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Held_Loop",
+            "seconds": 1.2000000476837158,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Idle_Loop",
+            "seconds": 2.4000000953674316,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Land",
+            "seconds": 0.4166666567325592,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Run_Loop",
+            "seconds": 0.4000000059604645,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Thrown_Loop",
+            "seconds": 0.8999999761581421,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Walk_Loop",
+            "seconds": 0.6000000238418579,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          }
+        ],
+        "locomotion": {
+          "Walk_Loop": {
+            "metresPerSecond": 3,
+            "cycleSeconds": 0.6
+          },
+          "Run_Loop": {
+            "metresPerSecond": 3,
+            "cycleSeconds": 0.4
+          }
+        },
+        "lods": [
+          {
+            "url": "/models/orb-bot-triangle/lod-c2.cook-887ccdb421efe8e5.glb",
+            "sha256": "887ccdb421efe8e54eae041c59b42bbf1fc9842edb646f0b059506ec5bed96f9",
+            "bytes": 29412,
+            "triangles": 1597,
+            "distanceMetres": 9,
+            "purpose": "animated-medium-lod-geometry"
+          }
+        ],
+        "provenance": {
+          "provider": "Claude Code (Opus 5.5)",
+          "claudeUsed": true,
+          "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+          "referenceImage": "public/models/orb-bot-triangle/model-r06.glb",
+          "referenceSha256": "a69f9a4f5d65fe867f5fd6865a41f2862282ef3ae7fa8858774b7797ddf6cf1b",
+          "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+          "denseFile": "public/models/orb-bot-triangle/model-r06.glb",
+          "denseSha256": "a69f9a4f5d65fe867f5fd6865a41f2862282ef3ae7fa8858774b7797ddf6cf1b",
+          "processReport": "output/model-generation/models/orb-bot-triangle/work/candidate-02/transfer/t01/report.json",
+          "rigReport": null,
+          "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+          "previousDelivery": {
+            "url": "/models/orb-bot-triangle/model-r06.glb",
+            "sha256": "a69f9a4f5d65fe867f5fd6865a41f2862282ef3ae7fa8858774b7797ddf6cf1b",
+            "triangles": 14021,
+            "bytes": 16759840,
+            "candidate": 1,
+            "revision": "06"
+          },
+          "previousProvenance": {
+            "provider": "Codex",
+            "claudeUsed": false,
+            "referenceGenerator": "Built-in imagegen",
+            "referenceImage": "assets/shape-bots/source/triangle-reference-v1.png",
+            "referenceSha256": "abb0d9213901714801ea6d10d09d73b00fe52cd0c6cd83248f4c6126627c3bf9",
+            "userReference": "assets/shape-bots/source/user-reference.png",
+            "userReferenceSha256": "9836ed1b161feba83535854a67235b74ceb1c4dbe26a2098e53a33559c69ad77",
+            "reconstruction": "Local TRELLIS-2 v0.8.1 official Vulkan / 512 / seed42; measured source-preserving reduction and squash/hop rig.",
+            "denseSha256": "964f4283abfe6a4ce8d84fd9d61d37519db1b32acb293f0ce80ce754f9d72f0f",
+            "sourceUvAndAlbedoPreserved": false,
+            "sourceUvPreserved": true,
+            "materialRepair": {
+              "method": "Reference-derived body-colour calibration of source albedo; neutral white/black features retained",
+              "records": [
+                {
+                  "reference": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\shape-bots\\source\\triangle-reference-v1.png",
+                  "targetHsv": [
+                    0.12430554628372192,
+                    0.9446640610694885,
+                    0.9803922176361084
+                  ],
+                  "denseHsv": [
+                    0.09905660152435303,
+                    0.8542510271072388,
+                    0.9686275124549866
+                  ],
+                  "hueShift": 0.025248944759368896,
+                  "changedPixels": 14482876,
+                  "unchangedPixels": 2294340,
+                  "alphaExact": true,
+                  "originalUVsExact": true
+                }
+              ],
+              "faceRetouch": {
+                "method": "Geometry-masked interpolation from adjacent original body texels; duplicate baked rings only",
+                "changedPixels": 100734,
+                "protectedEyePixels": 40790,
+                "bodyRegionPixels": 703080,
+                "iterations": 40,
+                "isolatedChartTexels": 632,
+                "geometryExact": true,
+                "uvExact": true,
+                "closedEyeTexelsExact": true,
+                "pixelsOutsideMaskExact": true,
+                "bodyDepthToleranceMetres": 0.002520000010728836,
+                "sourceOriginalRetained": true
+              }
+            },
+            "candidateFile": "output/model-generation/models/orb-bot-triangle/work/rig/revision-06/candidate.glb",
+            "visualReview": "assets/shape-bots/reviews/triangle-r06.json"
+          },
+          "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+          "visualReview": "assets/asset-remake/reviews/orb-bot-triangle.json"
+        },
+        "notes": [
+          "Remake C2 of the delivered orb bot: same surface reduced to at most 4,000 triangles, 4096 texture replaced by 1024 albedo + baked normal; 2 bones and 7 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 3993 triangles (was 14021), textures 1024 WebP + baked normal."
+        ],
+        "gameQA": "output/playwright/shape-bots/game-1790867552591",
+        "runtimeOptimization": {
+          "adoption": "20261010-r07-a01",
+          "candidateRevision": "assets/optimized-runtime/20261009-r04",
+          "selection": "ordinary-compressed",
+          "original": {
+            "url": "/models/orb-bot-triangle/model-c2.glb",
+            "sha256": "3b817e9ad2466dfee568e14916f571bd9492ef50cc95442c310f24a4f3068d77",
+            "bytes": 473148,
+            "triangles": 3993,
+            "lods": [
+              {
+                "url": "/models/orb-bot-triangle/lod-c2.glb",
+                "sha256": "1311530ed90f89d926fcc5824d10d82587978dc5a42830e170e09b9dd8c6d943",
+                "bytes": 95336,
+                "triangles": 1597,
+                "distanceMetres": 9,
+                "purpose": "animated-medium-lod-geometry"
+              }
+            ]
+          },
+          "adoptedBy": "20261009-r04-a01"
+        }
+      },
+      "clip": "Idle_Loop",
+      "time": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "blink": null,
+      "bounds": {
+        "min": [
+          -0.1376117967394309,
+          0.00045404788054504146,
+          -0.13846367427942807
+        ],
+        "max": [
+          0.14050806552666767,
+          0.25686379330279463,
+          0.13840294805799766
+        ]
+      },
+      "camera": {
+        "position": [
+          0.7514481343936183,
+          0.4786589205916698,
+          1.9999696368892848
+        ],
+        "target": [
+          0.0014481343936183777,
+          0.12865892059166983,
+          -0.000030363110715206365
+        ],
+        "verticalSpan": 0.78
+      },
+      "source": {
+        "url": "/models/orb-bot-triangle/model-c2.opt-d654497256da8a14.glb",
+        "sha256": "d654497256da8a146f7b6b7a3513b0dd9465b71b033a015fcbe76aae7da2e7bf"
+      },
+      "visiblePixels": 9223,
+      "pixelBounds": {
+        "left": 132,
+        "right": 253,
+        "top": 107,
+        "bottom": 216
+      },
+      "files": {
+        "png": {
+          "file": "orb-bot-triangle.png",
+          "bytes": 22616,
+          "sha256": "5e5ceeeded38c247c59360b54c1b0bddb7859629357df6687f3590c3baeafc70"
+        },
+        "webp": {
+          "file": "orb-bot-triangle.webp",
+          "bytes": 8856,
+          "sha256": "59f8076a4d5e319d10a31a99bbd3f777946b67e24bda0723aa93f5cddd44ed69"
+        }
+      }
+    },
+    {
+      "key": "heart",
+      "modelKey": "orb-bot-heart",
+      "url": "/models/orb-bot-heart/portraits/companion-r01.webp",
+      "asset": {
+        "modelKey": "orb-bot-heart",
+        "name": "ハートbot",
+        "kind": "companion",
+        "candidate": 2,
+        "revision": "c2-t01",
+        "status": "remake-candidate-2-integrated",
+        "url": "/models/orb-bot-heart/model-c2.cook-552742baa5527e0a.glb",
+        "sha256": "552742baa5527e0acb18da2a136719e1f298177a6793190c54a42fc05e21bfe8",
+        "bytes": 358532,
+        "triangles": 3935,
+        "bones": 2,
+        "upAxis": "Y",
+        "forwardAxis": "+Z",
+        "heightMetres": 0.2440195634964502,
+        "widthMetres": 0.28,
+        "lengthMetres": 0.16174986692761784,
+        "placement": {
+          "pivot": "ground-centred",
+          "scale": 1
+        },
+        "portrait": {
+          "url": "/models/orb-bot-heart/portrait.png",
+          "sha256": "ab989e7959bf932e715cbb9c61c6f9e067ec6a475f2eed136287a04efd7d1935",
+          "bytes": 1386225
+        },
+        "clips": [
+          {
+            "name": "Catch",
+            "seconds": 0.30000001192092896,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Held_Loop",
+            "seconds": 1.2000000476837158,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Idle_Loop",
+            "seconds": 2.4000000953674316,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Land",
+            "seconds": 0.4166666567325592,
+            "loop": false,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Run_Loop",
+            "seconds": 0.4000000059604645,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Thrown_Loop",
+            "seconds": 0.8999999761581421,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          },
+          {
+            "name": "Walk_Loop",
+            "seconds": 0.6000000238418579,
+            "loop": true,
+            "rootMotion": "in-place",
+            "fps": 60
+          }
+        ],
+        "locomotion": {
+          "Walk_Loop": {
+            "metresPerSecond": 3,
+            "cycleSeconds": 0.6
+          },
+          "Run_Loop": {
+            "metresPerSecond": 3,
+            "cycleSeconds": 0.4
+          }
+        },
+        "lods": [
+          {
+            "url": "/models/orb-bot-heart/lod-c2.cook-c1e1f7aa7e0f6e47.glb",
+            "sha256": "c1e1f7aa7e0f6e47e538174f57a90f7baa07f4e25c0c07169f6044df22f46b5c",
+            "bytes": 31928,
+            "triangles": 1574,
+            "distanceMetres": 9,
+            "purpose": "animated-medium-lod-geometry"
+          }
+        ],
+        "provenance": {
+          "provider": "Claude Code (Opus 5.5)",
+          "claudeUsed": true,
+          "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+          "referenceImage": "public/models/orb-bot-heart/model-r02.glb",
+          "referenceSha256": "fe294cdc517abb4485b4379ffd4619fe4ff37a535d5463850f87b6ba612defc7",
+          "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+          "denseFile": "public/models/orb-bot-heart/model-r02.glb",
+          "denseSha256": "fe294cdc517abb4485b4379ffd4619fe4ff37a535d5463850f87b6ba612defc7",
+          "processReport": "output/model-generation/models/orb-bot-heart/work/candidate-02/transfer/t01/report.json",
+          "rigReport": null,
+          "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+          "previousDelivery": {
+            "url": "/models/orb-bot-heart/model-r02.glb",
+            "sha256": "fe294cdc517abb4485b4379ffd4619fe4ff37a535d5463850f87b6ba612defc7",
+            "triangles": 24624,
+            "bytes": 18235068,
+            "candidate": 1,
+            "revision": "02"
+          },
+          "previousProvenance": {
+            "provider": "Codex",
+            "claudeUsed": false,
+            "referenceGenerator": "Built-in imagegen",
+            "referenceImage": "assets/shape-bots/source/heart-reference-v1.png",
+            "referenceSha256": "ab989e7959bf932e715cbb9c61c6f9e067ec6a475f2eed136287a04efd7d1935",
+            "userReference": "assets/shape-bots/source/user-reference.png",
+            "userReferenceSha256": "9836ed1b161feba83535854a67235b74ceb1c4dbe26a2098e53a33559c69ad77",
+            "reconstruction": "Local TRELLIS-2 v0.8.1 official Vulkan / 512 / seed42; measured source-preserving reduction and squash/hop rig.",
+            "denseSha256": "9fabb7f446efdcdbeadec589db72aba3e7ddb0edeb902a612d39c29ffbe76fd3",
+            "sourceUvAndAlbedoPreserved": false,
+            "sourceUvPreserved": true,
+            "materialRepair": {
+              "method": "Reference-derived body-colour calibration of source albedo; neutral white/black features retained",
+              "records": [
+                {
+                  "reference": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\shape-bots\\source\\heart-reference-v1.png",
+                  "targetHsv": [
+                    0.8961474299430847,
+                    0.9798387289047241,
+                    0.9529412388801575
+                  ],
+                  "denseHsv": [
+                    0.9078341126441956,
+                    0.9523809552192688,
+                    0.9019608497619629
+                  ],
+                  "hueShift": -0.01168668270111084,
+                  "changedPixels": 15553164,
+                  "unchangedPixels": 1224052,
+                  "alphaExact": true,
+                  "originalUVsExact": true
+                }
+              ]
+            },
+            "candidateFile": "output/model-generation/models/orb-bot-heart/work/rig/revision-02/candidate.glb",
+            "visualReview": "assets/shape-bots/reviews/heart-r02.json"
+          },
+          "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+          "visualReview": "assets/asset-remake/reviews/orb-bot-heart.json"
+        },
+        "notes": [
+          "Remake C2 of the delivered orb bot: same surface reduced to at most 4,000 triangles, 4096 texture replaced by 1024 albedo + baked normal; 2 bones and 7 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 3935 triangles (was 24624), textures 1024 WebP + baked normal."
+        ],
+        "gameQA": "output/playwright/shape-bots/game-1790867552591",
+        "runtimeOptimization": {
+          "adoption": "20261010-r07-a01",
+          "candidateRevision": "assets/optimized-runtime/20261009-r04",
+          "selection": "ordinary-compressed",
+          "original": {
+            "url": "/models/orb-bot-heart/model-c2.glb",
+            "sha256": "4564c3b0d15ddc7d57a387d832e1f0a98a83e7957ae9255d8122ae5d790ebc73",
+            "bytes": 558784,
+            "triangles": 3935,
+            "lods": [
+              {
+                "url": "/models/orb-bot-heart/lod-c2.glb",
+                "sha256": "b04fa3b818ac6c9da08a11e5533b6f60d90a4598c02e8b519840943854765ed4",
+                "bytes": 104404,
+                "triangles": 1574,
+                "distanceMetres": 9,
+                "purpose": "animated-medium-lod-geometry"
+              }
+            ]
+          },
+          "adoptedBy": "20261009-r04-a01"
+        }
+      },
+      "clip": "Idle_Loop",
+      "time": 0,
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "blink": null,
+      "bounds": {
+        "min": [
+          -0.13991452764896797,
+          0.0008889652710448903,
+          -0.07991572253326971
+        ],
+        "max": [
+          0.13768534548015346,
+          0.2497759304724887,
+          0.08009749848528806
+        ]
+      },
+      "camera": {
+        "position": [
+          0.7488854089155927,
+          0.47533244787176676,
+          2.0000908879760093
+        ],
+        "target": [
+          -0.001114591084407257,
+          0.12533244787176678,
+          0.00009088797600917409
+        ],
+        "verticalSpan": 0.78
+      },
+      "source": {
+        "url": "/models/orb-bot-heart/model-c2.opt-24b0af3b99e52a3a.glb",
+        "sha256": "24b0af3b99e52a3ad6985af4d11036d5507f7687a56a034dd2ff70f106f1d903"
+      },
+      "visiblePixels": 8861,
+      "pixelBounds": {
+        "left": 136,
+        "right": 248,
+        "top": 108,
+        "bottom": 211
+      },
+      "files": {
+        "png": {
+          "file": "orb-bot-heart.png",
+          "bytes": 22917,
+          "sha256": "b674fa38f6bb67b3979e2f0e4661eb335f43675068a0d7dafec0574b5d41e451"
+        },
+        "webp": {
+          "file": "orb-bot-heart.webp",
+          "bytes": 9160,
+          "sha256": "c1308137c9d22c4a76cedd1fc92330621817644e05ee4250468317f45d0fb018"
+        }
+      }
+    }
+  ],
+  "errors": []
+}

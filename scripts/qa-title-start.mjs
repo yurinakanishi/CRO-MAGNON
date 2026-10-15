@@ -33,6 +33,7 @@ const pass = (text) => {
 async function select(page, character) {
   await page.locator(`#setup-form .character-choice:has(input[value="${character}"])`).click();
   await page.locator('#setup-flow-yes').click();
+  await page.locator('#mascot-start').click();
   // Fresh starts include the current loading cave before joining the world.
   if (await page.locator('#loading-cave').count())
     await page.locator('[data-cave-proceed]').click({ timeout: 180000 });
@@ -130,6 +131,7 @@ try {
   await a.page.locator('#title-start').click();
   await a.page.locator('#setup-form .character-choice:has(input[value="bear-female"])').click();
   await a.page.locator('#setup-flow-yes').click();
+  await a.page.locator('#mascot-start').click();
   await until(() => room.players.has(a.player.id), 'title start reconnects');
   await a.page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')

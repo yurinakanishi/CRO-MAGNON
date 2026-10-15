@@ -35,9 +35,10 @@ export const TITLE_DOTS = {
 } as const;
 
 /**
- * Retained guest profiles for future releases, named as on X. The mascot roster
- * controls which guests appear in the dialog and MMO asset manifest. They have
- * no QR code; all credit displays use the contributors dialog.
+ * Retained guest profiles, named as on X. The contributor list includes released
+ * mascots' guests and explicitly credited people; the cave also uses painted
+ * people's profiles. Crediting a person does not release their mascot or its files.
+ * They have no QR code; all credit displays use the contributors dialog.
  */
 export const TITLE_FRIENDS = [
   { name: 'まるぃも', profile: 'https://x.com/marulimoai', qr: 'maruimo' },

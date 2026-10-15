@@ -65,6 +65,7 @@ try {
     await page.locator('#title-start').click();
     await page.locator('#setup-form .character-choice:has(input:checked)').click();
     await page.locator('#setup-flow-yes').click();
+    await page.locator('#mascot-start').click();
     await leaveCave(page);
     await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {
       timeout: 90000,
@@ -210,6 +211,7 @@ try {
   // The start screen offers the changed character, already chosen.
   await page.locator('#setup-form .character-choice:has(input:checked)').click();
   await page.locator('#setup-flow-yes').click();
+  await page.locator('#mascot-start').click();
   await leaveCave(page);
   await rendered(page, CHARACTER_MODELS[1]);
   // Entering again through the update cave starts at the camp; the person stays the same.

@@ -24,6 +24,7 @@ const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const checks = [],
   errors = [],
   layout = [],
+  nameLayouts = [],
   retiredRequests = [];
 const room = () => core.rooms.get('CHOICE-QA');
 const keepActive = setInterval(() => {
@@ -110,8 +111,76 @@ async function portraits(who, colour, scope = '#setup-form') {
     assert.equal(image.fit, 'contain', 'The photograph is not cropped');
   }
 }
+async function readableNames(who, label, scope = '#setup-form', english = false) {
+  const cards = await who.page.locator(`${scope} .character-choice`).evaluateAll((items) =>
+    items.map((card) => {
+      const name = card.querySelector('.character-name');
+      const text = name.querySelector('strong');
+      const bounds = (element) => {
+        const { x, y, right, bottom } = element.getBoundingClientRect();
+        return { x, y, right, bottom };
+      };
+      return {
+        key: card.querySelector('[data-character-image]').dataset.characterImage,
+        name: name.textContent,
+        fragments: name.childElementCount,
+        small: name.querySelectorAll('small').length,
+        weight: getComputedStyle(text).fontWeight,
+        colour: getComputedStyle(text).color,
+        size: getComputedStyle(text).fontSize,
+        text: bounds(text),
+        label: bounds(name),
+        card: bounds(card),
+      };
+    }),
+  );
+  nameLayouts.push({ label, cards });
+  const girls = [
+    'cro-magnon-woman',
+    'cro-magnon-girl-feather',
+    'cro-magnon-girl-bear',
+    'cro-magnon-girl-wolf',
+    'cro-magnon-girl-twintails',
+    'cro-magnon-girl-reindeer',
+  ];
+  assert.equal(cards[0].key, 'cro-magnon-hunter', `${label}: male card starts the list`);
+  assert.deepEqual(
+    cards.slice(-girls.length).map((card) => card.key),
+    girls,
+    label,
+  );
+  for (const card of cards) {
+    assert.equal(card.fragments, 1, `${label}: one complete name`);
+    assert.equal(card.small, 0, `${label}: no faint subtype`);
+    assert.ok(Number(card.weight) >= 600 && parseFloat(card.size) >= 13, label);
+    assert.equal(card.colour, 'rgb(247, 236, 208)', `${label}: readable cream text`);
+    assert.ok(
+      card.text.x >= card.label.x - 1 &&
+        card.text.right <= card.label.right + 1 &&
+        card.text.y >= card.label.y - 1 &&
+        card.text.bottom <= card.label.bottom + 1 &&
+        card.label.bottom <= card.card.bottom + 1,
+      `${label}: complete label is not clipped (${card.name})`,
+    );
+    if (english) assert.doesNotMatch(card.name, /[ぁ-んァ-ヶ一-龯]/);
+  }
+  if (!english) {
+    assert.equal(cards[0].name, 'クロマニョン人（男性）');
+    assert.equal(
+      cards.find((card) => card.key === 'cro-magnon-girl-bear').name,
+      '子グマずきんのクロマニョン人女の子',
+    );
+  }
+  const selected = await who.page
+    .locator(`${scope} input:checked`)
+    .evaluate(
+      (input) => input.closest('.character-choice').querySelector('.character-name').textContent,
+    );
+  assert.equal(await who.page.locator(`${scope} [data-choice-name]`).innerText(), selected);
+}
 async function start(who) {
   await who.tap(who.page.locator('#setup-flow-yes'));
+  await who.tap(who.page.locator('#mascot-start'));
   await enterPreparedWorld(who.page, who.mobile);
   await until(() => who.player(), 'join');
 }
@@ -196,8 +265,8 @@ try {
     await a.page.locator('.contributor-group').first().locator('strong').innerText(),
     'yuri',
   );
-  assert.equal(await a.page.locator('.contributor').count(), 8);
-  assert.equal(await a.page.locator('.contributors-dialog a').count(), 7);
+  assert.equal(await a.page.locator('.contributor').count(), 9);
+  assert.equal(await a.page.locator('.contributors-dialog a').count(), 8);
   assert.equal(await a.page.locator('.contributors-dialog h2').count(), 0);
   assert.equal(
     (await a.page.locator('.contributors-dialog').innerText()).match(/関わってくれた人たち/g)
@@ -207,10 +276,11 @@ try {
   assert.doesNotMatch(await a.page.locator('.contributors-dialog').innerText(), /監修|友情出演/);
   await a.page.screenshot({ path: `${output}/contributors-desktop.png` });
   await a.tap(a.page.locator('#modal-close'));
-  pass('Credits retain all eight names and seven links, under 制作 and one contributors group');
+  pass('Credits show all nine names and eight links, under 制作 and one contributors group');
   await a.tap(a.page.locator('#title-start'));
   await a.page.locator('#setup-form').waitFor({ state: 'visible', timeout: 90000 });
   assert.equal(await a.page.locator('#setup-form [data-dye]').count(), 9);
+  await readableNames(a, 'setup-desktop');
   assert.equal(await a.page.locator('#setup-form input[value="cat-female"]').count(), 0);
   for (const model of PLAYABLE_CHARACTER_MODELS) {
     await choose(a, cardValue(model));
@@ -232,6 +302,8 @@ try {
   pass(
     `All ${PLAYABLE_CHARACTER_MODELS.length} characters × nine photographed colours appear without joining, saving or opening a modal`,
   );
+  await choose(a, 'cro-magnon-girl-bear');
+  await a.page.screenshot({ path: `${output}/setup-girls-desktop.png` });
   await choose(a, 'cro-male');
   await dye(a, 'blue');
   await a.page.locator('#setup-form input[value="cro-female"]').focus();
@@ -243,6 +315,7 @@ try {
   await portraits(a, 'red');
   await a.page.screenshot({ path: `${output}/setup-desktop.png` });
   await a.tap(a.page.locator('#setup-flow-yes'));
+  await a.tap(a.page.locator('#mascot-start'));
   await a.page.waitForFunction(() => globalThis.qaCave?.actor, undefined, { timeout: 180000 });
   assert.equal(await a.page.evaluate(() => globalThis.qaCave.actor.clothing.dye), 'red');
   await enterPreparedWorld(a.page, false);
@@ -258,6 +331,7 @@ try {
     'Keyboard Enter selects cards and colours; one apply dresses the first cave and world actor in red',
   );
   await menu(a);
+  await readableNames(a, 'change-desktop', '#character-switch-form');
   await choose(a, 'cro-male', '#character-switch-form');
   await dye(a, 'green', '#character-switch-form');
   await portraits(a, 'green', '#character-switch-form');
@@ -339,7 +413,9 @@ try {
     { width: 844, height: 390 },
   ]) {
     await b.page.setViewportSize(viewport);
+    await choose(b, 'cro-magnon-girl-bear');
     await portraits(b, '');
+    await readableNames(b, `setup-phone-${viewport.width}x${viewport.height}`);
     await fits(b, `setup-phone-${viewport.width}x${viewport.height}`);
   }
   await b.page.setViewportSize({ width: 390, height: 844 });
@@ -359,6 +435,7 @@ try {
   await wears(a, b.player().id, 'cro-magnon-hunter', 'yellow');
   await wears(b, a.player().id, 'cro-magnon-hunter', 'purple');
   await menu(b);
+  await readableNames(b, 'change-phone', '#character-switch-form');
   await choose(b, 'cro-female', '#character-switch-form');
   await dye(b, 'pink', '#character-switch-form');
   await portraits(b, 'pink', '#character-switch-form');
@@ -384,13 +461,25 @@ try {
   await b.tap(b.page.locator('#modal-close'));
   await b.tap(b.page.locator('#title-start'));
   await b.page.locator('#setup-form').waitFor({ state: 'visible', timeout: 90000 });
-  assert.equal(await b.page.locator('#setup-flow-yes').innerText(), 'Use this');
+  assert.equal(await b.page.locator('#setup-flow-yes').innerText(), 'Next');
+  for (const viewport of [
+    { width: 320, height: 568 },
+    { width: 390, height: 844 },
+  ]) {
+    await b.page.setViewportSize(viewport);
+    await choose(b, 'cro-magnon-girl-reindeer');
+    await readableNames(b, `setup-en-${viewport.width}`, '#setup-form', true);
+    await b.page.screenshot({ path: `${output}/setup-en-${viewport.width}.png` });
+  }
   await dye(b, 'green');
   assert.doesNotMatch(
     await b.page.locator('.character-choice-controls').innerText(),
     /[ぁ-んァ-ヶ一-龯]/,
   );
   pass('English translates the merged credits, apply button and live outfit summary');
+  pass(
+    'Complete readable names fit desktop and phone; all six Cro-Magnon girls finish both pickers',
+  );
   assert.deepEqual(retiredRequests, [], 'The kunoichi and its katana are never downloaded');
   pass(
     'Phone cards stay compact at 320–768px; the removed kunoichi and katana are never requested',
@@ -399,7 +488,7 @@ try {
 } finally {
   await writeFile(
     `${output}/result.json`,
-    JSON.stringify({ checks, errors, layout, retiredRequests }, null, 2),
+    JSON.stringify({ checks, errors, layout, nameLayouts, retiredRequests }, null, 2),
   );
   clearInterval(keepActive);
   await browser.close();

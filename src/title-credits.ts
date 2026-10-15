@@ -81,7 +81,8 @@ export function titleContributors(): Contributor[] {
     person(TITLE_CREDITS[0], '制作'),
     ...TITLE_CREDITS.slice(1).map((credit) => person(credit, '監修')),
     ...[TITLE_GUEST, TITLE_SUPPORT, ...TITLE_FRIENDS]
-      .filter((credit) => mascotCreditReleased(credit.qr))
+      // Asahina is credited independently of Rei's dormant mascot (2026-10-15).
+      .filter((credit) => credit.qr === 'asahina' || mascotCreditReleased(credit.qr))
       .map((credit) => person(credit, '友情出演')),
     // The dots are always in the world, so their credit is never held back.
     person(TITLE_DOTS, '友情出演'),

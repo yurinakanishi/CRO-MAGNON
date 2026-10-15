@@ -103,7 +103,7 @@ test('the game opens on a title screen and only joins after Start or ?autostart=
   assert.doesNotMatch(main, /data-panel=/, 'no top navigation dock');
 });
 
-test('setup chooses an outfit then applies it directly, with no confirmation or difficulty controls', async () => {
+test('setup chooses an outfit then a companion on a separate screen, with no confirmation or difficulty controls', async () => {
   const main = await readFile(new URL('src/main.ts', root), 'utf8');
   const flow = await readFile(new URL('src/setup-flow.ts', root), 'utf8');
   const picker = await readFile(new URL('src/character-choice-ui.ts', root), 'utf8');
@@ -122,7 +122,9 @@ test('setup chooses an outfit then applies it directly, with no confirmation or 
     main,
     /characterPickerMarkup\(\s*fixedIdentity \? null : profile.dye,\s*'setup-flow-yes',/,
   );
-  assert.match(picker, /type="submit">これにする<\/button>/);
+  assert.match(picker, /label = 'これにする'/);
+  assert.match(main, /id="screen-mascot"/);
+  assert.match(main, /id="mascot-start"[^>]+>これにする<\/button>/);
   assert.match(main, /dye: pickedCharacterChoice\(form\).dye \?\? profile.dye/);
   assert.doesNotMatch(css, /\.setup-flow-choices|\.setup-flow-summary/);
   assert.doesNotMatch(css, /\.difficulty-choice-grid|\.setup-launch/);

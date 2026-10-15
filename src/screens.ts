@@ -6,7 +6,7 @@ import { controllerLabels } from './controller-labels.js';
  */
 import { adjacentMenuItem, menuItems, menuKeyDirection } from './menu-navigation.js';
 
-export type ScreenId = 'title' | 'setup';
+export type ScreenId = 'title' | 'setup' | 'mascot';
 
 export interface KeyPrompt {
   key: string;

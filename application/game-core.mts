@@ -351,8 +351,10 @@ export function createGameCore({
     // Only an explicit confirmed title start picks a new appearance and camp
     // spawn. A dropped connection continues with the saved player and position.
     const startAtCamp = params.get('startAtCamp') === '1';
+    // A solo resume can change its confirmed outfit while keeping its saved location.
+    const chooseAppearance = startAtCamp || params.get('chooseAppearance') === '1';
     const appearance = proposedAppearance(
-      startAtCamp
+      chooseAppearance
         ? {
             species: params.get('species'),
             gender: params.get('gender'),
@@ -412,7 +414,7 @@ export function createGameCore({
     if (saved) room.sessions.delete(token);
     // Commit a chosen or substituted look only after an arrival point succeeds.
     applyAppearance(player, appearance);
-    if (startAtCamp) {
+    if (chooseAppearance) {
       player.name = cleanText(params.get('name'), 16) || player.name;
       player.dye = normalizeDye(params.get('dye'));
     }
@@ -441,7 +443,7 @@ export function createGameCore({
     room.players.set(player.id, player);
     // Only an explicit title start or a new visitor applies this draft. Automatic
     // reconnections retain the server's choice, even if a browser cache is stale.
-    if ((!resumed || startAtCamp) && params.has('mascot')) {
+    if ((!resumed || chooseAppearance) && params.has('mascot')) {
       const choice = params.get('mascot');
       if (choice === 'none' || choice === '') chooseMascot(room, player, null, now);
       else if (mascotSelectable(room, choice)) chooseMascot(room, player, choice, now);

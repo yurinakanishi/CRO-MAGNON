@@ -121,6 +121,7 @@ async function start(page, mobile = false) {
   // The setup screen's card: the menu's character tab keeps its own cards while closed.
   await press('#setup-form .character-choice:has(input[value="cro-male"])');
   await press('#setup-flow-yes');
+  await press('#mascot-start');
 }
 async function caveReady(page) {
   await page

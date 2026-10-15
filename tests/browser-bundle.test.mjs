@@ -13,6 +13,7 @@ async function fixture(t, files) {
   await mkdir(path.join(directory, 'src'));
   await mkdir(path.join(directory, 'shared'));
   await writeFile(path.join(directory, 'package.json'), '{"type":"module"}');
+  await writeFile(path.join(directory, 'src/solo-worker.js'), 'self.onmessage = () => {};');
   for (const [name, contents] of Object.entries(files))
     await writeFile(path.join(directory, name), contents);
   return directory;
