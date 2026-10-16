@@ -1,10 +1,11 @@
 {
-  "checkedAt": "2026-10-16T07:15:06.271Z",
+  "checkedAt": "2026-10-16T13:28:14.960Z",
   "status": "passed",
   "base": "https://cromagnonmmo.com/",
-  "buildId": "ba451f7dc95efbf7214f5ba8aa4f059e0c3b5c513c881503c3fac7f05588e69e",
+  "buildId": "3b22d16f865af778842dfa1f7b742a447e003099fdaff0e954388baa66eef194",
+  "sourceCommit": "24a9b07fa9bba7b4a2bbc07e3dbc66029f872eb0",
   "browser": "155.0.8059.41",
-  "scope": "Real Chrome on Windows; desktop and 390px touch emulation; isolated browser saves. Physical phones, native Safari, physical gamepads and long-duration play unverified.",
+  "scope": "Real Chrome on Windows; desktop and 390px touch emulation in isolated browser saves. Physical phones, native Safari, physical controllers and long-duration play were not tested.",
   "checks": [
     "The title enables solo and disables online entry",
     "First entry runs and autosaves a local character, outfit and one companion",
@@ -16,61 +17,20 @@
   ],
   "errors": [],
   "forbidden": [],
-  "publicHealth": [
-    {
-      "path": "/api/health",
-      "status": 200,
-      "body": {
-        "ok": true,
-        "hosting": "cloudflare-free",
-        "worldVersion": 4,
-        "mode": "solo",
-        "maxPlayers": 1,
-        "room": "SOLO"
-      }
-    },
-    {
-      "path": "/api/status",
-      "status": 503
-    },
-    {
-      "path": "/ws",
-      "status": 503
-    }
-  ],
-  "screenshots": "output/playwright/solo-live-ui-20261016-01",
-  "productionGate": "output/production-ui-20261016-03/verification.json",
+  "publicHealth": {
+    "ok": true,
+    "hosting": "cloudflare-free",
+    "worldVersion": 4,
+    "mode": "solo",
+    "maxPlayers": 1,
+    "room": "SOLO"
+  },
+  "screenshots": "output/playwright/solo-live-mural-20261016-01",
+  "visuallyReviewed": ["solo-world.png", "solo-mobile.png"],
+  "productionGate": "output/production-mural-20261016-01/verification.json",
+  "evidence": "output/playwright/solo-live-mural-20261016-01/result.json",
   "contributorX": {
-    "status": "passed",
-    "checks": [
-      {
-        "label": "title-1440",
-        "cards": 17,
-        "xIcons": 16
-      },
-      {
-        "label": "mural-1440",
-        "cards": 16,
-        "xIcons": 15
-      },
-      {
-        "label": "title-390",
-        "cards": 17,
-        "xIcons": 16
-      },
-      {
-        "label": "mural-390",
-        "cards": 16,
-        "xIcons": 15
-      },
-      {
-        "label": "title-320",
-        "cards": 17,
-        "xIcons": 16
-      }
-    ],
-    "errors": [],
-    "forbidden": [],
-    "evidence": "output/playwright/contributor-x-live-20261016-01/result.json"
+    "status": "unchanged; not re-exercised in this deployment",
+    "priorEvidence": "docs/ui-deploy-2026-10-16.md"
   }
 }

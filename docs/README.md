@@ -21,14 +21,14 @@
 
 ## 作業記録（月別）
 
-洞窟の壁画: [2026-10-16 原画の特徴を7体で修復し、全24体を比較](../assets/camp-cave/identity-r41/README.md)・[原画と変更前後の一覧](../assets/camp-cave/identity-r41/qa/index.html)。[共通縮尺と上下の重なり](../assets/camp-cave/layered-r40/README.md)、[両壁の連続配置と新キャラの自動配置](cave-mural-continuity-2026-10-16.md)を継承。公開反映は未実施。[今後の追加手順](../assets/camp-cave/continuous-r39/README.md)。
+洞窟の壁画: [2026-10-16 原画の特徴を7体で修復し、全24体を比較](../assets/camp-cave/identity-r41/README.md)・[原画と変更前後の一覧](../assets/camp-cave/identity-r41/qa/index.html)。[共通縮尺と上下の重なり](../assets/camp-cave/layered-r40/README.md)、[両壁の連続配置と新キャラの自動配置](cave-mural-continuity-2026-10-16.md)を継承。[22:23 JSTに公開済み](mural-deploy-2026-10-16.md)。[今後の追加手順](../assets/camp-cave/continuous-r39/README.md)。
 
 - [2026-09](changelog/2026-09.md)
 - [2026-10](changelog/2026-10.md)
 
 新しい作業はこれらの先頭へ日付付きで追記する。
 
-最新の公開更新: [2026-10-16 Xアイコン・ソロUI・タイトル更新の公開](ui-deploy-2026-10-16.md)。同日の[独自ドメイン接続](solo-deploy-2026-10-16.md)も完了。[cromagnonmmo.com](https://cromagnonmmo.com/)で公開・検証済み。以前のソロ公開は [2026-10-15](solo-deploy-2026-10-15.md)、オンライン公開は [2026-10-12](mmo-deploy-2026-10-12.md)。
+最新の公開更新: [2026-10-16 壁画の原画修復・スマホ操作・仲間表示の公開](mural-deploy-2026-10-16.md)。同日16:12の[Xアイコン・ソロUI公開](ui-deploy-2026-10-16.md)を継承。同日の[独自ドメイン接続](solo-deploy-2026-10-16.md)も完了。[cromagnonmmo.com](https://cromagnonmmo.com/)で公開・検証済み。以前のソロ公開は [2026-10-15](solo-deploy-2026-10-15.md)、オンライン公開は [2026-10-12](mmo-deploy-2026-10-12.md)。
 
 公開前の共通検証: [2026-10-16 公開用ソロ版の本番準備と検証](production-readiness-2026-10-16.md)。
 

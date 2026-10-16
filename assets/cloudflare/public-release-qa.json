@@ -1,19 +1,27 @@
 {
-  "checkedAt": "2026-10-16T07:15:06.271Z",
+  "checkedAt": "2026-10-16T13:24:14.270Z",
   "status": "passed",
   "base": "https://cromagnonmmo.com",
-  "buildId": "ba451f7dc95efbf7214f5ba8aa4f059e0c3b5c513c881503c3fac7f05588e69e",
+  "buildId": "3b22d16f865af778842dfa1f7b742a447e003099fdaff0e954388baa66eef194",
+  "sourceCommit": "24a9b07fa9bba7b4a2bbc07e3dbc66029f872eb0",
   "mode": "solo",
-  "servedFilesVerified": 779,
-  "bytesVerified": 144403904,
+  "servedFilesVerified": 780,
+  "bytesVerified": 144075237,
   "glbsVerified": 87,
   "publicCharacterCount": 14,
   "selectionPhotographsVerified": 137,
   "creditsProfile": "full",
-  "supervisorCreditsIncluded": true,
   "allServedFilesMatchSHA256": true,
   "securityHeadersVerified": true,
   "immutableGLBCacheVerified": true,
+  "health": {
+    "ok": true,
+    "hosting": "cloudflare-free",
+    "worldVersion": 4,
+    "mode": "solo",
+    "maxPlayers": 1,
+    "room": "SOLO"
+  },
   "denied": [
     {
       "path": "/api/status",
@@ -56,13 +64,13 @@
       "status": 404
     }
   ],
-  "evidence": "output/cloudflare-deploy/deploy-ui-20261016-01/live-files-cromagnonmmo.com.json",
+  "evidence": "output/cloudflare-deploy/deploy-mural-20261016-01/live-files-cromagnonmmo.com.json",
   "workersDevSmoke": {
-    "checkedAt": "2026-10-16T07:14:03.913Z",
+    "checkedAt": "2026-10-16T13:24:44.570Z",
     "status": "passed",
     "base": "https://cromagnonmmo.cro-magnon.workers.dev",
-    "buildId": "ba451f7dc95efbf7214f5ba8aa4f059e0c3b5c513c881503c3fac7f05588e69e",
-    "servedFilesVerified": 15,
+    "buildId": "3b22d16f865af778842dfa1f7b742a447e003099fdaff0e954388baa66eef194",
+    "servedFilesVerified": 20,
     "health": {
       "ok": true,
       "hosting": "cloudflare-free",
@@ -83,82 +91,6 @@
         "status": 200
       }
     ],
-    "files": [
-      {
-        "path": "src/title-credits.js",
-        "bytes": 6333,
-        "sha256": "fe4b2a804d1888d43168b989914bcdcdb965aaf3495bf24facd9e3496c606477"
-      },
-      {
-        "path": "src/title.css",
-        "bytes": 14273,
-        "sha256": "ab7dfe180e2120549c028920df9d1fa6f1a8daf5be7c491647ed5f174a14ba01"
-      },
-      {
-        "path": "title/cro-magnon-mmo-og-20261016-r02.jpg",
-        "bytes": 461313,
-        "sha256": "2c3b8435d78ec0f5ec4b3998b308864039cb83b8abd251cb4a0d781df865fe2c"
-      },
-      {
-        "path": "title/cro-magnon-mmo-transparent.webp",
-        "bytes": 1810732,
-        "sha256": "f000aed150fce57625cc373f0e534b3a5337c384185d62115866ad5b895566cd"
-      },
-      {
-        "path": "favicon.svg",
-        "bytes": 16129,
-        "sha256": "670cbfb02106c9bfc11664e07849a0f5a69db421a71805a0c7ccfc74133a0544"
-      },
-      {
-        "path": "favicon.ico",
-        "bytes": 25663,
-        "sha256": "59f46adf069a00cdab3433cce6a92c81250ffcdc56497d36a43871b3797ce4b6"
-      },
-      {
-        "path": "multiplayer-config.json",
-        "bytes": 85,
-        "sha256": "0b13641987ce6b379151731c6d801a824be250f2812ab0c1d45da1c80e57e057"
-      },
-      {
-        "path": "src/boot-bundle.js",
-        "bytes": 1873,
-        "sha256": "2f11411c384cf81458801bf1dc37505d7624981d3bc0867007bb1195bfcc7430"
-      },
-      {
-        "path": "src/solo-worker.js",
-        "bytes": 96557,
-        "sha256": "a7cc275138b3e0f0d4f0d630730cceb4e3636b111ea66b7b45b6265777f316fb"
-      },
-      {
-        "path": "src/runtime-main-XPEYDIUK.js",
-        "bytes": 906708,
-        "sha256": "88ba5da3e9591cc2b81094f8e1f0392ee7fdb515a3d7a50a5718468a2eeee3bf"
-      },
-      {
-        "path": "src/runtime-chunk-PB4IYR4L.js",
-        "bytes": 38334,
-        "sha256": "bd5f559df989eebdd42221d18e3ac91aea3ea30b2f7e7767069532b1d3953a95"
-      },
-      {
-        "path": "src/runtime-chunk-IJ2S3T45.js",
-        "bytes": 4569426,
-        "sha256": "2b113bbd5abf4b6dd95512f98ec86162dbbbe067c6944c12aa09b3a834b15a2d"
-      },
-      {
-        "path": "src/runtime-chunk-GG3SOAXN.js",
-        "bytes": 3190,
-        "sha256": "97035b0bb5b2b2ff98dcf29e551a586749918ea775b9003c731a6e01ae036fd4"
-      },
-      {
-        "path": "index.html",
-        "bytes": 2791,
-        "sha256": "345daeb8c6463fa9d19db71aee6b290241e9e9a402598b3ea6dcd8c9510fc7e6"
-      },
-      {
-        "path": "en/index.html",
-        "bytes": 2751,
-        "sha256": "47c4d4b97bc87d1da62ee6464ad5f7a0b294273a57c66c0531dcea0309a5992c"
-      }
-    ]
+    "evidence": "output/cloudflare-deploy/deploy-mural-20261016-01/workers-dev-smoke.json"
   }
 }
