@@ -60,7 +60,7 @@ export function environmentAsset(name, bytes, profile) {
     return Buffer.from(`export const BUILD_PROFILE = Object.freeze(${JSON.stringify(profile)});\n`);
   if (!profile.cameraControls && name === 'src/hand-controls.js')
     return Buffer.from('export function createHandControls() { return undefined; }\n');
-  if (!profile.cameraControls && name === 'index.html')
+  if (!profile.cameraControls && /(?:^|\/)index\.html$/.test(name))
     return Buffer.from(
       bytes
         .toString('utf8')

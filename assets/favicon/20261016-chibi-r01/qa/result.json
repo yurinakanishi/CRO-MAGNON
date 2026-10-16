@@ -1,0 +1,81 @@
+{
+  "checks": [
+    "local: SVG and multi-size ICO return 200 with the expected MIME and exact SHA",
+    "local/: current icon link and both image formats decode in Chrome",
+    "local/en/: current icon link and both image formats decode in Chrome",
+    "public: SVG and multi-size ICO return 200 with the expected MIME and exact SHA",
+    "public/: current icon link and both image formats decode in Chrome",
+    "public/en/: current icon link and both image formats decode in Chrome",
+    "Chrome renders the icon at 16, 32, 48 and 64 pixels on light and dark backgrounds",
+    "No browser errors"
+  ],
+  "errors": [],
+  "served": [
+    {
+      "name": "local",
+      "file": "favicon.svg",
+      "bytes": 16008,
+      "sha256": "cd22943994b04cf67c2a734d0d639ea4bf3522d39bfe60ee33e1a6515c1232b2"
+    },
+    {
+      "name": "local",
+      "file": "favicon.ico",
+      "bytes": 10943,
+      "sha256": "1cedcbccfcbaafa1aeea9b3ddd7fdd3dba5d4ffa4709a6e4fa4eb5dd860df44f"
+    },
+    {
+      "name": "public",
+      "file": "favicon.svg",
+      "bytes": 16008,
+      "sha256": "cd22943994b04cf67c2a734d0d639ea4bf3522d39bfe60ee33e1a6515c1232b2"
+    },
+    {
+      "name": "public",
+      "file": "favicon.ico",
+      "bytes": 10943,
+      "sha256": "1cedcbccfcbaafa1aeea9b3ddd7fdd3dba5d4ffa4709a6e4fa4eb5dd860df44f"
+    }
+  ],
+  "automaticIconRequests": [
+    {
+      "name": "local",
+      "url": "http://127.0.0.1:50272/favicon.svg?v=20261016",
+      "status": 200
+    },
+    {
+      "name": "local",
+      "url": "http://127.0.0.1:50272/favicon.svg?v=20261016",
+      "status": 200
+    },
+    {
+      "name": "local",
+      "url": "http://127.0.0.1:50272/favicon.svg?v=20261016",
+      "status": 200
+    },
+    {
+      "name": "local",
+      "url": "http://127.0.0.1:50272/favicon.svg?v=20261016",
+      "status": 200
+    },
+    {
+      "name": "public",
+      "url": "http://127.0.0.1:50274/favicon.svg?v=20261016",
+      "status": 200
+    },
+    {
+      "name": "public",
+      "url": "http://127.0.0.1:50274/favicon.svg?v=20261016",
+      "status": 200
+    },
+    {
+      "name": "public",
+      "url": "http://127.0.0.1:50274/favicon.svg?v=20261016",
+      "status": 200
+    },
+    {
+      "name": "public",
+      "url": "http://127.0.0.1:50274/favicon.svg?v=20261016",
+      "status": 200
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import {
   setLanguage,
   toggleLanguage,
   normalizeLanguage,
+  initialLanguage,
   translateText,
   registerTranslations,
   onLanguageChange,
@@ -73,6 +74,18 @@ test('invalid settings and blocked browser storage are safe', () => {
   });
   assert.doesNotThrow(toggleLanguage);
   assert.equal(getLanguage(), 'en');
+});
+
+test('English share links override a saved Japanese preference; other pages retain it', () => {
+  for (const pathname of ['/en', '/en/', '/en/index.html']) {
+    assert.equal(initialLanguage('ja', pathname), 'en');
+    assert.equal(initialLanguage(undefined, pathname), 'en');
+  }
+  for (const pathname of ['/', '/index.html', '/en/other', '/model-review.html', undefined]) {
+    assert.equal(initialLanguage('ja', pathname), 'ja');
+    assert.equal(initialLanguage('en', pathname), 'en');
+    assert.equal(initialLanguage('fr', pathname), 'ja');
+  }
 });
 
 test('title exposes one focusable bilingual toggle alongside Start and Contributors', () => {

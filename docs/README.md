@@ -93,6 +93,7 @@
 | [git-pull-2026-10-11.md](git-pull-2026-10-11.md) | 未コミット40ファイルを保持してpull・競合解消・英語UIを統合 |
 | [neanderthal-retirement-2026-10-11.md](neanderthal-retirement-2026-10-11.md) | ネアンデルタール人男女と交易NPCを除外し、素材・保存済み外見を保持して再導入可能にする |
 | [language-toggle-2026-10-11.md](language-toggle-2026-10-11.md) | タイトルの日本語／English切替・設定保存・英語UIと実Chrome検証 |
+| [og-language-2026-10-16.md](og-language-2026-10-16.md) | OG文言の短縮・日英の共有URLと静的配信・言語設定の引継ぎ |
 | [524-bond-2026-10-02.md](524-bond-2026-10-02.md) | 524の仲間状態を期限なく保持する |
 | [524-cave-frieze-2026-10-06.md](524-cave-frieze-2026-10-06.md) | 524を動物の壁画へなじませる（2026-10-06） |
 | [524-dots-2026-10-02.md](524-dots-2026-10-02.md) | 524を撫で終えるとdotsの仲間へ追加 |

@@ -216,7 +216,7 @@ await collect('public/title', /\.(png|jpe?g|webp)$/, (name) => {
   if (name === 'cro-magnon-mmo-transparent.png') return false;
   return !name.startsWith('qr-') && !name.startsWith('avatar-');
 });
-for (const file of ['favicon.svg'])
+for (const file of ['favicon.svg', 'favicon.ico'])
   await publish('/' + file, await readFile(path.join(root, 'public', file)));
 await publish('/build-profile.json', Buffer.from(JSON.stringify(profile)));
 await publish(
@@ -245,7 +245,8 @@ await publish(
 // must be applied before bundling. Never bundle the unfiltered source tree.
 const browserBundle = await bundleBrowser(staging);
 for (const file of browserBundle.files) await publish('/' + file.name, file.bytes);
-await publish('/index.html', bundledIndex(await readFile(path.join(root, 'public/index.html'))));
+for (const file of ['index.html', 'en/index.html'])
+  await publish('/' + file, bundledIndex(await readFile(path.join(root, 'public', file))));
 
 const catalog = JSON.parse(
   await readFile(path.join(root, 'public/models/world-assets.json'), 'utf8'),

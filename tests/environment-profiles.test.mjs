@@ -201,9 +201,11 @@ test('MMO hand entry cannot create UI or start a camera, even if passed local ho
   }
   const html =
     '<link rel="stylesheet" href="/src/motion-controls.css" />\n<link rel="stylesheet" href="/src/touch-controls.css" />\n';
-  const result = environmentAsset('index.html', Buffer.from(html), profile).toString();
-  assert.doesNotMatch(result, /motion-controls/);
-  assert.match(result, /touch-controls/);
+  for (const name of ['index.html', 'en/index.html']) {
+    const result = environmentAsset(name, Buffer.from(html), profile).toString();
+    assert.doesNotMatch(result, /motion-controls/);
+    assert.match(result, /touch-controls/);
+  }
   assert.equal(
     environmentAsset('index.html', Buffer.from(html), browserBuildProfile('exhibition')).toString(),
     html,

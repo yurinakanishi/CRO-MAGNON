@@ -8,7 +8,12 @@ export function normalizeLanguage(value: unknown): Language {
   return value === 'en' ? 'en' : 'ja';
 }
 
-let language = normalizeLanguage(readSaved(LANGUAGE_KEY, 'ja'));
+/** An English share link wins over an older browser preference. */
+export function initialLanguage(saved: unknown, pathname?: string): Language {
+  return /^\/en(?:\/|\/index\.html)?$/.test(pathname ?? '') ? 'en' : normalizeLanguage(saved);
+}
+
+let language = initialLanguage(readSaved(LANGUAGE_KEY, 'ja'), globalThis.location?.pathname);
 const listeners = new Set<() => void>();
 const messages = new Map<string, string>();
 const patterns: { expression: RegExp; names: string[]; english: string }[] = [];

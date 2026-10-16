@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-16",
+  "source": {
+    "suppliedPath": "C:/Users/yurin/Downloads/ChatGPT Image Oct 15, 2026, 04_29_09 PM.png",
+    "preservedPath": "assets/favicon/20261016-chibi-r01/source.png",
+    "sha256": "58616fe61395c8fd19ff5c1110a806e56345314e096cc8993c6bcdeceae8d1d5",
+    "width": 1254,
+    "height": 1254,
+    "hasAlpha": false
+  },
+  "conversion": {
+    "tool": "sharp 0.35.2",
+    "kernel": "lanczos3",
+    "crop": false,
+    "generatedArtwork": false,
+    "cornerBackground": "Preserved from the supplied opaque image"
+  },
+  "previous": {
+    "path": "assets/favicon/20261016-chibi-r01/previous/favicon.svg",
+    "sha256": "4d6664222db858906286a0e81fd00f0181ee1982c0f7976a10c8453d01c8dc3a"
+  },
+  "files": [
+    {
+      "path": "assets/favicon/20261016-chibi-r01/favicon-16.png",
+      "width": 16,
+      "height": 16,
+      "bytes": 873,
+      "sha256": "a31dcd5a9fd0ea8cb5df08bb6b7000ad2094a56310937d71e6c834f5c58a70fe"
+    },
+    {
+      "path": "assets/favicon/20261016-chibi-r01/favicon-32.png",
+      "width": 32,
+      "height": 32,
+      "bytes": 3174,
+      "sha256": "b64aa81722880aa5d19fd04fc2461b027e6cd1b263b800291631585c03ddc11c"
+    },
+    {
+      "path": "assets/favicon/20261016-chibi-r01/favicon-48.png",
+      "width": 48,
+      "height": 48,
+      "bytes": 6842,
+      "sha256": "3f819e95ffe9e9a72cbce0a01e79eec8957a66e6f03fec5e785b4bd9a09d3fbf"
+    },
+    {
+      "path": "assets/favicon/20261016-chibi-r01/favicon-64.png",
+      "width": 64,
+      "height": 64,
+      "bytes": 11909,
+      "sha256": "c7767114f9fbc0272a70d2d66790672025e5cd35e972a67284e099dcbdca3f2b"
+    },
+    {
+      "path": "public/favicon.svg",
+      "rasterSize": 64,
+      "bytes": 16008,
+      "sha256": "cd22943994b04cf67c2a734d0d639ea4bf3522d39bfe60ee33e1a6515c1232b2"
+    },
+    {
+      "path": "public/favicon.ico",
+      "sizes": [
+        16,
+        32,
+        48
+      ],
+      "bytes": 10943,
+      "sha256": "1cedcbccfcbaafa1aeea9b3ddd7fdd3dba5d4ffa4709a6e4fa4eb5dd860df44f"
+    }
+  ]
+}

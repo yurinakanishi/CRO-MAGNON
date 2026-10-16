@@ -1,4 +1,5 @@
 import { getLanguage, onLanguageChange, toggleLanguage, translateText } from './language.js';
+import { BUILD_PROFILE } from './build-profile.js';
 
 type Translation = { source: string; rendered: string };
 const texts = new WeakMap<Node, Translation>();
@@ -89,6 +90,18 @@ export function installLanguageUI(root: HTMLElement): void {
   const refresh = () => {
     observer.disconnect();
     root.ownerDocument.documentElement.lang = getLanguage();
+    // A copied URL must fetch the matching static OG text. Keep room/query/hash
+    // and history state, and never reload the running game when switching.
+    const view = root.ownerDocument.defaultView;
+    if (
+      BUILD_PROFILE.environment !== 'exhibition' &&
+      view &&
+      /^\/(?:index\.html|en(?:\/|\/index\.html)?)?$/.test(view.location.pathname)
+    ) {
+      const url = new URL(view.location.href);
+      url.pathname = getLanguage() === 'en' ? '/en/' : '/';
+      if (url.href !== view.location.href) view.history.replaceState(view.history.state, '', url);
+    }
     translateNode(root);
     updateLanguageButton(root);
     observe();

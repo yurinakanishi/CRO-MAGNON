@@ -52,7 +52,9 @@ export async function serveStatic(
     mount === 'public'
       ? pathname === '/'
         ? 'index.html'
-        : pathname.replace(/^\/+/, '')
+        : pathname === '/en' || pathname === '/en/'
+          ? 'en/index.html'
+          : pathname.replace(/^\/+/, '')
       : pathname.slice(mount.length + 2);
   const resolved = path.resolve(base, relative);
   const allowed = path.relative(base, resolved);
