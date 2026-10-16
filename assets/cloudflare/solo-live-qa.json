@@ -1,10 +1,10 @@
 {
-  "checkedAt": "2026-10-16T04:51:24.028Z",
+  "checkedAt": "2026-10-16T07:15:06.271Z",
   "status": "passed",
   "base": "https://cromagnonmmo.com/",
-  "buildId": "00d3f8c78cdf8b28e0be0dab398f54dc90466f6eb5ba21c1c4084cbdec1aabaa",
+  "buildId": "ba451f7dc95efbf7214f5ba8aa4f059e0c3b5c513c881503c3fac7f05588e69e",
   "browser": "155.0.8059.41",
-  "scope": "Real Chrome on Windows; desktop and 390px touch emulation; isolated test storage. Physical phones, native Safari, physical gamepads and long-duration play are unverified.",
+  "scope": "Real Chrome on Windows; desktop and 390px touch emulation; isolated browser saves. Physical phones, native Safari, physical gamepads and long-duration play unverified.",
   "checks": [
     "The title enables solo and disables online entry",
     "First entry runs and autosaves a local character, outfit and one companion",
@@ -38,8 +38,39 @@
       "status": 503
     }
   ],
-  "screenshots": "output/playwright/solo-cromagnonmmo-com-20261016",
-  "productionGate": "output/production-domain-20261016/verification.json",
-  "domainQA": "assets/cloudflare/custom-domain-qa.json",
-  "workersDevBrowserEvidence": "output/playwright/solo-live-domain-20261016/result.json"
+  "screenshots": "output/playwright/solo-live-ui-20261016-01",
+  "productionGate": "output/production-ui-20261016-03/verification.json",
+  "contributorX": {
+    "status": "passed",
+    "checks": [
+      {
+        "label": "title-1440",
+        "cards": 17,
+        "xIcons": 16
+      },
+      {
+        "label": "mural-1440",
+        "cards": 16,
+        "xIcons": 15
+      },
+      {
+        "label": "title-390",
+        "cards": 17,
+        "xIcons": 16
+      },
+      {
+        "label": "mural-390",
+        "cards": 16,
+        "xIcons": 15
+      },
+      {
+        "label": "title-320",
+        "cards": 17,
+        "xIcons": 16
+      }
+    ],
+    "errors": [],
+    "forbidden": [],
+    "evidence": "output/playwright/contributor-x-live-20261016-01/result.json"
+  }
 }

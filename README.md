@@ -6,7 +6,7 @@
 
 **2026-10-16：人物選択と音の初期設定を調整（未公開）。** 小柄な男の子・女の子を先頭へ、男性・キツネの魔法使い・大猿を末尾へ。スマホは最初に4人が見える2列にし、仲間は524を先頭にしました。音はPC・スマホとも初期オフで、スマホには音の切り替えボタンを追加。ファビコンの四隅も丸めています。[変更と検証](docs/selection-sound-2026-10-16.md)。
 
-**2026-10-16：最新mainのソロ版を独自ドメインで公開。** [cromagnonmmo.com](https://cromagnonmmo.com/)で遊べます。Cloudflare FreeのままHTTPSとwwwからの転送を設定し、PC・スマホ相当の開始・保存・再開、全配信ファイルのSHAを検証しました。従来URLのブラウザー保存は従来URL側に残り、新ドメインとは別の保存になります。[公開・接続・検証の記録](docs/solo-deploy-2026-10-16.md)。
+**2026-10-16：ソロUI・タイトル・人物カードのXアイコンを公開。** [cromagnonmmo.com](https://cromagnonmmo.com/)で遊べます。人物と仲間の順序、スマホの一覧と音の切替、新しいタイトルと壁画も反映。1,803テスト合格・失敗0、公開779ファイルのSHAとPC・スマホ相当のChrome検証に合格しました。従来URLのブラウザー保存は従来URL側に残り、新ドメインとは別の保存になります。[今回の公開記録](docs/ui-deploy-2026-10-16.md)・[独自ドメインの接続記録](docs/solo-deploy-2026-10-16.md)。
 
 公開前の検証は `npm ci` の後、Google Chromeを入れた環境で `npm run verify:production` を実行します。型・書式・依存監査・全テスト・分離した公開用ビルド・Cloudflareのローカル配信・PC／スマホ相当の実Chrome操作をまとめて確認し、結果とSHAを `output/production-*/`、画面を `output/playwright/production-*/` に残します。公開や稼働中サーバーの再起動は行いません。[検証範囲と結果](docs/production-readiness-2026-10-16.md)。
 
