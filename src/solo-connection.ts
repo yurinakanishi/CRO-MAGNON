@@ -6,6 +6,7 @@ export class SoloConnection extends EventTarget {
   private worker: Worker | null = null;
   private closing = false;
   private finish!: () => void;
+  private leaving: { promise: Promise<boolean>; resolve: (saved: boolean) => void } | null = null;
 
   constructor(profile: Record<string, string>) {
     super();
@@ -26,7 +27,11 @@ export class SoloConnection extends EventTarget {
             this.dispatchEvent(new Event('open'));
           } else if (data.type === 'message')
             this.dispatchEvent(new MessageEvent('message', { data: data.data }));
-          else if (data.type === 'closed') this.closed(data.code, data.reason);
+          else if (data.type === 'close-refused') {
+            if (!this.closing) this.readyState = 1;
+            this.leaving?.resolve(false);
+            this.leaving = null;
+          } else if (data.type === 'closed') this.closed(data.code, data.reason);
         };
         this.worker.onerror = () => {
           this.dispatchEvent(
@@ -61,6 +66,19 @@ export class SoloConnection extends EventTarget {
   send(data: string) {
     if (this.readyState === 1) this.worker?.postMessage({ type: 'command', data });
   }
+  /** Resolve only after the final transaction commits, or keep playing on failure. */
+  leave(): Promise<boolean> {
+    if (this.leaving) return this.leaving.promise;
+    if (this.readyState !== 1 || this.closing) return Promise.resolve(false);
+    let resolve!: (saved: boolean) => void;
+    const promise = new Promise<boolean>((done) => {
+      resolve = done;
+    });
+    this.leaving = { promise, resolve };
+    this.readyState = 2;
+    this.worker!.postMessage({ type: 'leave' });
+    return promise;
+  }
   close() {
     if (this.closing || this.readyState === 3) return;
     this.closing = true;
@@ -77,6 +95,8 @@ export class SoloConnection extends EventTarget {
     this.worker?.terminate();
     window.removeEventListener('pagehide', this.checkpoint);
     document.removeEventListener('visibilitychange', this.hidden);
+    this.leaving?.resolve(code === 1000);
+    this.leaving = null;
     this.finish();
     this.dispatchEvent(new CloseEvent('close', { code, reason }));
   }

@@ -129,10 +129,10 @@ test('nearby companions cannot replace the actual gathering hint or E / right fa
       }
 });
 
-test('a berry bush the camera hides while the player stands in it stays a gathering target', () => {
+test('a loaded berry bush stays a gathering target independently of the last drawn frame', () => {
   const f = fixture('berry', null);
-  // The 1 m reach is inside the walk-through bush; the camera, looking at the player through
-  // it, does not draw it this frame. The renderer's own check must still offer it.
+  // The 1 m reach is inside the walk-through bush. Even before the renderer updates the
+  // model's visibility, the input must offer a loaded, nonempty target at the player's feet.
   Object.assign(f.player, { x: f.resource.x, z: f.resource.z });
   const world = {
     resources: new Map([[f.resource.id, { model: { visible: false }, resource: f.resource }]]),

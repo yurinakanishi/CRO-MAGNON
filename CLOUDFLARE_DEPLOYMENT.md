@@ -10,6 +10,14 @@ The current game is **solo only**: the browser runs the game and autosaves in In
 
 For current release verification, run `node scripts/qa-solo-play.mjs output/playwright/<new-run> --url=https://cromagnonmmo.cro-magnon.workers.dev/` and `node scripts/qa-cloudflare-release.mjs https://cromagnonmmo.cro-magnon.workers.dev`. Do not run the old live online client or SQL tests against the solo release. The deployed configuration is kept as strict JSON by its Prettier override so the existing deployment guard can parse it.
 
+## Local production gate
+
+Before requesting a release, run `npm ci` and `npm run verify:production` with Node.js 22+ and Google Chrome installed. The pinned Playwright dependency comes from the project; a private runtime path is not required. The gate fails on type, syntax, architecture, formatting, dependency-audit, test, build, Worker dry-run, or browser errors. Registry access is required for the dependency audit; a network error is not a passing audit.
+
+Each run creates a fresh `output/production-<timestamp>/` directory with the exact public assets, Worker, SHA-256 ledger, logs and `verification.json`. Browser evidence is under `output/playwright/production-<timestamp>/`. An explicit fresh directory is supported with `npm run verify:production -- --output-root=output/<new-directory>`; existing directories are rejected. The gate checks every served public file against the ledger, confirms solo/no-DO behavior, and exercises first entry, autosave/resume, competing tabs, 35-second idle periods, WebGL recovery, native Chrome touch input, failed-save exit/retry, and both language entry points. Optional asset transformation tests can use `OPTIMIZATION_PYTHON` pointing to Python with Pillow; opt-in benchmarks remain separate.
+
+This command only runs local verification. It does not deploy, change plans, touch existing online saves, restart the usual servers, or generate exhibition packages. A successful result applies to that recorded artifact and environment. Rebuilds produce a new identity and require verification; physical-phone performance, native Safari and physical controllers require their own checks. The account/Free-plan checks and explicit release authorization above still apply. [2026-10-16 findings and scope](docs/production-readiness-2026-10-16.md).
+
 ## Historical source and deployment observations
 
 The following dated entries retain their original status at the time of observation. Their “not deployed” statements are superseded by the 2026-10-15 deployment above. The online architecture, SQL saving and quota details below describe retained, inactive functionality.

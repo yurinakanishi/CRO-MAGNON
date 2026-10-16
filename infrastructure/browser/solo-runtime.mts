@@ -6,6 +6,7 @@ import { UnsupportedSoloSave, type SoloData, type SoloSavePort } from './solo-sa
 export type SoloOutput =
   | { type: 'open' }
   | { type: 'message'; data: string }
+  | { type: 'close-refused' }
   | { type: 'closed'; code: number; reason: string };
 
 class LocalConnection implements GameConnection {
@@ -203,12 +204,22 @@ export class SoloRuntime {
     for (const message of this.pending.splice(0)) this.output(message);
   }
 
-  async close() {
+  async close(requireSave = false) {
+    // A manual return to title must not discard unsaved progress. Export includes
+    // the active player's resume record, so commit while the connection is still
+    // usable. On failure the worker, game and writer lock remain available to retry.
+    if (requireSave) {
+      this.dirty = true;
+      if (!(await this.save())) return false;
+    }
     this.connection?.close();
-    this.dirty = true;
-    await this.save();
+    if (!requireSave) {
+      this.dirty = true;
+      await this.save();
+    }
     this.flush();
     this.game.close();
     this.storage.close();
+    return true;
   }
 }

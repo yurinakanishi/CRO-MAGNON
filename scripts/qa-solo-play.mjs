@@ -1,60 +1,19 @@
 // Real Chrome UI with its own browser storage, using a local asset server or --url.
-// Renderer instrumentation is read-only; the server must receive no game traffic.
+// Test the served scripts unchanged; the server must receive no game traffic.
 import assert from 'node:assert/strict';
-import { mkdir, writeFile, stat } from 'node:fs/promises';
-import { createReadStream } from 'node:fs';
-import { createServer } from 'node:http';
-import path from 'node:path';
-import { MIME } from '../dist/infrastructure/node/static-files.mjs';
+import { mkdir, writeFile } from 'node:fs/promises';
 import { createGameCore } from '../dist/application/game-core.mjs';
 import { createGameServer } from '../dist/server.mjs';
 import { readDeliveryOverlay } from '../dist/infrastructure/node/delivery-overlay.mjs';
 import { enterPreparedWorld } from './qa-game-entry.mjs';
-const { chromium } = await import(
-  process.env.PLAYWRIGHT_MODULE ||
-    'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
-);
+import { publicAssets } from './qa-static-server.mjs';
+const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const output = process.argv[2] || `output/playwright/solo-${Date.now()}`;
 await mkdir(output, { recursive: true });
 const core = createGameCore();
 const publicArg = process.argv.find((arg) => arg.startsWith('--public='));
 const urlArg = process.argv.find((arg) => arg.startsWith('--url='));
 assert.ok(!(publicArg && urlArg), 'Use either --public or --url');
-async function publicAssets(directory) {
-  const root = path.resolve(directory);
-  const server = createServer(async (request, response) => {
-    try {
-      const url = new URL(request.url, 'http://localhost');
-      const file = path.resolve(
-        root,
-        url.pathname === '/' ? 'index.html' : decodeURIComponent(url.pathname.slice(1)),
-      );
-      const relative = path.relative(root, file);
-      if (relative.startsWith('..') || path.isAbsolute(relative)) {
-        response.writeHead(403).end();
-        return;
-      }
-      const info = await stat(file);
-      response.writeHead(200, {
-        'Content-Type': MIME[path.extname(file)] || 'application/octet-stream',
-        'Content-Length': info.size,
-      });
-      if (request.method === 'HEAD') response.end();
-      else createReadStream(file).pipe(response);
-    } catch {
-      response.writeHead(404).end();
-    }
-  });
-  return {
-    async listen() {
-      await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
-      return { port: server.address().port };
-    },
-    async close() {
-      await new Promise((resolve) => server.close(resolve));
-    },
-  };
-}
 const game = urlArg
   ? null
   : publicArg
@@ -71,6 +30,7 @@ const base = urlArg
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const checks = [],
   idleSamples = [],
+  performanceSamples = [],
   errors = [],
   forbidden = [];
 const pass = (label) => {
@@ -88,15 +48,6 @@ async function prepare(context) {
   await target.route('**/api/**', (route) => {
     forbidden.push(route.request().url());
     return route.abort();
-  });
-  await target.route('**/src/world3d.js', async (route) => {
-    const response = await route.fetch();
-    await route.fulfill({
-      response,
-      body:
-        (await response.text()) +
-        '\nconst qaSetState=WorldRenderer.prototype.setState;WorldRenderer.prototype.setState=function(...args){globalThis.qaRenderer=this;return qaSetState.apply(this,args);};',
-    });
   });
   await target.goto(base);
   return target;
@@ -185,6 +136,112 @@ async function checkInactivity(target, background = false) {
     `${background ? 'Resumed background' : 'New foreground'} solo play stays active and autosaves after 35 seconds without input`,
   );
 }
+async function profileFrames(target, device) {
+  const samples = [];
+  for (let i = 0; i < 10; i++) {
+    await target.waitForTimeout(1000);
+    samples.push(
+      await target.locator('#world').evaluate((canvas) => {
+        const { fps, fpsLimit, frameSimulationMs, frameSubmissionMs, jsHeapMiB } = canvas.dataset;
+        return {
+          fps: Number(fps),
+          fpsLimit: Number(fpsLimit),
+          frameSimulationMs,
+          frameSubmissionMs,
+          jsHeapMiB,
+        };
+      }),
+    );
+  }
+  assert.ok(samples.every((sample) => sample.fpsLimit === 30));
+  const environment = await target.locator('#world').evaluate((canvas) => {
+    const gl = canvas.getContext('webgl2');
+    const extension = gl.getExtension('WEBGL_debug_renderer_info');
+    return {
+      userAgent: navigator.userAgent,
+      width: innerWidth,
+      height: innerHeight,
+      renderer: extension ? gl.getParameter(extension.UNMASKED_RENDERER_WEBGL) : 'unavailable',
+    };
+  });
+  performanceSamples.push({ device, environment, samples });
+  pass(`${device}: recorded ten real frame-rate samples with the fixed 30fps profile`);
+}
+
+async function recoverContext(target) {
+  const before = await checkpoint(target);
+  await target.locator('#world').evaluate((canvas) => {
+    const extension = canvas.getContext('webgl2').getExtension('WEBGL_lose_context');
+    if (!extension) throw new Error('WebGL context-loss test is unavailable');
+    window.qaRestoreContext = () => extension.restoreContext();
+    extension.loseContext();
+  });
+  await target.locator('#context-recovery').waitFor();
+  await target.waitForTimeout(500);
+  await target.evaluate(() => window.qaRestoreContext());
+  await target.locator('#context-recovery').waitFor({ state: 'detached', timeout: 60000 });
+  assert.equal(await target.locator('#world').getAttribute('data-webgl-context'), 'restored');
+  assert.equal(
+    (await checkpoint(target)).game.rooms[0].sessions[0].player.id,
+    before.game.rooms[0].sessions[0].player.id,
+  );
+  await target.screenshot({ path: `${output}/context-restored.png` });
+  pass('A real WebGL context loss restores the scene without losing the solo session');
+}
+
+async function touchMovement(target) {
+  await target.waitForFunction(() => {
+    const data = document.querySelector('#world').dataset;
+    return data.playerX !== undefined && data.playerZ !== undefined;
+  });
+  const cdp = await target.context().newCDPSession(target);
+  const touch = (type, touchPoints = []) =>
+    cdp.send('Input.dispatchTouchEvent', { type, touchPoints });
+  const position = () =>
+    target.locator('#world').evaluate((canvas) => ({
+      x: Number(canvas.dataset.playerX),
+      z: Number(canvas.dataset.playerZ),
+    }));
+  const before = await position();
+  const zone = await target.locator('.touch-move').boundingBox();
+  assert.ok(zone);
+  const point = { id: 1, x: zone.x + zone.width / 2, y: zone.y + zone.height * 0.65 };
+  try {
+    await touch('touchStart', [point]);
+    await touch('touchMove', [{ ...point, y: point.y - 48 }]);
+    await target.waitForTimeout(1100);
+    await touch('touchCancel');
+    await target.waitForTimeout(1300);
+    const stopped = await position();
+    assert.ok(Math.hypot(stopped.x - before.x, stopped.z - before.z) > 0.2);
+    await target.waitForTimeout(1300);
+    const later = await position();
+    assert.ok(
+      Math.hypot(later.x - stopped.x, later.z - stopped.z) < 0.1,
+      'cancelling touch must stop movement',
+    );
+    const sequence = Number(
+      await target.locator('#world').getAttribute('data-player-jump-sequence'),
+    );
+    await target.locator('[data-touch-action="jump"]').tap();
+    await target.waitForFunction(
+      (previous) => Number(document.querySelector('#world').dataset.playerJumpSequence) > previous,
+      sequence,
+    );
+    await target.locator('[data-touch-action="menu"]').tap();
+    await target.locator('#modal[open]').waitFor();
+    await target.locator('[data-controller-menu="title"]').tap();
+    await target.locator('#screen-title').waitFor();
+    const saved = (await checkpoint(target)).game.rooms[0].sessions[0].player;
+    assert.ok(Math.hypot(saved.x - before.x, saved.z - before.z) > 0.2);
+    pass(
+      'Native Chrome touch moves, cancellation stops, jump works, and the menu saves the moved position',
+    );
+  } finally {
+    await touch('touchEnd').catch(() => {});
+    await cdp.detach();
+  }
+}
 try {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   context.on('request', (request) => {
@@ -211,6 +268,7 @@ try {
   assert.equal(original.mascot, '524');
   await page.screenshot({ path: `${output}/solo-world.png` });
   pass('First entry runs and autosaves a local character, outfit and one companion');
+  if (process.argv.includes('--profile')) await profileFrames(page, 'desktop');
   if (process.argv.includes('--idle')) await checkInactivity(page);
   await page.locator('#world').focus();
   await page.keyboard.down('w');
@@ -241,6 +299,7 @@ try {
   assert.equal(restored.mascot, '524');
   pass('Title/reload restores the same person, inventory and location while applying new clothes');
   if (process.argv.includes('--idle')) await checkInactivity(page, true);
+  if (process.argv.includes('--recovery')) await recoverContext(page);
 
   // A second real tab must not attach a second writer to the same saved world.
   const second = await prepare(context);
@@ -287,9 +346,11 @@ try {
   await enterPreparedWorld(page, true);
   assert.equal((await checkpoint(page)).game.rooms[0].sessions[0].player.mascot, 'blue');
   await page.screenshot({ path: `${output}/solo-mobile.png` });
+  if (process.argv.includes('--profile')) await profileFrames(page, 'mobile-emulation');
   pass(
     '390px touch flow keeps both title buttons visible and runs solo after separate character and companion screens',
   );
+  await touchMovement(page);
   assert.deepEqual(forbidden, []);
   if (game && !publicArg) assert.equal(core.rooms.size, 0);
   assert.deepEqual(errors, []);
@@ -300,7 +361,19 @@ try {
 } finally {
   await writeFile(
     `${output}/result.json`,
-    JSON.stringify({ base, checks, idleSamples, errors, forbidden }, null, 2),
+    JSON.stringify(
+      {
+        base,
+        browser: browser.version(),
+        checks,
+        idleSamples,
+        performanceSamples,
+        errors,
+        forbidden,
+      },
+      null,
+      2,
+    ),
   );
   await browser.close();
   await game?.close();

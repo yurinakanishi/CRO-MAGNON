@@ -22,6 +22,8 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
     'Solo play is open in another tab. Return that tab to the title, then try again.',
   'ソロプレイを開始できませんでした。再読み込みしてください。':
     'Could not start solo play. Please reload.',
+  '保存できなかったため、ゲームを続けています。時間をおいてもう一度お試しください。':
+    'Could not save, so your game is still open. Please try again in a moment.',
   旅人: 'Traveler',
   クロマニョン人: 'Cro-Magnon',
   ネアンデルタール人: 'Neanderthal',

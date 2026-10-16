@@ -5,10 +5,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
 import { createGameServer } from '../dist/server.mjs';
-const { chromium } = await import(
-  process.env.PLAYWRIGHT_MODULE ||
-    'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
-);
+const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const output = process.argv[2] || 'output/playwright/og-language';
 if (!process.argv[3])
   throw new Error('Pass the isolated public build asset directory as argument 3.');

@@ -2067,6 +2067,21 @@ dialog:has(.pause-menu) #modal-body {
 .pause-panel[hidden] {
   display: none;
 }
+.solo-exit-error {
+  margin: 0 96px 18px 0;
+  padding: 12px 14px;
+  border: 1px solid #ba866b;
+  border-radius: 8px;
+  background: #38291f;
+  color: #ffe0ca;
+  font-size: 14px;
+  line-height: 1.6;
+}
+@media (max-width: 860px) {
+  .solo-exit-error {
+    margin-right: 0;
+  }
+}
 .pause-panel > h2:first-child {
   padding-right: 96px;
 }

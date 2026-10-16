@@ -119,7 +119,7 @@ import {
 import { updateActorPerformance } from './performance-lod.js';
 import { ActorFade, actorDistance } from './camera-fade.js';
 import { nearPlaneReach } from './mesh-ray-grid.js';
-import { PASSABLE_PLANTS, crownProfile, segmentNearTree } from './tree-sight.js';
+import { crownProfile, segmentNearTree } from './tree-sight.js';
 import {
   LOAD_TIER,
   LoadCancelled,
@@ -1078,13 +1078,22 @@ export class WorldRenderer {
   }
 
   /**
-   * Whether the resource's model is loaded and still has something to take. Not this frame's
-   * drawing: a berry bush the player stands in is hidden from the camera looking through it,
-   * and it must stay a gathering target (the 1 m reach is inside the bush).
+   * Whether the resource's model is loaded and still has something to take. Gathering
+   * must not depend on the camera's current view or whether a frame has been drawn yet.
    */
   resourceVisible(id: string): boolean {
     const item = this.resources.get(id);
     return !!item && item.resource.amount > 0;
+  }
+
+  updateResourceVisibility() {
+    const far = (this.scene.fog as THREE.Fog).far + 5;
+    for (const item of this.resources.values()) {
+      // Harvestable objects remain visible when approached, including a bush the player
+      // can walk through. Only decorative plants use sight-line hiding.
+      item.model.visible =
+        item.resource.amount > 0 && item.model.position.distanceTo(this.camera.position) < far;
+    }
   }
 
   syncResources() {
@@ -2811,18 +2820,12 @@ export class WorldRenderer {
         record.root.visible = record.inRange;
       }
     }
-    // A bush the camera's sight to the player passes through is not drawn from this view,
-    // as a tree is not (LandscapeInstances); the body walks through both.
+    // Decorative bushes and trees may clear the camera's sight to the player.
+    // Harvestable resources retain their visible location while the player approaches.
     for (const record of this.staticScenery)
       if (record.plant && record.inRange)
         record.root.visible = !this.sightThroughPlant(record.plant, record.root, aim);
-    for (const item of this.resources.values()) {
-      item.model.visible =
-        item.resource.amount > 0 &&
-        item.model.position.distanceTo(this.camera.position) <
-          (this.scene.fog as THREE.Fog).far + 5 &&
-        !(PASSABLE_PLANTS.has(item.key) && this.sightThroughPlant(item.key, item.model, aim));
-    }
+    this.updateResourceVisibility();
     if (this.waterMaterial) this.waterMaterial.userData.time.value = time;
     if (this.npc) {
       this.npc.visible = this.npc.position.distanceTo(this.camera.position) < 75;

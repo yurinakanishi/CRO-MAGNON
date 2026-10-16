@@ -83,7 +83,9 @@ scope.onmessage = ({ data }) => {
     enqueue(async () => {
       if (data.type === 'command') await runtime?.command(data.data);
       else if (data.type === 'save') await runtime?.save();
-      else if (data.type === 'close') {
+      else if (data.type === 'leave') {
+        if (!(await runtime?.close(true))) output({ type: 'close-refused' });
+      } else if (data.type === 'close') {
         clearInterval(timer);
         await runtime?.close();
         if (!closed) output({ type: 'closed', code: 1000, reason: '' });

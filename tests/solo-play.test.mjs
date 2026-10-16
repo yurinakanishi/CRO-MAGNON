@@ -195,6 +195,59 @@ test('autosave failures preserve the committed state, report the error and avoid
   await runtime.close();
 });
 
+test('manual solo exit retains the live game after a failed save and commits before closing on retry', async () => {
+  const save = memorySave(),
+    outputs = [];
+  let storageClosed = false;
+  save.close = () => {
+    storageClosed = true;
+  };
+  const runtime = new SoloRuntime(save, (event) => outputs.push(event));
+  await runtime.start(profile);
+  const before = structuredClone(save.data);
+  save.fail = true;
+  await runtime.command(JSON.stringify({ type: 'action', action: 'dyeClothes', targetId: 'teal' }));
+  assert.equal(await runtime.close(true), false);
+  assert.deepEqual(save.data, before);
+  assert.equal(storageClosed, false);
+  assert.equal(
+    outputs.some((event) => event.type === 'closed'),
+    false,
+  );
+  await runtime.tick();
+  assert.ok(
+    messages(outputs)
+      .filter((m) => m.type === 'state')
+      .at(-1).players.length === 1,
+  );
+
+  let commit;
+  const write = save.write.bind(save);
+  save.fail = false;
+  save.write = async (data) => {
+    await new Promise((resolve) => {
+      commit = resolve;
+    });
+    await write(data);
+  };
+  const leaving = runtime.close(true);
+  await Promise.resolve();
+  assert.equal(storageClosed, false);
+  assert.equal(
+    outputs.some((event) => event.type === 'closed'),
+    false,
+  );
+  commit();
+  assert.equal(await leaving, true);
+  assert.equal(save.data.game.rooms[0].sessions[0].player.dye, 'teal');
+  assert.equal(
+    save.data.game.rooms[0].sessions[0].player.id,
+    before.game.rooms[0].sessions[0].player.id,
+  );
+  assert.equal(storageClosed, true);
+  assert.equal(outputs.at(-1).type, 'closed');
+});
+
 test('unknown newer worlds and missing resume identities cannot reset and overwrite progress', async () => {
   const original = memorySave();
   const first = new SoloRuntime(original, () => {});

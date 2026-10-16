@@ -2,10 +2,7 @@
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
 import { mkdir, writeFile, readFile } from 'node:fs/promises';
-const { chromium } = await import(
-  process.env.PLAYWRIGHT_MODULE ||
-    'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
-);
+const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const source = await readFile('dist/infrastructure/browser/solo-save.mjs', 'utf8');
 const server = createServer((request, response) => {
   response.setHeader('Content-Type', request.url === '/save.mjs' ? 'text/javascript' : 'text/html');

@@ -2011,14 +2011,45 @@ async function arriveFromGallery(cave: LoadingCave) {
   closeLoadingCave();
   showPlay();
 }
-function leaveToTitle() {
+let leavingToTitle = false;
+async function leaveToTitle() {
+  if (leavingToTitle) return;
   motionControls?.stop();
+  stopInput();
   manualLeave = true;
   clearTimeout(retry);
-  send({ type: 'leave', keepSession: true });
   const previous = socket;
+  if (solo && joined && previous instanceof SoloConnection) {
+    leavingToTitle = true;
+    $('#solo-exit-error')?.remove();
+    const button = document.querySelector<HTMLButtonElement>('[data-controller-menu="title"]');
+    if (button) button.disabled = true;
+    const saved = await previous.leave();
+    leavingToTitle = false;
+    if (button) button.disabled = false;
+    if (socket !== previous) return;
+    if (!saved) {
+      if (previous.readyState === 1) {
+        manualLeave = false;
+        const message =
+          '保存できなかったため、ゲームを続けています。時間をおいてもう一度お試しください。';
+        const panels = $('#modal[open] .pause-panels');
+        if (panels) {
+          const error = document.createElement('p');
+          error.id = 'solo-exit-error';
+          error.className = 'solo-exit-error';
+          error.setAttribute('role', 'alert');
+          error.textContent = message;
+          panels.prepend(error);
+        } else notify(message, 'error');
+      }
+      return;
+    }
+  } else {
+    send({ type: 'leave', keepSession: true });
+    previous?.close();
+  }
   socket = null;
-  previous?.close();
   selfId = null;
   arrived = false;
   state = { players: [], resources: INITIAL_RESOURCES, camp: { ...CAMP }, npc: NPC, day: 1 };
