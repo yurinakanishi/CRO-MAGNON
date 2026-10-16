@@ -98,6 +98,7 @@ export class OrbBotRenderer {
       actor.root.scale.setScalar(entry.scale * farewellScale(leaving));
       if (leaving >= 0) {
         // The goodbye is the catch hop where it stands, then it is gone.
+        position.y = world.companionGroundHeight(b.x, b.z, position.y);
         actor.root.position.copy(position);
         actor.sampleOnce('Catch', leaving / 1000);
       } else if (b.mode === 'windup' && owner?.actor?.orbBotPose.weight > 0) {
@@ -129,7 +130,11 @@ export class OrbBotRenderer {
         )
           actor.root.position.copy(position);
         else actor.root.position.lerp(position, 1 - Math.exp(-dt * 18));
-        actor.root.position.y = botGroundHeight(actor.root.position.x, actor.root.position.z);
+        actor.root.position.y = world.companionGroundHeight(
+          actor.root.position.x,
+          actor.root.position.z,
+          botGroundHeight(actor.root.position.x, actor.root.position.z),
+        );
         const yaw = b.facing - actor.root.rotation.y;
         actor.root.rotation.y +=
           Math.atan2(Math.sin(yaw), Math.cos(yaw)) * (1 - Math.exp(-dt * 18));
@@ -158,7 +163,7 @@ export class OrbBotRenderer {
             heart.visible = t > 0 && t < 1;
             heart.position.set(
               b.x + Math.sin(i * 2.4) * 0.15,
-              b.y + 0.32 + t * 0.35,
+              actor.root.position.y + 0.32 + t * 0.35,
               b.z + Math.cos(i * 2.4) * 0.15,
             );
             heart.scale.setScalar(0.09);

@@ -2,6 +2,8 @@ import {
   MASCOT_KEYS,
   cancelMascotPets,
   chooseMascot,
+  chooseMascots,
+  selectedMascotKeys,
   formerMascotBonds,
   mascotSelectable,
   syncMascots,
@@ -104,6 +106,7 @@ export function createGameCore({
   exhibition = false,
   visibility: requestedVisibility = ALL_CONTENT,
   mascotModels = ACTIVE_MASCOT_MODELS,
+  multiMascots = false,
 }: {
   resumeGraceMs?: number;
   keepEmptyRooms?: boolean;
@@ -115,6 +118,7 @@ export function createGameCore({
   exhibition?: boolean;
   visibility?: ContentVisibility;
   mascotModels?: readonly string[];
+  multiMascots?: boolean;
 } = {}) {
   if (!Number.isInteger(playerLimit) || playerLimit < 1 || playerLimit > 64)
     throw new Error('playerLimit must be an integer from 1 to 64');
@@ -256,6 +260,7 @@ export function createGameCore({
       room.animals = createAnimals(room.collision);
       // No companion waits at camp: each arrives beside the person who chose it.
       room.mascotKeys = mascotKeys;
+      room.multiMascots = multiMascots;
       room.companions = [];
       room.orbBots = [];
       room.enemies = createEnemies(room.collision, room.animals);
@@ -448,6 +453,8 @@ export function createGameCore({
     if ((!resumed || chooseAppearance) && params.has('mascot')) {
       const choice = params.get('mascot');
       if (choice === 'none' || choice === '') chooseMascot(room, player, null, now);
+      else if (multiMascots && choice !== 'keep')
+        chooseMascots(room, player, choice.split(','), now);
       else if (mascotSelectable(room, choice)) chooseMascot(room, player, choice, now);
     }
     // The chosen companion arrives beside them, as it does on every return.
@@ -473,6 +480,7 @@ export function createGameCore({
         difficulty: player.difficulty,
         dye: player.dye ?? null,
         mascot: player.mascot ?? null,
+        ...(multiMascots ? { mascots: selectedMascotKeys(player) } : {}),
       },
     });
     broadcast(room, snapshot(room, true));
@@ -612,6 +620,7 @@ export function createGameCore({
           message.action === 'recallBots' ||
           message.action === 'cancelBotThrows' ||
           message.action === 'selectMascot' ||
+          message.action === 'selectAllMascots' ||
           message.action === 'deselectMascot' ||
           message.action === 'dyeClothes' ||
           message.action === 'rift' ||
@@ -629,6 +638,7 @@ export function createGameCore({
             'cancelBotThrows',
             'recallBots',
             'selectMascot',
+            'selectAllMascots',
             'deselectMascot',
             'dyeClothes',
             'wave',
@@ -643,6 +653,7 @@ export function createGameCore({
             'throwBot',
             'recallBots',
             'selectMascot',
+            'selectAllMascots',
             'deselectMascot',
             'dyeClothes',
             'jump',
@@ -1041,6 +1052,10 @@ export function createGameCore({
           if (player.mascot === undefined)
             player.mascot =
               formerBonds.get(player.id)?.find((key) => mascotSelectable(room, key)) ?? null;
+          if (multiMascots)
+            player.mascots = selectedMascotKeys(player).filter((key) =>
+              mascotSelectable(room, key),
+            );
           // Restored profiles must belong to this build's available catalog too.
           applyAppearance(player, proposedAppearance(player.unavailableCharacter ?? player));
           player.radius = characterModel(player).radius ?? WORLD.playerRadius;

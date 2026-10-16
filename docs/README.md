@@ -21,6 +21,12 @@
 
 ## 作業記録（月別）
 
+公開準備: [2026-10-17 仲間の複数選択・カメラ・dot表記・肉球アイコン](companions-release-2026-10-17.md)。公開候補の一括検証と追加Chrome12項目は合格。現在のWorkers Free表示の確認待ちで、アップロードは未実行。
+
+仲間を見るカメラ: [2026-10-16 地面際で真下を向く問題と仲間の足元を修正](companion-ground-camera-2026-10-16.md)。ローカル実装・検証、未公開。
+
+ソロの仲間: [2026-10-16 複数選択・全選択／全解除・横送りのターゲット・連続投げ](solo-mascots-2026-10-16.md)。ローカル実装・検証、未公開。
+
 洞窟の壁画: [2026-10-16 原画の特徴を7体で修復し、全24体を比較](../assets/camp-cave/identity-r41/README.md)・[原画と変更前後の一覧](../assets/camp-cave/identity-r41/qa/index.html)。[共通縮尺と上下の重なり](../assets/camp-cave/layered-r40/README.md)、[両壁の連続配置と新キャラの自動配置](cave-mural-continuity-2026-10-16.md)を継承。[22:23 JSTに公開済み](mural-deploy-2026-10-16.md)。[今後の追加手順](../assets/camp-cave/continuous-r39/README.md)。
 
 - [2026-09](changelog/2026-09.md)

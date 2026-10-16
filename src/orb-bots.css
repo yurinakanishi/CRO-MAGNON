@@ -152,6 +152,146 @@
   font-size: 12px;
 }
 
+.starting-mascot > .mascot-bulk {
+  margin-bottom: 10px;
+}
+
+#mascot-target {
+  position: absolute;
+  top: 116px;
+  left: max(16px, env(safe-area-inset-left));
+  z-index: 5;
+  color: #f4efe1;
+  font-size: 12px;
+  width: 248px;
+  max-width: calc(100% - 32px);
+}
+#mascot-target[hidden],
+#mascot-target [hidden] {
+  display: none;
+}
+#mascot-target button {
+  color: inherit;
+  font: inherit;
+  border: 1px solid #a7b68f55;
+  background: #101c17e8;
+  border-radius: 10px;
+  cursor: pointer;
+  min-height: 44px;
+  touch-action: manipulation;
+}
+#mascot-target button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+#mascot-target button:focus-visible {
+  outline: 2px solid #efd18c;
+  outline-offset: 2px;
+}
+.mascot-target-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 10px 3px 4px;
+  text-align: left;
+}
+#mascot-target .mascot-picture {
+  width: 42px;
+  height: 42px;
+}
+.mascot-target-toggle small {
+  display: block;
+  color: #d6c79a;
+  margin-top: 3px;
+}
+.mascot-target-toggle kbd {
+  margin-left: 10px;
+}
+#mascot-target-panel {
+  margin-top: 5px;
+  padding: 6px;
+  border-radius: 12px;
+  background: #101c17eb;
+  border: 1px solid #a7b68f55;
+}
+.mascot-target-row {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+}
+#mascot-target [data-mascot-step] {
+  width: 44px;
+  flex-shrink: 0;
+  border: 0;
+  font-size: 24px;
+}
+.mascot-target-strip {
+  position: relative;
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  touch-action: pan-x;
+  padding: 2px 37px;
+}
+#mascot-target [data-mascot-target] {
+  flex: 0 0 68px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 2px;
+  gap: 3px;
+  scroll-snap-align: center;
+  font-size: 10px;
+  touch-action: pan-x;
+}
+#mascot-target [aria-pressed='true'] {
+  border-color: #e6b66e;
+  background: #e0b07030;
+}
+.mascot-target-actions {
+  display: flex;
+  gap: 5px;
+  margin-top: 5px;
+}
+.mascot-target-actions button {
+  flex: 1;
+}
+.touch-mode #mascot-target {
+  top: 76px;
+  left: calc(max(14px, env(safe-area-inset-left)) + 56px);
+  width: 234px;
+  max-width: calc(100% - 84px);
+}
+.touch-mode .mascot-target-toggle kbd {
+  display: none;
+}
+.touch-mode .mascot-target-strip {
+  padding-inline: 30px;
+}
+.game-viewport:has(#motion-controls) #mascot-target {
+  top: 178px;
+}
+.touch-mode .game-viewport:has(#motion-controls) #mascot-target {
+  top: 150px;
+}
+@media (max-height: 500px) {
+  #mascot-target,
+  .touch-mode #mascot-target {
+    top: 66px;
+  }
+}
+@media (orientation: landscape) {
+  .touch-mode #mascot-target,
+  .touch-mode .game-viewport:has(#motion-controls) #mascot-target {
+    top: 76px;
+    left: calc(max(14px, env(safe-area-inset-left)) + 150px);
+  }
+}
+
 .mascot-setup-card {
   width: min(1040px, 100%);
   max-height: calc(var(--screen-height, 100dvh) - 48px);

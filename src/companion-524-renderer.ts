@@ -174,7 +174,11 @@ export class Companion524Renderer {
         this.root.position.z += (c.z - this.root.position.z) * blend;
       }
       // Float above the actual floor, including the interpolated position on slopes.
-      const floor = Math.max(ground, walkHeight(this.root.position.x, this.root.position.z));
+      const floor = this.world.companionGroundHeight(
+        this.root.position.x,
+        this.root.position.z,
+        Math.max(ground, walkHeight(this.root.position.x, this.root.position.z)),
+      );
       this.floor = Math.max(floor, this.floor + (floor - this.floor) * blend);
       // Withdrawing a hand or interrupting a pet must not pop the low mage pose
       // back to the ordinary hover height in a single frame.

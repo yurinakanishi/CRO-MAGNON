@@ -63,7 +63,7 @@ test('the menu shows the character as a tab, with no その他 tab and no 探索
   const main = await readFile(new URL('../src/main.ts', import.meta.url), 'utf8');
   assert.match(
     main,
-    /\['mascots', 'people', '連れていく仲間'\],\s*\['character', 'person', 'キャラクターを変える'\],\s*\['settings', 'gear', '設定'\],/,
+    /\['mascots', 'paw', '連れていく仲間'\],\s*\['character', 'person', 'キャラクターを変える'\],\s*\['settings', 'gear', '設定'\],/,
   );
   assert.doesNotMatch(
     main,

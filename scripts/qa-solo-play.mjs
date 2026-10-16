@@ -58,7 +58,10 @@ async function setup(target, character = 'cro-male', dye = 'blue', enter = true)
   await target.locator(`#setup-form input[value="${character}"]`).click();
   await target.locator(`#setup-form [data-dye="${dye}"]`).click();
   await target.locator('#setup-flow-yes').click();
-  await target.locator('[data-starting-mascot="524"]').click();
+  const mascot = target.locator('[data-starting-mascot="524"]');
+  // In the multi-select UI, clicking a restored selection would deselect it.
+  if ((await mascot.getAttribute('aria-pressed')) !== 'true') await mascot.click();
+  assert.equal(await target.locator('[data-starting-mascot][aria-pressed="true"]').count(), 1);
   await target.locator('#mascot-start').click();
   if (enter) await enterPreparedWorld(target, false);
 }
@@ -267,6 +270,7 @@ try {
   assert.equal(original.character, 'cro-magnon-hunter');
   assert.equal(original.dye, 'blue');
   assert.equal(original.mascot, '524');
+  assert.deepEqual(original.mascots, ['524']);
   await page.screenshot({ path: `${output}/solo-world.png` });
   pass('First entry runs and autosaves a local character, outfit and one companion');
   if (process.argv.includes('--profile')) await profileFrames(page, 'desktop');
@@ -298,6 +302,7 @@ try {
   assert.equal(restored.character, 'cro-magnon-girl-bear');
   assert.equal(restored.dye, 'teal');
   assert.equal(restored.mascot, '524');
+  assert.deepEqual(restored.mascots, ['524']);
   pass('Title/reload restores the same person, inventory and location while applying new clothes');
   if (process.argv.includes('--idle')) await checkInactivity(page, true);
   if (process.argv.includes('--recovery')) await recoverContext(page);

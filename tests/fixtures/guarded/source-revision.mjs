@@ -36,6 +36,7 @@ export async function assertAppliedOrRevisedSource(root, id, report) {
     textureRecords: runtimeTextureRecords,
   });
   const restored = structuredClone(catalog),
+    adoptedCatalog = JSON.parse(await read(`assets/runtime-adoption/${id}/after/${catalogPath}`)),
     changed = [catalogPath],
     expectedRecords = [],
     expectedStartup = [];
@@ -82,11 +83,34 @@ export async function assertAppliedOrRevisedSource(root, id, report) {
         `${manifestPath} ${asset.modelKey}: serves ${asset.url}, not its startup file`,
       );
   }
-  assert.deepEqual(
-    restored,
-    JSON.parse(await read(`assets/runtime-adoption/${id}/after/${catalogPath}`)),
-    'only accepted source records changed in the catalog',
-  );
+  // The user corrected these nine display names to dot on 2026-10-17. Accept only
+  // those exact name changes; every other manifest field must match the adoption.
+  const dotNames = {
+    white: 'しろdot',
+    blue: 'あおdot',
+    green: 'みどりdot',
+    purple: 'むらさきdot',
+    orange: 'オレンジdot',
+    beret: 'ベレーdot',
+    frog: 'かえるdot',
+    triangle: 'さんかくdot',
+    heart: 'ハートdot',
+  };
+  for (const [kind, name] of Object.entries(dotNames)) {
+    const key = `orb-bot-${kind}`,
+      index = restored.assets.findIndex((asset) => asset.modelKey === key),
+      asset = restored.assets[index],
+      old = adoptedCatalog.assets.find((entry) => entry.modelKey === key);
+    if (asset.name === old.name) continue;
+    assert.equal(asset.name, name, key);
+    assert.equal(old.name, name.replace(/dot$/, 'bot'), key);
+    assert.deepEqual({ ...asset, name: old.name }, old, `${key}: only the name changed`);
+    const manifestPath = `public/models/${key}/asset.json`;
+    assert.deepEqual(JSON.parse(await read(manifestPath)), asset, manifestPath);
+    restored.assets[index] = old;
+    changed.push(manifestPath);
+  }
+  assert.deepEqual(restored, adoptedCatalog, 'only accepted source records changed in the catalog');
   const failures = report.checks.filter((c) => c.status === 'failed');
   // A reviewed artwork successor intentionally changes the old UV meanings.
   // The active graph has already verified its independent, hash-bound texture

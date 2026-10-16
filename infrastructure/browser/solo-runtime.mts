@@ -54,6 +54,7 @@ export class SoloRuntime {
   private createGame() {
     return createGameCore({
       playerLimit: 1,
+      multiMascots: true,
       disconnectIdlePlayers: false,
       persistentSessions: true,
       keepEmptyRooms: true,
@@ -141,6 +142,7 @@ export class SoloRuntime {
         p.character,
         p.dye,
         p.mascot,
+        p.mascots,
         p.intro,
         p.adventure,
         p.gulf,

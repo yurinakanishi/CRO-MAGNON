@@ -11,7 +11,7 @@ import {
 } from '../dist/src/controller-labels.js';
 
 test('context only suggests one meaning for the shared bottom button', () => {
-  for (const pet of ['りもねこを撫でる', '524を撫でる', 'maeを撫でる', 'しろbotを撫でる']) {
+  for (const pet of ['りもねこを撫でる', '524を撫でる', 'maeを撫でる', 'しろdotを撫でる']) {
     const context = {
       pet,
       interaction: '木材を採集する',

@@ -84,6 +84,7 @@ function fixture() {
     camera: { position: new THREE.Vector3(50, 5, 50) },
     players: new Map([['owner', { model: new THREE.Group() }]]),
     collision: { segmentFree: () => true },
+    companionGroundHeight: (_x, _z, ground) => ground,
     actorBudget: new ActorUpdateBudget(),
     worldAssets: {
       createAnimal: actor,
@@ -171,4 +172,28 @@ test('landing and recall clear the flight rotation for every companion', () => {
     }
     assert.equal(f.mascot.tilt.rotation.x, 0, mode);
   }
+});
+
+test('grounded Dots and 524 use the drawn floor without changing saved or airborne positions', () => {
+  const f = fixture();
+  f.world.companionGroundHeight = (_x, _z, ground) => ground + 0.31;
+  for (const b of f.bots) {
+    b.mode = 'waiting';
+    b.y = botGroundHeight(b.x, b.z);
+  }
+  const snapshots = structuredClone(f.world.state);
+  f.at(1.1);
+  for (const { actor, state } of f.dots.bots.values())
+    assert.ok(Math.abs(actor.root.position.y - botGroundHeight(state.x, state.z) - 0.31) < 1e-9);
+  assert.ok(Math.abs(f.mascot.floor - botGroundHeight(50, 50) - 0.31) < 1e-9);
+  assert.deepEqual(f.world.state, snapshots);
+  for (const b of f.bots) b.mode = 'airborne';
+  f.at(0.5);
+  const bot = f.bots.find((b) => b.kind === '524');
+  assert.ok(
+    Math.abs(
+      f.mascot.root.position.y -
+        botFlightPosition(bot, 10000 + ORB_BOTS.windupMs + ORB_BOTS.flightMs * 0.5).y,
+    ) < 1e-9,
+  );
 });

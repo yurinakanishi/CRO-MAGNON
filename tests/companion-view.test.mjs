@@ -455,3 +455,14 @@ test('the world keeps its player guards and id filter, tracing nothing it cannot
   assert.equal(result.chosen, undefined);
   assert.deepEqual(result.traced, ['next']);
 });
+
+test('an explicit companion target can turn the camera behind the player, but never through walls or beyond reach', () => {
+  const scene = companionWorld(BOTS);
+  const targeted = (id) => WorldRenderer.prototype.companionViewChoice.call(scene.world, id);
+  assert.equal(targeted('behind')?.id, 'behind');
+  scene.blocked.add('behind');
+  assert.equal(targeted('behind'), undefined);
+  assert.equal(targeted('far'), undefined);
+  assert.equal(targeted('thrown'), undefined);
+  assert.equal(targeted('unknown'), undefined);
+});

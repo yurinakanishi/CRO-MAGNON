@@ -20,6 +20,7 @@ import { GroundPettingPose, groundPettingProgress } from './ground-petting-pose.
 import { CaveTorch } from './cave-torch.js';
 import { caveInteriorWeight, caveTorchAvailable, caveTorchLit } from '../shared/cave-light.mjs';
 import { chooseCompanionView, companionViewDistances } from './companion-view.js';
+import { placeCompanionCamera } from './companion-camera.js';
 import { pettingProgress } from './petting-pose.js';
 import { isMesh } from './three-types.js';
 import { graspStandIns } from './torch-grasp.js';
@@ -2030,9 +2031,11 @@ export class WorldRenderer {
             ...t,
             x: t.point.x,
             z: t.point.z,
-            screenX: screen.x,
-            screenY: screen.y,
-            screenZ: screen.z,
+            // An explicitly selected companion may be behind the camera, but must
+            // still be nearby and have an unobstructed line from the player.
+            screenX: id ? 0 : screen.x,
+            screenY: id ? 0 : screen.y,
+            screenZ: id ? 0 : screen.z,
           };
         }),
       me,
@@ -2099,6 +2102,26 @@ export class WorldRenderer {
     );
   }
 
+  /** A small closeup can sit below an exact ground triangle between the height-atlas
+   * samples. Probe the nearby surface from above before choosing its collision anchor
+   * or eye height. This is local to closeups; exploration keeps its existing sweep. */
+  private companionCameraFloor(x: number, z: number, reach: number) {
+    const clearance = Math.max(0.25, reach);
+    const floor = this.cameraFloor(x, z, clearance);
+    return this.companionGroundHeight(x, z, floor - clearance) + clearance;
+  }
+
+  /** Keep tiny ground companions above the same drawn surface as their closeup camera.
+   * Only the visual floor is refined; the saved position and flight/hand poses stay owned
+   * by the simulation. The short probe cannot jump onto the cave's roof. */
+  companionGroundHeight(x: number, z: number, ground: number) {
+    const probe = 0.75;
+    const origin = new THREE.Vector3(x, ground + probe, z);
+    const down = new THREE.Vector3(0, -1, 0);
+    const distance = this.sweepCamera(origin, down, probe * 2, 0);
+    return Math.max(ground, origin.y - distance);
+  }
+
   /** How far the camera can stand from `aim` toward `direction`, at most `distance`. The
    * place is first raised over the ground and water (cameraFloor); the sight from the aim to
    * it must then keep `reach` from every solid model: the boxed rocks and props, the cave, the
@@ -2119,11 +2142,21 @@ export class WorldRenderer {
       return 0;
     }
     out.divideScalar(length);
-    let free = this.collision.cameraDistance(aim, out, length, reach);
+    return this.sweepCamera(aim, out, length, reach);
+  }
+
+  private sweepCamera(
+    aim: THREE.Vector3,
+    direction: THREE.Vector3,
+    distance: number,
+    reach: number,
+  ) {
+    let free = this.collision.cameraDistance(aim, direction, distance, reach);
     const landmarks = this.landmarks;
-    if (landmarks?.castleCamera) free = landmarks.castleCamera.sweep(aim, out, free, reach);
-    if (landmarks?.caveCamera) free = landmarks.caveCamera.sweep(aim, out, free, reach);
-    if (landmarks?.mountainCamera) free = landmarks.mountainCamera.sweep(aim, out, free, reach);
+    if (landmarks?.castleCamera) free = landmarks.castleCamera.sweep(aim, direction, free, reach);
+    if (landmarks?.caveCamera) free = landmarks.caveCamera.sweep(aim, direction, free, reach);
+    if (landmarks?.mountainCamera)
+      free = landmarks.mountainCamera.sweep(aim, direction, free, reach);
     return free;
   }
 
@@ -2414,6 +2447,7 @@ export class WorldRenderer {
       }
     }
     this.boatRenderer?.update(time, dt);
+    this.landmarks?.mountainCamera?.frame();
     this.companionRenderers.sync();
     this.companionRenderers.update(dt, false);
     // Update the carrier's animated shoulder before its passenger, regardless of join order.
@@ -2782,66 +2816,86 @@ export class WorldRenderer {
     this.distance += (this.targetDistance - this.distance) * (1 - Math.exp(-dt * 10));
     const aim = this.focus.clone();
     const reach = nearPlaneReach(this.camera);
-    this.landmarks?.mountainCamera?.frame();
-    const offset = new THREE.Vector3();
-    let cameraDistance = this.cameraReach(
-      aim,
-      orbitDirection(orbit, this.yaw, this.pitch),
-      this.distance,
-      reach,
-      offset,
-    );
-    // Pressed to a wall or a rock: rise over the head and look down at the player where that
-    // leaves the camera more room. Whether it would is reconsidered a few times a second; the
-    // lift eases in and out, and the reach still bounds it.
-    const liftedPitch = Math.min(1.05, this.pitch + 0.7);
-    if (
-      viewed ||
-      liftedPitch <= this.pitch + 0.05 ||
-      cameraDistance >= Math.min(1.6, this.distance - 0.5)
-    )
-      this.liftTarget = 0;
-    else if (time - this.liftCheckedAt >= 0.12) {
-      this.liftCheckedAt = time;
-      this.liftTarget =
-        this.cameraReach(
-          aim,
-          orbitDirection(orbit, this.yaw, liftedPitch),
+    let cameraPlaced = true;
+    let cameraDistance: number;
+    if (viewed) {
+      this.cameraLift = this.liftTarget = 0;
+      this.automaticDistance = null;
+      cameraPlaced = placeCompanionCamera(
+        aim,
+        aim.clone().addScaledVector(orbitDirection(orbit, this.yaw, this.pitch), this.distance),
+        Math.min(
           this.distance,
-          reach,
-          liftedPath,
-        ) >
-        cameraDistance + 0.3
-          ? 1
-          : 0;
-    }
-    this.cameraLift +=
-      (this.liftTarget - this.cameraLift) *
-      (1 - Math.exp(-dt * (this.liftTarget > this.cameraLift ? 6 : 2.5)));
-    if (this.cameraLift > 0.001)
+          companionViewDistances(viewed.radius, this.camera.fov, this.camera.aspect).near,
+        ),
+        (x, z) => this.companionCameraFloor(x, z, reach),
+        (origin, direction, distance) => this.sweepCamera(origin, direction, distance, reach),
+        this.camera.position,
+        this.camera.position,
+      );
+      cameraDistance = this.camera.position.distanceTo(aim);
+      if (!cameraPlaced) this.endCompanionView();
+    } else {
+      const offset = new THREE.Vector3();
       cameraDistance = this.cameraReach(
         aim,
-        orbitDirection(orbit, this.yaw, this.pitch + (liftedPitch - this.pitch) * this.cameraLift),
+        orbitDirection(orbit, this.yaw, this.pitch),
         this.distance,
         reach,
         offset,
       );
-    if ((this.automaticHeading !== null || this.touchCamera.enabled) && !viewed) {
-      // Obstructions pull in immediately; clearance releases the distance slowly.
-      this.automaticDistance =
-        this.automaticDistance === null || cameraDistance < this.automaticDistance
-          ? cameraDistance
-          : this.automaticDistance +
-            (cameraDistance - this.automaticDistance) * (1 - Math.exp(-dt * 2.4));
-      cameraDistance = this.automaticDistance;
-    } else this.automaticDistance = null;
-    this.camera.position.copy(aim).addScaledVector(offset, cameraDistance);
-    // A camera held short of its raised place can still meet a bump of ground on the way.
-    this.camera.position.y = Math.max(
-      this.camera.position.y,
-      this.cameraFloor(this.camera.position.x, this.camera.position.z, 0.25),
-    );
-    this.camera.lookAt(aim);
+      // Pressed to a wall or a rock: rise over the head and look down at the player where that
+      // leaves the camera more room. Whether it would is reconsidered a few times a second; the
+      // lift eases in and out, and the reach still bounds it.
+      const liftedPitch = Math.min(1.05, this.pitch + 0.7);
+      if (liftedPitch <= this.pitch + 0.05 || cameraDistance >= Math.min(1.6, this.distance - 0.5))
+        this.liftTarget = 0;
+      else if (time - this.liftCheckedAt >= 0.12) {
+        this.liftCheckedAt = time;
+        this.liftTarget =
+          this.cameraReach(
+            aim,
+            orbitDirection(orbit, this.yaw, liftedPitch),
+            this.distance,
+            reach,
+            liftedPath,
+          ) >
+          cameraDistance + 0.3
+            ? 1
+            : 0;
+      }
+      this.cameraLift +=
+        (this.liftTarget - this.cameraLift) *
+        (1 - Math.exp(-dt * (this.liftTarget > this.cameraLift ? 6 : 2.5)));
+      if (this.cameraLift > 0.001)
+        cameraDistance = this.cameraReach(
+          aim,
+          orbitDirection(
+            orbit,
+            this.yaw,
+            this.pitch + (liftedPitch - this.pitch) * this.cameraLift,
+          ),
+          this.distance,
+          reach,
+          offset,
+        );
+      if ((this.automaticHeading !== null || this.touchCamera.enabled) && !viewed) {
+        // Obstructions pull in immediately; clearance releases the distance slowly.
+        this.automaticDistance =
+          this.automaticDistance === null || cameraDistance < this.automaticDistance
+            ? cameraDistance
+            : this.automaticDistance +
+              (cameraDistance - this.automaticDistance) * (1 - Math.exp(-dt * 2.4));
+        cameraDistance = this.automaticDistance;
+      } else this.automaticDistance = null;
+      this.camera.position.copy(aim).addScaledVector(offset, cameraDistance);
+      // A camera held short of its raised place can still meet a bump of ground on the way.
+      this.camera.position.y = Math.max(
+        this.camera.position.y,
+        this.cameraFloor(this.camera.position.x, this.camera.position.z, 0.25),
+      );
+    }
+    if (cameraPlaced) this.camera.lookAt(aim);
     this.camera.updateMatrixWorld();
     this.fadeNearCamera(self, !!viewed, reach, time);
     for (const marker of this.assistMarkers.values()) {

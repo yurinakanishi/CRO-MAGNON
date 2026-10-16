@@ -45,6 +45,8 @@ export type MascotRoom = {
   /** The keys this build offers, in card order (all of MASCOT_KEYS by default). */
   mascotKeys?: readonly string[];
   mascotSerial?: number;
+  /** Only the browser solo runtime enables multiple companions. */
+  multiMascots?: boolean;
 };
 type MascotBodies<B extends OrbBotSnapshot, C extends CompanionSnapshot> = {
   orbBots?: readonly B[];
@@ -68,6 +70,15 @@ export function mascotSelectable(room: Pick<MascotRoom, 'mascotKeys'>, key: unkn
 
 export function mascotKeyOf(body: OrbBotSnapshot | CompanionSnapshot) {
   return 'kind' in body ? body.kind : body.key;
+}
+
+/** Explicit [] means travel alone; old single-companion saves keep their choice. */
+export function selectedMascotKeys(player?: Pick<PlayerSnapshot, 'mascot' | 'mascots'>) {
+  return Array.isArray(player?.mascots)
+    ? [...new Set(player.mascots.filter((key) => typeof key === 'string'))]
+    : player?.mascot
+      ? [player.mascot]
+      : [];
 }
 
 /** The companion travelling with this person, if any. A goodbye no longer counts. */
@@ -103,11 +114,17 @@ export function mascotBodies<B extends OrbBotSnapshot, C extends CompanionSnapsh
 }
 
 /** The companion waves goodbye where it is and leaves after the farewell. */
-function bidFarewell(room: MascotRoom, playerId: string, now: number) {
+function bidFarewell(
+  room: MascotRoom,
+  playerId: string,
+  now: number,
+  keep: readonly string[] = [],
+) {
   for (const b of room.orbBots ?? [])
-    if (b.ownerId === playerId && !isCompanionBot(b.kind)) startBotFarewell(b, now);
+    if (b.ownerId === playerId && !isCompanionBot(b.kind) && !keep.includes(b.kind))
+      startBotFarewell(b, now);
   for (const c of room.companions ?? [])
-    if (c.ownerId === playerId && !c.leavingAt) {
+    if (c.ownerId === playerId && !c.leavingAt && !keep.includes(c.key)) {
       cancelCompanionPet(c);
       c.leavingAt = now;
       // Out of the hand or the air, it says goodbye on the ground where it is.
@@ -174,16 +191,31 @@ function arrive(room: MascotRoom, p: MascotPlayer, key: string, now: number) {
  * A new choice sends the previous companion off with a goodbye; null travels alone.
  */
 export function chooseMascot(room: MascotRoom, p: MascotPlayer, key: unknown, now: number) {
-  if (p.downedUntil > now) return false;
-  if (key !== null && !mascotSelectable(room, key)) return false;
-  const next = key as string | null;
-  const current = activeMascot(room, p.id);
-  const travelling = current ? mascotKeyOf(current) : null;
-  if ((p.mascot ?? null) === next && travelling === next) return false;
-  p.mascot = next;
-  if (travelling !== next) bidFarewell(room, p.id, now);
+  return chooseMascots(room, p, key === null ? [] : [key], now);
+}
+
+/** Apply the whole selection atomically; unavailable or malformed keys change nothing. */
+export function chooseMascots(room: MascotRoom, p: MascotPlayer, keys: unknown, now: number) {
+  if (p.downedUntil > now || !Array.isArray(keys)) return false;
+  if (keys.some((key) => !mascotSelectable(room, key))) return false;
+  const next = [...new Set(keys)] as string[];
+  if (!room.multiMascots && next.length > 1) return false;
+  const current = selectedMascotKeys(p);
+  const travelling = mascotBodies(room)
+    .filter((body) => body.ownerId === p.id && !body.leavingAt)
+    .map(mascotKeyOf);
+  if (
+    current.length === next.length &&
+    current.every((key, i) => key === next[i]) &&
+    travelling.length === next.length &&
+    next.every((key) => travelling.includes(key))
+  )
+    return false;
+  p.mascot = next[0] ?? null;
+  if (room.multiMascots) p.mascots = next;
+  bidFarewell(room, p.id, now, next);
   nextArrival.delete(p);
-  if (next && travelling !== next) arrive(room, p, next, now);
+  for (const key of next) if (!travelling.includes(key)) arrive(room, p, key, now);
   return true;
 }
 
@@ -203,9 +235,15 @@ export function syncMascots(room: MascotRoom, now: number) {
       (!b.companionId || companions.some((c) => c.id === b.companionId && !c.leavingAt)),
   );
   for (const p of room.players.values()) {
-    if (!p.mascot || !mascotSelectable(room, p.mascot) || activeMascot(room, p.id)) continue;
     if ((nextArrival.get(p) ?? 0) > now) continue;
-    if (!arrive(room, p, p.mascot, now)) nextArrival.set(p, now + 500);
+    const selected = room.multiMascots ? selectedMascotKeys(p) : p.mascot ? [p.mascot] : [];
+    const active = mascotBodies(room)
+      .filter((body) => body.ownerId === p.id && !body.leavingAt)
+      .map(mascotKeyOf);
+    for (const key of selected) {
+      if (!mascotSelectable(room, key) || active.includes(key)) continue;
+      if (!arrive(room, p, key, now)) nextArrival.set(p, now + 500);
+    }
   }
 }
 

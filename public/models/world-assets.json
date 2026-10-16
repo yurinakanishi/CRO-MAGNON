@@ -25902,7 +25902,7 @@
     },
     {
       "modelKey": "orb-bot-white",
-      "name": "しろbot",
+      "name": "しろdot",
       "kind": "companion",
       "candidate": 2,
       "revision": "c2-t01",
@@ -26086,7 +26086,7 @@
     },
     {
       "modelKey": "orb-bot-blue",
-      "name": "あおbot",
+      "name": "あおdot",
       "kind": "companion",
       "candidate": 2,
       "revision": "c2-t01",
@@ -26270,7 +26270,7 @@
     },
     {
       "modelKey": "orb-bot-green",
-      "name": "みどりbot",
+      "name": "みどりdot",
       "kind": "companion",
       "candidate": 2,
       "revision": "c2-t01",
@@ -26454,7 +26454,7 @@
     },
     {
       "modelKey": "orb-bot-purple",
-      "name": "むらさきbot",
+      "name": "むらさきdot",
       "kind": "companion",
       "candidate": 2,
       "revision": "c2-t01",
@@ -26638,7 +26638,7 @@
     },
     {
       "modelKey": "orb-bot-orange",
-      "name": "オレンジbot",
+      "name": "オレンジdot",
       "kind": "companion",
       "candidate": 2,
       "revision": "c2-t02",
@@ -26856,7 +26856,7 @@
     },
     {
       "modelKey": "orb-bot-beret",
-      "name": "ベレーbot",
+      "name": "ベレーdot",
       "kind": "companion",
       "candidate": 2,
       "revision": "c2-t01",
@@ -27055,7 +27055,7 @@
     },
     {
       "modelKey": "orb-bot-frog",
-      "name": "かえるbot",
+      "name": "かえるdot",
       "kind": "companion",
       "candidate": 2,
       "revision": "c2-t03",
@@ -27240,7 +27240,7 @@
     },
     {
       "modelKey": "orb-bot-triangle",
-      "name": "さんかくbot",
+      "name": "さんかくdot",
       "kind": "companion",
       "candidate": 2,
       "revision": "c2-t01",
@@ -27439,7 +27439,7 @@
     },
     {
       "modelKey": "orb-bot-heart",
-      "name": "ハートbot",
+      "name": "ハートdot",
       "kind": "companion",
       "candidate": 2,
       "revision": "c2-t01",

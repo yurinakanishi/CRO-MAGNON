@@ -105,7 +105,7 @@ test('nearby companions cannot replace the actual gathering hint or E / right fa
   const pets = [
     { action: 'petMascot', label: 'りもねこを撫でる', targetId: 'rimo-neko@p1#1' },
     { action: 'petMascot', label: '524を撫でる', targetId: '524@p2#2' },
-    { action: 'petMascot', label: 'しろbotを撫でる', targetId: 'white@p1#3' },
+    { action: 'petMascot', label: 'しろdotを撫でる', targetId: 'white@p1#3' },
     { action: 'petMascot', label: 'maeを撫でる', targetId: 'mae@p3#4' },
     { action: 'petMascot', label: 'こはくちゃんを撫でる', targetId: 'kohaku@p4#5' },
   ];
@@ -167,7 +167,7 @@ test('gathering still hides outside range, behind obstacles, when depleted, full
 
 test('gathering has an independent visible cue with companions, recall, inspection and combat competing for three slots', () => {
   const context = {
-    pet: 'しろbotを撫でる',
+    pet: 'しろdotを撫でる',
     interaction: '石を採集する',
     recall: true,
     inspect: 'りもねこ',

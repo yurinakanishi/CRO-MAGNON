@@ -155,7 +155,7 @@ test('the card shows only what anyone nearby could see', () => {
   assert.equal(card.intro, 'よろしく');
   assert.equal(card.energy, 73);
   assert.equal(card.equipment, '木槍');
-  assert.equal(card.companion, 'しろbot');
+  assert.equal(card.companion, 'しろdot');
   assert.equal(card.seals, 0);
   assert.equal(card.gathered, 41);
   assert.equal(card.title, null);

@@ -21,6 +21,7 @@ function fixture(petterHeight) {
     players: new Map([['owner', petter]]),
     serverNow: () => now,
     actorBudget: { step: () => null },
+    companionGroundHeight: (_x, _z, ground) => ground,
     viewedId: null,
   };
   const renderer = Object.assign(Object.create(Companion524Renderer.prototype), {

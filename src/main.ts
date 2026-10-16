@@ -73,12 +73,14 @@ import { withinAttackReach } from '../shared/combat.mjs';
 import { OrbBotUI } from './orb-bot-ui.js';
 import { bindMascotMenu, mascotMenuMarkup, mascotName, updateMascotMenu } from './mascot-menu.js';
 import { STARTING_MASCOTS, bindStartingMascot, pickedStartingMascot } from './starting-mascot.js';
+import { MascotTarget } from './mascot-target.js';
 import { nearOrbBot, canHandleBot, canThrowBot, nextOrbBot } from '../shared/orb-bots.mjs';
 import { nearCompanion } from '../shared/companions.mjs';
 import {
   MASCOT_KEYS,
   mascotBodies,
   mascotKeyOf,
+  selectedMascotKeys,
   pettingMascot,
 } from '../shared/mascot-selection.mjs';
 import { interactionTarget, type InteractionTarget } from './interaction-target.js';
@@ -195,7 +197,11 @@ let profile = {
         'EMBER',
   // The clothing colour last worn on this browser; '' is the character's own colours.
   dye: fixedIdentity ? '' : (normalizeDye(readSaved('cro-dye', '')) ?? ''),
-  mascot: fixedIdentity ? 'none' : readSaved('cro-mascot', 'keep'),
+  mascot: fixedIdentity
+    ? 'none'
+    : solo
+      ? readSaved('cro-solo-mascots', readSaved('cro-mascot', 'keep'))
+      : readSaved('cro-mascot', 'keep'),
 };
 let state: ViewState = {
   players: [],
@@ -313,8 +319,33 @@ const orbBotUI = new OrbBotUI({
   player,
   now: () => renderer?.serverNow() ?? Date.now(),
   available: () => joined && !renderUnavailable && !screens.active,
+  preferred: () => mascotTarget.key,
   action,
 });
+const mascotTarget = new MascotTarget($('.game-viewport'), {
+  keys: () =>
+    solo ? availableMascots.filter((key) => selectedMascotKeys(player()).includes(key)) : [],
+  opened: clearMovementInput,
+  changed: () => {
+    if (renderer?.viewingCompanion) {
+      renderer.endCompanionView();
+      viewTargetedCompanion();
+    }
+  },
+  perform: performCue,
+});
+function targetedCompanionId() {
+  return mascotBodies(state).find(
+    (body) => body.ownerId === selfId && !body.leavingAt && mascotKeyOf(body) === mascotTarget.key,
+  )?.id;
+}
+function companionViewChoice() {
+  if (mascotTarget.key && !targetedCompanionId()) return undefined;
+  return renderer.companionViewChoice(targetedCompanionId());
+}
+function viewTargetedCompanion() {
+  return !!companionViewChoice() && renderer.viewCompanion(targetedCompanionId());
+}
 const screens = new ScreenManager($('#screens'), (id) => {
   inputCues?.hide();
   if (id) motionControls?.stop();
@@ -373,7 +404,7 @@ function performCue(command: TouchAction) {
       if (!assistedControls()) renderer.focusPlayer(player()?.facing + Math.PI);
       break;
     case 'inspect':
-      renderer.viewCompanion();
+      viewTargetedCompanion();
       break;
     case 'zoomIn':
       renderer.adjustZoom(0.15);
@@ -951,16 +982,20 @@ async function connect(automatic = false) {
       retryCount = 0;
       lastActivitySent = -Infinity;
       selfId = message.id;
+      const { mascots: selectedCompanions, ...savedProfile } = message.profile ?? {};
       profile = {
         ...profile,
-        ...message.profile,
+        ...savedProfile,
         room: message.room,
         difficulty: FIXED_DIFFICULTY,
         dye:
           message.profile?.dye === undefined
             ? profile.dye
             : (normalizeDye(message.profile.dye) ?? ''),
-        mascot: message.profile?.mascot ?? 'none',
+        mascot:
+          solo && Array.isArray(selectedCompanions)
+            ? selectedCompanions.join(',') || 'none'
+            : (message.profile?.mascot ?? 'none'),
       };
       persistentSession = message.persistentSession === true;
       const tokenStored = saveSession(sessionKey(profile.room), message.session, persistentSession);
@@ -971,7 +1006,8 @@ async function connect(automatic = false) {
           'このブラウザーに再開情報を保存できません。閉じると同じ人物へ戻れない場合があります。',
           'error',
         );
-      for (const [key, value] of Object.entries(profile)) save(`cro-${key}`, value);
+      for (const [key, value] of Object.entries(profile))
+        save(solo && key === 'mascot' ? 'cro-solo-mascots' : `cro-${key}`, value);
       $('#profile-name').textContent = profile.name;
       $('#room-label').textContent = solo ? 'ソロプレイ' : profile.room;
       tuning = { alwaysRun: false, speedScale: 1, ...message.rules };
@@ -1041,10 +1077,12 @@ async function connect(automatic = false) {
         if ($('#character-switch-form')) $('#modal').close();
       }
       const wornDye = normalizeDye(player()?.dye) ?? '';
-      const companion = player()?.mascot ?? 'none';
+      const companion = solo
+        ? selectedMascotKeys(player()).join(',') || 'none'
+        : (player()?.mascot ?? 'none');
       if (player() && companion !== profile.mascot) {
         profile = { ...profile, mascot: companion };
-        if (!fixedIdentity) save('cro-mascot', companion);
+        if (!fixedIdentity) save(solo ? 'cro-solo-mascots' : 'cro-mascot', companion);
       }
       if (player() && !fixedIdentity && wornDye !== profile.dye) {
         profile = { ...profile, dye: wornDye };
@@ -1360,11 +1398,15 @@ function action(type, targetId?, cropId?) {
       'cancelFishing',
       'recallBots',
       'selectMascot',
+      'selectAllMascots',
       'deselectMascot',
     ].includes(type)
   )
     return;
-  if (player()?.mountId && !['ride', 'recallBots', 'selectMascot', 'deselectMascot'].includes(type))
+  if (
+    player()?.mountId &&
+    !['ride', 'recallBots', 'selectMascot', 'selectAllMascots', 'deselectMascot'].includes(type)
+  )
     return;
   if (type === 'trade' && !state.npc) return;
   if (
@@ -1468,6 +1510,10 @@ function preferredPet(): InteractionTarget | null {
   if (!me || !joined || renderUnavailable || pettingMascot(state, selfId)) return null;
   const now = renderer.serverNow();
   const candidates = mascotBodies(state)
+    .filter(
+      (body) =>
+        !mascotTarget.key || (body.ownerId === selfId && mascotKeyOf(body) === mascotTarget.key),
+    )
     .filter((body) =>
       'kind' in body
         ? !body.busy && nearOrbBot(me, body, renderer.collision, now)
@@ -1502,7 +1548,7 @@ function petNearbyCompanion() {
 }
 /** T: the player's own companion waves goodbye; the menu can bring one again. */
 function dismissCompanion() {
-  if (player()?.mascot) action('deselectMascot');
+  if (player()?.mascot) action('deselectMascot', mascotTarget.key);
 }
 function jump() {
   const now = (state.serverTime ?? Date.now()) + performance.now() - stateReceivedAt;
@@ -1675,7 +1721,7 @@ function updateHuntingHUD() {
   const closeAction = nearby();
   const busy = cooking || fishing || !!coastal;
   const cueContext: CueContext = {
-    inspect: renderer.companionViewChoice()?.label,
+    inspect: companionViewChoice()?.label,
     viewing: renderer.viewingCompanion,
     automaticCamera: assistedControls(),
     pet: petLabel,
@@ -1709,7 +1755,16 @@ function updateHuntingHUD() {
     document.hasFocus() &&
     !motionControls?.ownsInput &&
     !document.activeElement?.closest('input,textarea,select,[contenteditable]');
-  inputCues?.update(cueContext, playVisible && !touchMode());
+  const visibleCues = mascotTarget.expanded
+    ? { ...cueContext, pet: undefined, inspect: undefined }
+    : cueContext;
+  inputCues?.update(visibleCues, playVisible && !touchMode());
+  mascotTarget.update(
+    playVisible && solo,
+    !!petChoice,
+    !!cueContext.inspect && !assistedControls(),
+    renderer.viewingCompanion,
+  );
   const combat = attackProfile(me ?? profile);
   const cooldownLeft =
     me?.attackSequence > 0 ? Math.max(0, combat.cooldownMs - (serverNow - me.attackAt)) : 0;
@@ -1742,7 +1797,7 @@ function updateHuntingHUD() {
     downed
       ? { automaticCamera: assistedControls(), weapon: combat.key }
       : {
-          ...cueContext,
+          ...visibleCues,
           attack: attackAvailable,
           // The fire's own interaction already cooks when it is the nearest thing to do.
           cook: canCook && closeAction?.action !== 'cook' ? '肉を焼く' : undefined,
@@ -1873,7 +1928,8 @@ function applyProfileForm(form: HTMLFormElement) {
   spawnChoice = spawnSite(new FormData($('#starting-mascot-form')).get('spawn')).id;
   save('cro-spawn', spawnChoice);
   if (!keepSession) saveSession(sessionKey(profile.room), null);
-  for (const [k, v] of Object.entries(profile)) save(`cro-${k}`, v);
+  for (const [k, v] of Object.entries(profile))
+    save(solo && k === 'mascot' ? 'cro-solo-mascots' : `cro-${k}`, v);
   history.replaceState(
     {},
     '',
@@ -1906,6 +1962,7 @@ function showSetup(error = '') {
     availableMascots,
     profile.mascot,
     !!savedSession(sessionKey(profile.room)),
+    solo,
   );
   closeSetupFlow();
   $('#setup-error').hidden = !error;
@@ -2565,7 +2622,7 @@ function openPauseMenu(tab?: string) {
     : // Fast travel lives in the map: its 名所 bar and the fires.
       [
         ['inventory', 'bag', '持ち物'],
-        ['mascots', 'people', '連れていく仲間'],
+        ['mascots', 'paw', '連れていく仲間'],
         ['character', 'person', 'キャラクターを変える'],
         ['settings', 'gear', '設定'],
       ];
@@ -2623,7 +2680,7 @@ function openPauseMenu(tab?: string) {
       )}</nav>${exits.length ? `<div class="pause-exits" role="group" aria-label="メニューの操作">${exits.map(menuButton).join('')}</div>` : ''}</div></aside><div class="pause-panels">${panel(
       'inventory',
       inventoryMarkup(),
-    )}${panel('character', characterSwitchMarkup(fixedIdentity ? null : (normalizeDye(player()?.dye) ?? profile.dye)))}${panel('warp', exhibitionWarpMarkup())}${panel('mascots', mascotMenuMarkup(availableMascots))}${panel(
+    )}${panel('character', characterSwitchMarkup(fixedIdentity ? null : (normalizeDye(player()?.dye) ?? profile.dye)))}${panel('warp', exhibitionWarpMarkup())}${panel('mascots', mascotMenuMarkup(availableMascots, solo))}${panel(
       'settings',
       `<h2>設定</h2><div class="settings-list">${audioSettingsMarkup(renderer.audio.settings)}<div class="settings-item"><div><strong>全画面表示</strong></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未接続'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}<div class="settings-row">${menuButton(titleExit)}</div>`,
     )}</div></div>`,
@@ -2964,10 +3021,15 @@ document.addEventListener('keydown', (e) => {
   )
     return;
   const k = movementKey(e);
+  if ((e.code === 'BracketLeft' || e.code === 'BracketRight') && !e.repeat && solo) {
+    e.preventDefault();
+    mascotTarget.step(e.code === 'BracketLeft' ? -1 : 1);
+    return;
+  }
   if (k === 'x' && !e.repeat) {
     e.preventDefault();
     if (assistedControls()) return;
-    if (!renderer.endCompanionView()) renderer.viewCompanion();
+    if (!renderer.endCompanionView()) viewTargetedCompanion();
     return;
   }
   if (
@@ -3165,7 +3227,7 @@ gamepadControls = new GamepadControls({
         break;
       case 'zoomIn':
         if (assistedControls()) break;
-        if (!renderer.viewCompanion()) renderer.adjustZoom(0.15);
+        if (!viewTargetedCompanion()) renderer.adjustZoom(0.15);
         break;
       case 'zoomOut':
         if (assistedControls()) break;

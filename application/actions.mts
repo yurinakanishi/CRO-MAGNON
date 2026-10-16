@@ -27,7 +27,13 @@ import { cancelBarter } from '../shared/barter.mjs';
 import { carrying, handleCarryAction } from '../shared/carrying.mjs';
 import { toggleCaveFire } from '../shared/cave-fire.mjs';
 import { toggleCaveTorch } from '../shared/cave-light.mjs';
-import { cancelMascotPets, chooseMascot, petMascot } from '../shared/mascot-selection.mjs';
+import {
+  cancelMascotPets,
+  chooseMascot,
+  chooseMascots,
+  selectedMascotKeys,
+  petMascot,
+} from '../shared/mascot-selection.mjs';
 import { stopActor } from '../shared/combat.mjs';
 import { handleOrbBotAction, releaseHeldOrbBot } from '../shared/orb-bots.mjs';
 import { DYE_COOLDOWN_MS, normalizeDye } from '../shared/clothing-dye.mjs';
@@ -59,13 +65,29 @@ export function createActionHandler({
       reply(player, { type: 'inventoryCraftResult', recipeId: message.targetId, ...result });
       return;
     }
-    // One companion per person: choosing another one, or none, sends the current one
-    // off with a goodbye. Others may choose the same mascot at the same time.
-    if (action === 'selectMascot' || action === 'deselectMascot') {
-      if (
-        chooseMascot(room, player, action === 'selectMascot' ? (message.targetId ?? '') : null, now)
-      )
-        broadcast(room, snapshot(room));
+    if (['selectMascot', 'deselectMascot', 'selectAllMascots'].includes(action)) {
+      const selected = selectedMascotKeys(player);
+      const changed = room.multiMascots
+        ? chooseMascots(
+            room,
+            player,
+            action === 'selectAllMascots'
+              ? room.mascotKeys
+              : action === 'selectMascot'
+                ? [...selected, message.targetId ?? '']
+                : message.targetId
+                  ? selected.filter((key) => key !== message.targetId)
+                  : [],
+            now,
+          )
+        : action !== 'selectAllMascots' &&
+          chooseMascot(
+            room,
+            player,
+            action === 'selectMascot' ? (message.targetId ?? '') : null,
+            now,
+          );
+      if (changed) broadcast(room, snapshot(room));
       return;
     }
     // One of the clothing dyes, or the character's own colours ('' or anything unknown).

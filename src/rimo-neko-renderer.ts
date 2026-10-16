@@ -175,7 +175,7 @@ export class RimoNekoRenderer {
     const x = this.root.position.x,
       z = this.root.position.z,
       yaw = this.root.rotation.y;
-    this.floor = botGroundHeight(x, z);
+    this.floor = this.world.companionGroundHeight(x, z, botGroundHeight(x, z));
     this.root.position.y = this.floor + 0.002;
     const front = walkHeight(x + Math.sin(yaw) * 0.2, z + Math.cos(yaw) * 0.2);
     const back = walkHeight(x - Math.sin(yaw) * 0.2, z - Math.cos(yaw) * 0.2);
