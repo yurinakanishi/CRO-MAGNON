@@ -12,6 +12,7 @@ import {
   CAVE_MURALS,
   caveMotifSource,
   caveMotifUV,
+  caveMuralUV,
   caveMuralImages,
   caveMuralPigment,
   caveMuralShader,
@@ -37,8 +38,8 @@ function originalManifest() {
     modelKey: 'camp-cave',
     pigment: record('mural-atlas', size(1254, 1254)),
     rockSurface: record('limestone', size(1254, 1254)),
-    characterPigment: record('524-frieze', size(2171, 724)),
-    rimoPigment: record('rimo-frieze', size(2172, 724)),
+    characterPigment: record('524-frieze', size(1024, 341)),
+    rimoPigment: record('rimo-frieze', size(1024, 341)),
     mascotPigments: Object.fromEntries(
       // Each frieze at the size its rectangle was measured in (r37's is served as painted).
       Object.keys(CAVE_EXTRA_PIGMENTS).map((key) => {
@@ -163,11 +164,11 @@ test('a record mapped through any other pixel space fails clearly', () => {
     change(manifest);
     assert.throws(() => caveMuralImages(manifest), pattern);
   };
-  // A resized image without its original size would be normalised by 1024x341.
-  check(
-    (manifest) => delete manifest.mascotPigments.friendsRiver.uvSource,
-    /camp-cave mascotPigments\.friendsRiver: .* maps CAVE_MOTIFS\.friendsRiver by 1024x341; its rectangle is measured in 2172x724 pixels/,
-  );
+  // A future whole-image resize needs the original atlas size, even for a sprite sheet.
+  check((manifest) => {
+    manifest.mascotPigments.friendsRiver.image = size(512, 171);
+    delete manifest.mascotPigments.friendsRiver.uvSource;
+  }, /camp-cave mascotPigments\.friendsRiver: .* maps CAVE_MOTIFS\.friendsRiver by 512x171; its rectangle is measured in 1024x341 pixels/);
   check(
     (manifest) => (manifest.pigment.uvSource = size(1300, 1300)),
     /camp-cave pigment: .* maps CAVE_MOTIFS\.bison by 1300x1300; its rectangle is measured in 1254x1254 pixels/,
@@ -175,7 +176,7 @@ test('a record mapped through any other pixel space fails clearly', () => {
   // A crop, padding or upscale is not a whole-image resize.
   check(
     (manifest) => (manifest.rimoPigment.image = size(1024, 300)),
-    /camp-cave rimoPigment: a 1024x300 image is not a whole-image resize of its 2172x724 uvSource/,
+    /camp-cave rimoPigment: a 1024x300 image is not a whole-image resize of its 1024x341 uvSource/,
   );
   check(
     (manifest) => (manifest.characterPigment.image = size(4342, 1448)),
@@ -272,7 +273,7 @@ test('the custom shader samples each served image at its original-space rectangl
   CAVE_MURALS.forEach((mural, index) => {
     const pigment = caveMuralPigment(mural),
       record = pigment === 'comingSoon' ? null : recordOf(resized.images, mural.motif),
-      uv = caveMotifUV(mural.motif, record ? caveUvSource(record) : caveMotifSource(mural.motif));
+      uv = caveMuralUV(mural);
     const sampler =
       pigment === 'atlas'
         ? 'cavePigment'
@@ -291,7 +292,7 @@ test('the custom shader samples each served image at its original-space rectangl
     if (record && (source.width !== record.image.width || source.height !== record.image.height))
       assert.notDeepEqual(caveMotifUV(mural.motif, record.image), uv);
   });
-  // Full-image friezes span exactly their image; atlas motifs keep their own windows.
+  // Rimo samples only the cat, not the transparent margins of its storage atlas.
   const rimo = blocks[CAVE_MURALS.findIndex((mural) => mural.motif === 'rimoFrieze')];
-  assert.deepEqual(rimo.slice(1, 5), ['0.000000', '0.000000', '1.000000', '1.000000']);
+  assert.notDeepEqual(rimo.slice(1, 5), ['0.000000', '0.000000', '1.000000', '1.000000']);
 });

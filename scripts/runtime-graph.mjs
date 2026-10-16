@@ -17,6 +17,10 @@ import { createHash } from 'node:crypto';
 import { open, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { readSourceModelRevisions, matchesSourceModelRevision } from './source-model-revision.mjs';
+import {
+  readSourceTextureRevisions,
+  matchesSourceTextureRevision,
+} from './source-texture-revision.mjs';
 
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
 
@@ -179,7 +183,11 @@ export async function activeAdoption(root, assets, textureRecords) {
   )
     throw new Error(`${where}/plan.json is not a runtime adoption plan for ${id}`);
   const adoption = { id, planSha256, graph: plan.graph };
-  return { ...adoption, sourceRevisions: await readSourceModelRevisions(root, assets, adoption) };
+  return {
+    ...adoption,
+    sourceRevisions: await readSourceModelRevisions(root, assets, adoption),
+    textureRevisions: await readSourceTextureRevisions(root, assets, adoption, textureRecords),
+  };
 }
 
 const sameFile = (record, expected) =>
@@ -303,6 +311,9 @@ export function checkRuntimeGraph(
       }),
     );
     const declared = textureRecords(asset);
+    const textureRevision = matchesSourceTextureRevision(asset, adoption, declared);
+    if (asset.textureRevision !== undefined && !textureRevision)
+      throw new Error(`${key}: source texture revision has no verified acceptance record`);
     for (const texture of declared) {
       const contentAddressed = checkTextureUrl(texture.url, texture.sha256, textureExtensions),
         adopted = adoptedTextures.get(texture.url);
@@ -338,7 +349,11 @@ export function checkRuntimeGraph(
       });
     }
     for (const adopted of adoptedTextures.values())
-      if (adopted.owner === key && !declared.some((texture) => texture.url === adopted.url))
+      if (
+        adopted.owner === key &&
+        !declared.some((texture) => texture.url === adopted.url) &&
+        !(textureRevision && adoption.textureRevisions[key].replaced.includes(adopted.url))
+      )
         throw new Error(
           `${key}: ${outside} adopts ${adopted.url} (${adopted.manifestEntry}), which the shipped record does not declare`,
         );

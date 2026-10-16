@@ -128,8 +128,8 @@ function watchDisposals(t) {
 const CAVE_SIZES = {
   pigment: [1254, 1254],
   rockSurface: [1254, 1254],
-  characterPigment: [2171, 724],
-  rimoPigment: [2172, 724],
+  characterPigment: [1024, 341],
+  rimoPigment: [1024, 341],
   // Each frieze at the size its rectangle was measured in (2172x724, or 1024x341 for r37's).
   ...Object.fromEntries(
     Object.keys(CAVE_EXTRA_PIGMENTS).map((key) => {

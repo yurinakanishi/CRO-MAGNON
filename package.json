@@ -21,6 +21,8 @@
     "verify:assets": "node scripts/verify-world-assets.mjs",
     "verify:production": "node scripts/verify-production.mjs",
     "cave:murals": "node scripts/compose-cave-murals.mjs",
+    "cave:build-art": "node scripts/build-cave-mural-sprites.mjs",
+    "cave:check-art": "node scripts/build-cave-mural-sprites.mjs --check",
     "check": "node scripts/build.mjs --check && node scripts/check-syntax.mjs && node scripts/check-architecture.mjs",
     "build:cloudflare": "node scripts/build-cloudflare.mjs",
     "dev:cloudflare": "node scripts/preview-mmo.mjs",

@@ -12,7 +12,7 @@ import { AdventureMaterials } from './adventure-materials.js';
 import { GULF_LANDMARKS } from '../shared/gulf-region.mjs';
 import { CAMP_CAVE, CAMP_MOUNTAIN, campMountainVisualLod } from '../shared/camp-cave-layout.mjs';
 import { prepareCaveMaterials } from './cave-materials.js';
-import { type CaveExtraPigment } from './cave-gallery-layout.js';
+import { hiddenMuralSubjects, type CaveExtraPigment } from './cave-gallery-layout.js';
 import {
   loadCaveTextures,
   releaseVerifiedTexture,
@@ -287,6 +287,7 @@ export class WorldLandmarks {
           characterPigment,
           rimoPigment,
           extraPigments as Record<CaveExtraPigment, THREE.Texture>,
+          hiddenMuralSubjects(template.asset),
         );
       // Installed: from here the fields own them.
       this.releaseCaveTextures();

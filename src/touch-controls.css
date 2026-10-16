@@ -64,8 +64,8 @@ body.touch-mode .game-viewport {
     opacity 0.18s;
 }
 #touch-controls button .icon {
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   stroke-width: 1.7;
   pointer-events: none;
 }
@@ -93,21 +93,11 @@ body.touch-mode .game-viewport {
   height: 44px;
 }
 #touch-controls .touch-toolbar .icon {
-  width: 20px;
-  height: 20px;
-}
-#touch-controls .touch-toolbar [data-touch-action='sound'] {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
+  width: 30px;
+  height: 30px;
 }
 #touch-controls [data-sound-icon] {
   display: flex;
-}
-#touch-controls [data-sound-label] {
-  font-size: 9px;
-  line-height: 1;
-  white-space: nowrap;
 }
 #touch-controls .touch-toolbar [data-unread='true']::after {
   content: '';
@@ -266,8 +256,8 @@ body.touch-mode .game-viewport {
   background: #ffffff17;
 }
 #touch-controls .touch-prompt .icon {
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 28px;
 }
 /* A long target name wraps to a second line rather than losing its end. */
 .touch-prompt-label {
@@ -308,8 +298,8 @@ body.touch-mode .game-viewport {
   background: radial-gradient(circle at 50% 35%, #713626d6, #3b1a12db);
 }
 #touch-controls .touch-attack .icon {
-  width: 34px;
-  height: 34px;
+  width: calc(var(--attack) * 0.62);
+  height: calc(var(--attack) * 0.62);
   stroke-width: 1.6;
 }
 /* The recharge sweeps away clockwise, so a resting attack shows when it returns. */
@@ -331,8 +321,8 @@ body.touch-mode .game-viewport {
   height: var(--jump);
 }
 #touch-controls .touch-jump .icon {
-  width: 26px;
-  height: 26px;
+  width: calc(var(--jump) * 0.64);
+  height: calc(var(--jump) * 0.64);
 }
 #touch-controls .touch-skill {
   width: var(--skill);
@@ -340,8 +330,8 @@ body.touch-mode .game-viewport {
   animation: touch-fade 0.2s ease-out;
 }
 #touch-controls .touch-skill .icon {
-  width: 22px;
-  height: 22px;
+  width: calc(var(--skill) * 0.64);
+  height: calc(var(--skill) * 0.64);
 }
 .touch-skill-label {
   position: absolute;
@@ -408,6 +398,12 @@ body.touch-mode .game-viewport {
 #touch-controls:is([data-mode='viewing'], [data-mode='busy']) .touch-prompts {
   right: var(--gr);
   bottom: var(--gb);
+}
+/* Inspecting uses pinch zoom; the left thumb gets a return button instead of walking. */
+#touch-controls[data-mode='viewing'][data-reach] .touch-prompts {
+  left: var(--gl);
+  right: auto;
+  width: auto;
 }
 @keyframes touch-slide {
   from {
@@ -705,8 +701,10 @@ body.touch-mode {
   }
   .touch-toolbar {
     flex-direction: row;
+    flex-wrap: wrap;
     top: calc(var(--gt) + (var(--plate-height) - 44px) / 2);
     left: calc(var(--gl) + var(--plate) + 12px);
+    right: calc(var(--gr) + var(--map) + 12px);
   }
   .touch-move {
     width: 40%;
@@ -877,6 +875,24 @@ body.touch-mode {
 .touch-mode dialog .icon-button {
   min-width: 44px;
 }
+.touch-mode #pause-panel-settings [data-controller-menu='title'] {
+  min-height: 44px;
+  font-size: 13px;
+}
+/* Match the dialog's 44px touch target in both dimensions. */
+.touch-mode .atlas .warp-map-point {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  padding: 8px;
+}
+.touch-mode .atlas .warp-map-point .icon {
+  width: 24px;
+  height: 24px;
+}
+.touch-mode .atlas .warp-point-label {
+  top: 48px;
+}
 .touch-mode input,
 .touch-mode select {
   font-size: 16px;
@@ -923,8 +939,8 @@ body.touch-mode {
   }
   .touch-mode .pause-tab .icon,
   .touch-mode .pause-exits .button .icon {
-    width: 20px;
-    height: 20px;
+    width: 26px;
+    height: 26px;
   }
   .touch-mode .pause-exits .button {
     flex-grow: 0;

@@ -23,8 +23,8 @@ const ORIGINAL_CAVE_GLB = {
   url: '/models/camp-cave/model-r26.glb',
   sha256: '65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f',
 };
-const FRIEZE_524 = { width: 2171, height: 724 };
-const FRIEZE_RIMO = { width: 2172, height: 724 };
+const FRIEZE_524 = { width: 1024, height: 341 };
+const FRIEZE_RIMO = { width: 1024, height: 341 };
 
 test('Rimo frieze still faces 524 while all released mascots join the animal gallery', async () => {
   const rimo = CAVE_MURALS.find((m) => m.motif === 'rimoFrieze');
@@ -32,19 +32,14 @@ test('Rimo frieze still faces 524 while all released mascots join the animal gal
   assert.equal(rimo.wall, 'east');
   assert.equal(figure.wall, 'west');
   assert.equal(rimo.centre, figure.centre);
-  assert.equal(caveMuralHeight(rimo), 2.5);
-  assert.equal(figure.width, rimo.width);
+  assert(
+    caveMuralHeight(rimo) > caveMuralHeight(figure),
+    'cat and small 524 keep their own proportions',
+  );
   assert.equal(figure.strength, rimo.strength);
-  assert.ok(Math.abs(caveMuralHeight(figure) - caveMuralHeight(rimo)) < 0.01);
   const asset = JSON.parse(await readFile('public/models/camp-cave/asset.json'));
   const p = asset.characterPigment;
-  assert.deepEqual(p.subjects, [
-    '524',
-    'woolly mammoth',
-    'ochre wild horse',
-    'red wild horse',
-    'aurochs',
-  ]);
+  assert.deepEqual(p.subjects, ['524']);
   // The generated 2171x724 RGBA frieze stays as its source and at its original URL;
   // the served file (the same one until runtime adoption) is proven separately.
   await verifyRgbaImage(p, 'characterPigment', FRIEZE_524);
@@ -78,8 +73,8 @@ test('the r04 adoption of the cave model, 524 and Rimo friezes verifies on its c
   assert.equal(model.adopted, true);
   assert.equal(model.original.sha256, ORIGINAL_CAVE_GLB.sha256);
   const friezes = [
-    ['characterPigment', FRIEZE_524],
-    ['rimoPigment', FRIEZE_RIMO],
+    ['characterPigment', { width: 2171, height: 724 }],
+    ['rimoPigment', { width: 2172, height: 724 }],
   ];
   for (const [entry, size] of friezes) {
     const { adopted } = await verifyRgbaImage(images[entry], entry, size, { serve });
@@ -137,7 +132,7 @@ test('a malformed or partial adoption stamp is rejected, never read as the origi
   // A record that names the candidate must be served those exact bytes.
   const servedOriginal = () => `public${original.url}`;
   await assert.rejects(
-    verifyRgbaImage(rimo, 'rimoPigment', FRIEZE_RIMO, { serve: servedOriginal }),
+    verifyRgbaImage(rimo, 'rimoPigment', { width: 2172, height: 724 }, { serve: servedOriginal }),
     /length|SHA-256/,
   );
   const model = (change) => {

@@ -120,7 +120,7 @@ test('the phone shows at most three prompts, nearest-the-thumb first; abilities 
   });
   assert.deepEqual(
     touchLayout({ viewing: true, inspect: '524', launch: '船を出す' }).prompts.map((a) => a.action),
-    ['zoomIn', 'zoomOut', 'endInspect'],
+    ['endInspect'],
   );
   assert.deepEqual(touchLayout({ jump: true, attack: true }), { prompts: [], skills: [] });
 });

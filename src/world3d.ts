@@ -356,7 +356,7 @@ export class WorldRenderer {
     | undefined;
   declare move: ((e: any) => void) | undefined;
   declare up: ((e: any) => void) | undefined;
-  declare cancel: (() => void) | undefined;
+  declare cancel: ((event?: PointerEvent) => void) | undefined;
   declare wheel: ((e: any) => void) | undefined;
   declare context: ((e: any) => any) | undefined;
   declare serverTime: any;
@@ -1321,9 +1321,26 @@ export class WorldRenderer {
   }
 
   setupInput() {
+    const touches = new Map<number, { x: number; y: number }>();
+    let pinch: { gap: number; distance: number } | null = null;
+    const gap = () => {
+      const [a, b] = [...touches.values()];
+      return a && b ? Math.hypot(a.x - b.x, a.y - b.y) : 0;
+    };
     this.down = (e) => {
       if (!this.manualInputAllowed()) return;
       if (e.button !== 0 && e.button !== 2) return;
+      if (e.pointerType === 'touch' && this.companionView && this.manualCameraAllowed()) {
+        if (touches.size >= 2 || (this.pointer && !touches.has(this.pointer.id))) return;
+        touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        if (touches.size === 2) {
+          e.preventDefault();
+          this.canvas.setPointerCapture(e.pointerId);
+          pinch = { gap: gap(), distance: this.targetDistance };
+          if (this.pointer) this.pointer.dragged = true;
+          return;
+        }
+      }
       if (this.pointer) return;
       e.preventDefault();
       this.canvas.focus({ preventScroll: true });
@@ -1343,6 +1360,16 @@ export class WorldRenderer {
         this.cancel();
         return;
       }
+      if (touches.has(e.pointerId)) {
+        touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        if (pinch) {
+          e.preventDefault();
+          const current = gap();
+          if (pinch.gap > 0 && current > 0)
+            this.setZoom(DEFAULT_DISTANCE / ((pinch.distance * pinch.gap) / current));
+          return;
+        }
+      }
       if (!this.pointer || this.pointer.id !== e.pointerId) return;
       const p = this.pointer,
         dx = e.clientX - p.lastX,
@@ -1358,6 +1385,25 @@ export class WorldRenderer {
     this.up = (e) => {
       if (!this.manualInputAllowed()) {
         this.cancel();
+        return;
+      }
+      if (touches.delete(e.pointerId) && pinch) {
+        pinch = null;
+        const remaining = [...touches.entries()][0];
+        // Rebase the remaining finger so lifting one cannot jump the orbit or click a pet.
+        this.pointer = remaining
+          ? {
+              id: remaining[0],
+              x: remaining[1].x,
+              y: remaining[1].y,
+              lastX: remaining[1].x,
+              lastY: remaining[1].y,
+              button: 0,
+              dragged: true,
+            }
+          : null;
+        if (this.canvas.hasPointerCapture(e.pointerId))
+          this.canvas.releasePointerCapture(e.pointerId);
         return;
       }
       if (!this.pointer || this.pointer.id !== e.pointerId) return;
@@ -1399,9 +1445,16 @@ export class WorldRenderer {
         }
       }
     };
-    this.cancel = () => {
+    this.cancel = (event) => {
+      // Normal release also fires lostpointercapture; it must not cancel another finger.
+      if (event && event.pointerId !== this.pointer?.id && !touches.has(event.pointerId)) return;
+      const ids = new Set([...touches.keys(), this.pointer?.id].filter((id) => id !== undefined));
+      touches.clear();
+      pinch = null;
       this.pointer = null;
       this.canvas.style.cursor = 'crosshair';
+      for (const id of ids)
+        if (this.canvas.hasPointerCapture(id)) this.canvas.releasePointerCapture(id);
     };
     this.wheel = (e) => {
       if (!this.manualInputAllowed() || !this.manualCameraAllowed()) return;
@@ -2025,6 +2078,7 @@ export class WorldRenderer {
   endCompanionView() {
     const previous = this.companionView;
     if (!previous) return false;
+    this.cancel?.();
     this.companionView = null;
     this.yaw = previous.yaw;
     this.pitch = previous.pitch;

@@ -2,11 +2,7 @@
 import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
 import sharp from 'sharp';
-import {
-  caveMuralImages,
-  caveMotifSource,
-  caveMuralShader,
-} from '../dist/src/cave-gallery-layout.js';
+import { caveMuralImages, caveMuralUV, caveMuralShader } from '../dist/src/cave-gallery-layout.js';
 import { caveCentreOffset } from '../dist/shared/camp-cave-layout.mjs';
 import { digest } from './cave-mural-composition.mjs';
 const file = process.argv[2] ?? 'assets/camp-cave/qa/gallery-surfaces-r36.json';
@@ -28,16 +24,15 @@ for (const [key, record] of Object.entries(textures)) {
 }
 const placements = records.map((r) => {
   const { data, info } = decoded[r.pigment],
-    source = caveMotifSource(r.motif),
-    [x0, y0, x1, y1] = r.rectangle;
+    uv = caveMuralUV(r);
   const painted = r.samples.filter((s) => {
     const x = Math.min(
       info.width - 1,
-      Math.max(0, Math.floor(((x0 + s.u * (x1 - x0)) / source.width) * info.width)),
+      Math.max(0, Math.floor((uv.offset[0] + s.u * uv.scale[0]) * info.width)),
     );
     const y = Math.min(
       info.height - 1,
-      Math.max(0, Math.floor(((y1 - s.v * (y1 - y0)) / source.height) * info.height)),
+      Math.max(0, Math.floor((1 - uv.offset[1] - s.v * uv.scale[1]) * info.height)),
     );
     return data[(y * info.width + x) * 4 + 3] > 32;
   });
@@ -52,6 +47,7 @@ const placements = records.map((r) => {
     motif: r.motif,
     wall: r.wall,
     centre: r.centre,
+    subject: r.subject,
     paintedSamples: painted.length,
     rejected: rejected.length,
     formerSteepNormalCutoff: painted.filter((s) => s.facing <= 0.38).length,

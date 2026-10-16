@@ -230,7 +230,15 @@ export class LoadingCave {
       this.textures.add(texture);
     for (const texture of Object.values(extras)) this.textures.add(texture);
     const extraPigments = extras as Record<CaveExtraPigment, THREE.Texture>;
-    prepareCaveMaterials(cave, pigment, rockSurface, characterPigment, rimoPigment, extraPigments);
+    prepareCaveMaterials(
+      cave,
+      pigment,
+      rockSurface,
+      characterPigment,
+      rimoPigment,
+      extraPigments,
+      this.muralHidden,
+    );
     cave.position.set(CAMP_CAVE.x, CAMP_CAVE.elevation + CAMP_CAVE.groundOffset, CAMP_CAVE.z);
     cave.rotation.y = CAMP_CAVE.yaw;
     cave.scale.setScalar(CAMP_CAVE.scale);

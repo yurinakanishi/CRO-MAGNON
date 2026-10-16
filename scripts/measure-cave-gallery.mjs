@@ -7,6 +7,7 @@ import {
   CAVE_MURALS,
   caveMuralHeight,
   caveMuralPigment,
+  caveMuralLocalZ,
 } from '../dist/src/cave-gallery-layout.js';
 import { caveCentreOffset } from '../dist/shared/camp-cave-layout.mjs';
 const asset = JSON.parse(await readFile('public/models/camp-cave/asset.json'));
@@ -23,11 +24,17 @@ const records = [];
 for (const mural of CAVE_MURALS) {
   const height = caveMuralHeight(mural),
     samples = [];
-  const columns = mural.motif === 'rimoFrieze' ? 96 : 16;
-  const rows = mural.motif === 'rimoFrieze' ? 32 : 12;
+  const columns = 24;
+  const rows = 16;
   for (let v = 0; v <= rows; v++)
     for (let u = 0; u <= columns; u++) {
-      const along = mural.centre + (u / columns - 0.5) * mural.width;
+      const along =
+        mural.distance === undefined
+          ? mural.centre + (u / columns - 0.5) * mural.width
+          : caveMuralLocalZ(
+              mural.distance +
+                (mural.wall === 'east' ? u / columns - 0.5 : 0.5 - u / columns) * mural.width,
+            );
       const y = mural.bottom + (v / rows) * height;
       const centreX = caveCentreOffset(along);
       ray.set(
@@ -37,7 +44,12 @@ for (const mural of CAVE_MURALS) {
       const hit = ray.intersectObject(scene, true)[0];
       const normal = hit?.face.normal;
       samples.push({
-        u: mural.wall === 'east' ? 1 - u / columns : u / columns,
+        u:
+          mural.distance === undefined
+            ? mural.wall === 'east'
+              ? 1 - u / columns
+              : u / columns
+            : u / columns,
         v: v / rows,
         point: hit?.point.toArray(),
         facing: normal ? (mural.wall === 'east' ? normal.x : -normal.x) : 0,

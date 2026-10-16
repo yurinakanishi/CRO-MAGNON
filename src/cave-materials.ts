@@ -3,7 +3,7 @@ import { isMesh } from './three-types.js';
 import { CAMP_CAVE, CAVE_BEND } from '../shared/camp-cave-layout.mjs';
 import { caveGroundShader } from './cave-ground-style.js';
 import { caveRockShader } from './cave-rock-shader.js';
-import { caveMuralShader, type CaveExtraPigment } from './cave-gallery-layout.js';
+import { caveMuralShaderFor, type CaveExtraPigment } from './cave-gallery-layout.js';
 import { meadowShader, MEADOW_BLADE_ALBEDO, MEADOW_MATCH } from './paleo-materials.js';
 import { CAVE_LIGHT } from '../shared/cave-light.mjs';
 import { CAVE_SPRING } from '../shared/cave-spring.mjs';
@@ -18,7 +18,9 @@ export function prepareCaveMaterials(
   character524: THREE.Texture,
   rimoPigment: THREE.Texture,
   extraPigments: Record<CaveExtraPigment, THREE.Texture>,
+  hidden: readonly string[] = [],
 ) {
+  const caveMuralShader = caveMuralShaderFor(hidden);
   const materials = new Set<THREE.Material>();
   root.traverse((node) => {
     if (!isMesh(node)) return;
@@ -136,7 +138,8 @@ export function prepareCaveMaterials(
           '#include <lights_fragment_end>\nreflectedLight.indirectDiffuse*=caveDaylight;',
         );
       };
-      material.customProgramCacheKey = () => 'camp-cave-continuous-murals-v24';
+      material.customProgramCacheKey = () =>
+        `camp-cave-identity-murals-v27:${[...hidden].sort().join(',')}`;
       material.needsUpdate = true;
     }
   });

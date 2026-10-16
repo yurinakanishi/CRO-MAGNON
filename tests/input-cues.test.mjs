@@ -35,7 +35,7 @@ test('context only suggests one meaning for the shared bottom button', () => {
   );
 });
 
-test('nearby companions offer a direct closeup and inspection shows matching zoom and return controls', () => {
+test('nearby companions offer a direct closeup and inspection only shows Return', () => {
   for (const pad of [false, true]) {
     const cues = contextCues({ inspect: 'りもねこ', pet: 'りもねこを撫でる', jump: true }, pad);
     assert.equal(cues.find((c) => c.action === 'inspect').label, 'りもねこを見る');
@@ -47,11 +47,11 @@ test('nearby companions offer a direct closeup and inspection shows matching zoo
     );
     assert.deepEqual(
       viewing.map((c) => c.action),
-      ['zoomIn', 'zoomOut', 'endInspect'],
+      ['endInspect'],
     );
     assert.deepEqual(
       viewing.map((c) => c.controls),
-      [['b5'], ['b4'], ['b11', 'b6']],
+      [['b11', 'b6']],
     );
   }
 });

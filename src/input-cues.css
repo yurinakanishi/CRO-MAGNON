@@ -16,8 +16,22 @@
 .input-look[hidden] {
   display: none;
 }
-.input-cues.is-inspecting .input-move {
+.input-cues.is-inspecting {
+  left: max(22px, env(safe-area-inset-left));
+  right: auto;
+  width: auto;
+}
+.input-cues.is-inspecting .input-basics,
+.input-cues.is-inspecting .controller-diagram,
+.input-cues.is-inspecting .input-feedback {
   display: none;
+}
+.input-cues.is-inspecting .input-actions {
+  align-items: flex-start;
+  margin-top: 0;
+}
+.input-cues.is-inspecting .input-action {
+  min-height: 44px;
 }
 .controller-diagram {
   display: block;

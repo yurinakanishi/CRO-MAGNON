@@ -75,6 +75,18 @@ export function modelIdentities(asset, where = 'camp-cave') {
 export function imageIdentities(record, where) {
   assert.ok(isFile(record) && isSize(record.image), `${where}: not a served image record`);
   const served = { ...fileOf(record), image: sizeOf(record.image) };
+  if (record.provenance?.continuousMural?.version === 2 && !Object.hasOwn(record, 'uvSource')) {
+    assert.equal(
+      typeof record.provenance.continuousMural.recipe,
+      'string',
+      `${where}: no sprite recipe`,
+    );
+    assert.ok(
+      record.provenance.continuousMural.sources.every((sha) => /^[a-f0-9]{64}$/.test(sha)),
+      `${where}: no generated inputs`,
+    );
+    return { adopted: false, original: served, served };
+  }
   if (!Object.hasOwn(record, 'provenance') && !Object.hasOwn(record, 'uvSource'))
     return { adopted: false, original: served, served };
   const composed = record.provenance?.muralComposition;
@@ -164,6 +176,12 @@ const valueAt = (value, path) => path.split('.').reduce((node, key) => node?.[ke
  * revision. The index's sources must be the originals `current` records, adopted or
  * not, so the adopted path is proven on the real candidate bytes either way. */
 export async function r04AdoptedCave(current) {
+  // A new artwork revision has its own originals. Prove the immutable r04
+  // candidate against the retained r38 manifest, not the new sprite artwork.
+  const imageBase =
+    Number(current.galleryRevision) >= 39
+      ? JSON.parse(await readFile('assets/camp-cave/continuous-r39/previous-asset.json', 'utf8'))
+      : current;
   const index = JSON.parse(await readFile(`${R04}/runtime-index.json`, 'utf8'));
   const stamp = (original) => ({
     [RUNTIME_FIELD]: { adoption: 'r04-proof', candidateRevision: '20261009-r04', original },
@@ -184,7 +202,7 @@ export async function r04AdoptedCave(current) {
   const images = {};
   for (const [url, entry] of Object.entries(index.textures)) {
     if (entry.owner !== 'camp-cave') continue;
-    const record = valueAt(current, entry.manifestEntry),
+    const record = valueAt(imageBase, entry.manifestEntry),
       originalImage = imageIdentities(record, entry.manifestEntry).original;
     assert.deepEqual(
       [url, entry.sourceSha256, entry.sourceBytes],

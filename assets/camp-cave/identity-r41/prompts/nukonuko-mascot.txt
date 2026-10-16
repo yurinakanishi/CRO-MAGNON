@@ -1,0 +1,5 @@
+Use case: identity-preserve / precise-object-edit.
+Input 1 is the current cave-pigment character and EDIT TARGET. Input 2 is the authoritative identity reference.
+Repair only the necklace on the walking cat-eared girl in input 1: the yellow bow/ribbon at her throat is incorrect. Replace it with the reference's narrow black collar, a SMALL ROUND GOLD PENDANT with an unmistakable FIVE-POINTED STAR stamped inside it, hanging centrally over the white blouse. Preserve the brown pinafore dress, white short puff sleeves, dark brown hair, ears and long tail, and boots.
+Lock the EXACT existing right-facing running/walking pose, head angle, chibi proportions, expression, arm and leg positions, hair flow and tail curve from input 1. Do not copy the standing pose of input 2. Keep the existing aged charcoal/earth-pigment texture and flat cave-painting style, without adding realistic 3D shading. The pendant must remain legible when small.
+One full isolated character, large within a square canvas with a comfortable transparent margin, genuine transparent background. Entire hair, ears, tail, hands and both feet visible. No other objects, animals, text or backdrop.

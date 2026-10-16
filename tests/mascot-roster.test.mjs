@@ -183,8 +183,13 @@ test('browser catalog removes dormant models but preserves all cave pigment text
     runtimeTextureRecords(visible.assets.find((asset) => asset.modelKey === 'camp-cave')),
     murals,
   );
-  assert.ok(murals.some((record) => record.url.includes('mae-kohaku')));
-  assert.ok(murals.some((record) => record.url.includes('friends-meadow')));
-  assert.ok(murals.some((record) => record.url.includes('friends-river')));
+  for (const key of ['maeKohaku', 'friendsMeadow', 'friendsRiver'])
+    assert.ok(
+      murals.some(
+        (record) =>
+          record.url ===
+          catalog.assets.find((a) => a.modelKey === 'camp-cave').mascotPigments[key].url,
+      ),
+    );
   world.dispose();
 });

@@ -74,22 +74,29 @@ test('all extra friezes retain the original generated RGBA bytes and registered 
 
 test('the r04 adoption of every extra frieze it planned verifies on its candidate file', async () => {
   const asset = JSON.parse(await readFile('public/models/camp-cave/asset.json'));
+  const archived = JSON.parse(
+    await readFile('assets/camp-cave/continuous-r39/previous-asset.json'),
+  );
   const { images, serve } = await r04AdoptedCave(asset);
   for (const [key, pigment] of Object.entries(CAVE_EXTRA_PIGMENTS)) {
     const where = `mascotPigments.${key}`;
     // A frieze painted after the adoption is not in it, and is served unadopted.
-    const current = imageIdentities(asset.mascotPigments[key], where);
+    const current = imageIdentities(archived.mascotPigments[key], where);
     assert.equal(!!images[where], current.adopted, `${key}: adopted exactly when r04 planned it`);
     if (!images[where]) continue;
     const { adopted, original } = await verifyRgbaImage(
       images[where],
       where,
-      caveMotifSource(key),
+      current.original.image,
       {
         serve,
       },
     );
     assert.equal(adopted, true, key);
-    assert.equal(original.url, pigment.url, `${key}: adopted from the original painting`);
+    assert.equal(
+      original.url,
+      current.original.url,
+      `${key}: adopted from the retained original painting`,
+    );
   }
 });

@@ -43,8 +43,8 @@ export function caveGalleryImages() {
   return {
     pigment: image('pigment', 1254, 1254),
     rockSurface: image('rock', 1254, 1254),
-    characterPigment: image('524', 2171, 724),
-    rimoPigment: image('rimo', 2172, 724),
+    characterPigment: image('524', 1024, 341),
+    rimoPigment: image('rimo', 1024, 341),
     mascotPigments: Object.fromEntries(
       Object.keys(CAVE_EXTRA_PIGMENTS).map((key) => {
         const { width, height } = caveMotifSource(key);

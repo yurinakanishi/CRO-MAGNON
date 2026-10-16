@@ -97,6 +97,7 @@ try {
   await page.waitForTimeout(900);
   await page.keyboard.up('w');
   await page.keyboard.press('Escape');
+  await page.locator('[data-pause-tab="settings"]').click();
   await page.locator('[data-controller-menu="title"]').click();
   await page
     .locator('#solo-exit-error')

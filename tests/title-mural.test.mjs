@@ -197,9 +197,9 @@ test('every non-creator in the common cast has a real projected cave painting', 
       .map((person) => person.key)
       .sort(),
   );
-  const ryuichi = CAVE_MURALS.find((mural) => mural.motif === 'ryuichiFrieze');
+  const ryuichi = CAVE_MURALS.find((mural) => mural.subject === 'ryuichi');
   assert.equal(ryuichi.wall, 'west');
-  assert.equal(ryuichi.centre, -37);
+  assert(ryuichi.centre < -30 && ryuichi.centre > -40.3);
 });
 
 test('the mural list leaves out subjects the composition painted over with animals', () => {

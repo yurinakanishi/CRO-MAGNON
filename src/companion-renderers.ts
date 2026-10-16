@@ -110,7 +110,9 @@ export class CompanionRenderers {
             : renderer.def.name,
         root: renderer.root,
         asset: renderer.actor.asset,
-        scale: is524 ? COMPANION_524.scale : 1,
+        // Asset dimensions already describe the placed body (524 is 30 cm).
+        // Its GLB placement scale must not shrink these dimensions a second time.
+        scale: 1,
         centered: is524,
       });
     }

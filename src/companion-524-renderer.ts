@@ -208,13 +208,22 @@ export class Companion524Renderer {
     this.label.active = this.root.visible && distance < 20;
     this.label.position.copy(this.root.position);
     this.label.position.y += COMPANION_524.bodyHeight * 0.5 + 0.13;
+    // A third-person camera looks through the petter's back toward 524. Let the
+    // hearts rise above their head; in a close-up the hidden petter cannot cover them.
+    const petter = c.petPlayerId ? this.world.players.get(c.petPlayerId) : null;
+    const heartHeight = Math.max(
+      this.root.position.y + 0.21,
+      petter && this.world.viewedId !== c.id
+        ? petter.model.position.y + (petter.actor?.asset.heightMetres ?? 0) + 0.12
+        : -Infinity,
+    );
     for (const [i, heart] of this.hearts.entries()) {
       const age = (pose.happyAge - 700 - i * 120) / 600;
       heart.visible = this.root.visible && pose.happyAge >= 0 && age > 0 && age < 1;
       if (!heart.visible) continue;
       heart.position.set(
         this.root.position.x + Math.sin(i * 2.4) * (0.12 + age * 0.18),
-        this.root.position.y + 0.21 + age * 0.4,
+        heartHeight + age * 0.4,
         this.root.position.z + Math.cos(i * 2.4) * 0.14,
       );
       heart.scale.setScalar(0.1 + Math.sin(age * Math.PI) * 0.04);

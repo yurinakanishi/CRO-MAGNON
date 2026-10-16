@@ -46,8 +46,6 @@ export function contextCues(context: CueContext, pad: boolean): InputCue[] {
   const add = (action: CueAction, label: string, key: string, ...controls: string[]) =>
     cues.push({ action, label, key, controls });
   if (context.viewing && !context.automaticCamera) {
-    add('zoomIn', '近く', '+', 'b5');
-    add('zoomOut', '遠く', '−', 'b4');
     add('endInspect', '戻る', 'Esc', 'b11', 'b6');
     return cues;
   }

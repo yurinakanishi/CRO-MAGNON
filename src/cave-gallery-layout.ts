@@ -1,19 +1,18 @@
 import { CAVE_BEND } from '../shared/camp-cave-layout.mjs';
+import { CAVE_SUBJECT_ART, CAVE_ANIMAL_ART } from '../shared/cave-mural-art.mjs';
 
 // Pixel bounds preserve each complete motif in the unmodified generated atlas.
 export const CAVE_MOTIFS = {
-  // One unmodified painting: the small 524 amongst mammoth, horses and aurochs.
-  creature524: [0, 0, 2171, 724],
-  // One unmodified transparent painting: Rimo, two horses, aurochs and deer.
-  rimoFrieze: [0, 0, 2172, 724],
-  roundBots: [0, 0, 2172, 724],
-  shapeBots: [0, 0, 2172, 724],
-  maruimoFrieze: [0, 0, 2172, 724],
-  maeKohaku: [0, 0, 2172, 724],
-  // Contributors' companions among horses, an ibex, a stag, an aurochs and a bison.
-  friendsMeadow: [0, 0, 2172, 724],
-  friendsRiver: [0, 0, 2172, 724],
-  // The deepened gallery's additional processions are measured in their 1024 px deliveries.
+  // Storage atlases, not panel-sized paintings. Their historical keys keep the
+  // verified loader / adoption interface stable. Cutouts have independent UVs.
+  creature524: [0, 0, 1024, 341],
+  rimoFrieze: [0, 0, 1024, 341],
+  roundBots: [0, 0, 1024, 341],
+  shapeBots: [0, 0, 1024, 341],
+  maruimoFrieze: [0, 0, 1024, 341],
+  maeKohaku: [0, 0, 1024, 341],
+  friendsMeadow: [0, 0, 1024, 341],
+  friendsRiver: [0, 0, 1024, 341],
   daredaroFrieze: [0, 0, 1024, 341],
   ryuichiFrieze: [0, 0, 1024, 341],
   bison: [805, 40, 1254, 418],
@@ -29,81 +28,301 @@ export const CAVE_MOTIFS = {
 // of it (caveMuralImages), which may be a resized copy.
 export const CAVE_EXTRA_PIGMENTS = {
   roundBots: {
-    url: '/models/camp-cave/bot-round-lascaux-r31.png',
+    url: '/models/camp-cave/round-bots-sprites-r39-4e5d49d65bd48974.png',
     subjects: ['white', 'blue', 'green', 'purple', 'orange'],
   },
+  maruimoFrieze: {
+    url: '/models/camp-cave/maruimo-frieze-sprites-r39-8e8a66ed9d4b940e.png',
+    subjects: ['maruimo-mascot'],
+  },
   shapeBots: {
-    url: '/models/camp-cave/bot-shapes-lascaux-r31.png',
+    url: '/models/camp-cave/shape-bots-sprites-r39-15effe4966ef81fd.png',
     subjects: ['beret', 'frog', 'triangle', 'heart'],
   },
-  maruimoFrieze: { url: '/models/camp-cave/maruimo-lascaux-r33.png', subjects: ['maruimo-mascot'] },
-  maeKohaku: { url: '/models/camp-cave/mae-kohaku-lascaux-r31.png', subjects: ['mae', 'kohaku'] },
+  maeKohaku: {
+    url: '/models/camp-cave/mae-kohaku-sprites-r39-89a83ebad514c613.png',
+    subjects: ['mae', 'kohaku'],
+  },
   friendsMeadow: {
-    url: '/models/camp-cave/friends-meadow-lascaux-r34.png',
+    url: '/models/camp-cave/friends-meadow-sprites-r41-f42da105eead65b7.png',
     subjects: ['saber-mascot', 'fairy-mascot', 'nukonuko-mascot', 'sagasa-mascot'],
   },
   friendsRiver: {
-    url: '/models/camp-cave/friends-river-lascaux-r35.png',
+    url: '/models/camp-cave/friends-river-sprites-r41-8ff4736a7f5ccd89.png',
     subjects: ['otani-mascot', 'urata-mascot', 'howkey-scientist', 'rei-mascot'],
   },
-  daredaroFrieze: { url: '/models/camp-cave/daredaro-lascaux-r37.png', subjects: ['daredaro'] },
-  ryuichiFrieze: { url: '/models/camp-cave/ryuichi-lascaux-r38.png', subjects: ['ryuichi'] },
+  daredaroFrieze: {
+    url: '/models/camp-cave/daredaro-frieze-sprites-r41-8334b0a72303bc9e.png',
+    subjects: ['daredaro'],
+  },
+  ryuichiFrieze: {
+    url: '/models/camp-cave/ryuichi-frieze-sprites-r39-38a533fa1a5459cf.png',
+    subjects: ['ryuichi'],
+  },
 } as const;
 export type CaveExtraPigment = keyof typeof CAVE_EXTRA_PIGMENTS;
 
 export type CaveMural = {
+  /** A placement, distinct from a species painted more than once. */
+  id?: string;
   motif: keyof typeof CAVE_MOTIFS;
   wall: 'east' | 'west';
   centre: number;
   bottom: number;
   width: number;
   strength: number;
+  /** A single generated cutout within its storage atlas. */
+  rect?: readonly [number, number, number, number];
+  height?: number;
+  distance?: number;
+  subject?: string;
+  kind?: 'character' | 'animal' | 'sign';
+  layer?: 'underpainting' | 'foreground' | 'accent';
+  /** Height of the measured foot, independent of body size and atlas margins. */
+  footHeight?: number;
 };
 
-// One scale and pigment density for all main processions. The upper animal
-// register fills the limestone between the processions and the roof. Wall
-// coordinates follow local Z; Rimo and 524 still face each other. The cave's
-// r28 deepening added one 7.9 m bay: both walls now carry a complete procession.
-export const CAVE_MURALS: readonly CaveMural[] = [
-  { motif: 'roundBots', wall: 'east', centre: -5.4, bottom: 1.4, width: 7.5, strength: 0.84 },
-  { motif: 'maruimoFrieze', wall: 'east', centre: -13.3, bottom: 1.4, width: 7.5, strength: 0.84 },
-  { motif: 'rimoFrieze', wall: 'east', centre: -21.2, bottom: 1.4, width: 7.5, strength: 0.84 },
-  { motif: 'maeKohaku', wall: 'east', centre: -29.1, bottom: 1.4, width: 7.5, strength: 0.84 },
-  { motif: 'shapeBots', wall: 'west', centre: -5.4, bottom: 1.4, width: 7.5, strength: 0.84 },
-  { motif: 'friendsMeadow', wall: 'west', centre: -13.3, bottom: 1.4, width: 7.5, strength: 0.84 },
-  { motif: 'creature524', wall: 'west', centre: -21.2, bottom: 1.4, width: 7.5, strength: 0.84 },
-  { motif: 'friendsRiver', wall: 'west', centre: -29.1, bottom: 1.4, width: 7.5, strength: 0.84 },
-  { motif: 'daredaroFrieze', wall: 'east', centre: -37.0, bottom: 1.4, width: 7.5, strength: 0.84 },
-  { motif: 'ryuichiFrieze', wall: 'west', centre: -37.0, bottom: 1.4, width: 7.5, strength: 0.84 },
-  { motif: 'redHorse', wall: 'east', centre: -2.9, bottom: 3.75, width: 1.59, strength: 0.8 },
-  { motif: 'bison', wall: 'east', centre: -6.4, bottom: 3.75, width: 1.48, strength: 0.8 },
-  { motif: 'ochreHorse', wall: 'east', centre: -9.9, bottom: 3.75, width: 1.45, strength: 0.8 },
-  { motif: 'deer', wall: 'east', centre: -13.4, bottom: 3.75, width: 1.16, strength: 0.8 },
-  { motif: 'mammoth', wall: 'east', centre: -16.9, bottom: 3.75, width: 1.54, strength: 0.8 },
-  { motif: 'redHorse', wall: 'east', centre: -20.4, bottom: 3.75, width: 1.59, strength: 0.8 },
-  { motif: 'ochreHorse', wall: 'east', centre: -23.9, bottom: 3.75, width: 1.45, strength: 0.8 },
-  { motif: 'bison', wall: 'east', centre: -27.4, bottom: 3.75, width: 1.48, strength: 0.8 },
-  { motif: 'deer', wall: 'east', centre: -30.9, bottom: 3.75, width: 1.16, strength: 0.8 },
-  { motif: 'mammoth', wall: 'east', centre: -34.4, bottom: 3.75, width: 1.54, strength: 0.8 },
-  { motif: 'redHorse', wall: 'east', centre: -37.9, bottom: 3.75, width: 1.59, strength: 0.8 },
-  { motif: 'mammoth', wall: 'west', centre: -2.9, bottom: 3.75, width: 1.54, strength: 0.8 },
-  { motif: 'ochreHorse', wall: 'west', centre: -6.4, bottom: 3.75, width: 1.45, strength: 0.8 },
-  { motif: 'deer', wall: 'west', centre: -9.9, bottom: 3.75, width: 1.16, strength: 0.8 },
-  { motif: 'redHorse', wall: 'west', centre: -13.4, bottom: 3.75, width: 1.59, strength: 0.8 },
-  { motif: 'bison', wall: 'west', centre: -16.9, bottom: 3.75, width: 1.48, strength: 0.8 },
-  { motif: 'deer', wall: 'west', centre: -20.4, bottom: 3.75, width: 1.16, strength: 0.8 },
-  { motif: 'mammoth', wall: 'west', centre: -23.9, bottom: 3.75, width: 1.54, strength: 0.8 },
-  { motif: 'ochreHorse', wall: 'west', centre: -27.4, bottom: 3.75, width: 1.45, strength: 0.8 },
-  { motif: 'redHorse', wall: 'west', centre: -30.9, bottom: 3.75, width: 1.59, strength: 0.8 },
-  { motif: 'bison', wall: 'west', centre: -34.4, bottom: 3.75, width: 1.48, strength: 0.8 },
-  { motif: 'deer', wall: 'west', centre: -37.9, bottom: 3.75, width: 1.16, strength: 0.8 },
-  { motif: 'hands', wall: 'east', centre: -11.65, bottom: 4.3, width: 0.75, strength: 0.64 },
-  { motif: 'signs', wall: 'east', centre: -25.65, bottom: 4.35, width: 0.8, strength: 0.64 },
-  { motif: 'signs', wall: 'west', centre: -11.65, bottom: 4.35, width: 0.8, strength: 0.64 },
-  { motif: 'hands', wall: 'west', centre: -25.65, bottom: 4.3, width: 0.75, strength: 0.64 },
+// Head crown to planted foot, in painted metres. Hats/ears keep their extra
+// height; walking poses, transparent margins and storage atlases never set scale.
+export const CAVE_MURAL_SCALE = {
+  person: 1.4,
+  small: 0.72,
+  cat: 1.05,
+  duck: 1.0,
+  mammoth: 3.0,
+  woollyRhino: 1.8,
+  aurochs: 1.85,
+  bison: 1.75,
+  redHorse: 1.65,
+  ochreHorse: 1.65,
+  deer: 2.0,
+  ibex: 1.55,
+  hands: 0.65,
+  signs: 0.65,
+} as const;
+export type CaveMuralArt = {
+  readonly id: string;
+  readonly motif: keyof typeof CAVE_MOTIFS;
+  readonly size: keyof typeof CAVE_MURAL_SCALE;
+  readonly rect: readonly [number, number, number, number];
+  readonly aspect: number;
+  readonly bodySpan: number;
+  readonly foot: number;
+  readonly lift?: number;
+};
+
+// Both walls were made by translating the same TRELLIS shell along X=f(Z).
+// Integrate that bend, rather than stretching one metre of Z farther near the
+// back. A shared 1 m lookup also makes CPU packing and the GPU projection agree.
+const arc = [0];
+const speed = (depth: number) => {
+  const t = Math.max(0, Math.min(1, depth / CAVE_BEND.depth));
+  return Math.hypot(1, (CAVE_BEND.offset * 6 * t * (1 - t)) / CAVE_BEND.depth);
+};
+for (let d = 0; d < Math.ceil(CAVE_BEND.depth); d++)
+  arc.push(arc[d] + (speed(d) + 4 * speed(d + 0.5) + speed(d + 1)) / 6);
+
+export function caveMuralDistance(localZ: number) {
+  const depth = Math.max(0, Math.min(arc.length - 1.000001, -localZ)),
+    i = Math.floor(depth);
+  return arc[i] + (arc[i + 1] - arc[i]) * (depth - i);
+}
+export function caveMuralLocalZ(distance: number) {
+  for (let i = 1; i < arc.length; i++)
+    if (arc[i] >= distance) return -(i - 1 + (distance - arc[i - 1]) / (arc[i] - arc[i - 1]));
+  throw new Error('Cave mural distance is outside the reconstructed gallery');
+}
+
+export const CAVE_MURAL_GALLERY = {
+  startZ: -1.7,
+  endZ: -40.3,
+  baseline: 1.4,
+  minGap: 0.16,
+} as const;
+export const CAVE_MURAL_LAYOUT_REVISION = '40';
+const animalOrder = [
+  'redHorse',
+  'bison',
+  'deer',
+  'mammoth',
+  'ibex',
+  'ochreHorse',
+  'aurochs',
+  'woollyRhino',
 ];
+const animalArt = new Map<string, CaveMuralArt>(CAVE_ANIMAL_ART.map((art) => [art.id, art]));
+
+function measuredMural(
+  art: CaveMuralArt,
+  wall: CaveMural['wall'],
+  kind: CaveMural['kind'],
+): CaveMural {
+  if (
+    !(art.size in CAVE_MURAL_SCALE) ||
+    !(art.bodySpan > 0 && art.bodySpan <= 1) ||
+    !(art.aspect > 0 && Number.isFinite(art.aspect)) ||
+    !art.rect ||
+    art.rect.some((n) => !Number.isFinite(n)) ||
+    art.rect[0] < 0 ||
+    art.rect[1] < 0 ||
+    art.rect[2] <= 0 ||
+    art.rect[3] <= 0 ||
+    art.rect[0] + art.rect[2] > 1.000001 ||
+    art.rect[1] + art.rect[3] > 1.000001 ||
+    !(art.foot >= art.bodySpan && art.foot <= 1)
+  )
+    throw new Error(`${art.id}: missing mural scale/paint measurements`);
+  const height = CAVE_MURAL_SCALE[art.size] / art.bodySpan;
+  return {
+    id: `${wall}:${art.id}`,
+    motif: art.motif,
+    subject: art.id,
+    kind,
+    layer: kind === 'sign' ? 'accent' : 'foreground',
+    wall,
+    rect: art.rect,
+    centre: 0,
+    distance: 0,
+    width: height * art.aspect,
+    height,
+    footHeight: CAVE_MURAL_GALLERY.baseline + (art.lift ?? 0),
+    bottom: CAVE_MURAL_GALLERY.baseline + (art.lift ?? 0) - height * (1 - art.foot),
+    strength: 0.84,
+  };
+}
+
+/** Reflow the foreground without changing its accepted sizes. Older animal
+ * paintings rise behind it at irregular heights, using exactly the same scale.
+ * Storage atlases never reserve group-sized bays in either painted layer. */
+export function buildCaveMurals(
+  subjects: readonly CaveMuralArt[] = CAVE_SUBJECT_ART,
+  hidden: readonly string[] = [],
+): readonly CaveMural[] {
+  if (new Set(subjects.map((s) => s.id)).size !== subjects.length)
+    throw new Error('Duplicate cave mural character');
+  for (const id of hidden)
+    if (!subjects.some((s) => s.id === id)) throw new Error(`Unknown mural character: ${id}`);
+  const result: CaveMural[] = [];
+  for (const wall of ['east', 'west'] as const) {
+    const people = subjects.filter(
+      (s, i) =>
+        !hidden.includes(s.id) &&
+        (s.id === '524' ? 'west' : s.id === 'rimo-neko' ? 'east' : i % 2 ? 'west' : 'east') ===
+          wall,
+    );
+    const animals = animalOrder.map((_, i) =>
+      animalArt.get(animalOrder[(i + (wall === 'west' ? 3 : 0)) % animalOrder.length])!,
+    );
+    const stream = [
+      ...people.map((s, i) => ({
+        order: (i + 0.35) / people.length,
+        mural: measuredMural(s, wall, 'character'),
+      })),
+      ...animals.map((s, i) => ({
+        order: (i + 0.75) / animals.length,
+        mural: measuredMural(s, wall, 'animal'),
+      })),
+    ]
+      .sort((a, b) => a.order - b.order)
+      .map((s) => s.mural);
+    const start = caveMuralDistance(CAVE_MURAL_GALLERY.startZ),
+      end = caveMuralDistance(CAVE_MURAL_GALLERY.endZ);
+    // A dense procession of earlier paintings, rather than a separate row of
+    // miniatures. Mammoths stay lower so their full 3 m bodies fit the real roof.
+    // The two walls use different species orders and rises. Foreground people
+    // are painted afterwards, keeping their faces clear where silhouettes cross.
+    const underpainting = Array.from({ length: 16 }, (_, i) => {
+      const animal = animals[(i * 3 + Math.floor(i / 8)) % animals.length];
+      const mural = measuredMural(animal, wall, 'animal');
+      const rises = [1.48, 1.12, 1.68, 1.28, 1.55, 0.96, 1.38, 1.76];
+      const rise =
+        animal.size === 'mammoth'
+          ? 0.48
+          : rises[(i + (wall === 'west' ? 3 : 0)) % rises.length] - (i % 3 === 1 ? 0.36 : 0);
+      mural.id = `${wall}:${animal.id}:underpainting-${i}`;
+      mural.layer = 'underpainting';
+      mural.bottom += rise;
+      mural.footHeight! += rise;
+      mural.strength = 0.68 + (i % 3) * 0.04;
+      return mural;
+    });
+    const occupied = underpainting.reduce((n, m) => n + m.width, 0),
+      gap = (end - start - occupied) / (underpainting.length - 1);
+    let cursor = start;
+    for (const [i, mural] of underpainting.entries()) {
+      // Small offsets break up horizontal rows without changing the endpoints.
+      const stagger = i === 0 || i === underpainting.length - 1 ? 0 : [0.16, -0.2, 0.08][i % 3];
+      mural.distance = cursor + mural.width / 2 + stagger;
+      mural.centre = caveMuralLocalZ(mural.distance);
+      result.push(mural);
+      cursor += mural.width + gap;
+    }
+    const pack = (
+      items: CaveMural[],
+      from: number,
+      to: number,
+      edge: 'start' | 'end' | null = null,
+    ) => {
+      if (!items.length) return;
+      const occupied = items.reduce((n, m) => n + m.width, 0);
+      const gapCount = Math.max(1, items.length - 1 + Number(edge !== null));
+      const gap = (to - from - occupied) / gapCount;
+      if (gap < CAVE_MURAL_GALLERY.minGap)
+        throw new Error(
+          `${wall} cave mural is full: needs ${(occupied + CAVE_MURAL_GALLERY.minGap * gapCount).toFixed(2)} m; ${(to - from).toFixed(2)} m available. Review placement; character scales were not reduced.`,
+        );
+      let cursor = from + (edge === 'start' ? gap : 0);
+      for (const mural of items) {
+        mural.distance = cursor + mural.width / 2;
+        mural.centre = caveMuralLocalZ(mural.distance);
+        result.push(mural);
+        cursor += mural.width + gap;
+      }
+    };
+    const anchorIndex = stream.findIndex(
+      (m) => m.subject === (wall === 'east' ? 'rimo-neko' : '524'),
+    );
+    if (anchorIndex >= 0) {
+      const anchor = stream[anchorIndex],
+        distance = caveMuralDistance(-21.2);
+      const others = stream.filter((m) => m !== anchor);
+      let split = -1,
+        best = Infinity;
+      for (let i = 1; i < others.length; i++) {
+        const before = others.slice(0, i).reduce((n, m) => n + m.width, 0);
+        const after = others.slice(i).reduce((n, m) => n + m.width, 0);
+        const gapBefore = (distance - anchor.width / 2 - start - before) / i;
+        const gapAfter = (end - distance - anchor.width / 2 - after) / (others.length - i);
+        const score = Math.abs(gapBefore - gapAfter);
+        if (Math.min(gapBefore, gapAfter) >= CAVE_MURAL_GALLERY.minGap && score < best) {
+          split = i;
+          best = score;
+        }
+      }
+      if (split < 0)
+        throw new Error(`${wall} cave mural is full; character scales were not reduced.`);
+      pack(others.slice(0, split), start, distance - anchor.width / 2, 'end');
+      anchor.distance = distance;
+      anchor.centre = -21.2;
+      result.push(anchor);
+      pack(others.slice(split), distance + anchor.width / 2, end, 'start');
+    } else pack(stream, start, end);
+    // Small marks are accents in the same composition, clear of the tallest animals.
+    for (const [i, id] of ['hands', 'signs'].entries()) {
+      const mural = measuredMural(animalArt.get(id)!, wall, 'sign');
+      mural.distance = start + (end - start) * (i ? 0.7 : 0.27);
+      mural.centre = caveMuralLocalZ(mural.distance);
+      mural.bottom = 4.65;
+      mural.footHeight = mural.bottom + mural.height! * (1 - animalArt.get(id)!.foot);
+      result.push(mural);
+    }
+  }
+  return result;
+}
+export const CAVE_MURALS = buildCaveMurals();
 
 export function caveMuralHeight(mural: CaveMural) {
+  if (mural.height !== undefined) return mural.height;
   const [x0, y0, x1, y1] = CAVE_MOTIFS[mural.motif];
   return (mural.width * (y1 - y0)) / (x1 - x0);
 }
@@ -130,7 +349,7 @@ export function caveMotifSource(motif: CaveMotif): CaveImageSize {
     extra || motif === 'creature524'
       ? [x1, y1]
       : motif === 'rimoFrieze'
-        ? [2172, 724]
+        ? [1024, 341]
         : [1254, 1254];
   return { width: imageWidth, height: imageHeight };
 }
@@ -142,6 +361,18 @@ export function caveMotifUV(motif: CaveMotif, source = caveMotifSource(motif)) {
   return {
     offset: [x0 / source.width, 1 - y1 / source.height],
     scale: [(x1 - x0) / source.width, (y1 - y0) / source.height],
+  } as const;
+}
+
+/** The cutout's own UVs inside the whole-image motif. Storage neighbours never
+ * become a single painted group or contribute to its physical dimensions. */
+export function caveMuralUV(mural: CaveMural) {
+  const uv = caveMotifUV(mural.motif);
+  if (!mural.rect) return uv;
+  const [x, y, width, height] = mural.rect;
+  return {
+    offset: [uv.offset[0] + x * uv.scale[0], uv.offset[1] + (1 - y - height) * uv.scale[1]],
+    scale: [width * uv.scale[0], height * uv.scale[1]],
   } as const;
 }
 
@@ -231,6 +462,13 @@ export function caveMuralImages(asset): CaveMuralImages {
 /** Painted subjects the mural composition replaced with animals (cave-mural-visibility.json),
  * as each composed image's provenance records them. */
 export function hiddenMuralSubjects(asset): string[] {
+  if (asset?.muralComposition?.version === 2) {
+    const hidden = asset.muralComposition.hidden;
+    if (!Array.isArray(hidden) || hidden.some((id) => typeof id !== 'string'))
+      throw new Error('Invalid cave mural visibility');
+    buildCaveMurals(CAVE_SUBJECT_ART, hidden);
+    return [...hidden];
+  }
   const { extras, ...main } = caveMuralImages(asset);
   return [...Object.values(main), ...Object.values(extras)].flatMap(
     (image) =>
@@ -240,28 +478,46 @@ export function hiddenMuralSubjects(asset): string[] {
 }
 
 const f = (n: number) => n.toFixed(6);
-export const caveMuralShader = CAVE_MURALS.map((m) => {
-  const extra = m.motif in CAVE_EXTRA_PIGMENTS;
-  const { offset, scale } = caveMotifUV(m.motif);
-  const sampler = extra
-    ? `cave_${m.motif}`
-    : m.motif === 'creature524'
-      ? 'caveCharacter524'
-      : m.motif === 'rimoFrieze'
-        ? 'caveRimoPigment'
-        : 'cavePigment';
-  const u =
-    m.wall === 'east'
-      ? `(${f(m.centre + m.width / 2)}-cavePosition.z)/${f(m.width)}`
-      : `(cavePosition.z-(${f(m.centre - m.width / 2)}))/${f(m.width)}`;
-  const wall =
-    m.wall === 'east' ? 'step(caveAcross,-1.1)*insideRock' : 'step(1.1,caveAcross)*insideRock';
-  // Let pigment follow the inward-facing folds and the wall-to-roof curve.
-  // A steep-normal cutoff used to erase heads and legs on these real triangles.
-  return `{
+export function caveMuralShaderFor(hidden: readonly string[] = []) {
+  // Piecewise-linear arc length, identical to caveMuralDistance on the CPU.
+  const distanceShader =
+    `float caveDepth=clamp(-cavePosition.z,0.0,${f(arc.length - 1.000001)});\nfloat caveDistance=caveDepth*${f(arc[1])};\n` +
+    arc
+      .slice(1, -1)
+      .map(
+        (_, i) =>
+          `caveDistance+=${f(arc[i + 2] - 2 * arc[i + 1] + arc[i])}*max(0.0,caveDepth-${f(i + 1)});`,
+      )
+      .join('\n');
+  return (
+    distanceShader +
+    `
     float caveCurveT=clamp(-cavePosition.z/${f(CAVE_BEND.depth)},0.0,1.0);
     caveCurveT=caveCurveT*caveCurveT*(3.0-2.0*caveCurveT);
     float caveAcross=cavePosition.x-${f(CAVE_BEND.offset)}*caveCurveT;
+  ` +
+    buildCaveMurals(CAVE_SUBJECT_ART, hidden)
+      .map((m) => {
+        const extra = m.motif in CAVE_EXTRA_PIGMENTS;
+        const { offset, scale } = caveMuralUV(m);
+        const sampler = extra
+          ? `cave_${m.motif}`
+          : m.motif === 'creature524'
+            ? 'caveCharacter524'
+            : m.motif === 'rimoFrieze'
+              ? 'caveRimoPigment'
+              : 'cavePigment';
+        const u =
+          m.wall === 'east'
+            ? `(caveDistance-${f(m.distance! - m.width / 2)})/${f(m.width)}`
+            : `(${f(m.distance! + m.width / 2)}-caveDistance)/${f(m.width)}`;
+        const wall =
+          m.wall === 'east'
+            ? 'step(caveAcross,-1.1)*insideRock'
+            : 'step(1.1,caveAcross)*insideRock';
+        // Let pigment follow the inward-facing folds and the wall-to-roof curve.
+        // A steep-normal cutoff used to erase heads and legs on these real triangles.
+        return `{
     vec2 muralUV=vec2(${u},(cavePosition.y-${f(m.bottom)})/${f(caveMuralHeight(m))});
     float muralSide=${wall};
     if(muralSide>0.0 && all(greaterThanEqual(muralUV,vec2(0.0))) && all(lessThanEqual(muralUV,vec2(1.0)))) {
@@ -271,4 +527,8 @@ export const caveMuralShader = CAVE_MURALS.map((m) => {
       diffuseColor.rgb=mix(diffuseColor.rgb,mineralPaint,paint.a*muralSide*${f(m.strength)});
     }
   }`;
-}).join('\n');
+      })
+      .join('\n')
+  );
+}
+export const caveMuralShader = caveMuralShaderFor();

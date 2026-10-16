@@ -1,0 +1,5 @@
+Use case: identity-preserve / precise-object-edit.
+Input 1 is the EDIT TARGET, the current cave-painting of the silver-haired gentleman. Input 2 is the original user-supplied character reference.
+Repair only the identity colours/details that drifted: the straight horizontal bar covering BOTH EYES is a distinct MAGENTA-PURPLE band as in input 2, not rusty brown/red. The necktie is DEEP VIOLET-PURPLE, not rusty red. Preserve the silver-grey centre-parted wavy hair, gentle closed smile, charcoal suit, gold piping on the lapels, white shirt, dark shoes.
+Keep the exact existing upright frontal standing pose of input 1, hands behind back, head/body proportions, shoulder position, legs and feet. Keep the existing weathered charcoal/ochre mineral-pigment mural technique, flat illustration and worn transparent speckles, with restrained purple pigment accents on band and tie. No glossy 3D rendering and no pixel-art conversion.
+One full isolated figure on a genuinely transparent square canvas with comfortable empty margins around all hair and shoes. No background, text, animal, other character or border.

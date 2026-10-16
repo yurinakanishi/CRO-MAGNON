@@ -3,6 +3,32 @@ import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import { chooseCompanionView, companionViewDistances } from '../dist/src/companion-view.js';
 import { WorldRenderer } from '../dist/src/world3d.js';
+import { CompanionRenderers } from '../dist/src/companion-renderers.js';
+import { Companion524Renderer } from '../dist/src/companion-524-renderer.js';
+import { readFile } from 'node:fs/promises';
+
+test('524 inspection uses its delivered 30cm dimensions without applying GLB placement scale twice', async () => {
+  const asset = JSON.parse(await readFile('public/models/yellow-524-mascot/asset.json', 'utf8'));
+  const renderer = Object.assign(Object.create(Companion524Renderer.prototype), {
+    id: '524',
+    root: new THREE.Group(),
+    actor: { asset },
+    world: { state: { companions: [{ id: '524', key: '524', squadMode: 'following' }] } },
+  });
+  const companions = Object.assign(Object.create(CompanionRenderers.prototype), {
+    renderers: new Map([['524', renderer]]),
+  });
+  const world = { companionRenderers: companions, players: new Map() };
+  const [target] = WorldRenderer.prototype.companionViewTargets.call(world);
+  assert.ok(target.radius >= asset.widthMetres / 2);
+  assert.ok(target.radius >= asset.heightMetres / 2);
+  assert.ok(target.radius < 0.4);
+  for (const aspect of [390 / 844, 844 / 390, 1280 / 800]) {
+    const { fit } = companionViewDistances(target.radius, 57, aspect);
+    const horizontal = Math.atan(Math.tan((57 * Math.PI) / 360) * aspect);
+    assert.ok(Math.asin(asset.widthMetres / 2 / fit) < horizontal, 'full 524 fits horizontally');
+  }
+});
 
 test('closeups frame small companions fully in landscape and portrait without entering their body', () => {
   for (const radius of [0.16, 0.25, 0.425, 0.6])

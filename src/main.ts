@@ -344,7 +344,8 @@ function performCue(command: TouchAction) {
     renderUnavailable ||
     screens.active ||
     $('#modal').open ||
-    (player()?.downedUntil && !['menu', 'map', 'chat', 'mascots', 'bag', 'sound'].includes(command))
+    (player()?.downedUntil &&
+      !['menu', 'settings', 'map', 'chat', 'mascots', 'bag', 'sound'].includes(command))
   )
     return;
   if (assistedControls() && ['inspect', 'zoomIn', 'zoomOut', 'endInspect'].includes(command))
@@ -355,6 +356,9 @@ function performCue(command: TouchAction) {
       break;
     case 'menu':
       openPauseMenu();
+      break;
+    case 'settings':
+      openPauseMenu('settings');
       break;
     case 'map':
       openMap();
@@ -2565,6 +2569,12 @@ function openPauseMenu(tab?: string) {
         ['character', 'person', 'キャラクターを変える'],
         ['settings', 'gear', '設定'],
       ];
+  const titleExit: [string, string, string, () => void] = [
+    'title',
+    'close',
+    'タイトルへ戻る',
+    leaveToTitle,
+  ];
   const exits: [string, string, string, () => void][] = [
     ...(caveTorchAvailable(player())
       ? [
@@ -2590,7 +2600,8 @@ function openPauseMenu(tab?: string) {
           ],
         ]
       : []),
-    ['title', 'close', 'タイトルへ戻る', leaveToTitle],
+    // The archived LAN menu has no settings tab.
+    ...(fixedIdentity ? [titleExit] : []),
   ];
   const initialTab = tab ?? (fixedIdentity ? 'warp' : 'inventory');
   let pauseTab = tabs.some(([id]) => id === initialTab) ? initialTab : tabs[0][0];
@@ -2609,12 +2620,12 @@ function openPauseMenu(tab?: string) {
       )
       .join(
         '',
-      )}</nav><div class="pause-exits" role="group" aria-label="メニューの操作">${exits.map(menuButton).join('')}</div></div></aside><div class="pause-panels">${panel(
+      )}</nav>${exits.length ? `<div class="pause-exits" role="group" aria-label="メニューの操作">${exits.map(menuButton).join('')}</div>` : ''}</div></aside><div class="pause-panels">${panel(
       'inventory',
       inventoryMarkup(),
     )}${panel('character', characterSwitchMarkup(fixedIdentity ? null : (normalizeDye(player()?.dye) ?? profile.dye)))}${panel('warp', exhibitionWarpMarkup())}${panel('mascots', mascotMenuMarkup(availableMascots))}${panel(
       'settings',
-      `<h2>設定</h2><div class="settings-list">${audioSettingsMarkup(renderer.audio.settings)}<div class="settings-item"><div><strong>全画面表示</strong></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未接続'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
+      `<h2>設定</h2><div class="settings-list">${audioSettingsMarkup(renderer.audio.settings)}<div class="settings-item"><div><strong>全画面表示</strong></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未接続'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}<div class="settings-row">${menuButton(titleExit)}</div>`,
     )}</div></div>`,
   );
   const root = $('#modal-body') as HTMLElement;
@@ -2701,7 +2712,7 @@ function openPauseMenu(tab?: string) {
     gamepadControls?.suspend();
   };
   for (const tab of tabButtons) tab.onclick = () => showTab(tab.dataset.pauseTab!);
-  for (const [id, , , handler] of exits)
+  for (const [id, , , handler] of [...exits, ...(!fixedIdentity ? [titleExit] : [])])
     if ($(`[data-controller-menu="${id}"]`))
       $(`[data-controller-menu="${id}"]`).onclick = () => handler();
   // Switching between the rail and the row, or resizing, measures the row's fades again.
@@ -3191,7 +3202,7 @@ function touchPlayable(command?: TouchAction) {
     document.hasFocus() &&
     !!player() &&
     (!player()?.downedUntil ||
-      ['menu', 'map', 'chat', 'mascots', 'bag', 'sound'].includes(command ?? '')) &&
+      ['menu', 'settings', 'map', 'chat', 'mascots', 'bag', 'sound'].includes(command ?? '')) &&
     !motionControls?.ownsInput &&
     ($('#chat-content')?.hidden ?? true) &&
     !document.activeElement?.closest('input,textarea,select,[contenteditable]')

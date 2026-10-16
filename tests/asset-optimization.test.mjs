@@ -3660,35 +3660,36 @@ async function preAdoptionRecord(id) {
   return preAdoptionRecord(plan.base.adoption);
 }
 
-test('the current camp-cave plan covers the ten adopted runtime textures with their audited hashes and source UV sizes', async (t) => {
+test('the current cave plan covers native sprites and retained texture originals with their hashes and UV sizes', async (t) => {
   const current = JSON.parse(
       await readFile(path.join(REPO_ROOT, 'public', 'models', 'camp-cave', 'asset.json'), 'utf8'),
     ),
-    stamped = current.pigment?.provenance?.runtimeOptimization?.adoption,
-    // Once adopted, the originals are the saved pre-adoption manifests (a chain's base's).
-    adoption = stamped ? await preAdoptionRecord(stamped) : undefined,
-    readManifest = adoption
-      ? (relative) =>
-          readFile(
-            path.join(
-              REPO_ROOT,
-              'assets',
-              'runtime-adoption',
-              adoption,
-              'before',
-              ...relative.split('/'),
-            ),
-          )
-      : undefined,
+    native = structuredClone(current);
+  // New sprites are native 1024 px sources. The retained stone/animal atlases
+  // still plan from their own original records, never a superseded frieze.
+  for (const key of ['pigment', 'rockSurface']) {
+    const record = native[key],
+      original = record.provenance?.runtimeOptimization?.original;
+    if (original) {
+      Object.assign(record, original);
+      delete record.uvSource;
+      delete record.provenance;
+    }
+  }
+  const readManifest = async (relative) => {
+      if (relative === 'public/models/camp-cave/asset.json')
+        return Buffer.from(JSON.stringify(native));
+      const bytes = await readFile(path.join(REPO_ROOT, relative));
+      if (relative === 'public/models/world-assets.json') {
+        const catalog = JSON.parse(bytes);
+        catalog.assets[catalog.assets.findIndex((a) => a.modelKey === 'camp-cave')] = native;
+        return Buffer.from(JSON.stringify(catalog));
+      }
+      return bytes;
+    },
     rules = await loadEligibilityRules(REPO_ROOT),
     inventory = await buildInventory(REPO_ROOT, rules),
-    added = readManifest
-      ? await extrasAddedSince(
-          REPO_ROOT,
-          JSON.parse(await readManifest('public/models/camp-cave/asset.json')),
-          1024,
-        )
-      : { keys: [], problems: [] },
+    added = { keys: [], problems: [] },
     plan = await planStandaloneImages(REPO_ROOT, {
       inventory,
       rules,
@@ -3718,14 +3719,18 @@ test('the current camp-cave plan covers the ten adopted runtime textures with th
     plan.images.map((item) => item.plan.source.url).sort(),
     audited.map((record) => record.url).sort(),
   );
-  assert.equal(plan.images.length, 10);
+  assert.equal(plan.images.length, 12);
   for (const item of plan.images) {
     const record = audited.find((candidate) => candidate.url === item.plan.source.url),
       { width, height } = record.image;
     assert.equal(item.plan.source.sha256, record.sha256, item.id);
     assert.equal(item.plan.source.bytes, record.bytes, item.id);
     assert.deepEqual(item.plan.uv.normalizedBy, { width, height }, `${item.id} UV source size`);
-    assert.ok(item.job, `${item.id} exceeds 1024 px`);
+    assert.equal(
+      !!item.job,
+      Math.max(width, height) > 1024,
+      `${item.id}: only oversized originals need downsizing`,
+    );
     assert.deepEqual(
       item.plan.target,
       width === height ? { width: 1024, height: 1024 } : { width: 1024, height: 341 },

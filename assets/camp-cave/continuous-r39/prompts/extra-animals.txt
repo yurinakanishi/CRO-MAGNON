@@ -1,0 +1,4 @@
+Use case: background-extraction / identity-preserve.
+Asset type: three independent transparent cave-pigment animal sprites.
+Input 1 is the edit target for the woolly rhinoceros and ibex; input 2 is the edit target for the long-horned aurochs. Extract and complete these three animals only, preserving their existing side profile, anatomy and aged charcoal/rust-red/ochre cave-paint texture. Remove all people, all other animals and all dotted trails.
+Square transparent sprite sheet, three widely separated horizontal rows: woolly rhinoceros on top, ibex with long swept-back horns in the middle, long-horned dark aurochs on the bottom. All four legs, hooves, tails, horns and ears complete and uncropped. Exactly one of each animal, no duplicates. Each isolated animal occupies less than 80% of the image width, generous transparent space between rows, no overlap. No background, no paper, no stone, no shadows, no text or frame.

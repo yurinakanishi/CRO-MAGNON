@@ -24875,6 +24875,8 @@
       "clips": [],
       "lods": [],
       "notes": [
+        "Gallery r41 uses independently measured pigment cutouts, common character/animal scales and one continuous surface-distance procession on each wall. Previous art and unchanged TRELLIS geometry remain archived.",
+        "Gallery r39 replaces group frames with independently measured pigment cutouts, common character/animal scales and one continuous surface-distance procession on each wall. All r38 art and unchanged TRELLIS geometry remain archived.",
         "Gallery r38 adds the helmeted Ryuichi-typeR among a mammoth, horse and aurochs on the existing deep west-wall bay, completing the shared 16-person contributor cast (nine Dots share one credit). Yuri remains a creator credit only. Geometry, earlier paintings and mascot availability are retained.",
         "Geometry r28-deep (user request 2026-10-14) remaps the same retained TRELLIS shell: the mouth and apron unchanged, the gallery uniformly lengthened by 7.9 m (x1.287) and the rounded rear chamber with its spring basin moved back 7.9 m along the bend, so one more 7.5 m procession fits on each wall. Topology, UVs and the embedded 1024 px textures are unchanged; model-r27-rounded.glb is kept.",
         "Gallery r37 paints @daredaro_F, a silver-haired gentleman whose eyes are hidden behind a bar, among a woolly rhinoceros, a reindeer and an ibex on the new east-wall bay; the upper animal register continues over the new bay on both walls.",
@@ -24972,7 +24974,7 @@
           }
         }
       },
-      "gameQA": "output/playwright/cave-murals-20261012/game-r03/summary.json",
+      "gameQA": "output/playwright/cave-identity-20261016-r01/report.json",
       "rockSurface": {
         "url": "/models/camp-cave/limestone-r05.opt-373ad7d95a04bc2c.png",
         "source": "assets/camp-cave/source/limestone-r05.png",
@@ -25015,16 +25017,15 @@
         }
       },
       "characterPigment": {
-        "source": "assets/camp-cave/source/524-lascaux-frieze-r32.png",
-        "url": "/models/camp-cave/524-lascaux-frieze-r32.opt-2f9a4a74cb9c0e9d.png",
-        "sha256": "2f9a4a74cb9c0e9d3a94cf394a3b843655a273690b94dbb1d9c406fb40da3c51",
-        "bytes": 560426,
+        "source": "assets/camp-cave/identity-r41/packed/creature524-a6c8f1b0a85bb17d.png",
+        "url": "/models/camp-cave/creature524-sprites-r41-a6c8f1b0a85bb17d.png",
+        "sha256": "a6c8f1b0a85bb17d8155bf62955a24f6c4dd708fe0175c06548bf5b4e0e0e96a",
+        "bytes": 168192,
         "image": {
           "width": 1024,
           "height": 341
         },
-        "generator": "Built-in imagegen",
-        "prompt": "assets/camp-cave/524-lascaux-prompt-r32.txt",
+        "generator": "Built-in image_gen",
         "references": [
           {
             "path": "assets/camp-cave/source/character-524-mural-r06.png",
@@ -25040,99 +25041,66 @@
           }
         ],
         "subjects": [
-          "524",
-          "woolly mammoth",
-          "ochre wild horse",
-          "red wild horse",
-          "aurochs"
+          "524"
         ],
-        "application": "One 7.5 m wide transparent mineral-pigment frieze on the west wall opposite Rimo. The small floating 524 shares muted ochre, charcoal, worn edges and overlapping animal composition. Direct projection on original limestone triangles; no extra geometry or backing.",
-        "review": "assets/camp-cave/qa/gallery-surfaces-r32.json",
-        "uvSource": {
-          "width": 2171,
-          "height": 724
-        },
+        "application": "r41: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
+        "review": "assets/camp-cave/qa/adoption-murals-r41.json",
         "provenance": {
-          "runtimeOptimization": {
-            "adoption": "20261010-r07-a01",
-            "candidateRevision": "assets/optimized-runtime/20261010-r06",
-            "original": {
-              "url": "/models/camp-cave/524-lascaux-frieze-r32.png",
-              "sha256": "5fc419d77d0155133b0f231a07ad80a03c78ed99850ced492f79108bea5a765a",
-              "bytes": 2355756,
-              "image": {
-                "width": 2171,
-                "height": 724
-              }
-            },
-            "adoptedBy": "20261010-r06-a02",
-            "supersedes": {
-              "adoption": "20261009-r04-a01",
-              "candidateRevision": "assets/optimized-runtime/20261009-r04",
-              "url": "/models/camp-cave/524-lascaux-frieze-r32.opt-78de0e1c4a23835d.png",
-              "sha256": "78de0e1c4a23835dc5b0b95a6a8bd08d8a5cba27a9a50bad5552e3386e5f564c",
-              "bytes": 565002
-            }
+          "continuousMural": {
+            "version": 2,
+            "recipe": "assets/camp-cave/identity-r41/recipe.json",
+            "subjects": [
+              "524"
+            ],
+            "sources": [
+              "834ed7f03cf3af3b12db68408fb9458865ae46a04f5e5aab3bd5300608aeea10"
+            ]
           }
-        }
+        },
+        "prompts": [
+          "assets/camp-cave/identity-r41/prompts/524.txt"
+        ]
       },
-      "galleryRevision": "38",
+      "galleryRevision": "41",
       "rimoPigment": {
-        "source": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
-        "url": "/models/camp-cave/rimo-lascaux-frieze-r30.opt-8a2acbfbfaa6d2c2.png",
-        "sha256": "8a2acbfbfaa6d2c22c83e38cda85615a4da7064b52e3231f7b8a83bcc890ec25",
-        "bytes": 560138,
+        "source": "assets/camp-cave/identity-r41/packed/rimoFrieze-ec249779442b8ede.png",
+        "url": "/models/camp-cave/rimo-frieze-sprites-r39-ec249779442b8ede.png",
+        "sha256": "ec249779442b8edeb6a2052f0f6deffa31c2624107cf24f44bd56058fda8a761",
+        "bytes": 190974,
         "image": {
           "width": 1024,
           "height": 341
         },
-        "generator": "Built-in imagegen",
-        "prompt": "assets/camp-cave/rimo-lascaux-prompt-r30.txt",
+        "generator": "Built-in image_gen",
         "reference": {
           "path": "assets/rimo-neko/source/user-reference.jpg",
           "sha256": "3a0ebdfadbb383d170318a0cd4d3cb9540ccb113822bc0a44836dfcaeeebdf41"
         },
         "styleReference": "assets/camp-cave/source/mural-atlas-r05.png",
         "subjects": [
-          "Rimo-neko",
-          "ochre wild horse",
-          "red wild horse",
-          "aurochs",
-          "red deer"
+          "rimo-neko"
         ],
-        "application": "One 7.5 x 2.5 m transparent pigment frieze on the east wall, centred at local Z -21.2 opposite the existing 524. Direct projection on the existing limestone, no decal plane or opaque backing.",
-        "review": "assets/camp-cave/qa/gallery-r30.json",
-        "uvSource": {
-          "width": 2172,
-          "height": 724
-        },
+        "application": "r41: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
+        "review": "assets/camp-cave/qa/adoption-murals-r41.json",
         "provenance": {
-          "runtimeOptimization": {
-            "adoption": "20261010-r07-a01",
-            "candidateRevision": "assets/optimized-runtime/20261010-r06",
-            "original": {
-              "url": "/models/camp-cave/rimo-lascaux-frieze-r30.png",
-              "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df",
-              "bytes": 2272546,
-              "image": {
-                "width": 2172,
-                "height": 724
-              }
-            },
-            "adoptedBy": "20261010-r06-a02",
-            "supersedes": {
-              "adoption": "20261009-r04-a01",
-              "candidateRevision": "assets/optimized-runtime/20261009-r04",
-              "url": "/models/camp-cave/rimo-lascaux-frieze-r30.opt-65fa961cf8b88827.png",
-              "sha256": "65fa961cf8b888270eeb3f7bbeb93fc454a89139a06a456fd14a4efd2fed02b2",
-              "bytes": 560607
-            }
+          "continuousMural": {
+            "version": 2,
+            "recipe": "assets/camp-cave/identity-r41/recipe.json",
+            "subjects": [
+              "rimo-neko"
+            ],
+            "sources": [
+              "1a395ea1cd95ec3dfcd8f3f60368dce03f788885a97c6f90f6d6673e577dd0f3"
+            ]
           }
-        }
+        },
+        "prompts": [
+          "assets/camp-cave/continuous-r39/prompts/shapes-and-companions.txt"
+        ]
       },
       "mascotPigments": {
         "roundBots": {
-          "url": "/models/camp-cave/bot-round-lascaux-r31.opt-9dc5292302335e65.png",
+          "url": "/models/camp-cave/round-bots-sprites-r39-4e5d49d65bd48974.png",
           "subjects": [
             "white",
             "blue",
@@ -25140,14 +25108,14 @@
             "purple",
             "orange"
           ],
-          "source": "assets/camp-cave/source/bot-round-lascaux-r31.png",
-          "sha256": "9dc5292302335e65a6b3dafc7c22a6a2691261a08c7193832b64cbc79854fb7c",
-          "bytes": 463714,
+          "source": "assets/camp-cave/identity-r41/packed/roundBots-4e5d49d65bd48974.png",
+          "sha256": "4e5d49d65bd48974e34f47d054ea6b26a55ce228e23443fb46242d0d47f7ca41",
+          "bytes": 474866,
           "image": {
             "width": 1024,
             "height": 341
           },
-          "generator": "Built-in imagegen",
+          "generator": "Built-in image_gen",
           "references": [
             "public/models/orb-bot-white/portrait.png",
             "public/models/orb-bot-blue/portrait.png",
@@ -25155,137 +25123,118 @@
             "public/models/orb-bot-purple/portrait.png",
             "public/models/orb-bot-orange/portrait.png"
           ],
-          "application": "Gallery r36: 7.5 m wide roundBots procession, local Y=1.4, strength 0.84. The complete generated painting is retained; individual characters can be exchanged for matching animal pigment through the offline modular-r36 recipe.",
-          "uvSource": {
-            "width": 2172,
-            "height": 724
-          },
+          "application": "r41: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
           "provenance": {
-            "runtimeOptimization": {
-              "adoption": "20261010-r07-a01",
-              "candidateRevision": "assets/optimized-runtime/20261009-r04",
-              "original": {
-                "url": "/models/camp-cave/bot-round-lascaux-r31.png",
-                "sha256": "94da10a2db5962f7e66af1617a310091c4852d9a1d6c9d322c09e6d01656c93c",
-                "bytes": 1885445,
-                "image": {
-                  "width": 2172,
-                  "height": 724
-                }
-              },
-              "adoptedBy": "20261009-r04-a01"
+            "continuousMural": {
+              "version": 2,
+              "recipe": "assets/camp-cave/identity-r41/recipe.json",
+              "subjects": [
+                "white",
+                "blue",
+                "green",
+                "purple",
+                "orange"
+              ],
+              "sources": [
+                "2d3dc72080c38bc914ef7cdadcdee7e25ac3fd8fec39a922fe5a3a691655499e"
+              ]
             }
-          }
+          },
+          "review": "assets/camp-cave/qa/adoption-murals-r41.json",
+          "prompts": [
+            "assets/camp-cave/continuous-r39/prompts/round-and-maruimo.txt"
+          ]
         },
         "shapeBots": {
-          "url": "/models/camp-cave/bot-shapes-lascaux-r31.opt-86a06da8e6789d84.png",
+          "url": "/models/camp-cave/shape-bots-sprites-r39-15effe4966ef81fd.png",
           "subjects": [
             "beret",
             "frog",
             "triangle",
             "heart"
           ],
-          "source": "assets/camp-cave/source/bot-shapes-lascaux-r31.png",
-          "sha256": "86a06da8e6789d8443800509043ad58ac300960fdd5eb01ba93d54d180dc1cb9",
-          "bytes": 499457,
+          "source": "assets/camp-cave/identity-r41/packed/shapeBots-15effe4966ef81fd.png",
+          "sha256": "15effe4966ef81fd2d41f60ccf5e4e4e9130ebf572074f7da1c63fd9f5e717d3",
+          "bytes": 479477,
           "image": {
             "width": 1024,
             "height": 341
           },
-          "generator": "Built-in imagegen",
+          "generator": "Built-in image_gen",
           "references": [
             "public/models/orb-bot-beret/portrait.png",
             "public/models/orb-bot-frog/portrait.png",
             "public/models/orb-bot-triangle/portrait.png",
             "public/models/orb-bot-heart/portrait.png"
           ],
-          "application": "Gallery r36: 7.5 m wide shapeBots procession, local Y=1.4, strength 0.84. The complete generated painting is retained; individual characters can be exchanged for matching animal pigment through the offline modular-r36 recipe.",
-          "uvSource": {
-            "width": 2172,
-            "height": 724
-          },
+          "application": "r41: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
           "provenance": {
-            "runtimeOptimization": {
-              "adoption": "20261010-r07-a01",
-              "candidateRevision": "assets/optimized-runtime/20261010-r06",
-              "original": {
-                "url": "/models/camp-cave/bot-shapes-lascaux-r31.png",
-                "sha256": "18cac2271a651fe11b223ac5fb3abab2a126ee25153ca0851f749ebd195e8dde",
-                "bytes": 2083858,
-                "image": {
-                  "width": 2172,
-                  "height": 724
-                }
-              },
-              "adoptedBy": "20261010-r06-a02",
-              "supersedes": {
-                "adoption": "20261009-r04-a01",
-                "candidateRevision": "assets/optimized-runtime/20261009-r04",
-                "url": "/models/camp-cave/bot-shapes-lascaux-r31.opt-b6ee4b02e4be9c02.png",
-                "sha256": "b6ee4b02e4be9c02226776ebf7828096b4184475f9dcbefd7b90c66e49f887a1",
-                "bytes": 501873
-              }
+            "continuousMural": {
+              "version": 2,
+              "recipe": "assets/camp-cave/identity-r41/recipe.json",
+              "subjects": [
+                "beret",
+                "frog",
+                "triangle",
+                "heart"
+              ],
+              "sources": [
+                "1a395ea1cd95ec3dfcd8f3f60368dce03f788885a97c6f90f6d6673e577dd0f3"
+              ]
             }
-          }
+          },
+          "review": "assets/camp-cave/qa/adoption-murals-r41.json",
+          "prompts": [
+            "assets/camp-cave/continuous-r39/prompts/shapes-and-companions.txt"
+          ]
         },
         "maeKohaku": {
-          "url": "/models/camp-cave/mae-kohaku-lascaux-r31.opt-b265fa99d4bf3980.png",
+          "url": "/models/camp-cave/mae-kohaku-sprites-r39-89a83ebad514c613.png",
           "subjects": [
             "mae",
             "kohaku"
           ],
-          "source": "assets/camp-cave/source/mae-kohaku-lascaux-r31.png",
-          "sha256": "b265fa99d4bf398007245e0290d37a3be6645881e435cb5da4171d3852e69559",
-          "bytes": 467125,
+          "source": "assets/camp-cave/identity-r41/packed/maeKohaku-89a83ebad514c613.png",
+          "sha256": "89a83ebad514c6139867f173548d780355b55810039e4780d31fea04f725dd98",
+          "bytes": 459983,
           "image": {
             "width": 1024,
             "height": 341
           },
-          "generator": "Built-in imagegen",
+          "generator": "Built-in image_gen",
           "references": [
             "public/models/mae/portrait.png",
             "public/models/kohaku/portrait-r05.png"
           ],
-          "application": "Gallery r36: 7.5 m wide maeKohaku procession, local Y=1.4, strength 0.84. The complete generated painting is retained; individual characters can be exchanged for matching animal pigment through the offline modular-r36 recipe.",
-          "uvSource": {
-            "width": 2172,
-            "height": 724
-          },
+          "application": "r41: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
           "provenance": {
-            "runtimeOptimization": {
-              "adoption": "20261010-r07-a01",
-              "candidateRevision": "assets/optimized-runtime/20261010-r06",
-              "original": {
-                "url": "/models/camp-cave/mae-kohaku-lascaux-r31.png",
-                "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732",
-                "bytes": 1953261,
-                "image": {
-                  "width": 2172,
-                  "height": 724
-                }
-              },
-              "adoptedBy": "20261010-r06-a02",
-              "supersedes": {
-                "adoption": "20261009-r04-a01",
-                "candidateRevision": "assets/optimized-runtime/20261009-r04",
-                "url": "/models/camp-cave/mae-kohaku-lascaux-r31.opt-a9fee23d61be6387.png",
-                "sha256": "a9fee23d61be63879e45a96a1e59d11276a0be25238085bf15f30f55928d5fc7",
-                "bytes": 468227
-              }
+            "continuousMural": {
+              "version": 2,
+              "recipe": "assets/camp-cave/identity-r41/recipe.json",
+              "subjects": [
+                "mae",
+                "kohaku"
+              ],
+              "sources": [
+                "7d743a1388624af6ae0758744ded44b884bd925b82b448a6596a0eeaf26287a7"
+              ]
             }
-          }
+          },
+          "review": "assets/camp-cave/qa/adoption-murals-r41.json",
+          "prompts": [
+            "assets/camp-cave/continuous-r39/prompts/meadow-people.txt"
+          ]
         },
         "maruimoFrieze": {
-          "source": "assets/camp-cave/source/maruimo-lascaux-r33.png",
-          "url": "/models/camp-cave/maruimo-lascaux-r33.opt-60597acdd04df58d.png",
-          "sha256": "60597acdd04df58d8dfa5da63a1f4a7b2d99e717d297a7543582cf7c44a299cf",
-          "bytes": 498678,
+          "source": "assets/camp-cave/identity-r41/packed/maruimoFrieze-8e8a66ed9d4b940e.png",
+          "url": "/models/camp-cave/maruimo-frieze-sprites-r39-8e8a66ed9d4b940e.png",
+          "sha256": "8e8a66ed9d4b940e66c1278bac673690b5430c60cc79af5cce78899e458b35f1",
+          "bytes": 355630,
           "image": {
             "width": 1024,
             "height": 341
           },
-          "generator": "Built-in imagegen",
-          "prompt": "assets/camp-cave/maruimo-lascaux-prompt-r33.txt",
+          "generator": "Built-in image_gen",
           "subjects": [
             "maruimo-mascot"
           ],
@@ -25304,47 +25253,36 @@
               "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df"
             }
           ],
-          "application": "Gallery r36: 7.5 m wide maruimoFrieze procession, local Y=1.4, strength 0.84. The complete generated painting is retained; individual characters can be exchanged for matching animal pigment through the offline modular-r36 recipe.",
-          "review": "assets/camp-cave/qa/gallery-surfaces-r33.json",
-          "uvSource": {
-            "width": 2172,
-            "height": 724
-          },
+          "application": "r41: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
+          "review": "assets/camp-cave/qa/adoption-murals-r41.json",
           "provenance": {
-            "runtimeOptimization": {
-              "adoption": "20261010-r07-a01",
-              "candidateRevision": "assets/optimized-runtime/20261010-r06",
-              "original": {
-                "url": "/models/camp-cave/maruimo-lascaux-r33.png",
-                "sha256": "eff36cf28d83cf69e61e2e345a4d90e08c790ae58306450be1ab657dd7614a1e",
-                "bytes": 1961184,
-                "image": {
-                  "width": 2172,
-                  "height": 724
-                }
-              },
-              "adoptedBy": "20261010-r06-a02",
-              "supersedes": {
-                "adoption": "20261009-r04-a01",
-                "candidateRevision": "assets/optimized-runtime/20261009-r04",
-                "url": "/models/camp-cave/maruimo-lascaux-r33.opt-cf90962462cefa64.png",
-                "sha256": "cf90962462cefa648cbef2fc9c74390e8365bd355bc2791a8a324053023522c2",
-                "bytes": 500299
-              }
+            "continuousMural": {
+              "version": 2,
+              "recipe": "assets/camp-cave/identity-r41/recipe.json",
+              "subjects": [
+                "maruimo-mascot"
+              ],
+              "sources": [
+                "2d3dc72080c38bc914ef7cdadcdee7e25ac3fd8fec39a922fe5a3a691655499e",
+                "f7bc7691caeb77bb9483fbcd2d2614bc0ae58c7be827e86690493820d4ee1105"
+              ]
             }
-          }
+          },
+          "prompts": [
+            "assets/camp-cave/continuous-r39/prompts/round-and-maruimo.txt",
+            "assets/camp-cave/continuous-r39/prompts/extra-animals.txt"
+          ]
         },
         "friendsMeadow": {
-          "source": "assets/camp-cave/source/friends-meadow-lascaux-r34.png",
-          "url": "/models/camp-cave/friends-meadow-lascaux-r34.opt-d730fdda31b98b8b.png",
-          "sha256": "d730fdda31b98b8bc225cc60451a6e3502a79cd0b597e5ab01b84e030dc0e405",
-          "bytes": 472897,
+          "source": "assets/camp-cave/identity-r41/packed/friendsMeadow-f42da105eead65b7.png",
+          "url": "/models/camp-cave/friends-meadow-sprites-r41-f42da105eead65b7.png",
+          "sha256": "f42da105eead65b79c7b4afc2b6439926560c08940cf9fae1bed93a9030c2ef7",
+          "bytes": 568019,
           "image": {
             "width": 1024,
             "height": 341
           },
-          "generator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model)",
-          "prompt": "assets/camp-cave/friends-meadow-lascaux-prompt-r34.txt",
+          "generator": "Built-in image_gen",
           "subjects": [
             "saber-mascot",
             "fairy-mascot",
@@ -25378,47 +25316,43 @@
               "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732"
             }
           ],
-          "application": "Gallery r36: 7.5 m wide friendsMeadow procession, local Y=1.4, strength 0.84. The complete generated painting is retained; individual characters can be exchanged for matching animal pigment through the offline modular-r36 recipe.",
-          "review": "assets/camp-cave/qa/gallery-surfaces-r35.json",
-          "uvSource": {
-            "width": 2172,
-            "height": 724
-          },
+          "application": "r41: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
+          "review": "assets/camp-cave/qa/adoption-murals-r41.json",
           "provenance": {
-            "runtimeOptimization": {
-              "adoption": "20261010-r07-a01",
-              "candidateRevision": "assets/optimized-runtime/20261010-r06",
-              "original": {
-                "url": "/models/camp-cave/friends-meadow-lascaux-r34.png",
-                "sha256": "707e1920df0342a1806082874b8baa3ab33cc2c8ecea9311d3c6ff364caea148",
-                "bytes": 2071821,
-                "image": {
-                  "width": 2172,
-                  "height": 724
-                }
-              },
-              "adoptedBy": "20261010-r06-a02",
-              "supersedes": {
-                "adoption": "20261009-r04-a01",
-                "candidateRevision": "assets/optimized-runtime/20261009-r04",
-                "url": "/models/camp-cave/friends-meadow-lascaux-r34.opt-e6153063bca167d1.png",
-                "sha256": "e6153063bca167d1d618581f1065725d2e90d28d60a8a22d5c4962a58a9069ed",
-                "bytes": 475063
-              }
+            "continuousMural": {
+              "version": 2,
+              "recipe": "assets/camp-cave/identity-r41/recipe.json",
+              "subjects": [
+                "saber-mascot",
+                "fairy-mascot",
+                "nukonuko-mascot",
+                "sagasa-mascot"
+              ],
+              "sources": [
+                "64ddc5e3a3f89a1d9dd386e1834b3e94d5b273082c96e185a0b70177c7a43067",
+                "7d743a1388624af6ae0758744ded44b884bd925b82b448a6596a0eeaf26287a7",
+                "c1acfde3aa90db7caddf60209b2ded929eaaba38b2c80dc5485aea1084e4d0e0",
+                "dd207f6a0e27e8a45b1c5bfc6e5b53a36e66ea62a25b5604f0ef421126563914"
+              ]
             }
-          }
+          },
+          "prompts": [
+            "assets/camp-cave/identity-r41/prompts/saber-mascot.txt",
+            "assets/camp-cave/continuous-r39/prompts/meadow-people.txt",
+            "assets/camp-cave/identity-r41/prompts/nukonuko-mascot.txt",
+            "assets/camp-cave/identity-r41/prompts/sagasa-mascot.txt"
+          ]
         },
         "friendsRiver": {
-          "source": "assets/camp-cave/source/friends-river-lascaux-r35.png",
-          "url": "/models/camp-cave/friends-river-lascaux-r35.opt-7eb5d96e7f0afd5a.png",
-          "sha256": "7eb5d96e7f0afd5a063e711860fa41cfe00739f205cf8a029b1813bd2d47dec1",
-          "bytes": 482100,
+          "source": "assets/camp-cave/identity-r41/packed/friendsRiver-8ff4736a7f5ccd89.png",
+          "url": "/models/camp-cave/friends-river-sprites-r41-8ff4736a7f5ccd89.png",
+          "sha256": "8ff4736a7f5ccd89d826251255556d92c49e29b7440a1274cb1e4124e7b3324b",
+          "bytes": 482869,
           "image": {
             "width": 1024,
             "height": 341
           },
-          "generator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model)",
-          "prompt": "assets/camp-cave/friends-river-lascaux-prompt-r35.txt",
+          "generator": "Built-in image_gen",
           "subjects": [
             "otani-mascot",
             "urata-mascot",
@@ -25456,50 +25390,44 @@
               "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732"
             }
           ],
-          "application": "Gallery r36: 7.5 m wide friendsRiver procession, local Y=1.4, strength 0.84. The complete generated painting is retained; individual characters can be exchanged for matching animal pigment through the offline modular-r36 recipe.",
-          "review": "assets/camp-cave/qa/gallery-surfaces-r35.json",
-          "uvSource": {
-            "width": 2172,
-            "height": 724
-          },
+          "application": "r41: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
+          "review": "assets/camp-cave/qa/adoption-murals-r41.json",
           "provenance": {
-            "runtimeOptimization": {
-              "adoption": "20261010-r07-a01",
-              "candidateRevision": "assets/optimized-runtime/20261010-r06",
-              "original": {
-                "url": "/models/camp-cave/friends-river-lascaux-r35.png",
-                "sha256": "fb4fead40844b3ca672b191e2771e6e3904f88a28964e4249f4b6bb57996f04c",
-                "bytes": 2119578,
-                "image": {
-                  "width": 2172,
-                  "height": 724
-                }
-              },
-              "adoptedBy": "20261010-r06-a02",
-              "supersedes": {
-                "adoption": "20261009-r04-a01",
-                "candidateRevision": "assets/optimized-runtime/20261009-r04",
-                "url": "/models/camp-cave/friends-river-lascaux-r35.opt-62aa0628be8c4b05.png",
-                "sha256": "62aa0628be8c4b054a17b571ea8efa35c9f9d6f619e93f7a1c756e49f07e84a8",
-                "bytes": 487174
-              }
+            "continuousMural": {
+              "version": 2,
+              "recipe": "assets/camp-cave/identity-r41/recipe.json",
+              "subjects": [
+                "otani-mascot",
+                "urata-mascot",
+                "howkey-scientist",
+                "rei-mascot"
+              ],
+              "sources": [
+                "4b55ef861130febec870ca52dd61e15f2c57ad9bb9e91b0d6a134564a5ec6065",
+                "843a108a7675956e22e5e8108f878fc42d53ef324783937529fd4d09b0d12a8e",
+                "6b8967c8ba1857e3e00afd37fa5cc761c7b4949c95f561d0fb1ac3302f3459e6"
+              ]
             }
-          }
+          },
+          "prompts": [
+            "assets/camp-cave/identity-r41/prompts/otani-mascot.txt",
+            "assets/camp-cave/continuous-r39/prompts/river-people.txt",
+            "assets/camp-cave/identity-r41/prompts/howkey-scientist.txt"
+          ]
         },
         "daredaroFrieze": {
-          "url": "/models/camp-cave/daredaro-lascaux-r37.png",
+          "url": "/models/camp-cave/daredaro-frieze-sprites-r41-8334b0a72303bc9e.png",
           "subjects": [
             "daredaro"
           ],
-          "source": "assets/camp-cave/source/daredaro-lascaux-r37-1024.png",
-          "sha256": "672fd8d9ed8de4d9364bf895be3c1f7a4ec1dda9e3d5e0841dadd10c9259fbc1",
-          "bytes": 545811,
+          "source": "assets/camp-cave/identity-r41/packed/daredaroFrieze-8334b0a72303bc9e.png",
+          "sha256": "8334b0a72303bc9ebfc47b89c8d14d67a51e77b08c27722e7d3568cd76f761de",
+          "bytes": 429354,
           "image": {
             "width": 1024,
             "height": 341
           },
-          "generator": "Codex CLI 0.162.0-alpha.17.2 built-in image_gen (gpt-5.6-sol, reasoning medium)",
-          "prompt": "assets/camp-cave/daredaro-lascaux-prompt-r37.txt",
+          "generator": "Built-in image_gen",
           "animals": [
             "woolly rhinoceros",
             "reindeer",
@@ -25515,33 +25443,39 @@
               "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732"
             }
           ],
-          "application": "Gallery r37: 7.5 m wide east-wall procession on the bay the deepened gallery added (local Z -37.0, Y 1.4, strength 0.84), projected onto the retained limestone triangles. Individual characters can be exchanged for matching animal pigment through the offline modular-r37 recipe.",
-          "review": "assets/camp-cave/qa/gallery-surfaces-r37.json",
-          "generated": {
-            "path": "assets/camp-cave/source/daredaro-lascaux-r37.png",
-            "bytes": 2326615,
-            "sha256": "51810bdee3343dddab128950d00e2a4b75deed00609d987d85e2004bfbc7c225",
-            "image": {
-              "width": 2172,
-              "height": 724
-            },
-            "resize": "whole image, Lanczos-3, 2172x724 to 1024x341 (sharp)"
-          }
+          "application": "r41: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
+          "review": "assets/camp-cave/qa/adoption-murals-r41.json",
+          "provenance": {
+            "continuousMural": {
+              "version": 2,
+              "recipe": "assets/camp-cave/identity-r41/recipe.json",
+              "subjects": [
+                "daredaro"
+              ],
+              "sources": [
+                "f3316d955f15b4e9951ece50b8b271bd247cf9a0cf497e02cac21f66d91057d2",
+                "f7bc7691caeb77bb9483fbcd2d2614bc0ae58c7be827e86690493820d4ee1105"
+              ]
+            }
+          },
+          "prompts": [
+            "assets/camp-cave/identity-r41/prompts/daredaro.txt",
+            "assets/camp-cave/continuous-r39/prompts/extra-animals.txt"
+          ]
         },
         "ryuichiFrieze": {
-          "url": "/models/camp-cave/ryuichi-lascaux-r38.png",
+          "url": "/models/camp-cave/ryuichi-frieze-sprites-r39-38a533fa1a5459cf.png",
           "subjects": [
             "ryuichi"
           ],
-          "source": "assets/camp-cave/ryuichi-frieze-r38/paint.png",
-          "sha256": "2434d2899f1698b8ade9a66f5b2c488556ec0cb420b330e4d5c5e893f51fc553",
-          "bytes": 494217,
+          "source": "assets/camp-cave/identity-r41/packed/ryuichiFrieze-38a533fa1a5459cf.png",
+          "sha256": "38a533fa1a5459cf6ff84c2fdd37e6421c06225af82ca6b8b68b471a7a65a0f7",
+          "bytes": 434518,
           "image": {
             "width": 1024,
             "height": 341
           },
-          "generator": "Codex built-in image_gen",
-          "prompt": "assets/camp-cave/ryuichi-frieze-r38/prompt.txt",
+          "generator": "Built-in image_gen",
           "references": [
             {
               "path": "assets/camp-cave/ryuichi-frieze-r38/reference-archived.jpg",
@@ -25557,18 +25491,25 @@
             "prehistoric horse",
             "aurochs"
           ],
-          "application": "Gallery r38: west-wall bay opposite daredaro, centre Z=-37.0, bottom Y=1.4, width 7.5 m, strength 0.84. Mineral pigment projected onto the retained limestone triangles.",
-          "generated": {
-            "path": "assets/camp-cave/ryuichi-frieze-r38/generated.png",
-            "sha256": "998f00a40aa857c3ed4f453b62d2b7b712cfc122e341f360f82c348561609698",
-            "bytes": 2229175,
-            "image": {
-              "width": 2172,
-              "height": 724
-            },
-            "resize": "whole image, sharp Lanczos-3, 2172x724 to 1024x341"
+          "application": "r41: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
+          "review": "assets/camp-cave/qa/adoption-murals-r41.json",
+          "provenance": {
+            "continuousMural": {
+              "version": 2,
+              "recipe": "assets/camp-cave/identity-r41/recipe.json",
+              "subjects": [
+                "ryuichi"
+              ],
+              "sources": [
+                "843a108a7675956e22e5e8108f878fc42d53ef324783937529fd4d09b0d12a8e",
+                "f7bc7691caeb77bb9483fbcd2d2614bc0ae58c7be827e86690493820d4ee1105"
+              ]
+            }
           },
-          "review": "assets/camp-cave/qa/gallery-pigment-coverage-r38.json"
+          "prompts": [
+            "assets/camp-cave/continuous-r39/prompts/river-people.txt",
+            "assets/camp-cave/continuous-r39/prompts/extra-animals.txt"
+          ]
         }
       },
       "sourceRevision": {
@@ -25576,9 +25517,13 @@
         "sha256": "d1dfbd766730cfb9e585f14f983d603e186969d287e4b23e5aa276715a324690"
       },
       "muralComposition": {
-        "recipe": "assets/camp-cave/modular-r38/recipe.json",
-        "visibility": "cave-mural-visibility.json",
-        "characters": 24
+        "recipe": "assets/camp-cave/identity-r41/recipe.json",
+        "version": 2,
+        "hidden": []
+      },
+      "textureRevision": {
+        "record": "assets/camp-cave/qa/source-texture-revision-r41.json",
+        "sha256": "6e0999a5fb2b2f0b450d7421b3200d56c76fe3b572b6aa893129d03fc7ee3913"
       }
     },
     {

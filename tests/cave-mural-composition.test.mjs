@@ -23,29 +23,14 @@ import {
 const recipe = await readJson(MURAL_RECIPE);
 const raw = async (bytes) => sharp(bytes).ensureAlpha().raw().toBuffer();
 
-test('the ten complete processions share scale, baseline, density and even gaps', () => {
-  const main = CAVE_MURALS.filter((m) => m.motif in recipe.panels);
-  assert.equal(main.length, 10);
-  for (const m of main) {
-    assert.equal(m.width, 7.5);
-    assert.equal(m.bottom, 1.4);
-    assert.equal(m.strength, 0.84);
-    // 2.5 m tall to within one pixel of its image (a 1024 px frieze has 341 rows, not 341.3).
-    assert(Math.abs(caveMuralHeight(m) - 2.5) < m.width / caveMotifSource(m.motif).width, m.motif);
-  }
-  for (const wall of ['east', 'west']) {
-    const group = main.filter((m) => m.wall === wall).sort((a, b) => b.centre - a.centre);
-    for (let i = 1; i < group.length; i++)
-      assert(Math.abs(group[i - 1].centre - group[i].centre - 7.9) < 1e-6);
-  }
-  // The deepened gallery's bay (r28) carries the upper register on to both walls.
-  assert.equal(CAVE_MURALS.length, 36);
+test('the legacy group bays are replaced by independent characters and animals on both walls', () => {
+  assert.equal(CAVE_MURALS.filter((m) => m.kind === 'character').length, 24);
+  assert(CAVE_MURALS.filter((m) => m.kind === 'animal').length >= 48);
   assert.equal(
-    CAVE_MURALS.filter((m) =>
-      ['mammoth', 'bison', 'deer', 'redHorse', 'ochreHorse'].includes(m.motif),
-    ).length,
-    22,
+    CAVE_MURALS.filter((m) => m.kind === 'animal' && m.layer === 'foreground').length,
+    16,
   );
+  assert(CAVE_MURALS.every((m) => m.width < 7.5));
   assert(!CAVE_MURALS.some((m) => m.motif === 'comingSoon'));
 });
 
@@ -152,6 +137,13 @@ test('the operator command hides and restores one character, keeps manifests ali
     await mkdir(path.dirname(path.join(root, file)), { recursive: true });
     await copyFile(file, path.join(root, file));
   }
+  // Keep proving the old per-panel compositor on its actual archived inputs.
+  // The current gallery uses the independently tested continuous operator.
+  const legacy = await readJson('assets/camp-cave/continuous-r39/previous-asset.json');
+  await writeFile(path.join(root, 'public/models/camp-cave/asset.json'), JSON.stringify(legacy));
+  const legacyWorld = await readJson('public/models/world-assets.json');
+  legacyWorld.assets[legacyWorld.assets.findIndex((a) => a.modelKey === 'camp-cave')] = legacy;
+  await writeFile(path.join(root, 'public/models/world-assets.json'), JSON.stringify(legacyWorld));
   await writeFile(path.join(root, 'cave-mural-visibility.json'), '{"hidden":[]}\n');
   const run = (...args) =>
     promisify(execFile)(

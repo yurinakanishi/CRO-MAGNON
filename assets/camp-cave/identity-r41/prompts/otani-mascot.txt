@@ -1,0 +1,6 @@
+Use case: identity-preserve / precise-object-edit.
+Input 1 is the current cave-painting duck, the EDIT TARGET. Input 2 is the authoritative original character reference.
+Preserve the exact right-facing hopping/walking pose of input 1: extended white wings, forward smiling orange beak, raised and extended orange feet, green floppy hat, green scarf and dark vest. Do not substitute the original's front standing pose.
+Restore the missing identity details from input 2: a WHITE COMPUTER CURSOR ARROW on a dark square patch on the hat (not a blank buckle), a small GREEN HEART CHARM hanging on a short dark chain from the hat tip, the BLACK HEADSET with green ear-cup rings and a visible short BOOM MICROPHONE by the beak, and the green square marks on the vest's dark front badge. Keep the hat heart separate from the hat where the original has a gap. Entire chain and charm must be included, they are part of the character.
+Keep the existing flat, aged mineral-pigment mural texture and muted green/ochre/charcoal palette. Make the arrow and heart shapes clear at small size; no modern glossy 3D rendering.
+One complete isolated figure on genuine transparent background, square canvas, generous safe margin for wings, feet and dangling charm. No text, extra figures, animals, scenery or frame.

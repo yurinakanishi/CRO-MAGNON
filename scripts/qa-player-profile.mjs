@@ -172,7 +172,11 @@ try {
   assert.ok(
     cardBox.x + cardBox.width <= viewport.width && cardBox.y + cardBox.height <= viewport.height,
   );
-  for (const action of ['zoomIn', 'zoomOut', 'endInspect']) {
+  assert.equal(
+    await c.page.locator('[data-touch-action="zoomIn"], [data-touch-action="zoomOut"]').count(),
+    0,
+  );
+  for (const action of ['endInspect']) {
     const button = await c.page.locator(`[data-touch-action="${action}"]`).boundingBox();
     const apart =
       button.x >= cardBox.x + cardBox.width ||

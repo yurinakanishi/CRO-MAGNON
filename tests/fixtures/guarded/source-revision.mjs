@@ -88,6 +88,45 @@ export async function assertAppliedOrRevisedSource(root, id, report) {
     'only accepted source records changed in the catalog',
   );
   const failures = report.checks.filter((c) => c.status === 'failed');
+  // A reviewed artwork successor intentionally changes the old UV meanings.
+  // The active graph has already verified its independent, hash-bound texture
+  // proof above. Still assert every historical audit difference exactly.
+  const art = assets.filter((asset) => asset.textureRevision);
+  if (art.length) {
+    assert.equal(art.length, 1);
+    const asset = art[0],
+      accepted = active.textureRevisions[asset.modelKey];
+    const replaced = Object.values(active.graph.textures).filter((t) =>
+      accepted.replaced.includes(t.url),
+    );
+    const first = replaced
+      .filter((t) => t.manifestEntry.startsWith('mascotPigments.'))
+      .sort((a, b) => a.manifestEntry.localeCompare(b.manifestEntry))[0];
+    const key = first.manifestEntry.split('.').at(-1),
+      now = asset.mascotPigments[key];
+    const compatibility = failures.shift();
+    assert.equal(
+      compatibility.name,
+      "the current runtime still loads the base adoption's standalone images with unchanged meaning (re-planned from its revision and saved pre-apply manifests), and the graph serves them as recorded",
+    );
+    assert.deepEqual(compatibility.problems, [
+      `the current runtime files cannot be re-planned: CAVE_EXTRA_PIGMENTS.${key} names ${now.url}, the manifest audits ${first.source.url}`,
+      'the plan recorded standalone images; the base revision has none',
+    ]);
+    const textures = failures.pop();
+    assert.equal(
+      textures.name,
+      'cave texture records serve the candidate with uvSource set to the original size',
+    );
+    const expected = replaced.flatMap((t) =>
+      t.manifests.map(
+        (p) =>
+          `${p} ${asset.modelKey}: ${t.manifestEntry} is not ${t.url} with uvSource ${t.uvSource.width}x${t.uvSource.height}`,
+      ),
+    );
+    assert.deepEqual(textures.problems.sort(), expected.sort());
+    assert.equal(textures.problemCount, expected.length);
+  }
   assert.deepEqual(
     failures.map((c) => c.name),
     [

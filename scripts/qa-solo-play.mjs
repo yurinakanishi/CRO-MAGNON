@@ -64,6 +64,7 @@ async function setup(target, character = 'cro-male', dye = 'blue', enter = true)
 }
 async function title(target) {
   await target.keyboard.press('Escape');
+  await target.locator('[data-pause-tab="settings"]').click();
   await target.locator('[data-controller-menu="title"]').click();
   await target.waitForFunction(
     async () =>
@@ -228,7 +229,7 @@ async function touchMovement(target) {
       (previous) => Number(document.querySelector('#world').dataset.playerJumpSequence) > previous,
       sequence,
     );
-    await target.locator('[data-touch-action="menu"]').tap();
+    await target.locator('[data-touch-action="settings"]').tap();
     await target.locator('#modal[open]').waitFor();
     await target.locator('[data-controller-menu="title"]').tap();
     await target.locator('#screen-title').waitFor();

@@ -45,12 +45,7 @@ export function touchStick(
 
 /** Each available action has its own touch target, without a keyboard's three-cue limit. */
 export function touchActions(context: CueContext): { action: CueAction; label: string }[] {
-  if (context.viewing && !context.automaticCamera)
-    return [
-      { action: 'zoomIn', label: '近く' },
-      { action: 'zoomOut', label: '遠く' },
-      { action: 'endInspect', label: '戻る' },
-    ];
+  if (context.viewing && !context.automaticCamera) return [{ action: 'endInspect', label: '戻る' }];
   if (context.busy) return [{ action: 'cancel', label: 'やめる' }];
   const actions: { action: CueAction; label: string }[] = [];
   const add = (action: CueAction, label?: string) => {
@@ -69,8 +64,6 @@ export function touchActions(context: CueContext): { action: CueAction; label: s
 
 const SKILLS: readonly TouchCommand[] = ['throw', 'torch', 'recall'];
 const PROMPT_ORDER: readonly TouchCommand[] = [
-  'zoomIn',
-  'zoomOut',
   'endInspect',
   'cancel',
   'pet',

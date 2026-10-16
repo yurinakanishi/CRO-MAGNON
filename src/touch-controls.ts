@@ -1,5 +1,5 @@
 import { setData, setFlag, setText } from './hud-dom.js';
-import { setLocalizedAttribute, setLocalizedText } from './language-ui.js';
+import { setLocalizedAttribute } from './language-ui.js';
 import {
   touchIcon,
   touchLayout,
@@ -12,7 +12,8 @@ import {
   type TouchMovement,
 } from './touch-input.js';
 
-export type TouchAction = TouchCommand | 'menu' | 'map' | 'chat' | 'mascots' | 'center' | 'sound';
+export type TouchAction =
+  TouchCommand | 'menu' | 'settings' | 'map' | 'chat' | 'mascots' | 'center' | 'sound';
 
 export const touchDevice = () =>
   navigator.maxTouchPoints > 0 && matchMedia('(pointer: coarse)').matches;
@@ -67,6 +68,7 @@ export class TouchControls {
     this.root.innerHTML = `<nav class="touch-toolbar" aria-label="探索のメニュー">${[
       ['menu', 'bag', 'メニュー'],
       ['mascots', 'people', '仲間'],
+      ['settings', 'gear', '設定'],
       ...(hooks.chat ? [['chat', 'chat', '会話']] : []),
       ['center', 'recenter', '視点を戻す'],
     ]
@@ -76,7 +78,7 @@ export class TouchControls {
       )
       .join(
         '',
-      )}<button type="button" data-touch-action="sound" aria-label="音をオンにする" aria-pressed="false"><span data-sound-icon>${hooks.icon('muted')}</span><small data-sound-label>音オフ</small></button></nav>
+      )}<button type="button" data-touch-action="sound" aria-label="音をオンにする" aria-pressed="false"><span data-sound-icon>${hooks.icon('muted')}</span></button></nav>
       <p class="touch-chat-peek" role="status" translate="no" hidden><b></b><span></span></p>
       <div class="touch-move" role="group" aria-label="移動パッド。触れた所から、浅く倒すと歩き、深く倒すと走ります"><span id="touch-stick" class="touch-stick" data-gait="rest" aria-hidden="true"><i class="touch-stick-knob"></i></span></div>
       <div class="touch-prompts" aria-label="いま使える行動"></div>
@@ -131,10 +133,6 @@ export class TouchControls {
     this.sound.querySelector('[data-sound-icon]')!.innerHTML = this.hooks.icon(
       enabled ? 'sound' : 'muted',
     );
-    setLocalizedText(
-      this.sound.querySelector('[data-sound-label]')!,
-      enabled ? '音オン' : '音オフ',
-    );
   }
 
   private chooseTouch = (event: PointerEvent) => {
@@ -150,7 +148,10 @@ export class TouchControls {
       this.release();
       return;
     }
-    setData(this.zone, { disabled: !this.hooks.available() });
+    const viewing = !!context.viewing && !context.automaticCamera;
+    if (viewing && this.pointer !== null) this.stop();
+    setFlag(this.zone, 'hidden', viewing);
+    setData(this.zone, { disabled: viewing || !this.hooks.available() });
     const { prompts, skills } = touchLayout(context);
     const signature = JSON.stringify([prompts, skills]);
     if (signature !== this.signature) {
@@ -159,8 +160,7 @@ export class TouchControls {
     }
     // Viewing a companion or waiting on a task leaves only its own prompts in reach.
     setData(this.root, {
-      mode:
-        context.viewing && !context.automaticCamera ? 'viewing' : context.busy ? 'busy' : 'play',
+      mode: viewing ? 'viewing' : context.busy ? 'busy' : 'play',
     });
     setFlag(this.jump, 'disabled', !context.jump || !!context.busy || !!context.viewing);
     setFlag(this.attack, 'disabled', !context.attack || !!context.busy || !!context.viewing);
@@ -309,7 +309,13 @@ export class TouchControls {
 
   /** The pad appears under the thumb, kept whole on screen. */
   private down = (event: PointerEvent) => {
-    if (this.pointer !== null || event.button !== 0 || !this.visible || !this.hooks.available())
+    if (
+      this.pointer !== null ||
+      event.button !== 0 ||
+      !this.visible ||
+      this.zone.hidden ||
+      !this.hooks.available()
+    )
       return;
     event.preventDefault();
     this.pointer = event.pointerId;

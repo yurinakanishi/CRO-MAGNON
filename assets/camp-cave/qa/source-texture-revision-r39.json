@@ -1,0 +1,184 @@
+{
+  "schema": "cro-magnon/source-texture-revision@1",
+  "modelKey": "camp-cave",
+  "decision": "adopt",
+  "previous": {
+    "adoption": "20261010-r07-a01",
+    "replaced": [
+      {
+        "url": "/models/camp-cave/524-lascaux-frieze-r32.opt-2f9a4a74cb9c0e9d.png",
+        "sha256": "2f9a4a74cb9c0e9d3a94cf394a3b843655a273690b94dbb1d9c406fb40da3c51",
+        "bytes": 560426,
+        "manifestEntry": "characterPigment"
+      },
+      {
+        "url": "/models/camp-cave/bot-round-lascaux-r31.opt-9dc5292302335e65.png",
+        "sha256": "9dc5292302335e65a6b3dafc7c22a6a2691261a08c7193832b64cbc79854fb7c",
+        "bytes": 463714,
+        "manifestEntry": "mascotPigments.roundBots"
+      },
+      {
+        "url": "/models/camp-cave/bot-shapes-lascaux-r31.opt-86a06da8e6789d84.png",
+        "sha256": "86a06da8e6789d8443800509043ad58ac300960fdd5eb01ba93d54d180dc1cb9",
+        "bytes": 499457,
+        "manifestEntry": "mascotPigments.shapeBots"
+      },
+      {
+        "url": "/models/camp-cave/friends-meadow-lascaux-r34.opt-d730fdda31b98b8b.png",
+        "sha256": "d730fdda31b98b8bc225cc60451a6e3502a79cd0b597e5ab01b84e030dc0e405",
+        "bytes": 472897,
+        "manifestEntry": "mascotPigments.friendsMeadow"
+      },
+      {
+        "url": "/models/camp-cave/friends-river-lascaux-r35.opt-7eb5d96e7f0afd5a.png",
+        "sha256": "7eb5d96e7f0afd5a063e711860fa41cfe00739f205cf8a029b1813bd2d47dec1",
+        "bytes": 482100,
+        "manifestEntry": "mascotPigments.friendsRiver"
+      },
+      {
+        "url": "/models/camp-cave/mae-kohaku-lascaux-r31.opt-b265fa99d4bf3980.png",
+        "sha256": "b265fa99d4bf398007245e0290d37a3be6645881e435cb5da4171d3852e69559",
+        "bytes": 467125,
+        "manifestEntry": "mascotPigments.maeKohaku"
+      },
+      {
+        "url": "/models/camp-cave/maruimo-lascaux-r33.opt-60597acdd04df58d.png",
+        "sha256": "60597acdd04df58d8dfa5da63a1f4a7b2d99e717d297a7543582cf7c44a299cf",
+        "bytes": 498678,
+        "manifestEntry": "mascotPigments.maruimoFrieze"
+      },
+      {
+        "url": "/models/camp-cave/rimo-lascaux-frieze-r30.opt-8a2acbfbfaa6d2c2.png",
+        "sha256": "8a2acbfbfaa6d2c22c83e38cda85615a4da7064b52e3231f7b8a83bcc890ec25",
+        "bytes": 560138,
+        "manifestEntry": "rimoPigment"
+      }
+    ]
+  },
+  "files": [
+    {
+      "url": "/models/camp-cave/creature524-sprites-r39-a661470daad410ea.png",
+      "sha256": "a661470daad410ea7a18e81d3d3565c600d33ab01d56923e32dda5a071cc481b",
+      "bytes": 249970,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "url": "/models/camp-cave/daredaro-frieze-sprites-r39-5164e2f06f9a081e.png",
+      "sha256": "5164e2f06f9a081e2b2c8680835fb7c24313c20d85cfe329f71102064096efb6",
+      "bytes": 428623,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "url": "/models/camp-cave/friends-meadow-sprites-r39-489afca75b5760b5.png",
+      "sha256": "489afca75b5760b5a5f3ca871fa143dd9c86bdb972fa92fd90cc7a67cf47e192",
+      "bytes": 564979,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "url": "/models/camp-cave/friends-river-sprites-r39-b4d4b13a362ee92e.png",
+      "sha256": "b4d4b13a362ee92ea167a06337e808d7d8f3de96b1bdb68c078091fdae4aabec",
+      "bytes": 479675,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "url": "/models/camp-cave/limestone-r05.opt-373ad7d95a04bc2c.png",
+      "sha256": "373ad7d95a04bc2cd56303ebae90eca3045353323949f081615f2bc996dbdbbd",
+      "bytes": 2228940,
+      "image": {
+        "width": 1024,
+        "height": 1024
+      },
+      "uvSource": {
+        "width": 1254,
+        "height": 1254
+      }
+    },
+    {
+      "url": "/models/camp-cave/mae-kohaku-sprites-r39-89a83ebad514c613.png",
+      "sha256": "89a83ebad514c6139867f173548d780355b55810039e4780d31fea04f725dd98",
+      "bytes": 459983,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "url": "/models/camp-cave/maruimo-frieze-sprites-r39-8e8a66ed9d4b940e.png",
+      "sha256": "8e8a66ed9d4b940e66c1278bac673690b5430c60cc79af5cce78899e458b35f1",
+      "bytes": 355630,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "url": "/models/camp-cave/mural-atlas-r05.opt-94ca1aebe422e2a0.png",
+      "sha256": "94ca1aebe422e2a0de6582654e9475167c895acd227cb28526e9873d8b3a4e85",
+      "bytes": 1276113,
+      "image": {
+        "width": 1024,
+        "height": 1024
+      },
+      "uvSource": {
+        "width": 1254,
+        "height": 1254
+      }
+    },
+    {
+      "url": "/models/camp-cave/mural-side-r04.png",
+      "sha256": "1cbdd091523b48fea81f70eba5cc3840c7328ccfab4b8d1ef63e44b49e0ff5af"
+    },
+    {
+      "url": "/models/camp-cave/rimo-frieze-sprites-r39-ec249779442b8ede.png",
+      "sha256": "ec249779442b8edeb6a2052f0f6deffa31c2624107cf24f44bd56058fda8a761",
+      "bytes": 190974,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "url": "/models/camp-cave/round-bots-sprites-r39-4e5d49d65bd48974.png",
+      "sha256": "4e5d49d65bd48974e34f47d054ea6b26a55ce228e23443fb46242d0d47f7ca41",
+      "bytes": 474866,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "url": "/models/camp-cave/ryuichi-frieze-sprites-r39-38a533fa1a5459cf.png",
+      "sha256": "38a533fa1a5459cf6ff84c2fdd37e6421c06225af82ca6b8b68b471a7a65a0f7",
+      "bytes": 434518,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "url": "/models/camp-cave/shape-bots-sprites-r39-15effe4966ef81fd.png",
+      "sha256": "15effe4966ef81fd2d41f60ccf5e4e4e9130ebf572074f7da1c63fd9f5e717d3",
+      "bytes": 479477,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    }
+  ],
+  "review": {
+    "path": "assets/camp-cave/qa/adoption-murals-r39.json",
+    "sha256": "d498265c9b48175033cd5e1d405eb755b0592a3030f835782d4779d2d1158791"
+  }
+}
