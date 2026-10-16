@@ -1,0 +1,49 @@
+{
+  "adoptedAtUtc": "2026-10-15T23:30:03.448Z",
+  "request": "ゲームのタイトル画像をこの画像に差し替えて。",
+  "source": {
+    "path": "cro-magnon-original-four.png",
+    "bytes": 2525727,
+    "sha256": "615f8844aac3a00f78885eb5475d0a08aa140443312405228feea0af5a7c002b"
+  },
+  "previous": [
+    {
+      "path": "before-adoption/cro-magnon-mmo-transparent.png",
+      "bytes": 2519873,
+      "sha256": "c878989eb7518742e946c909df649a59a693c5154176553ce517ef02b26108bf"
+    },
+    {
+      "path": "before-adoption/cro-magnon-mmo-transparent.webp",
+      "bytes": 360472,
+      "sha256": "2477250373c263fcbc9d5b7407dd960f52467a5f459f40d4b4c86530b25d522d"
+    }
+  ],
+  "installed": [
+    {
+      "path": "public/title/cro-magnon-mmo-transparent.png",
+      "bytes": 2525727,
+      "sha256": "615f8844aac3a00f78885eb5475d0a08aa140443312405228feea0af5a7c002b"
+    },
+    {
+      "path": "public/title/cro-magnon-mmo-transparent.webp",
+      "bytes": 1771796,
+      "sha256": "4e18b0480e684c39b556cdb06d5ab1c1b8d24605c98da1b25f68c747c26d0647"
+    }
+  ],
+  "encoding": {
+    "library": "sharp",
+    "options": {
+      "lossless": true,
+      "exact": true,
+      "effort": 6,
+      "alphaQuality": 100
+    },
+    "decodedRgbaExactlyEqual": true,
+    "width": 1536,
+    "height": 1024
+  },
+  "imageGenerationCalls": 0,
+  "qaFolder": "output/playwright/title-original-four-adoption-20261016/",
+  "serverRestarted": false,
+  "deployed": false
+}

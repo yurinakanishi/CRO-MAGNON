@@ -1,0 +1,22 @@
+Use case: precise-object-edit
+Task: ONE SINGLE EDIT of the ORIGINAL title artwork, using four independent character references. Image 1 is the original and must be the only base canvas. Preserve its original artwork quality.
+
+INPUT ROLES:
+1. EDIT TARGET: original CRO-MAGNON MMO title, before any character changes.
+2. Boy design reference: shell-headband boy.
+3. Girl design reference: feather-haired girl.
+4. Cat APPEARANCE reference only; do NOT use its raised-paw pose.
+5. Floating yellow mascot 524 design reference.
+
+Make these four coordinated changes in the RIGHT-hand group only:
+A. Replace the smaller adult man to the right of the tall CENTRAL spearman (the rear man holding an axe, in front of the mammoth) with the cute boy from image 2. Preserve his spiky brown hair, shell headband, big amber eyes, red ochre cheek stripes, cream stitched hide tunic, dark fur vest, tooth necklace, brown shorts, belt pouch and furry boots. He has the reference's large head, short limbs and small chibi body; he is shorter than the central adult. Place him near x=935, standing on the rocks with feet around y=625, holding one small stone axe. Face right in a slightly frontal three-quarter view.
+B. Replace the RIGHTMOST adult woman in front of the mammoth with the cute girl from image 3. Preserve her chestnut bob, short front braids, single feather, big amber eyes, red cheek dots, rusty fur cape, cream-trimmed tan hide dress, red zigzag hem, shell necklace, belt pouch and furry boots. Same cute chibi proportions as the boy. Place her near x=1090 with feet around y=660, holding one slender prehistoric spear, facing the same rightward three-quarter direction. These two new figures replace the entire two old adults; no leftover adult faces or limbs.
+C. Add the small fluffy grey-and-white cat from image 4 on the rocky ground to the right of the girl, beneath the mammoth, around x=1245,y=620. Use a BATTLE-READY feline pose: all four paws on the ground, BOTH FRONT PAWS DOWN, front legs braced apart, shoulders slightly lowered, hind legs bent, body leaning forward ready to spring. A focused closed-mouth expression, green eyes looking RIGHT, white muzzle/chest/paws, pink nose and fluffy grey tail. Keep it cute and recognizably the reference cat. No raised left paw, no waving, no human pose, no weapons or armour. Overall size around 140 px tall, ground contact around y=680.
+D. Add 524 from image 5 farther right, near x=1380,y=575. The whole yellow body is around 90–100 px tall, slightly SMALLER than the cute humans' heads. It FLOATS with a clearly visible gap below it, no support, legs or wings. Rounded golden-yellow body with small soft nubs, white connected face marking with orange-red digits exactly "524" and the teal RIGHT-pointing arrow below. No added eyes or conventional mouth. It also faces RIGHT in the same three-quarter direction as the boy, girl and cat. Numerals remain readable and not mirrored.
+
+UNEDITED ORIGINAL AREAS ARE LOCKED:
+Keep the tall central adult spearman and crouching adult woman on the LEFT exactly as in image 1. Keep the sabertooth tiger, mammoth and both tusks, orange sun, mountains, three birds, rocky ground, plants, framing and perspective. Preserve the original subdued natural colours, original painted detail, original light and shadows. Blend the four new characters into that existing style and light. Do not restyle or enhance the whole artwork.
+Especially preserve the whole bottom logo from image 1: exact text "CRO-MAGNON MMO", same shapes, spacing, positions, VERY DARK BROWN almost black texture, and same slender red-to-ochre underline. Do not brighten it into shiny gold; do not add crystalline or metallic facets, extra contrast, oversharpening or elaborate new detail. Keep the original image's fine detail intact outside the local edits.
+Exactly four humans total (the two original left/central adults and the two replacement chibi humans), plus one cat and one 524.
+
+OUTPUT: one finished 1536 x 1024 image, original 3:2 aspect ratio and full canvas, no crop or zoom. Preserve genuine alpha transparency: all empty exterior/background areas and spaces inside/between the letters are transparent with zero alpha; retain opaque snow, white fur and all actual foreground elements. No coloured haze behind the cutout, no opaque white/black background, no checkerboard, no new text or watermark.

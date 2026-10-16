@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-16",
+  "status": "single-pass-alternate-created-not-adopted",
+  "request": "編集を重ねた画像は使わず、変更前の最初のタイトルと男の子・女の子・猫・524の参照画像から、一回だけGPT Imageでまとめて編集する。猫は身構えて前足を上げない。",
+  "method": "built-in image_gen; transparent_background=true",
+  "imageGenerationCalls": 1,
+  "iterativelyEditedTitleUsedAsInput": false,
+  "inputs": [
+    {
+      "path": "assets/title-credits/20261016-original-four-r01/inputs/original-title.png",
+      "bytes": 2463687,
+      "sha256": "74f97d00b9db805edbd35d25f86a299a8f387148e71737ecde753a104fe02876"
+    },
+    {
+      "path": "assets/title-credits/20261016-original-four-r01/inputs/boy.png",
+      "bytes": 1803212,
+      "sha256": "a820ed3b9c80ab5aacd7ed594f9d18350706d3563dc9a85b0359d0517b30a921"
+    },
+    {
+      "path": "assets/title-credits/20261016-original-four-r01/inputs/girl.png",
+      "bytes": 1706165,
+      "sha256": "1589caedd718740a501aacdd3dcd490afaee31f04bbd1db193ff26989b540340"
+    },
+    {
+      "path": "assets/title-credits/20261016-original-four-r01/inputs/cat.png",
+      "bytes": 167805,
+      "sha256": "da95c2287d8d7311cd15fb8ed55bfd10f92d3d4fe7c9f22741de43afefdfe1df"
+    },
+    {
+      "path": "assets/title-credits/20261016-original-four-r01/inputs/524.png",
+      "bytes": 40966,
+      "sha256": "d445adaa10510e98db22a41508d739cbe2e8c4919398c0700d50e1169cad58bc"
+    }
+  ],
+  "prompt": {
+    "path": "assets/title-credits/20261016-original-four-r01/prompt.txt",
+    "bytes": 4370,
+    "sha256": "44fa416607bb8a6daedb36718fb09eb85bb0c720295a7381998bfd84ae4a017c"
+  },
+  "output": {
+    "path": "assets/title-credits/20261016-original-four-r01/cro-magnon-original-four.png",
+    "bytes": 2525727,
+    "sha256": "615f8844aac3a00f78885eb5475d0a08aa140443312405228feea0af5a7c002b"
+  },
+  "size": [1536, 1024],
+  "alpha": {
+    "transparent": 661762,
+    "partialBelow240": 131452,
+    "atLeast240": 779650
+  },
+  "encoding": "Original generated PNG copied byte-for-byte; no re-encoding, retouching, resize or additional generation",
+  "activeTitle": {
+    "path": "public/title/cro-magnon-mmo-transparent.png",
+    "bytes": 2519873,
+    "sha256": "c878989eb7518742e946c909df649a59a693c5154176553ce517ef02b26108bf"
+  },
+  "activeTitleChangedByThisTask": false,
+  "visualChecks": [
+    "Right adult pair replaced by shell-headband boy and feather-haired girl",
+    "Grey-white cat braced on the ground with both front paws down, looking right",
+    "524 floats to the right and is smaller than a chibi head",
+    "Left/central adults, tiger, mammoth, landscape and dark title composition retained"
+  ],
+  "limitations": "One generative edit; no assertion of pixel-identical preservation outside edited regions."
+}

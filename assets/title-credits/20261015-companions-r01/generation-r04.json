@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-16",
+  "revision": "r04",
+  "status": "alternate-version-revised-not-adopted",
+  "request": "ねこも、戦いに備える感じで。左手は上げないでほしい",
+  "method": "built-in image_gen; image edit; transparent_background=true",
+  "input": {
+    "path": "assets/title-credits/20261015-companions-r01/cro-magnon-mmo-companions-r03.png",
+    "bytes": 2650184,
+    "sha256": "3ed25b16ea1152c1fa7537c0cff34f866318ea263b569111ef015c658624ab27"
+  },
+  "prompt": {
+    "path": "assets/title-credits/20261015-companions-r01/prompt-r04.txt",
+    "bytes": 1874,
+    "sha256": "8c7baf930ee1d47ca18a56f4196ec47d2a9229ce35ebe6278ac24708c3f0d629"
+  },
+  "outputs": [
+    {
+      "path": "assets/title-credits/20261015-companions-r01/cro-magnon-mmo-companions-r04.png",
+      "bytes": 2812112,
+      "sha256": "94b326fd78bcfbfac06c5c20684e97da15f41c25d3cb43b6d32b28b62e9f0239"
+    },
+    {
+      "path": "assets/title-credits/20261015-companions-r01/cro-magnon-mmo-companions-r04.webp",
+      "bytes": 441202,
+      "sha256": "3469c2e63f303936334f53e811ae2a92f631bbc9d03cfc435c2144cf23d1cd14"
+    }
+  ],
+  "size": [1536, 1024],
+  "alpha": {
+    "transparent": 628448,
+    "partialBelow240": 127316,
+    "atLeast240": 817100
+  },
+  "encoding": {
+    "format": "webp",
+    "quality": 86,
+    "effort": 6,
+    "alphaQuality": 100,
+    "resize": false
+  },
+  "activeTitleUnchanged": true,
+  "activeTitle": {
+    "path": "public/title/cro-magnon-mmo-transparent.png",
+    "bytes": 2519873,
+    "sha256": "c878989eb7518742e946c909df649a59a693c5154176553ce517ef02b26108bf"
+  },
+  "visualChecks": [
+    "Cat has both front paws on the ground, braced hind legs and a focused right-facing gaze",
+    "Floating 524 keeps its size, position, right-facing pose and 524 marking",
+    "Existing subjects and title composition retained; generative colours not pixel-identical"
+  ],
+  "notes": "Generated PNG copied unmodified. r03 retained. No runtime or 3D model changes; no adoption into current title."
+}
