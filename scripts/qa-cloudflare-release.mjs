@@ -44,6 +44,7 @@ const files = build.publicFiles.filter(
   (file) =>
     paths.has(file.path) ||
     /^models\/.*\.png$/.test(file.path) ||
+    /^models\/.*\/portraits\/.*\.webp$/.test(file.path) ||
     /^title\/(?:qr|avatar)-/.test(file.path),
 );
 for (const file of files) {
@@ -76,8 +77,8 @@ for (const name of ['ryuichi', 'nukonuko', 'otani', 'urata']) {
   }
 }
 const config = await fetch(`${base}/multiplayer-config.json`).then((r) => r.json());
-assert.equal(config.mode, 'online');
-assert.equal(config.room, 'EMBER');
+assert.equal(config.mode, 'solo');
+assert.equal(config.room, 'SOLO');
 assert.equal(config.movementRefreshMs, 140);
 const publicCharacters = await fetch(`${base}/shared/character-profiles.mjs`).then((r) => r.text());
 assert.doesNotMatch(publicCharacters, /maruimo|まる[ぃい]も/i);
@@ -97,10 +98,20 @@ for (let part = 1; part <= Math.ceil(privateAsset.bytes / (24 * 1024 * 1024)); p
     `${privateAsset.url.slice(0, -4)}-${privateAsset.sha256.slice(0, 12)}.part-${part}.bin`,
   );
 for (const url of excludedCharacterFiles) assert.equal((await fetch(base + url)).status, 404, url);
+const dormantCharacterFiles = [];
+for (const key of ['cat-kunoichi', 'kunoichi-katana', 'neanderthal-hunter', 'neanderthal-woman']) {
+  assert.ok(!build.publicFiles.some((file) => file.path.startsWith(`models/${key}/`)), key);
+  const asset = JSON.parse(await readFile(`public/models/${key}/asset.json`, 'utf8'));
+  for (const url of [`/models/${key}/asset.json`, `/models/${key}/portrait.png`, asset.url]) {
+    assert.equal((await fetch(base + url)).status, 404, url);
+    dormantCharacterFiles.push(url);
+  }
+}
 const report = {
   checkedAt: new Date().toISOString(),
   base,
   status: 'passed',
+  mode: config.mode,
   servedFilesVerified: files.length,
   titleShellFilesVerified: titleShellFiles.length,
   browserBundleFilesVerified: browserBundleFiles.length,
@@ -112,6 +123,9 @@ const report = {
   publicCharacterCount: build.characters.length,
   publicClothingDyeRulesVerified: true,
   excludedCharacterFiles,
+  dormantCharacterFiles,
+  selectionPhotographsVerified: files.filter((file) => /\/portraits\/.*\.webp$/.test(file.path))
+    .length,
 };
 await writeFile('assets/cloudflare/public-release-qa.json', JSON.stringify(report, null, 2));
 console.log(JSON.stringify(report));

@@ -4,6 +4,16 @@ The user's latest requirement allows the **$5/month base fee if necessary, but f
 
 ## Current status
 
+Deployed on **2026-10-15 at 16:08 JST**, version `cdbad4d2-3256-426a-a994-1eaee7d0633c`, serving 100% at [the public game](https://cromagnonmmo.cro-magnon.workers.dev/). The exact CRO-MAGNON Free account's dashboard showed **Free / $0 / Current plan** immediately before deployment. The release contains 752 files / 133.5 MiB / 86 GLBs / 13 playable characters and 128 selection photographs. The separate character/companion screens, readable names, physical size ratios, cave/loading changes and credits including 朝日南 are live. Cat Kunoichi and her katana remain excluded and recoverable in the repository.
+
+The current game is **solo only**: the browser runs the game and autosaves in IndexedDB; it makes no game API or WebSocket requests. `SERVICE_ENABLED: "false"` rejects `/ws` and `/api/status` before resolving a Durable Object. The same DO binding/class/migration and namespace remain for the old online saves; no cloud checkpoint was read or changed. Live Chrome checks passed for desktop and 390px touch flow, autosave/reload with inventory and location preserved, and single-writer locking. Browser errors and game API/WebSocket requests: zero. The 185 checked live files, including all 128 selection photographs, match the final build's hashes. [Release record](docs/solo-deploy-2026-10-15.md), [solo browser QA](assets/cloudflare/solo-live-qa.json), [deployment metadata](assets/cloudflare/deployment.json).
+
+For current release verification, run `node scripts/qa-solo-play.mjs output/playwright/<new-run> --url=https://cromagnonmmo.cro-magnon.workers.dev/` and `node scripts/qa-cloudflare-release.mjs https://cromagnonmmo.cro-magnon.workers.dev`. Do not run the old live online client or SQL tests against the solo release. The deployed configuration is kept as strict JSON by its Prettier override so the existing deployment guard can parse it.
+
+## Historical source and deployment observations
+
+The following dated entries retain their original status at the time of observation. Their “not deployed” statements are superseded by the 2026-10-15 deployment above. The online architecture, SQL saving and quota details below describe retained, inactive functionality.
+
 Source/build update on **2026-10-15**, **not deployed**: normal and public entry is now solo only. The title enables 「ソロプレイで始める」 and disables 「オンラインで始める」. A dedicated browser Worker runs the existing game rules and saves progress in IndexedDB; it makes no game API, WebSocket, Durable Object or SQL calls. `multiplayer-config.json` uses `mode: "solo"`; `wrangler.jsonc` uses `SERVICE_ENABLED: "false"`. Static files stay assets-first. Even stale `/ws` and `/api/status` requests are refused before accessing `env.GAME`. Retain the existing DO binding, class and migration to preserve previous online saves; this does not instantiate an object during solo play. Do not enable online or deploy without a new explicit instruction. The online SQL behavior and quotas documented below are retained for a possible future online restart. [Design and verification](docs/solo-play-2026-10-15.md).
 
 Additional source/build update on **2026-10-15**, **not deployed**: character and clothing selection now leads to a separate companion screen; Back preserves the draft. All nine Dots, Rimo-neko and 524 use photographs of their delivered GLBs in setup and the in-game companion menu. The isolated public package includes all 11 photographs, verifies the two-screen flow in its actual browser bundle and validates five independent companion selections in its Worker game core. [Implementation and verification](docs/starting-mascot-2026-10-15.md).
@@ -102,9 +112,16 @@ The public build validates files in fresh staging directories, then swaps `dist-
 
 During this deployment, the inherited `CLOUDFLARE_API_TOKEN` lacked access to the dedicated account. Removing `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_API_KEY` only from that command's process allowed the existing Wrangler OAuth to be used. No saved credentials or global environment variables were changed. Set `CLOUDFLARE_ACCOUNT_ID` to the exact dedicated account, `WRANGLER_SEND_METRICS=false`, and `WRANGLER_LOG_PATH` to a workspace output file for these commands. Never print credentials into QA records.
 
-After a functional deployment, run `node scripts/qa-cloudflare.mjs https://<actual-worker-url>` while `EMBER` is empty and inspect the game in a browser. The script checks zero players before creating clients and finishes with explicit leave for each test client. `qa-cloudflare-release.mjs` reads static files to verify current public profiles, hidden image denial, client config and texture hashes. Read-only health/status checks are sufficient after documentation-only changes; do not occupy the public room or repeat all downloads unnecessarily.
+For the current solo deployment, use the live solo commands in **Current status** above. Only after a separately authorized online restart would `node scripts/qa-cloudflare.mjs https://<actual-worker-url>` be appropriate; it checks zero players before creating clients and finishes with explicit leave for each test client. `qa-cloudflare-release.mjs` reads static files to verify current public profiles, hidden image denial, solo config and image hashes. Do not occupy the old public room or repeat all downloads unnecessarily.
 
 ## Verification records
+
+- `docs/solo-deploy-2026-10-15.md`, `assets/cloudflare/deployment.json` and `assets/cloudflare/solo-live-qa.json`: current solo release and six live Chrome checks, with zero game API/WebSocket requests and no DO access during solo play.
+- `assets/cloudflare/public-release-qa.json`: current solo config, 185 served-file hashes including 128 selection photographs, and excluded/dormant model paths returning 404.
+- `assets/cloudflare/character-privacy-qa.json`: current 896-file audit plus the uploaded Worker bundle; 16 retained Worker definitions and 18 historical local definitions. The public player roster has 13 entries.
+- `output/cloudflare-deploy/deploy-solo-20261015/` and `output/playwright/solo-live-20261015/`: current build, account observation, before/after metadata, logs, screenshots and unchanged local-save evidence. The prior receipts are preserved under `receipts-before/`.
+
+The older online evidence below remains historical; its descriptions of then-current receipt files do not override the current solo records above.
 
 - `output/cloudflare-build.json`: current copied files, public credit mode, excluded characters, exact GLB/part hashes and every public file's length/SHA. The older `assets/cloudflare/build.json` is historical.
 - `assets/cloudflare/local-qa.json`: earlier emulator evidence with nine characters and 83 GLBs. The current eight-character rules and save behavior have separate local audits below.

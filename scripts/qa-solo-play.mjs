@@ -1,4 +1,4 @@
-// Real Chrome UI with its own browser storage and an unsaved asset server.
+// Real Chrome UI with its own browser storage, using a local asset server or --url.
 // Renderer instrumentation is read-only; the server must receive no game traffic.
 import assert from 'node:assert/strict';
 import { mkdir, writeFile, stat } from 'node:fs/promises';
@@ -18,6 +18,8 @@ const output = process.argv[2] || `output/playwright/solo-${Date.now()}`;
 await mkdir(output, { recursive: true });
 const core = createGameCore();
 const publicArg = process.argv.find((arg) => arg.startsWith('--public='));
+const urlArg = process.argv.find((arg) => arg.startsWith('--url='));
+assert.ok(!(publicArg && urlArg), 'Use either --public or --url');
 async function publicAssets(directory) {
   const root = path.resolve(directory);
   const server = createServer(async (request, response) => {
@@ -53,15 +55,19 @@ async function publicAssets(directory) {
     },
   };
 }
-const game = publicArg
-  ? await publicAssets(publicArg.slice('--public='.length))
-  : createGameServer({
-      core,
-      host: '127.0.0.1',
-      port: 0,
-      delivery: await readDeliveryOverlay(process.cwd()),
-    });
-const { port } = await game.listen();
+const game = urlArg
+  ? null
+  : publicArg
+    ? await publicAssets(publicArg.slice('--public='.length))
+    : createGameServer({
+        core,
+        host: '127.0.0.1',
+        port: 0,
+        delivery: await readDeliveryOverlay(process.cwd()),
+      });
+const base = urlArg
+  ? new URL(urlArg.slice('--url='.length)).href
+  : `http://127.0.0.1:${(await game.listen()).port}/`;
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const checks = [],
   idleSamples = [],
@@ -92,7 +98,7 @@ async function prepare(context) {
         '\nconst qaSetState=WorldRenderer.prototype.setState;WorldRenderer.prototype.setState=function(...args){globalThis.qaRenderer=this;return qaSetState.apply(this,args);};',
     });
   });
-  await target.goto(`http://127.0.0.1:${port}/`);
+  await target.goto(base);
   return target;
 }
 async function setup(target, character = 'cro-male', dye = 'blue', enter = true) {
@@ -285,17 +291,17 @@ try {
     '390px touch flow keeps both title buttons visible and runs solo after separate character and companion screens',
   );
   assert.deepEqual(forbidden, []);
-  assert.equal(core.rooms.size, 0);
+  if (game && !publicArg) assert.equal(core.rooms.size, 0);
   assert.deepEqual(errors, []);
-  pass('No WebSocket or API request, and no server room is created');
+  pass('No WebSocket or game API request');
 } catch (error) {
   if (page) await page.screenshot({ path: `${output}/failure.png` }).catch(() => {});
   throw error;
 } finally {
   await writeFile(
     `${output}/result.json`,
-    JSON.stringify({ checks, idleSamples, errors, forbidden }, null, 2),
+    JSON.stringify({ base, checks, idleSamples, errors, forbidden }, null, 2),
   );
   await browser.close();
-  await game.close();
+  await game?.close();
 }

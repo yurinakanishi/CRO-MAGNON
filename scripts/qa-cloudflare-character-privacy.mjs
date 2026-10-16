@@ -95,7 +95,7 @@ const report = {
   auditedFiles,
   bundledWorkerAudited: true,
   publicCharacters: publicCharacters.length,
-  localCharacters: 9,
+  localCharacters: CHARACTER_MODELS.length,
   excludedCharacterNeverInOutboundPackets: true,
   priorInventoryPreserved: true,
 };

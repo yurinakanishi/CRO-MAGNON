@@ -10,27 +10,27 @@
     "directory": "./dist-cloudflare",
     "binding": "ASSETS",
     "run_worker_first": ["/ws", "/api/*"],
-    "not_found_handling": "none",
+    "not_found_handling": "none"
   },
   "durable_objects": {
     "bindings": [
       {
         "name": "GAME",
-        "class_name": "FreeGameRoom",
-      },
-    ],
+        "class_name": "FreeGameRoom"
+      }
+    ]
   },
   "migrations": [
     {
       "tag": "v1",
-      "new_sqlite_classes": ["FreeGameRoom"],
-    },
+      "new_sqlite_classes": ["FreeGameRoom"]
+    }
   ],
   "vars": {
-    "SERVICE_ENABLED": "false",
+    "SERVICE_ENABLED": "false"
   },
   "observability": {
-    "enabled": false,
+    "enabled": false
   },
-  "send_metrics": false,
+  "send_metrics": false
 }
