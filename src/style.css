@@ -541,18 +541,28 @@ progress::-moz-progress-bar {
   opacity: 1;
 }
 .loading-mural-track {
-  --mural-span: max(100vw, 150vh);
+  --mural-tile: clamp(240px, 25vw, 480px);
+  --mural-span: max(100vw, calc(var(--mural-tile) * 4));
+  position: absolute;
+  top: 42%;
   display: flex;
   width: calc(var(--mural-span) * 2);
-  height: 100%;
-  margin-left: calc((100vw - var(--mural-span)) / 2);
+  height: calc(var(--mural-tile) * 2 / 3);
+  margin-top: calc(var(--mural-tile) / -3);
   opacity: 0.8;
   animation: loading-mural-drift 120s linear infinite;
 }
+.loading-mural-sequence {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-around;
+  width: var(--mural-span);
+}
 .loading-mural-track img {
   flex: none;
-  width: 50%;
-  height: 100%;
+  width: var(--mural-tile);
+  height: auto;
   object-fit: contain;
 }
 .loading-screen-art::after {

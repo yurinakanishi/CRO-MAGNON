@@ -211,7 +211,10 @@ export function loadingScreenView(parent: HTMLElement): LoadingView {
   root.className = 'loading-screen';
   root.hidden = true;
   root.setAttribute('aria-label', LOADING_TEXT);
-  root.innerHTML = `<div class="loading-screen-art" aria-hidden="true"><div class="loading-mural-track"><img alt="" decoding="async" draggable="false"><img alt="" decoding="async" draggable="false"></div></div>
+  // Four small animal groups fill a sequence; its identical copy makes the drift seamless.
+  // Every image shares one URL and decoded asset, including on narrow phone screens.
+  const muralSequence = `<div class="loading-mural-sequence">${'<img alt="" width="1536" height="1024" decoding="async" draggable="false">'.repeat(4)}</div>`;
+  root.innerHTML = `<div class="loading-screen-art" aria-hidden="true"><div class="loading-mural-track">${muralSequence.repeat(2)}</div></div>
     <header class="loading-screen-place"><small></small><strong></strong></header>
     <div class="loading-screen-bottom">
       <div class="loading-screen-status"><span class="loading-screen-spinner" aria-hidden="true"></span><span role="status" data-loading-status>${LOADING_TEXT}</span><progress max="1" value="0" aria-label="読み込みの進み具合" hidden></progress></div>

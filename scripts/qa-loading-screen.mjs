@@ -356,7 +356,7 @@ try {
   assert.equal(motion.rotationChanged, true);
   assert.deepEqual(
     motion.images,
-    Array.from({ length: 2 }, () => ({ src: LOADING_MURAL, ready: true })),
+    Array.from({ length: 8 }, () => ({ src: LOADING_MURAL, ready: true })),
   );
   await page.screenshot({ path: `${out}/cave-loading-desktop.png` });
   const firstTip = await page.locator('.loading-screen-tip strong').innerText();
