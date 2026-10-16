@@ -1,0 +1,3929 @@
+{
+  "ok": true,
+  "width": 336,
+  "height": 384,
+  "framing": {
+    "verticalSpan": 2.24,
+    "groundMargin": 0.08
+  },
+  "generator": "scripts/capture-character-portraits.mjs",
+  "browser": "155.0.8059.41",
+  "renderer": {
+    "toneMapping": "ACESFilmic",
+    "exposure": 1.1,
+    "hemisphere": 2,
+    "key": 2,
+    "fill": 0.7
+  },
+  "inputs": {
+    "src/character-assets.ts": "a6093025dc071946bd2a117c5608b5c298b95023f28a44598f710e9773239d6d",
+    "src/character-animation.ts": "d027b1c23d88f25021839b648a6f209738bd056e135a153f4d50709e57e3943b",
+    "src/clothing-dye.ts": "a64df1eb5dc0b51fda1f77d9ddc092d2e359ceeef5b8b7984430785be4092a04",
+    "src/clothing-dye-rules.ts": "8d134577524c68e65dc98bcf97b4712a19ad4f55c0526ac7581548d1c86f9409",
+    "shared/clothing-dye.mts": "b1f839797be77a47be7d60af6c513e217aa7f3a7ca8be8f2072cf7a7c3242bd1",
+    "scripts/capture-character-portraits.mjs": "5329371e7df3674ac6eafc0cfc814da599f088aec61a86132181cc58fba252c6"
+  },
+  "records": [
+    {
+      "key": "cro-magnon-woman",
+      "name": "クロマニョン人 女性",
+      "source": {
+        "modelKey": "cro-magnon-woman",
+        "url": "/models/cro-magnon-woman/model-c5-r01-face-r01.cook-c24c0b9930a3f94c.glb",
+        "sha256": "c24c0b9930a3f94cff2d4df7fc7cb66ee5b7e7fb6d17bfeba4d6377e0fa813b4",
+        "bytes": 1702508,
+        "scene": 0,
+        "bounds": {
+          "min": [
+            -0.37725889155447756,
+            -0.000025022648699501646,
+            -0.23363068576896195
+          ],
+          "max": [
+            0.37733167972303006,
+            1.4506510631834963,
+            0.2720938772748934
+          ]
+        },
+        "camera": {
+          "center": [
+            0.000036394084276247796,
+            1.04,
+            0.019231595752965736
+          ],
+          "verticalSpan": 2.24
+        },
+        "clip": "Idle_Loop",
+        "time": 0.4
+      },
+      "photos": [
+        {
+          "png": {
+            "file": "cro-magnon-woman/original.png",
+            "bytes": 58582,
+            "sha256": "d94a45f46ff717bfad1361db03002399b7331631b7fb9a6a978b4fdf1fbd8e5f"
+          },
+          "visiblePixels": 18300,
+          "changedPixels": 0,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 232,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": null,
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-woman/original.webp",
+            "bytes": 31146,
+            "sha256": "6103e44b2df65b88909065534ebe0aea4197d8d3895e3d4969a77bebd5500b1e"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-woman/red.png",
+            "bytes": 57198,
+            "sha256": "e519b6eca7b950ef467391f33c1ca8976d5280cb150cd41ca0f7691220d46f0c"
+          },
+          "visiblePixels": 18300,
+          "changedPixels": 9218,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 232,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "red",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-woman/red.webp",
+            "bytes": 31888,
+            "sha256": "1aa339ee789e0764f0f6605bc4bc970871c943effb8960e6021eaaa2d3b770bc"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-woman/yellow.png",
+            "bytes": 57443,
+            "sha256": "6af3218884cb8b0d8914a662c22ef9dfb52e631dcd63d67d6a66b95c9e651807"
+          },
+          "visiblePixels": 18300,
+          "changedPixels": 9248,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 232,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "yellow",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-woman/yellow.webp",
+            "bytes": 31226,
+            "sha256": "c5032e9bcda8177f9673da7df09460878036002e0bcd22a27e393314a278309a"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-woman/green.png",
+            "bytes": 57729,
+            "sha256": "12408d5c027c44a8f3fd16087c7e99f0de2c84cc2751bfa5b2ab99a4d0477e27"
+          },
+          "visiblePixels": 18300,
+          "changedPixels": 9261,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 232,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "green",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-woman/green.webp",
+            "bytes": 31924,
+            "sha256": "6c0a8d510326ca2640e198628a86f733e16a618aba03495e61e995800b12a003"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-woman/teal.png",
+            "bytes": 56892,
+            "sha256": "7ed627bc69b9d1f25e60c632d65b277910a669e11918a731a7de6589350653cc"
+          },
+          "visiblePixels": 18300,
+          "changedPixels": 9272,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 232,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "teal",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-woman/teal.webp",
+            "bytes": 30880,
+            "sha256": "ecd273e2718c41a8fcced24e6674af791f2f0dc4fc52bb88ec676509228b4da5"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-woman/blue.png",
+            "bytes": 58141,
+            "sha256": "3b44f54e42d44ab360e390d17de84de3caaf99dd36282d201c8fa8a18485d9b9"
+          },
+          "visiblePixels": 18300,
+          "changedPixels": 9273,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 232,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "blue",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-woman/blue.webp",
+            "bytes": 31444,
+            "sha256": "457b869016464b1c5cfa01643cea056de0e1f66c6c21b83947927d28e5e3049e"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-woman/purple.png",
+            "bytes": 58233,
+            "sha256": "00a3281c9b9afbe669edd0612a96e6623c5952706c6cd379f6a36fd6adc01f86"
+          },
+          "visiblePixels": 18300,
+          "changedPixels": 9209,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 232,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "purple",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-woman/purple.webp",
+            "bytes": 30464,
+            "sha256": "369f4a94800bb16d71f083f688ae88f6cc2d443376ad44ac135e97ede0648af2"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-woman/pink.png",
+            "bytes": 58159,
+            "sha256": "2aa1f790180efdcb3048413ace026dac4a7b254d66eeece2eedde96b5618029e"
+          },
+          "visiblePixels": 18300,
+          "changedPixels": 9182,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 232,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "pink",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-woman/pink.webp",
+            "bytes": 31706,
+            "sha256": "058ab3456af11c62c6483c80423c38866a7942df512e8069a7e83777668dffaf"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-woman/white.png",
+            "bytes": 56315,
+            "sha256": "bdb8105061b71c5c0c69f2b022a2ddd4ed38ce0c227b852ffdbcbd33579ee77f"
+          },
+          "visiblePixels": 18300,
+          "changedPixels": 9214,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 232,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "white",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-woman/white.webp",
+            "bytes": 28124,
+            "sha256": "8a1a010b1d57d5303623d0078fa4ff59439b55570f79d939874583082019c903"
+          }
+        }
+      ]
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "name": "クロマニョン人 男性",
+      "source": {
+        "modelKey": "cro-magnon-hunter",
+        "url": "/models/cro-magnon-hunter/startup.cook-75e63f3b98269fba.glb",
+        "sha256": "75e63f3b98269fbaf70755c66f3e6b2bb3ddf48f375175ba968da5d557bb5b79",
+        "bytes": 4075956,
+        "scene": 0,
+        "bounds": {
+          "min": [
+            -0.4300377567533134,
+            4.14965117935319e-7,
+            -0.20941189661691548
+          ],
+          "max": [
+            0.432246106816204,
+            1.8021022325905647,
+            0.2173009286749963
+          ]
+        },
+        "camera": {
+          "center": [
+            0.0011041750314453036,
+            1.04,
+            0.003944516029040418
+          ],
+          "verticalSpan": 2.24
+        },
+        "clip": "Idle_Loop",
+        "time": 0.4
+      },
+      "photos": [
+        {
+          "png": {
+            "file": "cro-magnon-hunter/original.png",
+            "bytes": 64119,
+            "sha256": "9db4260e737f93853e7e5bb0f7f229e6f7d71fdfe74d42e944b6d5604458eea9"
+          },
+          "visiblePixels": 21778,
+          "changedPixels": 0,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 94,
+            "right": 241,
+            "top": 61,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": null,
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-hunter/original.webp",
+            "bytes": 33758,
+            "sha256": "d57f57c4ed7818390c70fd96f6da9ef0be6bf2351e0a8df967fb6ebf3d97f395"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-hunter/red.png",
+            "bytes": 62275,
+            "sha256": "2bcc047973188c7ebcf8ef83535a36c8e1cda2fbfcd17d96e3a3c2fc325fde86"
+          },
+          "visiblePixels": 21778,
+          "changedPixels": 12604,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 94,
+            "right": 241,
+            "top": 61,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "red",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-hunter/red.webp",
+            "bytes": 34794,
+            "sha256": "32a63cf7a8921388a9344b67b399a8938bbd66e932fdc68bc2411ff8e67337ef"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-hunter/yellow.png",
+            "bytes": 65135,
+            "sha256": "89450f1588973655e631b1a7d7e87c4bcace57862ecbbb5a1adc496203e89141"
+          },
+          "visiblePixels": 21778,
+          "changedPixels": 13001,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 94,
+            "right": 241,
+            "top": 61,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "yellow",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-hunter/yellow.webp",
+            "bytes": 36202,
+            "sha256": "309450f6ef840c5b81e6221eb12cd18628625ce702d294688cc32d7a5891c44f"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-hunter/green.png",
+            "bytes": 62927,
+            "sha256": "3a4ea79f54e2924786afc88207ee9a29e7bfe18bd74693e4e285e7cadb1ea992"
+          },
+          "visiblePixels": 21778,
+          "changedPixels": 12878,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 94,
+            "right": 241,
+            "top": 61,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "green",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-hunter/green.webp",
+            "bytes": 35576,
+            "sha256": "6f2542a39d36af9fd57e08f27cc4654b16999ed36e6bd7708e2acf6d500b8d98"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-hunter/teal.png",
+            "bytes": 62410,
+            "sha256": "b7d0377634121a7ebf409fedbfeca4c6050cc61c50112bd5cfa0f0f603d20099"
+          },
+          "visiblePixels": 21778,
+          "changedPixels": 12984,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 94,
+            "right": 241,
+            "top": 61,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "teal",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-hunter/teal.webp",
+            "bytes": 35274,
+            "sha256": "7ab5d9216f64716e14894f7859b2b5b5c5889d457b86dc9806552a09720d268e"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-hunter/blue.png",
+            "bytes": 64111,
+            "sha256": "480e99769e39cd4c672621b7aef6daa11dcc787a3835b24d04c443a155e3209e"
+          },
+          "visiblePixels": 21778,
+          "changedPixels": 13015,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 94,
+            "right": 241,
+            "top": 61,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "blue",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-hunter/blue.webp",
+            "bytes": 36444,
+            "sha256": "e2f849f9505f10fbfe15598ae17da377b7c717bdc4ce818fc955af1c78227772"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-hunter/purple.png",
+            "bytes": 64015,
+            "sha256": "0ce11c1efa9b5207a4f1b167d9aa3419bfe89ffb336eec5645148bf525d9a89c"
+          },
+          "visiblePixels": 21778,
+          "changedPixels": 12658,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 94,
+            "right": 241,
+            "top": 61,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "purple",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-hunter/purple.webp",
+            "bytes": 34620,
+            "sha256": "ddce5a1357ee325b954c02326692175b837a893e30d0b0d24fa7e4ba1ca0c8c2"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-hunter/pink.png",
+            "bytes": 65410,
+            "sha256": "c16523f73366dd2f35d3cea54c6d92f8c539c07222dc9afea6aa225bcdab982d"
+          },
+          "visiblePixels": 21778,
+          "changedPixels": 12841,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 94,
+            "right": 241,
+            "top": 61,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "pink",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-hunter/pink.webp",
+            "bytes": 35670,
+            "sha256": "90000a19499012c4fbb0475a84450510d6e7c510c09434d8c68e6b4eb51550da"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-hunter/white.png",
+            "bytes": 65935,
+            "sha256": "7e7048885e48688545ba9987e83795ad69fcaca76fbd5bb8cbb4866c48443e69"
+          },
+          "visiblePixels": 21778,
+          "changedPixels": 13113,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 94,
+            "right": 241,
+            "top": 61,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "white",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-hunter/white.webp",
+            "bytes": 33712,
+            "sha256": "690e151f2f9eeda6fe809aad36eca145e243aa70087617841ca3e9a76e31c5ae"
+          }
+        }
+      ]
+    },
+    {
+      "key": "desert-fennec-mage",
+      "name": "砂耳の魔法使い",
+      "source": {
+        "modelKey": "desert-fennec-mage",
+        "url": "/models/desert-fennec-mage/startup.cook-bdca43dd987694c5.glb",
+        "sha256": "bdca43dd987694c5fac56e200f230a73e84b14528361162cdb41781104470ae2",
+        "bytes": 2622816,
+        "scene": 0,
+        "bounds": {
+          "min": [
+            -0.21306211311734458,
+            0.000045419546802847975,
+            -0.25803625595967683
+          ],
+          "max": [
+            0.17826345933128157,
+            0.7823778031701001,
+            0.12320704849861039
+          ]
+        },
+        "camera": {
+          "center": [
+            -0.017399326893031503,
+            1.04,
+            -0.06741460373053322
+          ],
+          "verticalSpan": 2.24
+        },
+        "clip": "Idle_Loop",
+        "time": 0.4
+      },
+      "photos": [
+        {
+          "png": {
+            "file": "desert-fennec-mage/original.png",
+            "bytes": 21163,
+            "sha256": "3c1957bcc37d6908458ce08d79058c03527b42f2bca4cfd3bfb005008945d553"
+          },
+          "visiblePixels": 4722,
+          "changedPixels": 0,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 134,
+            "right": 201,
+            "top": 236,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": null,
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "desert-fennec-mage/original.webp",
+            "bytes": 9792,
+            "sha256": "055c09fe046abb58f678d4b2164d892168b297ce80b749a467be047a495b4de4"
+          }
+        },
+        {
+          "png": {
+            "file": "desert-fennec-mage/red.png",
+            "bytes": 21123,
+            "sha256": "952c7146986e208d72617aafec7919c40c1df012e6f9a7cda0564c1565fd28e2"
+          },
+          "visiblePixels": 4722,
+          "changedPixels": 654,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 134,
+            "right": 201,
+            "top": 236,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "red",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "desert-fennec-mage/red.webp",
+            "bytes": 10070,
+            "sha256": "b39243dd71081a5c819002e0ebdd9579efbc4e59ecb8401d590462aa31982150"
+          }
+        },
+        {
+          "png": {
+            "file": "desert-fennec-mage/yellow.png",
+            "bytes": 21127,
+            "sha256": "90293bb3740467dddb2ee1d0ca681a4a1e3a691e2384e9dd0ebbeaf4a3e231cf"
+          },
+          "visiblePixels": 4722,
+          "changedPixels": 688,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 134,
+            "right": 201,
+            "top": 236,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "yellow",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "desert-fennec-mage/yellow.webp",
+            "bytes": 10162,
+            "sha256": "9a723f29f5419d24b50ae4248c898c2325229b1f5c02df698a5abec87956eb1f"
+          }
+        },
+        {
+          "png": {
+            "file": "desert-fennec-mage/green.png",
+            "bytes": 21122,
+            "sha256": "44d6d7581d0128a43473221b163767065219c91dbd14ac52d96baade39c275f2"
+          },
+          "visiblePixels": 4722,
+          "changedPixels": 689,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 134,
+            "right": 201,
+            "top": 236,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "green",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "desert-fennec-mage/green.webp",
+            "bytes": 10224,
+            "sha256": "89a0053a4bc92cbeddcd7690ae7167bde5f4b48d183fa29d53f61bb767929255"
+          }
+        },
+        {
+          "png": {
+            "file": "desert-fennec-mage/teal.png",
+            "bytes": 21158,
+            "sha256": "8df25cb1d7960112944a0856f45e4239a3f1a909ac9aba236444cb9a25e3cf68"
+          },
+          "visiblePixels": 4722,
+          "changedPixels": 692,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 134,
+            "right": 201,
+            "top": 236,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "teal",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "desert-fennec-mage/teal.webp",
+            "bytes": 10126,
+            "sha256": "e7e64fca6ece1c1afa9d8025ff3a238ddded215391c740feba7caa55eedfd1fa"
+          }
+        },
+        {
+          "png": {
+            "file": "desert-fennec-mage/blue.png",
+            "bytes": 21169,
+            "sha256": "f02518001d7c4b74c721ed5aae4a10af3f4081834fe1e2c40f06e9740d5d62aa"
+          },
+          "visiblePixels": 4722,
+          "changedPixels": 691,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 134,
+            "right": 201,
+            "top": 236,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "blue",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "desert-fennec-mage/blue.webp",
+            "bytes": 10254,
+            "sha256": "2dc8a16c1bd36ccd9aba57b72bbd44f2b0bb0de277f3d5b3ed14766e93d62c22"
+          }
+        },
+        {
+          "png": {
+            "file": "desert-fennec-mage/purple.png",
+            "bytes": 21135,
+            "sha256": "0ddc9789e6dd810db2934b13f2255b7efcd0641f1931dc1ea1510bfeca469a62"
+          },
+          "visiblePixels": 4722,
+          "changedPixels": 667,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 134,
+            "right": 201,
+            "top": 236,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "purple",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "desert-fennec-mage/purple.webp",
+            "bytes": 10230,
+            "sha256": "bcd73f713a8dc0ac8b34f3bd2d9e428b6d8e4dcce7c2200329fb8c9c505dadce"
+          }
+        },
+        {
+          "png": {
+            "file": "desert-fennec-mage/pink.png",
+            "bytes": 21131,
+            "sha256": "c904f0d350bbffaabefae7a6d180cabe5e2fc597d337509c6790ae58ca640814"
+          },
+          "visiblePixels": 4722,
+          "changedPixels": 667,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 134,
+            "right": 201,
+            "top": 236,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "pink",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "desert-fennec-mage/pink.webp",
+            "bytes": 10200,
+            "sha256": "465c92fb611a30020360ff882ed8cfb6c03711ae2d7b2dfbf523e56a51833588"
+          }
+        },
+        {
+          "png": {
+            "file": "desert-fennec-mage/white.png",
+            "bytes": 21152,
+            "sha256": "8df2fdaa9a45ecedb3169694323b0177981e40d4fdff61951507f6d8daea2992"
+          },
+          "visiblePixels": 4722,
+          "changedPixels": 692,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 134,
+            "right": 201,
+            "top": 236,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "white",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "desert-fennec-mage/white.webp",
+            "bytes": 9902,
+            "sha256": "cdf7bfebe736ef34d0d948a48b8902740abb8cf2f4d548245a02e6c9f49992db"
+          }
+        }
+      ]
+    },
+    {
+      "key": "giant-ape",
+      "name": "巨腕の大猿",
+      "source": {
+        "modelKey": "giant-ape",
+        "url": "/models/giant-ape/startup.cook-b888ea3df2e92a91.glb",
+        "sha256": "b888ea3df2e92a91a894d15c1216e985b0dfd1d68f2166eed6f66fc33d9f1d0b",
+        "bytes": 3055532,
+        "scene": 0,
+        "bounds": {
+          "min": [
+            -0.7545206796092458,
+            0.00007916625413546894,
+            -0.47908457658673653
+          ],
+          "max": [
+            0.7537363735907532,
+            2.000760526448552,
+            0.23443058219797946
+          ]
+        },
+        "camera": {
+          "center": [
+            -0.0003921530092463321,
+            1.04,
+            -0.12232699719437853
+          ],
+          "verticalSpan": 2.24
+        },
+        "clip": "Idle_Loop",
+        "time": 0.4
+      },
+      "photos": [
+        {
+          "png": {
+            "file": "giant-ape/original.png",
+            "bytes": 143915,
+            "sha256": "e1edaefe64f01958d5e885fe8ae62dfacd2f1d83fcadc2592169422b36307d9e"
+          },
+          "visiblePixels": 55402,
+          "changedPixels": 0,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 39,
+            "right": 297,
+            "top": 27,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": null,
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "giant-ape/original.webp",
+            "bytes": 82092,
+            "sha256": "64113067a1d7e82a4468e9b3f3b7eb7edfbcc48df87bb2e7a70b8c8375fb6102"
+          }
+        },
+        {
+          "png": {
+            "file": "giant-ape/red.png",
+            "bytes": 141852,
+            "sha256": "651cd9286c1e5cc01cc05fa43b9eec16c25d1f263338fec447b9d43e607e7cfa"
+          },
+          "visiblePixels": 55402,
+          "changedPixels": 22048,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 39,
+            "right": 297,
+            "top": 27,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "red",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "giant-ape/red.webp",
+            "bytes": 83318,
+            "sha256": "ebbb5d3657d79271f123d595e9112f82d1729f4d9b53d54cfc8967863c1e9d61"
+          }
+        },
+        {
+          "png": {
+            "file": "giant-ape/yellow.png",
+            "bytes": 148477,
+            "sha256": "c4971e7e67ffd8dd6a1075aacf7022f3fc2d04a39c4642808ff0e02680991438"
+          },
+          "visiblePixels": 55402,
+          "changedPixels": 42812,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 39,
+            "right": 297,
+            "top": 27,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "yellow",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "giant-ape/yellow.webp",
+            "bytes": 88716,
+            "sha256": "178bfe55ccaaa5c72a167c24714de37543c1315d136d5f46429eeb10e11ffccc"
+          }
+        },
+        {
+          "png": {
+            "file": "giant-ape/green.png",
+            "bytes": 142592,
+            "sha256": "6e9c18ea3acd4ddde36da010464511c6074cb0700659e0e47142d00d0c306ffb"
+          },
+          "visiblePixels": 55402,
+          "changedPixels": 42613,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 39,
+            "right": 297,
+            "top": 27,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "green",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "giant-ape/green.webp",
+            "bytes": 84370,
+            "sha256": "823a44f2977dfffbc97fd06fc1e212fa25d8fe964a58b02cb73b071c9eb5c727"
+          }
+        },
+        {
+          "png": {
+            "file": "giant-ape/teal.png",
+            "bytes": 140020,
+            "sha256": "119e55be4d8eeee8e0137e06b1d6961b7bae4b41eefde3c890d25f9d29d88fe6"
+          },
+          "visiblePixels": 55402,
+          "changedPixels": 42795,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 39,
+            "right": 297,
+            "top": 27,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "teal",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "giant-ape/teal.webp",
+            "bytes": 83716,
+            "sha256": "4c42024555053feeb41a8606e3694640d823f8775ac6f15ff4a989265172e8c5"
+          }
+        },
+        {
+          "png": {
+            "file": "giant-ape/blue.png",
+            "bytes": 147106,
+            "sha256": "1defd90c0a2e41b8411b62244c2b52173343bd5d4b40fcc85903da1ed38d4f8d"
+          },
+          "visiblePixels": 55402,
+          "changedPixels": 42929,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 39,
+            "right": 297,
+            "top": 27,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "blue",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "giant-ape/blue.webp",
+            "bytes": 89248,
+            "sha256": "a90bc801150c65202eaf10ca7962c5794cbc466c24be24e269b03eb3eb60d7ec"
+          }
+        },
+        {
+          "png": {
+            "file": "giant-ape/purple.png",
+            "bytes": 147422,
+            "sha256": "65a7e7fd4e13eb37d775c83d5091027d79bf719709c03b46ba8fae757f0e7c3b"
+          },
+          "visiblePixels": 55402,
+          "changedPixels": 41591,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 39,
+            "right": 297,
+            "top": 27,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "purple",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "giant-ape/purple.webp",
+            "bytes": 86668,
+            "sha256": "60929c0f5803fedab8ed334a9499c5d9ea23931483803c5cbc27efad2933f2de"
+          }
+        },
+        {
+          "png": {
+            "file": "giant-ape/pink.png",
+            "bytes": 148653,
+            "sha256": "3d5402cc750a5f08e5a20dc20fe84f44dfcf65d38f3f8aa369a247088b5d4bfe"
+          },
+          "visiblePixels": 55402,
+          "changedPixels": 41994,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 39,
+            "right": 297,
+            "top": 27,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "pink",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "giant-ape/pink.webp",
+            "bytes": 87096,
+            "sha256": "2fd5e064448c77fd5fb8d89a1caf3e44948027cbadb320238956333cf3acbeae"
+          }
+        },
+        {
+          "png": {
+            "file": "giant-ape/white.png",
+            "bytes": 148404,
+            "sha256": "e6cda1389019c30f2e2c3997042f88157e574cb97febf7b08751485d20be3289"
+          },
+          "visiblePixels": 55402,
+          "changedPixels": 43251,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 39,
+            "right": 297,
+            "top": 27,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "white",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "giant-ape/white.webp",
+            "bytes": 78216,
+            "sha256": "3dd67e336d42a94b92dcfdfd26fc2033cd860fb5ce4b2272dea5c3a0aad65910"
+          }
+        }
+      ]
+    },
+    {
+      "key": "maruimo-octopus",
+      "name": "まるぃも タコ人間",
+      "source": {
+        "modelKey": "maruimo-octopus",
+        "url": "/models/maruimo-octopus/model-c2.cook-16652c29ec47b809.glb",
+        "sha256": "16652c29ec47b809902888818735b1899cf7904388473f9b4fd36ab8bc15d6e9",
+        "bytes": 6218020,
+        "scene": 0,
+        "bounds": {
+          "min": [
+            -0.8621566088323096,
+            0.0014310704743121941,
+            -0.583252574335301
+          ],
+          "max": [
+            0.8166280779385825,
+            1.5491123275203142,
+            0.7339349660005048
+          ]
+        },
+        "camera": {
+          "center": [
+            -0.022764265446863552,
+            1.04,
+            0.0753411958326019
+          ],
+          "verticalSpan": 2.24
+        },
+        "clip": "Idle_Loop",
+        "time": 0.4
+      },
+      "photos": [
+        {
+          "png": {
+            "file": "maruimo-octopus/original.png",
+            "bytes": 107866,
+            "sha256": "3dcd0ba5a38a08b65711ff7b65770f2e4d6e9839af27dca92a24b86093f40335"
+          },
+          "visiblePixels": 39579,
+          "changedPixels": 0,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 24,
+            "right": 311,
+            "top": 104,
+            "bottom": 369
+          },
+          "shader": true,
+          "dye": null,
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "maruimo-octopus/original.webp",
+            "bytes": 60984,
+            "sha256": "cbee40692fd1dd9ad1e8ade3eb490d5f54bebd6f3291185a2fc08789c8e6d541"
+          }
+        },
+        {
+          "png": {
+            "file": "maruimo-octopus/red.png",
+            "bytes": 107084,
+            "sha256": "711bcfdedd40007fa2f4a2ed8e5fd580f857b96d8da808038ce8eca68abcfae9"
+          },
+          "visiblePixels": 39579,
+          "changedPixels": 5957,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 24,
+            "right": 311,
+            "top": 104,
+            "bottom": 369
+          },
+          "shader": true,
+          "dye": "red",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "maruimo-octopus/red.webp",
+            "bytes": 62310,
+            "sha256": "43835989bc48c6152b9456c376623511ad31b78d1f72188e800b00326c1f771c"
+          }
+        },
+        {
+          "png": {
+            "file": "maruimo-octopus/yellow.png",
+            "bytes": 108637,
+            "sha256": "eae3cc3a6feb4c9b7e5a131471b7bfa1abf184b58f8d97f9c87c20086ee50798"
+          },
+          "visiblePixels": 39579,
+          "changedPixels": 6618,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 24,
+            "right": 311,
+            "top": 104,
+            "bottom": 369
+          },
+          "shader": true,
+          "dye": "yellow",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "maruimo-octopus/yellow.webp",
+            "bytes": 64092,
+            "sha256": "9e5d127ee9dcfc6a0da08f712d0a9b82053d51538535158eb776d7040e57f788"
+          }
+        },
+        {
+          "png": {
+            "file": "maruimo-octopus/green.png",
+            "bytes": 108706,
+            "sha256": "02a35d15029c6368fd68bfa36b0ffae0063f4cba82cb2665979b275dbee13a02"
+          },
+          "visiblePixels": 39579,
+          "changedPixels": 6769,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 24,
+            "right": 311,
+            "top": 104,
+            "bottom": 369
+          },
+          "shader": true,
+          "dye": "green",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "maruimo-octopus/green.webp",
+            "bytes": 64908,
+            "sha256": "2d15913278e899d71e0c868734771bc6770b36276f59a169742a5ba329a4d120"
+          }
+        },
+        {
+          "png": {
+            "file": "maruimo-octopus/teal.png",
+            "bytes": 109560,
+            "sha256": "64ecfabbffe0340134bc0cbefe965ddaf6484bd362e893b83a4ec0ad2c7c5388"
+          },
+          "visiblePixels": 39579,
+          "changedPixels": 6836,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 24,
+            "right": 311,
+            "top": 104,
+            "bottom": 369
+          },
+          "shader": true,
+          "dye": "teal",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "maruimo-octopus/teal.webp",
+            "bytes": 65054,
+            "sha256": "68378beb8aa76a84e750a7411851e8eaad3e369f36c2180c96cc95a0b615cfa0"
+          }
+        },
+        {
+          "png": {
+            "file": "maruimo-octopus/blue.png",
+            "bytes": 109472,
+            "sha256": "055fa6f4ab0046711acaa2655f08d50c6c3e19e476039602f2ddc2112863df16"
+          },
+          "visiblePixels": 39579,
+          "changedPixels": 6811,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 24,
+            "right": 311,
+            "top": 104,
+            "bottom": 369
+          },
+          "shader": true,
+          "dye": "blue",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "maruimo-octopus/blue.webp",
+            "bytes": 65314,
+            "sha256": "35cab9c9ddb6b7f0b223039fcb9145d4f3f0f5563f55f08519b7ef0e2b57fe68"
+          }
+        },
+        {
+          "png": {
+            "file": "maruimo-octopus/purple.png",
+            "bytes": 108498,
+            "sha256": "68a70e19fd7ec322d9b33d852869f11b475c80307caf66f45a58ce8a6da4762e"
+          },
+          "visiblePixels": 39579,
+          "changedPixels": 6270,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 24,
+            "right": 311,
+            "top": 104,
+            "bottom": 369
+          },
+          "shader": true,
+          "dye": "purple",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "maruimo-octopus/purple.webp",
+            "bytes": 64372,
+            "sha256": "a5db351a6cc5c07a52a89c4a09b1d72648180bea5e470354e668e7e139b7544b"
+          }
+        },
+        {
+          "png": {
+            "file": "maruimo-octopus/pink.png",
+            "bytes": 108857,
+            "sha256": "de3943d346c293f444483e225baaf2b7ade1d3c3036cb92f94627608f2fc27f3"
+          },
+          "visiblePixels": 39579,
+          "changedPixels": 6244,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 24,
+            "right": 311,
+            "top": 104,
+            "bottom": 369
+          },
+          "shader": true,
+          "dye": "pink",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "maruimo-octopus/pink.webp",
+            "bytes": 64210,
+            "sha256": "4d8fe8c9d96286c288c0993c8be6be2f4e2b5cab4d69f7f5c33443043c45a629"
+          }
+        },
+        {
+          "png": {
+            "file": "maruimo-octopus/white.png",
+            "bytes": 109339,
+            "sha256": "a57f4b0ff91c00bcb0703d7c2fd231024801e76777a9939ca6335b4a3b6eea53"
+          },
+          "visiblePixels": 39579,
+          "changedPixels": 6859,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 24,
+            "right": 311,
+            "top": 104,
+            "bottom": 369
+          },
+          "shader": true,
+          "dye": "white",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "maruimo-octopus/white.webp",
+            "bytes": 63300,
+            "sha256": "bd38faf337c75978b9c93738d1406f6c3e810a7735d30bccc32b9b0f999356dc"
+          }
+        }
+      ]
+    },
+    {
+      "key": "cro-magnon-girl-feather",
+      "name": "クロマニョン人 羽根飾りの女の子",
+      "source": {
+        "modelKey": "cro-magnon-girl-feather",
+        "url": "/models/cro-magnon-girl-feather/model-c1-r02-face-r01.cook-5eabb795853cde5d.glb",
+        "sha256": "5eabb795853cde5dff15ad516a2533773bc2a28ae911d0a1fc00b49dabcfebc8",
+        "bytes": 1967700,
+        "scene": 0,
+        "bounds": {
+          "min": [
+            -0.3973683033726191,
+            -0.00007986247855846357,
+            -0.40848622285776426
+          ],
+          "max": [
+            0.3961348422347176,
+            1.4567537172266958,
+            0.19007210106155958
+          ]
+        },
+        "camera": {
+          "center": [
+            -0.0006167305689507296,
+            1.04,
+            -0.10920706089810234
+          ],
+          "verticalSpan": 2.24
+        },
+        "clip": "Idle_Loop",
+        "time": 0.4
+      },
+      "photos": [
+        {
+          "png": {
+            "file": "cro-magnon-girl-feather/original.png",
+            "bytes": 61635,
+            "sha256": "49723478f5d9cc62e2ccc031d22faad908356e731170a8afc4c2636158c04120"
+          },
+          "visiblePixels": 19474,
+          "changedPixels": 0,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 235,
+            "top": 120,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": null,
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-feather/original.webp",
+            "bytes": 33252,
+            "sha256": "af51a649140c8f935fe6c60124b688c859a743039cc5dd44bbc3103df0e0972a"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-feather/red.png",
+            "bytes": 60196,
+            "sha256": "f3593e66d1bd997dc9893cfbbf1dac404df46a3c19b4a9141d3406b4ad078e53"
+          },
+          "visiblePixels": 19474,
+          "changedPixels": 9522,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 235,
+            "top": 120,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "red",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-feather/red.webp",
+            "bytes": 33260,
+            "sha256": "009a1431cb651f3c66c421c1480d8585aaefbb6b2d9722f05589ef2e9c7b138c"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-feather/yellow.png",
+            "bytes": 60433,
+            "sha256": "fccb08a45a9d753ff191f439ce8210474be6c882811e1b523b56652991b9c335"
+          },
+          "visiblePixels": 19474,
+          "changedPixels": 9574,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 235,
+            "top": 120,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "yellow",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-feather/yellow.webp",
+            "bytes": 33048,
+            "sha256": "2e4fedd6f387c06422ddcd80e9a6b6773b6bc4e65edea64d5827bc099938e41a"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-feather/green.png",
+            "bytes": 60789,
+            "sha256": "41d4df30088768ec59ee009385367d0cc4ad23a908e8da0c4d9b696e8fe08281"
+          },
+          "visiblePixels": 19474,
+          "changedPixels": 9662,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 235,
+            "top": 120,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "green",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-feather/green.webp",
+            "bytes": 33858,
+            "sha256": "77c5692691300aed8929245700923183b512d0eaa78b1a88a1ce819fba9a7950"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-feather/teal.png",
+            "bytes": 60363,
+            "sha256": "668d27ecaffdc23b03b33f2a5785f74c79936bae05d52ed3e82aea574cf37e8c"
+          },
+          "visiblePixels": 19474,
+          "changedPixels": 9671,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 235,
+            "top": 120,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "teal",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-feather/teal.webp",
+            "bytes": 33310,
+            "sha256": "c26f60ec24840eec8622913e0fc261e64c90eb639c0132da8217f76297e11019"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-feather/blue.png",
+            "bytes": 61110,
+            "sha256": "1bbf50f7cf3d36ec8e9c7db976e45e085ef9eec06f25127ab15301b6c525a5a7"
+          },
+          "visiblePixels": 19474,
+          "changedPixels": 9670,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 235,
+            "top": 120,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "blue",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-feather/blue.webp",
+            "bytes": 34114,
+            "sha256": "1c784940e9f32da46612a5fe97cc40dc584508d5ad27837d4c19f3f3feec88ad"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-feather/purple.png",
+            "bytes": 61213,
+            "sha256": "79ba0117f5cc7acf7833ec1523f9570c5a95472f2c5126e1cceb3c34a7634ed2"
+          },
+          "visiblePixels": 19474,
+          "changedPixels": 9522,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 235,
+            "top": 120,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "purple",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-feather/purple.webp",
+            "bytes": 33036,
+            "sha256": "dfe4bb728451934c389bc3a2e8a19199299b24984105cc43c4119e0d2da25f4b"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-feather/pink.png",
+            "bytes": 61265,
+            "sha256": "d7429853f746bd94b5a40db5fb851349e40954f23ef03c032115de13b1b9bbdd"
+          },
+          "visiblePixels": 19474,
+          "changedPixels": 9490,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 235,
+            "top": 120,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "pink",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-feather/pink.webp",
+            "bytes": 33344,
+            "sha256": "45a77c97f42a562d961dcd9b6a8b180942e6df7776861e2c24dc3edb8399c26f"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-feather/white.png",
+            "bytes": 59929,
+            "sha256": "ff724841139ca2beab4ec2113ff715be4836b532fb459b9279da035bf09d945b"
+          },
+          "visiblePixels": 19474,
+          "changedPixels": 9534,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 235,
+            "top": 120,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "white",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-feather/white.webp",
+            "bytes": 30256,
+            "sha256": "47a472d8718c80bc69b6c3acb9658c0959ae2051c7e136a51afae0cda702832b"
+          }
+        }
+      ]
+    },
+    {
+      "key": "cro-magnon-girl-bear",
+      "name": "クロマニョン人 子グマずきんの女の子",
+      "source": {
+        "modelKey": "cro-magnon-girl-bear",
+        "url": "/models/cro-magnon-girl-bear/model-c1-r02-face-r01.cook-a0c09936495945c3.glb",
+        "sha256": "a0c09936495945c3745ff5fd6d4885b3068a00ec45f028ac1fb5c6f393c98f38",
+        "bytes": 1944252,
+        "scene": 0,
+        "bounds": {
+          "min": [
+            -0.40253029424580383,
+            -0.0001475195612717869,
+            -0.4631867056312625
+          ],
+          "max": [
+            0.39063713368307795,
+            1.4573670199197348,
+            0.20281850285178502
+          ]
+        },
+        "camera": {
+          "center": [
+            -0.00594658028136294,
+            1.04,
+            -0.13018410138973874
+          ],
+          "verticalSpan": 2.24
+        },
+        "clip": "Idle_Loop",
+        "time": 0.4
+      },
+      "photos": [
+        {
+          "png": {
+            "file": "cro-magnon-girl-bear/original.png",
+            "bytes": 65473,
+            "sha256": "dad203da9e31b54788fc190b05449a29121649a2e6c6711076d54b7e430aae23"
+          },
+          "visiblePixels": 20632,
+          "changedPixels": 0,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 235,
+            "top": 120,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": null,
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-bear/original.webp",
+            "bytes": 34848,
+            "sha256": "12ab21cf6f09b3bea8dbada14674035376d6cf4f82d8f855f6759483954678b9"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-bear/red.png",
+            "bytes": 65457,
+            "sha256": "fcfc95a01dab9f1bee8b531c212a91303eaf85a33367662b2f00bb1cf2bef433"
+          },
+          "visiblePixels": 20632,
+          "changedPixels": 5621,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 235,
+            "top": 120,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "red",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-bear/red.webp",
+            "bytes": 36756,
+            "sha256": "8f7a73de6f6cfdab195878dde4ae5b2df36c0905b33c385b5762764a43f0abb5"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-bear/yellow.png",
+            "bytes": 65158,
+            "sha256": "a26e3aa3c8af1bf3726de0ef493c3c6fc67bf5854a682906297cd55f976159d4"
+          },
+          "visiblePixels": 20632,
+          "changedPixels": 5590,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 235,
+            "top": 120,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "yellow",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-bear/yellow.webp",
+            "bytes": 36730,
+            "sha256": "d35e6585b40f10b175b8e83b79615788f2a71339b47b26f42315022affa129f2"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-bear/green.png",
+            "bytes": 65933,
+            "sha256": "74c0c72a1f9c23c328a3ed67a3d9cdc2532566e4fd7e3e8ff6ec59c50f17053c"
+          },
+          "visiblePixels": 20632,
+          "changedPixels": 5678,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 235,
+            "top": 120,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "green",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-bear/green.webp",
+            "bytes": 37722,
+            "sha256": "df15efd7293cf3c146ebff01053fc2ecf4ef26fb579e293ebdd93be84305356e"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-bear/teal.png",
+            "bytes": 65973,
+            "sha256": "04a6d45067834b2c14ac5d3106741d54b8bdd76f40ae14685caec79c05e03c66"
+          },
+          "visiblePixels": 20632,
+          "changedPixels": 5714,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 235,
+            "top": 120,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "teal",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-bear/teal.webp",
+            "bytes": 37310,
+            "sha256": "9413313088393f63ba3a6dd71e28868edc4158d3211a9b5a66e242c3e421e3fb"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-bear/blue.png",
+            "bytes": 66084,
+            "sha256": "c9c84c09cda2441125c4d636d06c30e4d7668bbac7405de0ec20d7eaf6a74a16"
+          },
+          "visiblePixels": 20632,
+          "changedPixels": 5694,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 235,
+            "top": 120,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "blue",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-bear/blue.webp",
+            "bytes": 37996,
+            "sha256": "3cebf485ebf8702325630c4f837a7e3c989ea6853da5be3e0a759e384e9cf34e"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-bear/purple.png",
+            "bytes": 65898,
+            "sha256": "54b59082313496576bf6b60d926a05734a8bf52c3b11a4283db726194d444c2a"
+          },
+          "visiblePixels": 20632,
+          "changedPixels": 5571,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 235,
+            "top": 120,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "purple",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-bear/purple.webp",
+            "bytes": 36972,
+            "sha256": "6324120c5c444b103b9b15c49cc760d93599531c6d84f4e5a2d9caffc40ee209"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-bear/pink.png",
+            "bytes": 65591,
+            "sha256": "7151deebd66662c165b37380a92bc73227d1b82dfe24cb236134823f34ddb3e8"
+          },
+          "visiblePixels": 20632,
+          "changedPixels": 5462,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 235,
+            "top": 120,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "pink",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-bear/pink.webp",
+            "bytes": 36724,
+            "sha256": "4cd45d0ed3c4bf16e62fa2099acd72708fad56afa46558a7a2cbb50c7df7ffb4"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-bear/white.png",
+            "bytes": 64746,
+            "sha256": "3308715f3a8d917cbf80819c07121b89a604f29d7d4331d0f562e0a7e53a51f4"
+          },
+          "visiblePixels": 20632,
+          "changedPixels": 5628,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 235,
+            "top": 120,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "white",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-bear/white.webp",
+            "bytes": 34554,
+            "sha256": "79ede262b5273d6d7e0f5a0e4dc767abbce0d4c853a37b82ee944de640037784"
+          }
+        }
+      ]
+    },
+    {
+      "key": "cro-magnon-girl-wolf",
+      "name": "クロマニョン人 子オオカミずきんの女の子",
+      "source": {
+        "modelKey": "cro-magnon-girl-wolf",
+        "url": "/models/cro-magnon-girl-wolf/model-c1-r02-face-r01.cook-1961966e9104b013.glb",
+        "sha256": "1961966e9104b013cc4207b3e8cde6afd65b608bbecd03f9edc172e073e84d87",
+        "bytes": 2167352,
+        "scene": 0,
+        "bounds": {
+          "min": [
+            -0.3825119278317492,
+            0.000053920068394861225,
+            -0.6292760063560038
+          ],
+          "max": [
+            0.38570517678695865,
+            1.4522922960002442,
+            0.20620911591215213
+          ]
+        },
+        "camera": {
+          "center": [
+            0.0015966244776047245,
+            1.04,
+            -0.21153344522192583
+          ],
+          "verticalSpan": 2.24
+        },
+        "clip": "Idle_Loop",
+        "time": 0.4
+      },
+      "photos": [
+        {
+          "png": {
+            "file": "cro-magnon-girl-wolf/original.png",
+            "bytes": 65429,
+            "sha256": "691d3d7b0795632ed6d0186cf528014d41947246f7e5604d5ac7fa8a4cdc025f"
+          },
+          "visiblePixels": 20417,
+          "changedPixels": 0,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": null,
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-wolf/original.webp",
+            "bytes": 34754,
+            "sha256": "343bc3a8aa2760c19fac4bdf69519fe04cb3843d1e8f989541e23e7504b01077"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-wolf/red.png",
+            "bytes": 65184,
+            "sha256": "643efa01e9b6df3af8ce8baf04c8f45a9a0925ef86a4dbaa048d0012152b300f"
+          },
+          "visiblePixels": 20417,
+          "changedPixels": 6153,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "red",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-wolf/red.webp",
+            "bytes": 36600,
+            "sha256": "bed2ceb52db2336d2f5c247d4aba8d4fd4a905f139ecd4a2d97885c4771abee8"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-wolf/yellow.png",
+            "bytes": 65428,
+            "sha256": "b3879ab1e147fa2ee048844a7df347809b084183a278c6b7ce8f609c0c0fd01d"
+          },
+          "visiblePixels": 20417,
+          "changedPixels": 6241,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "yellow",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-wolf/yellow.webp",
+            "bytes": 36246,
+            "sha256": "4462afb0e0c745ba738dbcd7203975b90bdf42909fb3791a990aeda74682d7bc"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-wolf/green.png",
+            "bytes": 65205,
+            "sha256": "7c559b0878dc56876070f2a200a966c0f006c1526f101a3aecf5605dbc4bf2f5"
+          },
+          "visiblePixels": 20417,
+          "changedPixels": 6272,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "green",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-wolf/green.webp",
+            "bytes": 36926,
+            "sha256": "2a90569e8d0f7464ae88b113af02728be3fb132b841d926db77e1b770a644a55"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-wolf/teal.png",
+            "bytes": 64765,
+            "sha256": "52ac7d654aacddd2de295b9256d68c7742950e49ce55f2d3706e809ef83a5a59"
+          },
+          "visiblePixels": 20417,
+          "changedPixels": 6331,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "teal",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-wolf/teal.webp",
+            "bytes": 35450,
+            "sha256": "b559f5c94cd6b75d921dd3dc06e09b4ee3301f6fa3e291627e4eeea06c4313d6"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-wolf/blue.png",
+            "bytes": 65524,
+            "sha256": "38dda60f76243c51a559e01aba5bb08a528aef341be58fd54b9c69d8e8713fca"
+          },
+          "visiblePixels": 20417,
+          "changedPixels": 6289,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "blue",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-wolf/blue.webp",
+            "bytes": 36602,
+            "sha256": "0d8b524cc85e26a818ce79b9048a2f04417aa7598a9878ac8d7c0663ac84f3b9"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-wolf/purple.png",
+            "bytes": 65372,
+            "sha256": "a7905de929f4b8d42f2bdd9867509c9447b420b328362d0c1f5558c66ecf3758"
+          },
+          "visiblePixels": 20417,
+          "changedPixels": 6111,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "purple",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-wolf/purple.webp",
+            "bytes": 36564,
+            "sha256": "2b70d373d8ab075d41c48d63a740d718f924e0e87d0ab9a177acdccfe107aaab"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-wolf/pink.png",
+            "bytes": 65519,
+            "sha256": "701ff1235c596c6d7b092497d7a71159334b1c21f563bfafcc0995c2272b53b2"
+          },
+          "visiblePixels": 20417,
+          "changedPixels": 5976,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "pink",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-wolf/pink.webp",
+            "bytes": 35736,
+            "sha256": "6b54e6d3c039235a449d96a12fe41691dc1e2d64cba886885e24aa5d5c302d6f"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-wolf/white.png",
+            "bytes": 65130,
+            "sha256": "fd0a50f6dde30199ccdbab65aa9b99185c649c0a16bfbe00cc227388da9724f6"
+          },
+          "visiblePixels": 20417,
+          "changedPixels": 6072,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "white",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-wolf/white.webp",
+            "bytes": 33690,
+            "sha256": "1b84c89a2d35094c56313872756c34c0de46849c5aa22dd47bf94cf7f44dd36e"
+          }
+        }
+      ]
+    },
+    {
+      "key": "cro-magnon-girl-twintails",
+      "name": "クロマニョン人 赤毛ふたつ結びの女の子",
+      "source": {
+        "modelKey": "cro-magnon-girl-twintails",
+        "url": "/models/cro-magnon-girl-twintails/model-c1-r01-face-r01.cook-452c548229d7bfe8.glb",
+        "sha256": "452c548229d7bfe83953172fe12170365b396b0d6b6c0578bd18dd9dbbb15f10",
+        "bytes": 1741300,
+        "scene": 0,
+        "bounds": {
+          "min": [
+            -0.38005809892131825,
+            -0.0000012866366471014391,
+            -0.2472009662124572
+          ],
+          "max": [
+            0.38058075213878706,
+            1.4508271358322276,
+            0.24824380204125035
+          ]
+        },
+        "camera": {
+          "center": [
+            0.0002613266087344024,
+            1.04,
+            0.0005214179143965686
+          ],
+          "verticalSpan": 2.24
+        },
+        "clip": "Idle_Loop",
+        "time": 0.4
+      },
+      "photos": [
+        {
+          "png": {
+            "file": "cro-magnon-girl-twintails/original.png",
+            "bytes": 60984,
+            "sha256": "7df3f0c363f3cefc718dde54f1fece582a0ed58f416e45910be47c6467e89ed6"
+          },
+          "visiblePixels": 18915,
+          "changedPixels": 0,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": null,
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-twintails/original.webp",
+            "bytes": 32656,
+            "sha256": "264bb9eca4a91c663d77a9df8babd34e656f3c1db00a2b2804991b70905f197b"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-twintails/red.png",
+            "bytes": 59418,
+            "sha256": "19f2d3c99fef51e9b5770b8594f71852cc95b0c3d7bc23e404e269820c3e7c17"
+          },
+          "visiblePixels": 18915,
+          "changedPixels": 7849,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "red",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-twintails/red.webp",
+            "bytes": 32692,
+            "sha256": "d527f2e07fc12fce381aaa4f38e5cb2ec7366b7a9c141dff28a32968aa9ff272"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-twintails/yellow.png",
+            "bytes": 60164,
+            "sha256": "a2e4cb00bce191d3395b6f23f9aa25cd260a09871985cfa56695fa33b0c6d089"
+          },
+          "visiblePixels": 18915,
+          "changedPixels": 7858,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "yellow",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-twintails/yellow.webp",
+            "bytes": 32980,
+            "sha256": "3a0a25dfceb89f77fd33b9978d192e10a4e0de7a90bdc7fb43f8b5155a450f6c"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-twintails/green.png",
+            "bytes": 59907,
+            "sha256": "c50d3f6968728174c24a356a6168e3d8e1a5d5a7c8adc6e918619f5a6da4d587"
+          },
+          "visiblePixels": 18915,
+          "changedPixels": 8002,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "green",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-twintails/green.webp",
+            "bytes": 33298,
+            "sha256": "8096163f500cc9c48e94b91e0937887543df4e1b92a335c9a96317cf50705c1a"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-twintails/teal.png",
+            "bytes": 59256,
+            "sha256": "2e2e5bcc945edbf398b61cc73764321f1e461441224fd45bf8367fb4a4573207"
+          },
+          "visiblePixels": 18915,
+          "changedPixels": 8032,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "teal",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-twintails/teal.webp",
+            "bytes": 32652,
+            "sha256": "788c72f6e540355f5644a5b6e61720e68deed276ede787a6a194ac0c8a7b0b49"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-twintails/blue.png",
+            "bytes": 60251,
+            "sha256": "2e0927c6524712892e6abcfdf9e7836d09d1074a662b68d3ac95366e77f08370"
+          },
+          "visiblePixels": 18915,
+          "changedPixels": 8010,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "blue",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-twintails/blue.webp",
+            "bytes": 33428,
+            "sha256": "daed2a43aa4090de310d4bad734cc9da276ee590e69726af5cb1b6e609de0b63"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-twintails/purple.png",
+            "bytes": 60534,
+            "sha256": "b7c73d0cc9da446011fd5347bbe873cc8bdae9e0053100b41b4b78a90e6258fb"
+          },
+          "visiblePixels": 18915,
+          "changedPixels": 7828,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "purple",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-twintails/purple.webp",
+            "bytes": 32464,
+            "sha256": "c44332d5970311cf1285e0a9e372a2562f4cb1d7abeccc667a81a7717c993721"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-twintails/pink.png",
+            "bytes": 60748,
+            "sha256": "7db52b55391b702208c9c28711597ea36ec93c6ab3dc0fd73912f431495b60e8"
+          },
+          "visiblePixels": 18915,
+          "changedPixels": 7699,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "pink",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-twintails/pink.webp",
+            "bytes": 32854,
+            "sha256": "ad910436e3b81fe1d677c714f1d3f55b9b96f945c3a79d74f29b083a23afb146"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-twintails/white.png",
+            "bytes": 59684,
+            "sha256": "de55270415356de8a7a1588ab34c9f9ee255fe00f7ac32cb623d884752a5aa62"
+          },
+          "visiblePixels": 18915,
+          "changedPixels": 8021,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "white",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-twintails/white.webp",
+            "bytes": 30454,
+            "sha256": "f7326b0731ea3cb230bf769daf901c49fd5a605985b895b1afac9e325a0f98f4"
+          }
+        }
+      ]
+    },
+    {
+      "key": "cro-magnon-girl-reindeer",
+      "name": "クロマニョン人 トナカイ革パーカーの女の子",
+      "source": {
+        "modelKey": "cro-magnon-girl-reindeer",
+        "url": "/models/cro-magnon-girl-reindeer/model-c1-r02-face-r01.cook-de8a754e32577324.glb",
+        "sha256": "de8a754e325773241a752e66aefcffe9d89fbbc6c91f488abb8cd72af0c3a6d2",
+        "bytes": 1761900,
+        "scene": 0,
+        "bounds": {
+          "min": [
+            -0.3924228640329328,
+            0.00007772908992608081,
+            -0.3741047998576478
+          ],
+          "max": [
+            0.3952457408638461,
+            1.4537324241446634,
+            0.178577131209038
+          ]
+        },
+        "camera": {
+          "center": [
+            0.0014114384154566562,
+            1.04,
+            -0.09776383432430488
+          ],
+          "verticalSpan": 2.24
+        },
+        "clip": "Idle_Loop",
+        "time": 0.4
+      },
+      "photos": [
+        {
+          "png": {
+            "file": "cro-magnon-girl-reindeer/original.png",
+            "bytes": 59192,
+            "sha256": "44456851f2bbfb200a94490817ff430bba52c4cf16ea3943c00b3a07f8e37bea"
+          },
+          "visiblePixels": 19034,
+          "changedPixels": 0,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 234,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": null,
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-reindeer/original.webp",
+            "bytes": 30454,
+            "sha256": "f8774d169c2047cd0a5998f02b6ba0f1a17855fc13087688c1108040c9c1a8d0"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-reindeer/red.png",
+            "bytes": 56881,
+            "sha256": "f17b8cd25055d61c6885dc87ba30d2c666591e5636936414aebe4848dd118625"
+          },
+          "visiblePixels": 19034,
+          "changedPixels": 10019,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 234,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "red",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-reindeer/red.webp",
+            "bytes": 30320,
+            "sha256": "c506752d0a0b2e5661b81be3e6ecb85ed7af716e9dd21b1e6d4c7a22c698a477"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-reindeer/yellow.png",
+            "bytes": 57796,
+            "sha256": "4b61736a21bab489ce46dd3e39d5a5a57093233ec7724b60cb2a1c4fe412b749"
+          },
+          "visiblePixels": 19034,
+          "changedPixels": 10019,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 234,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "yellow",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-reindeer/yellow.webp",
+            "bytes": 30784,
+            "sha256": "682fe16ab6bb873a53424a2db758577d752a211d1a84fe8f362f0ee98a3a0104"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-reindeer/green.png",
+            "bytes": 57748,
+            "sha256": "d0dd5c439777d6ce0013b192663a5e0d051fcbdb5e372bd96af30e5a710bedf1"
+          },
+          "visiblePixels": 19034,
+          "changedPixels": 10056,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 234,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "green",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-reindeer/green.webp",
+            "bytes": 31146,
+            "sha256": "b8481598fa6e8b5d309f0e14025e25506a70bef85dbb8c54b65026de92572f86"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-reindeer/teal.png",
+            "bytes": 57118,
+            "sha256": "d42ad26c00eafce1a8567ac2f0b10924bcb9457074a032af5f61ec0649d3c0fd"
+          },
+          "visiblePixels": 19034,
+          "changedPixels": 10059,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 234,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "teal",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-reindeer/teal.webp",
+            "bytes": 30532,
+            "sha256": "e27de6ac8d50e4c958e4c37d3927df7fbfd0b917b061581b2fe296824385056e"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-reindeer/blue.png",
+            "bytes": 57976,
+            "sha256": "0e42f7c0a61297e66883aa7144da2b50ebf113f0e665aaac1ef00c9817180453"
+          },
+          "visiblePixels": 19034,
+          "changedPixels": 10058,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 234,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "blue",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-reindeer/blue.webp",
+            "bytes": 31350,
+            "sha256": "9d39fc09f4517849aa797506f3c02974ad9b25344296f458b31b0e35d9e5c2a9"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-reindeer/purple.png",
+            "bytes": 58184,
+            "sha256": "90304772e810236ec3194941399b84ae66b03dd9ae514d77686e0e23e72c59f3"
+          },
+          "visiblePixels": 19034,
+          "changedPixels": 10013,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 234,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "purple",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-reindeer/purple.webp",
+            "bytes": 29986,
+            "sha256": "820e48c50fe05885fd922a35ad93859b80ffa1acb3c1a29d71d813c008a5c9c4"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-reindeer/pink.png",
+            "bytes": 58468,
+            "sha256": "c0a9e74831b41eac42a7b09e60565ebfc9f3e0ef6eac0eeb383e629e6149bd64"
+          },
+          "visiblePixels": 19034,
+          "changedPixels": 9994,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 234,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "pink",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-reindeer/pink.webp",
+            "bytes": 30602,
+            "sha256": "83ae7b75ef5fef9c08ee29bf63cfab63ca0765083d5681400fd4001af5f7219d"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-girl-reindeer/white.png",
+            "bytes": 56712,
+            "sha256": "2e1d7e21ea9498c31f89e5f93c3ac89d9097a1155cb64c1ee1f66893618668f1"
+          },
+          "visiblePixels": 19034,
+          "changedPixels": 10011,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 100,
+            "right": 234,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "white",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-girl-reindeer/white.webp",
+            "bytes": 27552,
+            "sha256": "5afc8ea141afd5d3a22a1c3ecfd7bb2fe020e516ae22186747a1c2a8f5e57e21"
+          }
+        }
+      ]
+    },
+    {
+      "key": "cro-magnon-boy-headband",
+      "name": "クロマニョン人 貝の鉢巻きの男の子",
+      "source": {
+        "modelKey": "cro-magnon-boy-headband",
+        "url": "/models/cro-magnon-boy-headband/model-c1-r01-face-r01.cook-1d1f8701c1e1ead4.glb",
+        "sha256": "1d1f8701c1e1ead4bf47a3d6f593e5345e3b08d81a98f71281df607998a7343d",
+        "bytes": 1930716,
+        "scene": 0,
+        "bounds": {
+          "min": [
+            -0.3861292073964639,
+            -0.00007353011981684393,
+            -0.35437154332049003
+          ],
+          "max": [
+            0.3948533802185036,
+            1.4532405115470008,
+            0.22857207047347278
+          ]
+        },
+        "camera": {
+          "center": [
+            0.004362086411019844,
+            1.04,
+            -0.06289973642350863
+          ],
+          "verticalSpan": 2.24
+        },
+        "clip": "Idle_Loop",
+        "time": 0.4
+      },
+      "photos": [
+        {
+          "png": {
+            "file": "cro-magnon-boy-headband/original.png",
+            "bytes": 58575,
+            "sha256": "d111b39928516bb065eea598c59aa1c863d2b9cfe6eff236a28a3706d5ecd093"
+          },
+          "visiblePixels": 17520,
+          "changedPixels": 0,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 101,
+            "right": 234,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": null,
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-headband/original.webp",
+            "bytes": 30440,
+            "sha256": "9a7d08a07b5d53de95daa523bdb3226664a10cd7c49dee1144c35799b2c5bd2b"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-headband/red.png",
+            "bytes": 57286,
+            "sha256": "1c39580b39754a289b3bb29f365bc139c3a349d4afacffec627a73de1ce2535b"
+          },
+          "visiblePixels": 17520,
+          "changedPixels": 7761,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 101,
+            "right": 234,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "red",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-headband/red.webp",
+            "bytes": 31592,
+            "sha256": "03cb1add3f74832e692b6a56b4ef773ecd47db254217a29391a9381895c2f63b"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-headband/yellow.png",
+            "bytes": 57593,
+            "sha256": "4b1f4c1a60a63c983682bfc52e6d201a5a5ebd812889ad7da66ab23612658446"
+          },
+          "visiblePixels": 17520,
+          "changedPixels": 7780,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 101,
+            "right": 234,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "yellow",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-headband/yellow.webp",
+            "bytes": 31470,
+            "sha256": "9f361a4b0e69f9a0f22b8343e25aa14474e4623f0954d92f4a6574453311ec1a"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-headband/green.png",
+            "bytes": 57833,
+            "sha256": "a73b1454ba7317f7bd74a351407946932622e9bb95639a850aeb8846ecae71f4"
+          },
+          "visiblePixels": 17520,
+          "changedPixels": 7825,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 101,
+            "right": 234,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "green",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-headband/green.webp",
+            "bytes": 32308,
+            "sha256": "502672c26dd036ffc3f5af91b9ea8e52c2a2347f44522a19a9ba5bb1a98eed72"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-headband/teal.png",
+            "bytes": 57353,
+            "sha256": "26a512c6c6b47f6c9001c9ed74e262dda6e3c7d36505fc08484a4dec6d54b172"
+          },
+          "visiblePixels": 17520,
+          "changedPixels": 7835,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 101,
+            "right": 234,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "teal",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-headband/teal.webp",
+            "bytes": 31914,
+            "sha256": "705bd0aeae234775094b0824acc42e7955f434ec55a9908b845d3c218f620d10"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-headband/blue.png",
+            "bytes": 58112,
+            "sha256": "95b7cc7fac22a6a026a6d066f8e048402007a7441acb91521036a293534110da"
+          },
+          "visiblePixels": 17520,
+          "changedPixels": 7831,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 101,
+            "right": 234,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "blue",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-headband/blue.webp",
+            "bytes": 32148,
+            "sha256": "0d2a19eec1e93cc397003c7c4c8aa48c96c4ce94a1e558ad5e401d5a76145517"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-headband/purple.png",
+            "bytes": 58085,
+            "sha256": "c66b81cac43f3dc66dac4c86e3d2a90d3001a91b28f56d020bf4b92feec8f338"
+          },
+          "visiblePixels": 17520,
+          "changedPixels": 7731,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 101,
+            "right": 234,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "purple",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-headband/purple.webp",
+            "bytes": 31696,
+            "sha256": "1cd8e38450a9e1b5567706e0e78d22217c91c66ab6f85d2acaccd15790463dd2"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-headband/pink.png",
+            "bytes": 58087,
+            "sha256": "7354e483b68133af0985acd96654088a0a4b78c88745e97938a018a16e1bb38d"
+          },
+          "visiblePixels": 17520,
+          "changedPixels": 7647,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 101,
+            "right": 234,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "pink",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-headband/pink.webp",
+            "bytes": 31788,
+            "sha256": "da3299cd34ea60bf69a016ede63a69bbacb85243427933ec0336ba067bbcc3d0"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-headband/white.png",
+            "bytes": 56993,
+            "sha256": "6ab1473a60ab7b93b40f67347e09455267589bbfc5f7a55901063e4cd96ec483"
+          },
+          "visiblePixels": 17520,
+          "changedPixels": 7666,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 101,
+            "right": 234,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "white",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-headband/white.webp",
+            "bytes": 28858,
+            "sha256": "dd77d1dad9270c3ac0bd2b100359e61df100ea0f908998175e26c969360ca5d8"
+          }
+        }
+      ]
+    },
+    {
+      "key": "cro-magnon-boy-lion",
+      "name": "クロマニョン人 子ライオンずきんの男の子",
+      "source": {
+        "modelKey": "cro-magnon-boy-lion",
+        "url": "/models/cro-magnon-boy-lion/model-c1-r01-face-r01.cook-e564009ffc61e9cf.glb",
+        "sha256": "e564009ffc61e9cf173717b1c0b9b55b2f9269a81c5fc8511b9c114b95b830e7",
+        "bytes": 2168832,
+        "scene": 0,
+        "bounds": {
+          "min": [
+            -0.37568619680237725,
+            0.00004337725969054407,
+            -0.4149914603132015
+          ],
+          "max": [
+            0.3751941713055188,
+            1.4526322424826836,
+            0.22098042487972264
+          ]
+        },
+        "camera": {
+          "center": [
+            -0.00024601274842922516,
+            1.04,
+            -0.09700551771673943
+          ],
+          "verticalSpan": 2.24
+        },
+        "clip": "Idle_Loop",
+        "time": 0.4
+      },
+      "photos": [
+        {
+          "png": {
+            "file": "cro-magnon-boy-lion/original.png",
+            "bytes": 66255,
+            "sha256": "a19a3eea790942452dab9b599ce94610ab510ae6be08ed0b28a720bbe7cba45a"
+          },
+          "visiblePixels": 20598,
+          "changedPixels": 0,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 231,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": null,
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-lion/original.webp",
+            "bytes": 35644,
+            "sha256": "3357f5637147ee024f47d6cee2686c7130f786da1c33c8c2b5f2a04ca54e3544"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-lion/red.png",
+            "bytes": 66764,
+            "sha256": "cef13d053fb855c450a9b2e21339e1ab3797ab0e1a8c164adf837fa716beeb37"
+          },
+          "visiblePixels": 20598,
+          "changedPixels": 4535,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 231,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "red",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-lion/red.webp",
+            "bytes": 38392,
+            "sha256": "d9ea8c56d2adfe61d448bb5f13eb5580f64182eeb91387847640fc5072374793"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-lion/yellow.png",
+            "bytes": 66288,
+            "sha256": "579c2f2b337ff5bd1d640e981accabd08282194e8e26d0347d2e225d215be7bf"
+          },
+          "visiblePixels": 20598,
+          "changedPixels": 4526,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 231,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "yellow",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-lion/yellow.webp",
+            "bytes": 38058,
+            "sha256": "6c629f260e576b1f319119132a0289c11dfa9104ec2ac836fa54d7a61b72472b"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-lion/green.png",
+            "bytes": 66779,
+            "sha256": "46e7c92e5d9f5812b6650989544afd36ad4087b39b16c94badaef8ba04ef7382"
+          },
+          "visiblePixels": 20598,
+          "changedPixels": 4581,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 231,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "green",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-lion/green.webp",
+            "bytes": 39122,
+            "sha256": "ca00aaa1af84aaac5c4aaafa20d7722108383431220e3977abc6c61b283416a8"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-lion/teal.png",
+            "bytes": 66923,
+            "sha256": "e74e16bdb92a944736d6db8401a5d7aa84f3dac4a00f410de44e4017763954c3"
+          },
+          "visiblePixels": 20598,
+          "changedPixels": 4618,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 231,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "teal",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-lion/teal.webp",
+            "bytes": 38682,
+            "sha256": "c4889554f8cf8119d9afc10714cb3f0f7492cf4bf80521c81a83495c10b1e85b"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-lion/blue.png",
+            "bytes": 67100,
+            "sha256": "0ccb68c01cd96a3c17ead5a1eb7ac225fea7939118bfe043a745b9e32a052190"
+          },
+          "visiblePixels": 20598,
+          "changedPixels": 4600,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 231,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "blue",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-lion/blue.webp",
+            "bytes": 39068,
+            "sha256": "7a56d34e503e231d8facd0f0a10388398d22fac13037f1e0d12148ddbd9804fe"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-lion/purple.png",
+            "bytes": 66927,
+            "sha256": "101c366ee0f7b08f7808abde18d9cf6aa089b8bcf5eca0eabab182ed780e19e0"
+          },
+          "visiblePixels": 20598,
+          "changedPixels": 4484,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 231,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "purple",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-lion/purple.webp",
+            "bytes": 39194,
+            "sha256": "df12e6450dc2c3bc3bd1fa7d95dbdb09c8be8b8281335d3de141f6a8be9b803b"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-lion/pink.png",
+            "bytes": 66676,
+            "sha256": "fa614e992105fd20d73106bc6dd5a40d424bc61bb43c9b70f57b38d0629e31fc"
+          },
+          "visiblePixels": 20598,
+          "changedPixels": 4339,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 231,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "pink",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-lion/pink.webp",
+            "bytes": 38774,
+            "sha256": "6618afd37e0305784331c180a803f7ab30581ff8371482714a54f388f518fba6"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-lion/white.png",
+            "bytes": 66155,
+            "sha256": "b0735056d338711d40e174021170421c19ad5402ece9f835f18ed5c05c5b9946"
+          },
+          "visiblePixels": 20598,
+          "changedPixels": 4476,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 103,
+            "right": 231,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "white",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-lion/white.webp",
+            "bytes": 35924,
+            "sha256": "0d2c176f51f4941e170080bf05dbb7559281c25d7265d77a1fdb1c5ec645d622"
+          }
+        }
+      ]
+    },
+    {
+      "key": "cro-magnon-boy-braid",
+      "name": "クロマニョン人 三つ編みの男の子",
+      "source": {
+        "modelKey": "cro-magnon-boy-braid",
+        "url": "/models/cro-magnon-boy-braid/model-c1-r01-face-r01.cook-7dfb1dd672ef42ef.glb",
+        "sha256": "7dfb1dd672ef42ef30177eadccdf1d2eba41d1502668a52545734bae0bbddcd8",
+        "bytes": 2055288,
+        "scene": 0,
+        "bounds": {
+          "min": [
+            -0.383715612529933,
+            -0.00006941181428139764,
+            -0.41962768742720263
+          ],
+          "max": [
+            0.38732061334503004,
+            1.4550413472539758,
+            0.16994512460254585
+          ]
+        },
+        "camera": {
+          "center": [
+            0.0018025004075485074,
+            1.04,
+            -0.12484128141232839
+          ],
+          "verticalSpan": 2.24
+        },
+        "clip": "Idle_Loop",
+        "time": 0.4
+      },
+      "photos": [
+        {
+          "png": {
+            "file": "cro-magnon-boy-braid/original.png",
+            "bytes": 60316,
+            "sha256": "660d24d2182006de7c56c4d7c5f08eeb5e73782d2e271be96494d5e60496ecf8"
+          },
+          "visiblePixels": 18437,
+          "changedPixels": 0,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": null,
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-braid/original.webp",
+            "bytes": 32180,
+            "sha256": "b277d4e56ac5f6ac9a32ecf6ca7a12b02781c7e2449b711b8faba5e17de410d6"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-braid/red.png",
+            "bytes": 58445,
+            "sha256": "3c4b09472d0fedce839649c8289398fcea8609ac23ea3801f7ba99a0bd997b56"
+          },
+          "visiblePixels": 18437,
+          "changedPixels": 8624,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "red",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-braid/red.webp",
+            "bytes": 32082,
+            "sha256": "4fa5050a1931cc39eae71772801e4fa43448732f211d7900f6b6264708e44dbb"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-braid/yellow.png",
+            "bytes": 59122,
+            "sha256": "f9304132b316a67dbda1273fe03a5e2a55e43e3e2689e63bf3e05b289935eda4"
+          },
+          "visiblePixels": 18437,
+          "changedPixels": 8658,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "yellow",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-braid/yellow.webp",
+            "bytes": 32232,
+            "sha256": "b86a3411412963f5936032c44994d06b6237c54748ed177c1b21f34c7c9c42b3"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-braid/green.png",
+            "bytes": 59198,
+            "sha256": "6e29faf958a18109e5a803a178f2eb7ffd5f16af713caf86e5cc216df41a3acd"
+          },
+          "visiblePixels": 18437,
+          "changedPixels": 8673,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "green",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-braid/green.webp",
+            "bytes": 32796,
+            "sha256": "f9dc9093d3fec67657cf69d2e9501cdc147210954403a12349503bf10c4fdc7e"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-braid/teal.png",
+            "bytes": 58714,
+            "sha256": "a36e8954b85421c86ddfca16f17388a97517f65a50eed2dedb1cc0bb7088e90c"
+          },
+          "visiblePixels": 18437,
+          "changedPixels": 8676,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "teal",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-braid/teal.webp",
+            "bytes": 32348,
+            "sha256": "63228076411d485194d8f2190c20bc5baea654910ce9f039e0a8600f1bfc2591"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-braid/blue.png",
+            "bytes": 59414,
+            "sha256": "4f37eb0bbe1770ff835a0525348a0241a7c6df42c2c8842d0983dc500065eec7"
+          },
+          "visiblePixels": 18437,
+          "changedPixels": 8676,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "blue",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-braid/blue.webp",
+            "bytes": 32852,
+            "sha256": "8f696f0807c878b613568da98456a47ef47fe9a3236958939a0610e38a8af981"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-braid/purple.png",
+            "bytes": 59603,
+            "sha256": "c41840f53a7b1fbc2077e3c764cbfd0978f660782d9a672c0a559220877e3a5f"
+          },
+          "visiblePixels": 18437,
+          "changedPixels": 8628,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "purple",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-braid/purple.webp",
+            "bytes": 31694,
+            "sha256": "29612a24337b5d9c7d2fc57fb1b1ae9e2e84eb1ece6edf838590d4a4ef8a4ea4"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-braid/pink.png",
+            "bytes": 59748,
+            "sha256": "52bcebe967b7a02a84e57a511fa45f3189d878bf89e61f0654668d8713845da1"
+          },
+          "visiblePixels": 18437,
+          "changedPixels": 8613,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "pink",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-braid/pink.webp",
+            "bytes": 32176,
+            "sha256": "a9787b55129f369521cc6af1839f9d14ad8ab83d213644280e0ea3725bb3875b"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-braid/white.png",
+            "bytes": 58359,
+            "sha256": "1e176441a8917ab47fe735a61f52e3c32f2ca1e34c6bad4c2cd8812ba530abed"
+          },
+          "visiblePixels": 18437,
+          "changedPixels": 8461,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "white",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-braid/white.webp",
+            "bytes": 29046,
+            "sha256": "94faa38caa8adab3048d7cd6897078a3966523e0a142c5fe121048de559beb4c"
+          }
+        }
+      ]
+    },
+    {
+      "key": "cro-magnon-boy-topknot",
+      "name": "クロマニョン人 ちょんまげの男の子",
+      "source": {
+        "modelKey": "cro-magnon-boy-topknot",
+        "url": "/models/cro-magnon-boy-topknot/model-c1-r01-face-r01.cook-4dc51c2d50953854.glb",
+        "sha256": "4dc51c2d509538544b3675762e8fc0e3c8c18872062adf8ef15ba89643894710",
+        "bytes": 1818648,
+        "scene": 0,
+        "bounds": {
+          "min": [
+            -0.3840223118516324,
+            -0.00012769174134480142,
+            -0.35361094089314526
+          ],
+          "max": [
+            0.38336475164578915,
+            1.4613302071489138,
+            0.17879740816414857
+          ]
+        },
+        "camera": {
+          "center": [
+            -0.0003287801029216164,
+            1.04,
+            -0.08740676636449835
+          ],
+          "verticalSpan": 2.24
+        },
+        "clip": "Idle_Loop",
+        "time": 0.4
+      },
+      "photos": [
+        {
+          "png": {
+            "file": "cro-magnon-boy-topknot/original.png",
+            "bytes": 52708,
+            "sha256": "7e42689f6ac186d59b600999355dc1362d63164ae3dbda6b9493f730158a6d2c"
+          },
+          "visiblePixels": 15908,
+          "changedPixels": 0,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 119,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": null,
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-topknot/original.webp",
+            "bytes": 27136,
+            "sha256": "34e40c861520af40d9ad63c913563d17d41c151425355b28040b37675f90c792"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-topknot/red.png",
+            "bytes": 50983,
+            "sha256": "efabd489aa59f2aa8004c0951217f8d5c792dea9bbb7b538339ee6b09c997999"
+          },
+          "visiblePixels": 15908,
+          "changedPixels": 7594,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 119,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "red",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-topknot/red.webp",
+            "bytes": 27062,
+            "sha256": "93b454906e194e5b4d4ba7108aeb62dcd825b2aeaa20a157340b318a00e0210c"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-topknot/yellow.png",
+            "bytes": 51556,
+            "sha256": "3a5448a7e081e5490bab4f1f6b362385228d4b8c3934a0a3b39b0042fe129282"
+          },
+          "visiblePixels": 15908,
+          "changedPixels": 7682,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 119,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "yellow",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-topknot/yellow.webp",
+            "bytes": 27310,
+            "sha256": "1a575257a4e834a383bbdf3112572bb2016244c3eca834e5365f70d84c93c638"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-topknot/green.png",
+            "bytes": 51433,
+            "sha256": "bf1a44ad948dbdaa5a20684c5d344fb32c5712a1c058e35066bf0c3a1ae41b03"
+          },
+          "visiblePixels": 15908,
+          "changedPixels": 7687,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 119,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "green",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-topknot/green.webp",
+            "bytes": 27860,
+            "sha256": "ab32649dc61ff4f6660954766a333ae7cbb08ece608d134ffecaef997d114d81"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-topknot/teal.png",
+            "bytes": 51047,
+            "sha256": "b93b59887b90fd92ca2552a1c87faf0447683c05113ae7827c69c866b85780b2"
+          },
+          "visiblePixels": 15908,
+          "changedPixels": 7692,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 119,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "teal",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-topknot/teal.webp",
+            "bytes": 27200,
+            "sha256": "e5610c3b41f0831a8ac94c6c933f0337f7d677b0beb44000bee6e6298acf4fa3"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-topknot/blue.png",
+            "bytes": 51706,
+            "sha256": "05e07543ad68653bd7de5c3faedb111838901e7a8af1ea0d0021e6c95ed4094e"
+          },
+          "visiblePixels": 15908,
+          "changedPixels": 7692,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 119,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "blue",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-topknot/blue.webp",
+            "bytes": 27888,
+            "sha256": "e8c2d99005c8dc678f631c3e0a316ac50575a0a1338abf2ff33014bba6b4cfe9"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-topknot/purple.png",
+            "bytes": 51974,
+            "sha256": "c1deb391648811144ff10a5e14aa2937c9ebd3bba747810d037ca4e1fae509cc"
+          },
+          "visiblePixels": 15908,
+          "changedPixels": 7607,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 119,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "purple",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-topknot/purple.webp",
+            "bytes": 26872,
+            "sha256": "c453ee8d32e2c0a0379042169dd51f017e398027d92aa1f75c33db80f90b2031"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-topknot/pink.png",
+            "bytes": 52098,
+            "sha256": "f507695f8f81a9d235a91d198c78d4eda7f3a2d275451ae48af37b8f7f5413be"
+          },
+          "visiblePixels": 15908,
+          "changedPixels": 7606,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 119,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "pink",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-topknot/pink.webp",
+            "bytes": 27146,
+            "sha256": "8fec528cd5824d4107b69672c9980bc620daf27942b9b89bd696565f910c862f"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-topknot/white.png",
+            "bytes": 50979,
+            "sha256": "c8af0d50882e1a96c612d607e321e052ef1deb1b9466d011f9772a0501112547"
+          },
+          "visiblePixels": 15908,
+          "changedPixels": 7627,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 102,
+            "right": 233,
+            "top": 119,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "white",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-topknot/white.webp",
+            "bytes": 24772,
+            "sha256": "50b2d73506d183776ee1c670d341dfcfa292eddec615f336b68498c95f6546b9"
+          }
+        }
+      ]
+    },
+    {
+      "key": "cro-magnon-boy-mammoth",
+      "name": "クロマニョン人 子マンモスずきんの男の子",
+      "source": {
+        "modelKey": "cro-magnon-boy-mammoth",
+        "url": "/models/cro-magnon-boy-mammoth/model-c1-r01.cook-9fd938d1d0d229ce.glb",
+        "sha256": "9fd938d1d0d229ce7c870000e09e1f6d8432f46572eec563bdedf44eaf34822c",
+        "bytes": 1976272,
+        "scene": 0,
+        "bounds": {
+          "min": [
+            -0.3987662498151657,
+            0.00002357772938321235,
+            -0.3430954526725351
+          ],
+          "max": [
+            0.3978571576428279,
+            1.4540978475404396,
+            0.507303561978804
+          ]
+        },
+        "camera": {
+          "center": [
+            -0.0004545460861688777,
+            1.04,
+            0.08210405465313445
+          ],
+          "verticalSpan": 2.24
+        },
+        "clip": "Idle_Loop",
+        "time": 0.4
+      },
+      "photos": [
+        {
+          "png": {
+            "file": "cro-magnon-boy-mammoth/original.png",
+            "bytes": 67177,
+            "sha256": "2d299294d6b588bc3b90eab82f94122760470ff6d0f827b6eb533d689389f700"
+          },
+          "visiblePixels": 21120,
+          "changedPixels": 0,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 99,
+            "right": 235,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": null,
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-mammoth/original.webp",
+            "bytes": 35438,
+            "sha256": "3e1b23003bc833799bc7c3b061a550a0ee72fa35608bc4b5082a8ffba91a31c9"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-mammoth/red.png",
+            "bytes": 67352,
+            "sha256": "631dd06c1bdca53936abcc661b77bf595c5840b37cb0dcf6b9656a8f250cf9ce"
+          },
+          "visiblePixels": 21120,
+          "changedPixels": 5421,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 99,
+            "right": 235,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "red",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-mammoth/red.webp",
+            "bytes": 37588,
+            "sha256": "29390839edc8b24e28f7dd51c36e133602f91c1e6d5c5c99fa32d10fe1c1caee"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-mammoth/yellow.png",
+            "bytes": 67105,
+            "sha256": "0d95722198961a0bfdb3b3891bc60e5519596bb6fcd7a40a7648f6044839f75c"
+          },
+          "visiblePixels": 21120,
+          "changedPixels": 5566,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 99,
+            "right": 235,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "yellow",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-mammoth/yellow.webp",
+            "bytes": 38490,
+            "sha256": "55e9020e60561217d6080918ee878c34bf078388fed7b5f82283fd1544b1c582"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-mammoth/green.png",
+            "bytes": 67763,
+            "sha256": "75abc53eca88201507a6284848a1704db54ddb510f648dcc8cba72151472f812"
+          },
+          "visiblePixels": 21120,
+          "changedPixels": 5763,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 99,
+            "right": 235,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "green",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-mammoth/green.webp",
+            "bytes": 38058,
+            "sha256": "83f5c2891860faaae569a68271c633658f0b5712aad94c12e263b948b1f3493e"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-mammoth/teal.png",
+            "bytes": 68021,
+            "sha256": "417bbbaffe10342aafefe3cf508bbe956c8292cdf58457f799b1f4d01ea9a86e"
+          },
+          "visiblePixels": 21120,
+          "changedPixels": 5825,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 99,
+            "right": 235,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "teal",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-mammoth/teal.webp",
+            "bytes": 38500,
+            "sha256": "55fb6c73e6d897b14ee6d5830e310cc375f90c08d033b70055a24a4f3428c411"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-mammoth/blue.png",
+            "bytes": 67993,
+            "sha256": "905c37e739b93e7f0f459f2774f27b72faadd9ed665983b2c98f160e243129b2"
+          },
+          "visiblePixels": 21120,
+          "changedPixels": 5775,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 99,
+            "right": 235,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "blue",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-mammoth/blue.webp",
+            "bytes": 38248,
+            "sha256": "9de09f4bdc468d60286c0a047aa348bcf025b5a878cb00ee6f19729d0176b019"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-mammoth/purple.png",
+            "bytes": 67762,
+            "sha256": "70cc290702e498476204d1c84fdec2193c615066f7d8c1d5b5f5d8597ff16b8a"
+          },
+          "visiblePixels": 21120,
+          "changedPixels": 5404,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 99,
+            "right": 235,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "purple",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-mammoth/purple.webp",
+            "bytes": 39132,
+            "sha256": "b272300ea90b82d2e2424ae67b745a87c416c855e6c6a3dec0826034621587ee"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-mammoth/pink.png",
+            "bytes": 67635,
+            "sha256": "208389683f1a14a05fc10e3899ee27bee09e6ff1a1d545a2a288eab0dbb97032"
+          },
+          "visiblePixels": 21120,
+          "changedPixels": 5255,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 99,
+            "right": 235,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "pink",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-mammoth/pink.webp",
+            "bytes": 39004,
+            "sha256": "e14332d874882e7f89982b82e7669c0b22e3056016c22614402bfa82ef73d40b"
+          }
+        },
+        {
+          "png": {
+            "file": "cro-magnon-boy-mammoth/white.png",
+            "bytes": 67180,
+            "sha256": "8bf77c932fc3ca2c20427209cb1eb3c4c2457550f36b3c9c1394171ad84d53e9"
+          },
+          "visiblePixels": 21120,
+          "changedPixels": 5747,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 99,
+            "right": 235,
+            "top": 121,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "white",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cro-magnon-boy-mammoth/white.webp",
+            "bytes": 35776,
+            "sha256": "6dea0401fc60df6fb02a28b8e17d72897e0316ee7799faa6b4e506e64e086916"
+          }
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

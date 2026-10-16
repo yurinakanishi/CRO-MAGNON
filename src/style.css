@@ -3958,6 +3958,9 @@ dialog:has(.earth-map) {
   background: #6d6d6d url('/models/cro-magnon-hunter/portrait.png') 50% 3%/330% auto no-repeat;
 }
 /* The chibi cast: the woman's crop. */
+.portrait.cro-magnon-boy-mammoth {
+  background: #6d6d6d url('/models/cro-magnon-boy-mammoth/portrait.png') 50% 12%/280% auto no-repeat;
+}
 .portrait.cro-magnon-boy-topknot {
   background: #6d6d6d url('/models/cro-magnon-boy-topknot/portrait.png') 50% 12%/280% auto no-repeat;
 }
@@ -3998,6 +4001,9 @@ dialog:has(.earth-map) {
 .portrait.cro-magnon-woman:before,
 .portrait.cro-magnon-woman:after,
 .portrait.cro-magnon-woman i,
+.portrait.cro-magnon-boy-mammoth:before,
+.portrait.cro-magnon-boy-mammoth:after,
+.portrait.cro-magnon-boy-mammoth i,
 .portrait.cro-magnon-boy-topknot:before,
 .portrait.cro-magnon-boy-topknot:after,
 .portrait.cro-magnon-boy-topknot i,

@@ -377,6 +377,24 @@
       "review": "assets/cro-magnon-boy-topknot/qa/c1-r01.json"
     },
     {
+      "key": "cro-magnon-boy-mammoth",
+      "name": "クロマニョン人 子マンモスずきんの男の子",
+      "kind": "humanoid",
+      "height": 1.45,
+      "gender": "male",
+      "species": "cro",
+      "status": "remake-candidate-1-adopted",
+      "geometryResolution": 1024,
+      "referenceVersion": "cast1-b5",
+      "subject": "Use case: single-character reconstruction reference for TRELLIS image-to-3D, for a cozy prehistoric Ice Age open-world adventure game. Style: cute Japanese mobile-game chibi 3D character exactly in the style of the attached cast reference image (same game, same cast): a low-poly game model with crisp hand-painted anime textures, soft painted shading on rounded 3D forms (it must read clearly as a 3D model render, not a flat 2D drawing), clean dark-brown painted outlines along clothing edges and hair locks. Super-deformed proportions, about 2.6 heads tall: a very large round head (about 38% of the total height) with a small rounded chin, a small compact body, short limbs, small simple hands with the fingers held together, chunky boots. Anime face: very large glossy eyes with coloured irises, two white catchlights and a dark upper lash line, small simple eyebrows, a tiny nose that is only a small painted mark, a small happy closed-mouth smile, soft blush. Hair painted as a few large clean locks with soft shading and one clean highlight band, no individual strands; hair and any hood stay on the head: no lock or long hair rests on the shoulders, chest or back, and nothing covers the eyes or the face. ONE cheerful young Cro-Magnon child of the Ice Age (Upper Palaeolithic), as described below. Cro-Magnon details shared by the cast: clothes of tanned hide and soft fur sewn with visible stitches, ornaments of pierced shells, animal teeth, bone or mammoth ivory, red-ochre paint motifs, a leather belt or sash with a small pouch, soft hide boots with fur cuffs and cross-laced leather cords. Modest clothing. POSE: symmetrical A-pose for rigging, standing straight, facing the camera directly, arms straight down and out at about 35-40 degrees from the body with a clear empty gap between each arm and the body and between each hand and the clothes, legs straight and slightly apart with a clear gap between the legs and between the boots, feet flat and pointing forward, empty open hands, no props. Camera: straight-on front view at chest height, orthographic-like, the entire figure from the top of the hair (and any hood, ears, tusks or ornament) to the boot soles uncropped with generous margin, centered. Lighting: soft even neutral studio light, no harsh highlights, no dark cast shadows on the figure, only a faint contact shadow. Plain uniform off-white background. No text, logo, watermark, scenery, ground plane, base, pedestal, weapon, second figure or multiple views.\n\nA boy. Head: a cute woolly-mammoth-calf pelt hood worn up, shaggy reddish-brown fur with two small rounded ears at the sides, two tiny curved cream tusks and a short soft trunk-shaped tuft at the front above the brow, all rounded and toy-like, and a cream fur rim framing the face; dark bangs inside the hood. Blue-grey eyes, light warm-tan skin. Face paint: two short red-ochre stripes on each cheek. Outfit: the shaggy pelt continues as a short cape over the shoulders; a tan hide tunic to mid-thigh with a dotted red-ochre band, short hide trousers, fur boots.",
+      "sha256": "1f1d0ce97ec70c1e5a29db75e6e248b4c2c5ee54471a609b9fdb5b5d0be78e96",
+      "delivery": "/models/cro-magnon-boy-mammoth/model-c1-r01.glb",
+      "gameQA": "assets/cro-magnon-boy-mammoth/qa/c1-r01.json",
+      "triangles": 8374,
+      "revision": "c1-r01",
+      "review": "assets/cro-magnon-boy-mammoth/qa/c1-r01.json"
+    },
+    {
       "key": "neanderthal-woman",
       "name": "ネアンデルタール人 女性",
       "kind": "humanoid",

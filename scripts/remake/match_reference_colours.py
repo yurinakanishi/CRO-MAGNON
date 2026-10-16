@@ -49,14 +49,17 @@ ap.add_argument('--strength', type=float, default=1.0)
 ap.add_argument('--channels', default='Lab', help='with --mode quantile: the CIELAB channels matched (L = lightness only: '
                 'TRELLIS darkened every colour, but a global chroma match also greys the saturated browns of a body whose '
                 'reference is mostly cream)')
+ap.add_argument('--material', default='', help='the material whose base colour changes, by name (default: the first; '
+                'HeadSurface of a rigged final GLB: only that image changes, the skin and clips stay)')
 ap.add_argument('--webp-quality', type=int, default=92)
 args = ap.parse_args()
 
 g = Glb(args.glb)
-mat = g.doc['materials'][0]
+material = next(i for i, m in enumerate(g.doc['materials']) if m.get('name') == args.material) if args.material else 0
+mat = g.doc['materials'][material]
 image_index = g.texture_image(mat['pbrMetallicRoughness']['baseColorTexture']['index'])
 albedo = np.asarray(Image.open(io.BytesIO(g.image_bytes(image_index))).convert('RGB'), dtype=np.float32) / 255.0
-prim = g.doc['meshes'][0]['primitives'][0]
+prim = next(p for p in g.doc['meshes'][0]['primitives'] if p.get('material', 0) == material)
 UV = g.accessor(prim['attributes']['TEXCOORD_0']).astype(np.float64)
 F = g.accessor(prim['indices']).reshape(-1, 3)
 AH, AW = albedo.shape[:2]

@@ -7,7 +7,7 @@ import { PLAYABLE_CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 import { CLOTHING_DYES } from '../dist/shared/clothing-dye.mjs';
 import { characterPortraitUrl, characterPortraitUrls } from '../dist/src/character-portraits.js';
 
-const root = new URL('../assets/character-portraits/20261015-r03/', import.meta.url);
+const root = new URL('../assets/character-portraits/20261016-r04/', import.meta.url);
 const capture = JSON.parse(await readFile(new URL('capture.json', root), 'utf8'));
 const sources = JSON.parse(await readFile(new URL('source-models.json', root), 'utf8'));
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');

@@ -1,12 +1,14 @@
 // Preview an unadopted playable-character candidate in the real game, without touching public/:
-// an isolated in-memory server (dist/server.mjs), real Chrome, the real title -> selection -> world flow,
-// with only the character's manifest and GLB answered by Playwright routes (the game still verifies the
-// served bytes against the manifest's SHA-256 and length).
+// an isolated in-memory server (dist/server.mjs), real Chrome entering the world as <key>, with only the
+// character's manifest and GLB answered by Playwright routes (the game still verifies the served bytes
+// against the manifest's SHA-256 and length).
 //
 //   node scripts/remake/qa_candidate_actor.mjs <key> <choice> <candidate.glb> <candidate-asset.json> <outFolder>
 //   e.g. node scripts/remake/qa_candidate_actor.mjs cro-magnon-woman cro-female output/.../model.glb output/.../asset.json output/playwright/c3
-// <choice> is the selection card's value: species-gender for the first look of a pair, the model key for
-// further looks of the same species and gender (the chibi cast, 2026-10-13).
+// Since 2026-10-15 the title's online start is solo play and the setup is a two-screen flow, so the look is
+// preset in localStorage (cro-character = <key>; <choice>, the selection card's value, is only recorded) and
+// the room is joined through an isolated LAN multiplayer config with activity keepalives, as
+// scripts/qa-character-face-game.mjs does. The picker itself is exercised by scripts/qa-character-choice.mjs.
 //
 // Screenshots: the game camera after entry, a front inspection camera (renderer yaw/pitch/distance only),
 // walking and running with real keys, an attack with the real key, and a close camera. report.json records
@@ -86,7 +88,9 @@ const report = {
   errors,
 };
 const peers = [];
-async function client(selection, observe) {
+let heartbeat;
+async function client(lookKey, name, observe) {
+  const look = JSON.parse(await readFile(`public/models/${lookKey}/asset.json`, 'utf8'));
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
   const page = await context.newPage();
   page.on('pageerror', (error) => errors.push(String(error)));
@@ -103,10 +107,41 @@ async function client(selection, observe) {
     const response = await route.fetch();
     await route.fulfill({ response, body: (await response.text()) + observe });
   });
-  await page.goto(`http://127.0.0.1:${port}/?room=CANDIDATE-QA`);
-  await page.locator('#title-start').click();
-  await page.locator(`#setup-form .character-choice:has(input[value="${selection}"])`).click();
-  await page.locator('#setup-flow-yes').click();
+  await page.route('**/multiplayer-config.json', (route) =>
+    route.fulfill({
+      json: {
+        mode: 'lan',
+        serverUrl: `ws://127.0.0.1:${port}/ws`,
+        room: 'CANDIDATE-QA',
+        guestName: name,
+      },
+    }),
+  );
+  await page.addInitScript(
+    ({ name, species, gender, character }) => {
+      for (const [k, v] of Object.entries({
+        'cro-name': name,
+        'cro-species': species,
+        'cro-gender': gender,
+        'cro-character': character,
+        'cro-language': 'ja',
+      }))
+        localStorage.setItem(k, v);
+      // Online play leaves after 30 s without input; the screenshots and waits are not input.
+      const Original = window.WebSocket;
+      window.WebSocket = class extends Original {
+        constructor(...args) {
+          super(...args);
+          const timer = setInterval(() => {
+            if (this.readyState === 1) this.send(JSON.stringify({ type: 'activity' }));
+          }, 5000);
+          this.addEventListener('close', () => clearInterval(timer));
+        }
+      };
+    },
+    { name, species: look.species ?? 'cro', gender: look.gender, character: lookKey },
+  );
+  await page.goto(`http://127.0.0.1:${port}/?room=CANDIDATE-QA&autostart=1`);
   await enterPreparedWorld(page, false);
   return page;
 }
@@ -125,7 +160,7 @@ WorldRenderer.prototype.render = function (...args) {
   return result;
 };`;
 try {
-  const page = await client(choice, observer);
+  const page = await client(key, 'Candidate', observer);
   await page
     .locator(`#world[data-player-model="${key}"]`)
     .waitFor({ timeout: 90000 })
@@ -133,7 +168,11 @@ try {
   await page.waitForFunction((sha) => window.qaActor?.sha === sha, sha256, { timeout: 90000 });
   let other = null;
   if (adopted) {
-    other = await client(choice === 'cro-male' ? 'cro-female' : 'cro-male', remoteObserver);
+    other = await client(
+      key === 'cro-magnon-hunter' ? 'cro-magnon-woman' : 'cro-magnon-hunter',
+      'Observer',
+      remoteObserver,
+    );
     const { WebSocket } = await import('ws');
     for (let i = 0; i < 3; i++) {
       const socket = new WebSocket(
@@ -141,8 +180,9 @@ try {
           new URLSearchParams({
             room: 'CANDIDATE-QA',
             name: `Peer ${i}`,
-            species: i % 2 ? 'nea' : 'cro',
+            species: 'cro',
             gender: i === 2 ? 'male' : 'female',
+            character: ['cro-magnon-woman', 'cro-magnon-girl-bear', 'cro-magnon-boy-lion'][i],
           }),
       );
       await new Promise((resolve, reject) => {
@@ -151,6 +191,10 @@ try {
       });
       peers.push(socket);
     }
+    heartbeat = setInterval(() => {
+      for (const socket of peers)
+        if (socket.readyState === 1) socket.send(JSON.stringify({ type: 'activity' }));
+    }, 5000);
     await sleep(1500);
     report.connections = 2 + peers.length;
   }
@@ -221,6 +265,7 @@ try {
   throw error;
 } finally {
   await writeFile(`${folder}/report.json`, JSON.stringify(report, null, 2) + '\n');
+  clearInterval(heartbeat);
   for (const socket of peers) socket.close();
   await browser.close();
   await game.close?.();

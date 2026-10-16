@@ -8,8 +8,10 @@ was adopted with adopt_candidate_character.mjs --new and its portrait placed:
 Edits (each exactly once, failing if the key is already there): the profile after the last entry of
 shared/character-profiles.mts (the chibi body plan of the woman), the English names, the HUD portrait
 crop and its hidden pixel face in src/style.css, the clothing dye rule, the assets/world-models.json entry
-(the design prompt from prompts-cast1.json) and the character counts of the tests and the Cloudflare
-character privacy check. Files are LF.
+(the design prompt from prompts-cast1.json), the rigid-face list (CHIBI_FACE_KEYS of
+scripts/face-remake/stabilize-chibi-heads.mjs, tested by tests/character-face-rigidity.test.mjs) and the
+character counts of the tests and the Cloudflare character privacy check. The English names include the
+picker's single name (子グマずきんのクロマニョン人女の子). Files are LF.
 """
 import argparse
 import json
@@ -79,6 +81,14 @@ edit('src/language-en.ts', last + '\n', f"""{last}
   {args.variant}: '{args.english}',
   '{name}': 'Cro-Magnon · {args.english}',
 """)
+# the picker's single name (src/character-selection.ts characterChoiceName): 子グマずきんのクロマニョン人女の子
+child = re.match(r'^(.+)の(女の子|男の子)$', args.variant)
+assert child, f'{args.variant}: a child variant ends in の女の子 or の男の子'
+english = (ROOT / 'src/language-en.ts').read_text(encoding='utf-8')
+single = [line for line in english.splitlines() if re.match(r'^  \S+のクロマニョン人(女の子|男の子): ', line)][-1]
+edit('src/language-en.ts', single + '\n', f"""{single}
+  {child[1]}のクロマニョン人{child[2]}: 'Cro-Magnon {args.english}',
+""")
 edit('src/style.css', """/* The chibi cast: the woman's crop. */
 """, f"""/* The chibi cast: the woman's crop. */
 .portrait.{key} {{
@@ -104,6 +114,14 @@ edit('src/clothing-dye-rules.ts', """    'cro-magnon-hunter': { materials: ['Bod
     }},
     'cro-magnon-hunter': {{ materials: ['BodySurface'], skin: SKIN }},""")
 
+# the large-headed characters whose delivered face must stay rigid (tests/character-face-rigidity.test.mjs)
+faces = (ROOT / 'scripts/face-remake/stabilize-chibi-heads.mjs').read_text(encoding='utf-8')
+start = faces.index('export const CHIBI_FACE_KEYS = [')
+close = faces.index('\n];\n', start)
+assert f"'{key}'" not in faces[start:close]
+(ROOT / 'scripts/face-remake/stabilize-chibi-heads.mjs').write_text(
+    faces[:close] + f"\n  '{key}'," + faces[close:], encoding='utf-8', newline='\n')
+
 world = json.loads((ROOT / 'assets/world-models.json').read_text(encoding='utf-8'))
 assert not any(entry.get('key') == key for entry in world['assets'])
 prompts = json.loads((ROOT / 'output/model-generation/models/chibi-cast/source/original/prompts-cast1.json').read_text(encoding='utf-8'))
@@ -123,6 +141,7 @@ counts = {
     'served': bump('tests/local-visibility.test.mjs', r'assert\.equal\(CHARACTER_MODELS\.length, (\d+) \+ Number\(maruimo\)\)'),
     'privacy': bump('scripts/qa-cloudflare-character-privacy.mjs', r'assert\.equal\(CHARACTER_MODELS\.length, (\d+)\);'),
     'public': bump('scripts/qa-cloudflare-character-privacy.mjs', r'assert\.equal\(publicCharacters\.length, (\d+)\);'),
+    'publicDyeRules': bump('tests/clothing-dye.test.mjs', r'assert\.equal\(Object\.keys\(rules\)\.length, (\d+)\);'),
 }
 # the edited sources as Prettier writes them (a long key wraps its portrait background)
 subprocess.run('npx prettier --write src/style.css shared/character-profiles.mts src/language-en.ts src/clothing-dye-rules.ts',

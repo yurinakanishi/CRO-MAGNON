@@ -1,0 +1,290 @@
+{
+  "ok": true,
+  "width": 336,
+  "height": 384,
+  "framing": {
+    "verticalSpan": 2.24,
+    "groundMargin": 0.08
+  },
+  "retainedKey": "cat-kunoichi",
+  "generator": "scripts/capture-character-portraits.mjs",
+  "browser": "155.0.8059.41",
+  "renderer": {
+    "toneMapping": "ACESFilmic",
+    "exposure": 1.1,
+    "hemisphere": 2,
+    "key": 2,
+    "fill": 0.7
+  },
+  "inputs": {
+    "src/character-assets.ts": "a6093025dc071946bd2a117c5608b5c298b95023f28a44598f710e9773239d6d",
+    "src/character-animation.ts": "d027b1c23d88f25021839b648a6f209738bd056e135a153f4d50709e57e3943b",
+    "src/clothing-dye.ts": "a64df1eb5dc0b51fda1f77d9ddc092d2e359ceeef5b8b7984430785be4092a04",
+    "src/clothing-dye-rules.ts": "8d134577524c68e65dc98bcf97b4712a19ad4f55c0526ac7581548d1c86f9409",
+    "shared/clothing-dye.mts": "b1f839797be77a47be7d60af6c513e217aa7f3a7ca8be8f2072cf7a7c3242bd1",
+    "scripts/capture-character-portraits.mjs": "5329371e7df3674ac6eafc0cfc814da599f088aec61a86132181cc58fba252c6"
+  },
+  "records": [
+    {
+      "key": "cat-kunoichi",
+      "name": "猫耳のクノイチ",
+      "source": {
+        "modelKey": "cat-kunoichi",
+        "url": "/models/cat-kunoichi/startup.opt-ca2213d32f027f41.glb",
+        "sha256": "ca2213d32f027f41011d32ee2d35401f9ceeea0e2ad58cb8558e2cf1b599006a",
+        "bytes": 6616668,
+        "scene": 0,
+        "bounds": {
+          "min": [
+            -0.40928202948774023,
+            -5.593788344985183e-7,
+            -0.22945205285651857
+          ],
+          "max": [
+            0.4095994906036042,
+            1.686620810375289,
+            0.15495247844117152
+          ]
+        },
+        "camera": {
+          "center": [
+            0.00015873055793197421,
+            1.04,
+            -0.037249787207673524
+          ],
+          "verticalSpan": 2.24
+        },
+        "clip": "Idle_Loop",
+        "time": 0.4
+      },
+      "photos": [
+        {
+          "png": {
+            "file": "cat-kunoichi/original.png",
+            "bytes": 43305,
+            "sha256": "b12578690f548ab5954ab29258fe1c4a77b2fd9c51c615642e914528d2157225"
+          },
+          "visiblePixels": 14782,
+          "changedPixels": 0,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 98,
+            "right": 237,
+            "top": 81,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": null,
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cat-kunoichi/original.webp",
+            "bytes": 21066,
+            "sha256": "d6d943b90a3b2571cfad8abd57e6b3d419aaa85bd0d1816706f7a64564904fbf"
+          }
+        },
+        {
+          "png": {
+            "file": "cat-kunoichi/red.png",
+            "bytes": 44461,
+            "sha256": "25da0e3fcbf44f83486ac5290f56c3f8114de55fc87a746359803f64652a408d"
+          },
+          "visiblePixels": 14782,
+          "changedPixels": 12005,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 98,
+            "right": 237,
+            "top": 81,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "red",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cat-kunoichi/red.webp",
+            "bytes": 23716,
+            "sha256": "aa3f433f57c72e3aa9f8793d3e7250cb9352fcdd2c0270a77c19a187cd269397"
+          }
+        },
+        {
+          "png": {
+            "file": "cat-kunoichi/yellow.png",
+            "bytes": 46433,
+            "sha256": "0ba14c635f20957dc503bdebdc5a8ff444caa10b3a81b609a1949a62ee1eb017"
+          },
+          "visiblePixels": 14782,
+          "changedPixels": 12129,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 98,
+            "right": 237,
+            "top": 81,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "yellow",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cat-kunoichi/yellow.webp",
+            "bytes": 24108,
+            "sha256": "0dfc2f15abc00c78f16654b994f319d4c0bafa05ebc4317964be45c4d5a16233"
+          }
+        },
+        {
+          "png": {
+            "file": "cat-kunoichi/green.png",
+            "bytes": 43282,
+            "sha256": "cc283611370fcf7533110c3a39014ceea52644d1a5d47c49a6aad6f1f25740cc"
+          },
+          "visiblePixels": 14782,
+          "changedPixels": 12028,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 98,
+            "right": 237,
+            "top": 81,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "green",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cat-kunoichi/green.webp",
+            "bytes": 22702,
+            "sha256": "3928d57e4747f27e1fc5386d05a0ec00f4108645209660618c4d7666faf4bd65"
+          }
+        },
+        {
+          "png": {
+            "file": "cat-kunoichi/teal.png",
+            "bytes": 42438,
+            "sha256": "68aa753627347fa6473b465a692b7ebd5bae020ed8ab3ef8cdc59232d59032df"
+          },
+          "visiblePixels": 14782,
+          "changedPixels": 12091,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 98,
+            "right": 237,
+            "top": 81,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "teal",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cat-kunoichi/teal.webp",
+            "bytes": 22064,
+            "sha256": "2b110028ef98a8290ef07d841e47c8923c34c0cf44ae4dce01a5a9aa325e0b78"
+          }
+        },
+        {
+          "png": {
+            "file": "cat-kunoichi/blue.png",
+            "bytes": 45009,
+            "sha256": "8aa1ffae779459bd8e2d8f9695d5faed8364dcdf232f9b24811b45ed5f093db3"
+          },
+          "visiblePixels": 14782,
+          "changedPixels": 12135,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 98,
+            "right": 237,
+            "top": 81,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "blue",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cat-kunoichi/blue.webp",
+            "bytes": 24138,
+            "sha256": "c790b2fda1fd1a177bbbce25a99d841b94edf9016e0d6016a88615733042009e"
+          }
+        },
+        {
+          "png": {
+            "file": "cat-kunoichi/purple.png",
+            "bytes": 45524,
+            "sha256": "630c56b2eb90f2e5b84c9ab6741952bad0ac83e473d63318371410a5ade90728"
+          },
+          "visiblePixels": 14782,
+          "changedPixels": 11966,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 98,
+            "right": 237,
+            "top": 81,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "purple",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cat-kunoichi/purple.webp",
+            "bytes": 22956,
+            "sha256": "6de1c8b33529a9dced359fe03d9fbc42958aee64bf4023ffc4c367c368b1758d"
+          }
+        },
+        {
+          "png": {
+            "file": "cat-kunoichi/pink.png",
+            "bytes": 46656,
+            "sha256": "6dadafd271e9e5bd87135bfa5dfd210be513667143da6f70497ef47ab9909ea1"
+          },
+          "visiblePixels": 14782,
+          "changedPixels": 12057,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 98,
+            "right": 237,
+            "top": 81,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "pink",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cat-kunoichi/pink.webp",
+            "bytes": 23666,
+            "sha256": "687a619998006f079f265895c0f334c888e8190af9a9c503d94098007c2c674d"
+          }
+        },
+        {
+          "png": {
+            "file": "cat-kunoichi/white.png",
+            "bytes": 46351,
+            "sha256": "0cd007c9aec393d0f48acdab06b5bbe72244e8cfb1de13b64717a07ab48abf1b"
+          },
+          "visiblePixels": 14782,
+          "changedPixels": 12186,
+          "alphaChanges": 0,
+          "bounds": {
+            "left": 98,
+            "right": 237,
+            "top": 81,
+            "bottom": 370
+          },
+          "shader": true,
+          "dye": "white",
+          "width": 336,
+          "height": 384,
+          "webp": {
+            "file": "cat-kunoichi/white.webp",
+            "bytes": 21656,
+            "sha256": "a2ae187aff7652a826eb97f7c7cf0c681fa0733cc41be72a42bfaabd4d64f874"
+          }
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

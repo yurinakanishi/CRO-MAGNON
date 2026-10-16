@@ -20,6 +20,7 @@ export const CHIBI_FACE_KEYS = [
   'cro-magnon-boy-lion',
   'cro-magnon-boy-braid',
   'cro-magnon-boy-topknot',
+  'cro-magnon-boy-mammoth',
 ];
 const hash = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const json = (value) => JSON.stringify(value, null, 2) + '\n';

@@ -39,7 +39,7 @@ test('public clothing rules retain released dyes while excluding private and dor
     (model) => model.playable !== false && model.species !== 'maruimo' && model.species !== 'nea',
   );
   const rules = publicModelRules(CLOTHING_DYE_RULES, characters);
-  assert.equal(Object.keys(rules).length, 14);
+  assert.equal(Object.keys(rules).length, 15);
   for (const character of characters)
     assert.deepEqual(rules[character.key], CLOTHING_DYE_RULES[character.key]);
   assert.ok(CLOTHING_DYE_RULES['maruimo-octopus'], 'the local rule is retained');

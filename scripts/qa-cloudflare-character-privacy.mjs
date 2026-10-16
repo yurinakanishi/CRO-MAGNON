@@ -31,9 +31,9 @@ await audit('dist-cloudflare');
 await audit('dist-cloudflare-worker');
 const upload = await readFile('output/cloudflare-dry-run/worker.js', 'utf8');
 check('worker.js', upload);
-assert.equal(CHARACTER_MODELS.length, 18);
+assert.equal(CHARACTER_MODELS.length, 19);
 assert.equal(characterModel({ species: 'maruimo' }).key, 'maruimo-octopus');
-assert.equal(publicCharacters.length, 16);
+assert.equal(publicCharacters.length, 17);
 assert.ok(publicCharacters.every((model) => model.species !== 'howkey'));
 assert.deepEqual(normalizeCharacter({ species: 'maruimo', gender: 'male' }), {
   species: 'cro',

@@ -1,0 +1,358 @@
+{
+  "schema": "cro-magnon/character-remake-review@1",
+  "date": "2026-10-16",
+  "decision": "adopt",
+  "approved": "The user in the Claude Code session on 2026-10-13 adopted all ten chibi cast designs of chibi-cast/review/cast1-sheet.png ('全員採用。') and asked for the next ones ('次'; on 2026-10-16 for design B5). Adopted after the QA of qa/review.jpg (Chrome renders, all clips, the routed in-game preview); the user had not yet seen the 3D model.",
+  "modelKey": "cro-magnon-boy-mammoth",
+  "revision": "c1-r01",
+  "candidate": 1,
+  "url": "/models/cro-magnon-boy-mammoth/model-c1-r01.glb",
+  "sha256": "1f1d0ce97ec70c1e5a29db75e6e248b4c2c5ee54471a609b9fdb5b5d0be78e96",
+  "bytes": 3041244,
+  "triangles": 8374,
+  "bones": 22,
+  "clips": [
+    "Craft",
+    "Eat",
+    "Gather",
+    "Give",
+    "Idle_Loop",
+    "Run_Loop",
+    "Walk_Loop",
+    "Wave",
+    "Attack",
+    "Downed"
+  ],
+  "heightMetres": 1.4499999999999997,
+  "request": "User (2026-10-13): 全員採用。 (all ten chibi cast designs), then 次 for each next one (this one: B5, the last)",
+  "workspace": "output/model-generation/models/cro-magnon-boy-mammoth",
+  "sources": [
+    {
+      "path": "assets/cro-magnon-boy-mammoth/source/c1-r01/cast1-b5.png",
+      "source": "output/model-generation/models/cro-magnon-boy-mammoth/source/original/cast1-b5.png",
+      "sha256": "6a5147ce89a1b0c7d440f4ebf407a2b4be25444a61f957ea11d38e3f03156373"
+    },
+    {
+      "path": "assets/cro-magnon-boy-mammoth/source/c1-r01/prompts-cast1.json",
+      "source": "output/model-generation/models/cro-magnon-boy-mammoth/source/original/prompts-cast1.json",
+      "sha256": "d127dc6b0b2dac48cac47c8aa14aef17594f2c00a98af90eea0e783ca4953488"
+    },
+    {
+      "path": "assets/cro-magnon-boy-mammoth/source/c1-r01/codex-request-cast1.txt",
+      "source": "output/model-generation/models/cro-magnon-boy-mammoth/source/original/codex-request-cast1.txt",
+      "sha256": "f94052041e20025534c61150c41f6d9272630619b2070060c5978d014cb6889d"
+    },
+    {
+      "path": "assets/cro-magnon-boy-mammoth/source/c1-r01/cast1-b5-blankface.png",
+      "source": "output/model-generation/models/cro-magnon-boy-mammoth/work/candidate-01/source/cast1-b5-blankface.png",
+      "sha256": "10119c9b0fc31cf3c3d299c4c7c07f5d7cc484e075fb96efaa631846a10b7c82"
+    },
+    {
+      "path": "assets/cro-magnon-boy-mammoth/source/c1-r01/blankface.json",
+      "source": "output/model-generation/models/cro-magnon-boy-mammoth/work/candidate-01/source/blankface.json",
+      "sha256": "bfdc093b38ef840e3579c0c6659a5e22eaf9b3eddece57167b54aaeb3454b07b"
+    }
+  ],
+  "candidateRecord": {
+    "path": "output/model-generation/models/cro-magnon-boy-mammoth/work/candidate-01/candidate.json",
+    "sha256": "5b4019a5383c3e815fcc1855fe35457bbc321bf6e0c24a066a3bb54042d45871"
+  },
+  "production": {
+    "reference": {
+      "generator": "Codex built-in image_gen (codex-cli 0.162.0-alpha.17.2, gpt-5.6-sol, reasoning medium; ChatGPT plan, no API key); the adopted chibi woman and the user style image attached to every call",
+      "styleImage": {
+        "path": "source/original/candidate5-style-user.png",
+        "sha256": "2705471c8c1736003232fd87f7ed4938e3dfaf2799c3773dabb849f91897f763",
+        "bytes": 235155,
+        "note": "user-supplied in chat; style only"
+      },
+      "request": {
+        "path": "source/original/codex-request-cast1.txt",
+        "sha256": "f94052041e20025534c61150c41f6d9272630619b2070060c5978d014cb6889d",
+        "bytes": 11430
+      },
+      "prompts": {
+        "path": "source/original/prompts-cast1.json",
+        "sha256": "d127dc6b0b2dac48cac47c8aa14aef17594f2c00a98af90eea0e783ca4953488",
+        "bytes": 35829
+      },
+      "castSheet": {
+        "path": "output/model-generation/models/chibi-cast/review/cast1-sheet.png",
+        "sha256": "3a0c8d293bcae50037cd59eb5334e290a88a1829235deb2ef500e425538235ac",
+        "bytes": 2610990
+      },
+      "chosen": {
+        "path": "source/original/cast1-b5.png",
+        "sha256": "6a5147ce89a1b0c7d440f4ebf407a2b4be25444a61f957ea11d38e3f03156373",
+        "bytes": 1833082,
+        "design": "B5: a shaggy reddish-brown woolly-mammoth-calf hood with a trunk hanging over the forehead, two small cream tusks, round ears and a cream fur trim around the face, messy dark-brown hair, blue-grey eyes, two red-ochre stripes on each cheek, a reddish-brown fur capelet with a cream trim and an animal-tooth necklace, a tan hide tunic with elbow sleeves and fur cuffs, a belt with a knot and a pouch, a red-ochre zigzag and dots above the cream fur hem, brown shorts with fur trims, bare knees, reddish-brown fur leg warmers, laced tan boots"
+      }
+    },
+    "referenceMatte": {
+      "path": "work/candidate-01/source/prepared-b5-blank/reference-mask.png",
+      "sha256": "203f0322fd2f63a777164211b97e9837b939df157103a3ddc83bd4899643e516",
+      "bytes": 11555,
+      "method": "scripts/remake/reference_matte.py (offset 290,54 px, NCC 0.981)"
+    },
+    "trellis": {
+      "settings": "local TRELLIS-2 C++ GGUF, res 1024, tex 1024, BiRefNet matte, xatlas atlas 2048",
+      "rejected": {
+        "dense": {
+          "path": "work/candidate-01/trellis/dense-b5-blank-res1024-tex1024-seed0123.glb",
+          "sha256": "df732b09cbf6390325beae13fbacfa4b602fed770fdf1a04a4ca6b91721611b0",
+          "bytes": 25128196
+        },
+        "record": {
+          "path": "work/candidate-01/trellis/dense-b5-blank-res1024-tex1024-seed0123.json",
+          "sha256": "be1482c660fc328fa80bb2ebe201a159f340e5fa43041efc224bfa54d51a0806",
+          "bytes": 1373
+        },
+        "seed": 123,
+        "seconds": 1798.1,
+        "reason": "a large round tan mammoth rump with a tail invented on the back (not in the design); renders qa/dense-s123"
+      },
+      "chosen": {
+        "dense": {
+          "path": "work/candidate-01/trellis/dense-b5-blank-res1024-tex1024-seed0042.glb",
+          "sha256": "cff5222bb2cc71e496910da83b1bf919485efed7b2c8afb178afd7fb1e10cecc",
+          "bytes": 20133928
+        },
+        "record": {
+          "path": "work/candidate-01/trellis/dense-b5-blank-res1024-tex1024-seed0042.json",
+          "sha256": "366216bd24fa594667332b129bcffac81fef6f843306d045f609415c9ca558ab",
+          "bytes": 1370
+        },
+        "seed": 42,
+        "seconds": 935.7,
+        "reference": "blank face",
+        "note": "no rump; the trunk, a front-view feature, comes forward and curls up as in seed 123 (the reconstruction's consistent reading of the depth); renders qa/dense-s42, qa/dense-s42-face"
+      },
+      "stopped": {
+        "seed": 7,
+        "log": {
+          "path": "work/candidate-01/trellis/dense-b5-blank-res1024-tex1024-seed0007.log",
+          "sha256": "0538819a4046877d2c0345f0acfc178cceca36e07d19ecfe0ecdbc2c85452317",
+          "bytes": 4932
+        },
+        "reason": "stopped in the texture stage after seed 42 was chosen (it held the GPU for the browser QA)"
+      }
+    },
+    "blankFace": {
+      "script": "scripts/remake/blank_face.py --fill-mode residual with --force ellipses over the whole eyes 401,452,55,48 and 626,452,55,48, the eyelid arcs left above them by the first fill 436,409,19,10 and 589,409,17,10, the cheek stripes 396,522,31,23 and 632,523,31,23 and the mouth 514,538,34,11",
+      "image": {
+        "path": "work/candidate-01/source/cast1-b5-blankface.png",
+        "sha256": "10119c9b0fc31cf3c3d299c4c7c07f5d7cc484e075fb96efaa631846a10b7c82",
+        "bytes": 1632111
+      },
+      "mask": {
+        "path": "work/candidate-01/source/blankface-mask.png",
+        "sha256": "9f853a9c726fa7a4db85d13b7401e423752411996516c48d08c3b3321fe5a9d9",
+        "bytes": 2858
+      },
+      "record": {
+        "path": "work/candidate-01/source/blankface.json",
+        "sha256": "bfdc093b38ef840e3579c0c6659a5e22eaf9b3eddece57167b54aaeb3454b07b",
+        "bytes": 2880
+      }
+    },
+    "reduction": {
+      "script": "scripts/remake/chibi_surface.sh (BUDGET=8500 BOOST=1.3 CUT=0.0935 FACEBOX=-0.13:0.13:0.095:0.26:0.03:0.21 HAIR_SAT=0.22,0.30 FACE_EXTRA=--flat-normals 1.0)",
+      "meshopt": {
+        "path": "work/candidate-01/low-poly/meshopt-8500.glb",
+        "sha256": "8269ebe714c7fc9def177dd7f2467ce6657ac5fece2153b47942fc22c2b92df5",
+        "bytes": 150912
+      },
+      "body": {
+        "atlas": {
+          "path": "work/candidate-01/low-poly/xatlas-body-1024.glb",
+          "sha256": "4467265f51ec7067240c8a2cc46cae49fdb3394732ad03e260b57fb9f0a078c0",
+          "bytes": 132348
+        },
+        "baked": {
+          "path": "work/candidate-01/low-poly/bake-body/candidate.glb",
+          "sha256": "2178b8e48b80ace03897219427f172ce5351e973a72d4d0930d37c0339a6ed08",
+          "bytes": 934060
+        }
+      },
+      "head": {
+        "atlas": {
+          "path": "work/candidate-01/low-poly/xatlas-head-2048.glb",
+          "sha256": "e3c2b7181874de2800bf03f57051b731dcfde0bacc087ca03bda5a08ae94b679",
+          "bytes": 190808
+        },
+        "baked": {
+          "path": "work/candidate-01/low-poly/bake-head/candidate.glb",
+          "sha256": "5c885a99d68427be04600c95d03b334755b9eed8fb192879dbd63bbcdd60b685",
+          "bytes": 1925132
+        }
+      },
+      "note": "the hood takes 5,073 of the triangles before the merge, the body 3,413"
+    },
+    "colour": {
+      "body": {
+        "path": "work/candidate-01/colour/body.glb",
+        "sha256": "4f7e754f984b0ec99afe5ecb99533936bef80f301aec928003716ac1f59436a2",
+        "bytes": 1017680,
+        "settings": "CIELAB quantiles to the reference rows 600-1477"
+      },
+      "tunic": {
+        "path": "work/candidate-01/colour/body-tunic.glb",
+        "sha256": "7888de8b54cc0290872cc486e8b9a14ecb5a313e5d0871c5f8608b6519d8b6db",
+        "bytes": 1015696,
+        "script": "match_reference_colours.py --mode range --atlas-range 22,32,0.24,0.37,0.72,0.93 --ref-range 25,33,0.33,0.47,0.75,0.92 --rows 600,1477: the paler tunic (saturation 0.30) onto the reference's tan (0.39)"
+      },
+      "fur": {
+        "path": "work/candidate-01/colour/body-tunic-fur.glb",
+        "sha256": "c0db8fd34a12e1e2ca2ee0c2a2b4b2661748f4e4152bef968167004d5676baac",
+        "bytes": 1011832,
+        "script": "match_reference_colours.py --mode range --atlas-range 8,20,0.5,0.66,0.6,0.82 --ref-range 12,22,0.45,0.58,0.55,0.78 --rows 600,1477: the capelet and leg warmers a little less orange"
+      },
+      "shorts": {
+        "path": "work/candidate-01/colour/body-tunic-fur-shorts.glb",
+        "sha256": "aadc2490922d246f5295d739b073d202f999fa641d9a3e8b1a72a666eee86e65",
+        "bytes": 1009816,
+        "script": "scripts/remake/even_fur.py --region=-1:1:-0.262:-0.2256:-1:1 --hue 10,40 --min-sat 0.3 --keep 0.6 --chroma-keep 0.5 --target 127,85,66: the light tan shorts onto the reference brown (their cream trims untouched)"
+      },
+      "rejected": [
+        {
+          "path": "work/candidate-01/colour/body-tunic-fur-legs.glb",
+          "sha256": "815709eacc60a03f4e1023d1c649d0dd2b904ade28075f3305cd53691e74f921",
+          "bytes": 1009080,
+          "reason": "a range transfer for the shorts and boots together barely moved the shorts (the range was shared with much of the atlas)"
+        },
+        {
+          "path": "work/candidate-01/colour/rejected-hood-range-on-final.glb",
+          "sha256": "eb38693a44917a938cc03fb7e0a7455cd94d137ff0c26c5faf1bae62eae19070",
+          "bytes": 3049000,
+          "reason": "the hood renders more orange than the design, but its albedo is already a little darker than the reference's hood pixels (CIELAB L 43.9 against 47.0): a range transfer onto them lightened it and added noise; the hood is kept"
+        }
+      ],
+      "head": {
+        "path": "work/candidate-01/colour/head.glb",
+        "sha256": "b7b372f1f8eac1020d8c8871f3dbd65318f138ba4f675512ede513116bda52c9",
+        "bytes": 2052552,
+        "settings": "hair class, saturation ramp 0.22-0.30"
+      }
+    },
+    "face": {
+      "report": {
+        "path": "work/candidate-01/face/head/report.json",
+        "sha256": "2b01a7cfe89358f892b391840adb45b420ea6f444d89ec59ede796904d39b752",
+        "bytes": 1962
+      },
+      "head": {
+        "path": "work/candidate-01/face/head/face.glb",
+        "sha256": "b15f3ed850168aa73f5eaab0c85c3e7ae1ee8b5361a12d850632246b1e0627b0",
+        "bytes": 895488
+      },
+      "settings": "replace mode, eye and chin rows 452/590, hair guard except in the eye ellipses 401,452,70,64 and 626,452,70,64 and the lower face 514,515,80,45, dark regions thinner than 9 texels, skin tone halfway, face normals flattened"
+    },
+    "merged": {
+      "path": "work/candidate-01/graft/merged-colour3.glb",
+      "sha256": "d980706f5e77c25daf19d014ff89ea8c2fdcaba8d64a70314523a5b09ee6f091",
+      "bytes": 1904788,
+      "script": "scripts/remake/merge_head.py --no-tone",
+      "triangles": 8374
+    },
+    "skinMaterial": {
+      "path": "work/candidate-01/graft/merged-skin-r01.glb",
+      "sha256": "61798ee07999e84affa513c9b546d2fc058d28934341f5cd527f05b6d5ec870a",
+      "bytes": 1944396,
+      "script": "scripts/remake/split_skin_material.py --arm 0.13,0.78,0.395,0.457 --cuff 0.645 --legs 0.255,0.31 --neck 0.83,0.88,0.09 --tone 234,182,154 (bare forearms and hands below the fur elbow cuffs, which end at 0.63-0.64 of the arm; the knees between the shorts trim and the leg warmers; --bare-arms was tried and dropped: the capelet votes as skin)",
+      "faces": {
+        "body": 3138,
+        "skin": 222,
+        "hands": 121,
+        "legs": 82,
+        "neck": 19
+      },
+      "tone": {
+        "targetSrgb": "234,182,154",
+        "strength": 1,
+        "texels": 47771,
+        "beforeLab": [
+          85.9000015258789,
+          11,
+          23.920000076293945
+        ],
+        "targetLab": [
+          77.94999694824219,
+          14.979999542236328,
+          21.40999984741211
+        ]
+      }
+    },
+    "rig": {
+      "report": {
+        "path": "work/candidate-01/rig/r01/rig-report.json",
+        "sha256": "af947c1642863537f12e0924e9f5938c51c852e2233a7794b1e173dbd9ef724a",
+        "bytes": 27669
+      },
+      "proportions": {
+        "path": "work/candidate-01/rig/proportions-b5.json",
+        "sha256": "8d958bfbc4bd8c1fc6a72ce82bf7862129746e16879375e3db65e595cfbfb61e",
+        "bytes": 963
+      },
+      "candidate": {
+        "path": "work/candidate-01/rig/r01/candidate.glb",
+        "sha256": "1f59b39145ad17b0d28642a4956e35f7cc97dd428d89bd52b0a73ad0bf66b8b2",
+        "bytes": 2658884
+      },
+      "options": "--accent none --measure-subdiv 4 --arm-band .03 --arm-gate .47 --arm-fractions .40,.64,.80 --rigid-hands .60,.68 --rigid-feet=-.015,.02 --body-over-knees --arm-axis-depth --proportions rig/proportions-b5.json",
+      "note": "hips first at 0.28 of the height: the 0.337 m legs could not reach the spear lunge step (build_spear_thrust_one.mjs: NaN); at 0.295 as the topknot boy (legs 0.358 m) every clip builds"
+    },
+    "motion": {
+      "chain": "scripts/remake/human_chain.sh with LOCOMOTION_CADENCE=Walk_Loop:1.7,Run_Loop:1.5 and TEMPLATE_ASSET",
+      "folder": "output/asset-remake/motion/cro-magnon-boy-mammoth-r01",
+      "locomotion": {
+        "Walk_Loop": {
+          "metresPerSecond": 0.8995301655469716,
+          "strideMetres": 0.5908678538396774,
+          "cycleSeconds": 0.6568627450980392,
+          "dutyFactor": 0.61,
+          "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+        },
+        "Run_Loop": {
+          "metresPerSecond": 2.272050866004517,
+          "strideMetres": 1.110780423379986,
+          "cycleSeconds": 0.4888888888888889,
+          "dutyFactor": 0.36,
+          "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+        }
+      }
+    }
+  },
+  "qa": {
+    "renders": "work/candidate-01/qa (scripts/remake/cast_qa_renders.sh): final, final-face, final-poses, poses-front/side.jpg (10 clips x 3 phases), merged-r01, aligned-*, hem-r0*, skin-split-r01, review.jpg",
+    "clips": "all 10 clips with finite keys; axe lowest point 0.243 m; walk/run ankle lift 7.1/17.0 cm; foot weights on their own side; head 7,205 vertices rigid in all clips (max 1.3e-15 m, before 0.236 m)",
+    "game": "output/playwright/b5-candidate-game-r01 (routed into the chibi woman's slot through the isolated LAN config; Idle/Walk/Run/Attack seen; 0 page errors)"
+  },
+  "sheets": [
+    {
+      "path": "assets/cro-magnon-boy-mammoth/qa/c1-r01/review.jpg",
+      "source": "output/model-generation/models/cro-magnon-boy-mammoth/work/candidate-01/qa/review.jpg",
+      "sha256": "b16e73ad028f181012def88f71b36f9857465ef5107949c1a78d9ac144622d38"
+    },
+    {
+      "path": "assets/cro-magnon-boy-mammoth/qa/c1-r01/poses-front.jpg",
+      "source": "output/model-generation/models/cro-magnon-boy-mammoth/work/candidate-01/qa/poses-front.jpg",
+      "sha256": "7fb1bad8b6d7ebc8792a04042e7d61552aa979a3d88b3c4ec5b30417f8fba698"
+    },
+    {
+      "path": "assets/cro-magnon-boy-mammoth/qa/c1-r01/poses-side.jpg",
+      "source": "output/model-generation/models/cro-magnon-boy-mammoth/work/candidate-01/qa/poses-side.jpg",
+      "sha256": "be847a8afc4fb11fcf0767c0314b8cc6045f9e6c85ade59ff321c30ee94cdf7f"
+    },
+    {
+      "path": "assets/cro-magnon-boy-mammoth/qa/c1-r01/hem-zigzag.jpg",
+      "source": "output/model-generation/models/cro-magnon-boy-mammoth/work/candidate-01/qa/hem-zigzag.jpg",
+      "sha256": "105425e0c032794668e14dbf6f8c48ad912b8925eba5b13e77d5aae88a8de3eb"
+    }
+  ],
+  "previous": null,
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5); Codex built-in image_gen references; local TRELLIS-2 reconstruction",
+    "claudeUsed": true,
+    "geometrySource": "TRELLIS-2 reconstruction (seed 42; seed 123 invented a mammoth rump on the back) of a copy of the chosen generated reference whose painted eyes, eyelid arcs, cheek stripes, mouth and nose were filled with the surrounding skin (a smooth face), meshopt reduction with the head weighted 1.3x, xatlas atlases with a denser face, Blender bakes, the reference's colours restored (tunic, fur and shorts moved onto the reference's), the painted face projected from the original reference, the reference's red-ochre hem zigzag and dots painted over the reconstruction's pink smudges, the bare skin in a second material toned to the face, centred on the feet, the large head rigid to the Head bone"
+  }
+}

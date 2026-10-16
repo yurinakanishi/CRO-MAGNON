@@ -99,6 +99,13 @@ export const CLOTHING_DYE_RULES: Readonly<Record<string, Readonly<ClothingDyeRul
       keep: [6, 16, 0.48, 0.65, 0.62, 0.82],
       height: [0, 1],
     },
+    // The mammoth boy: the tunic and the cream fur trims; the reddish-brown pelt capelet continues the hood (head, never dyed) and keeps its colour, as the brown shorts, the belt and the red hem zigzag; the boots and leg warmers below 0.31 of the body keep theirs.
+    'cro-magnon-boy-mammoth': {
+      materials: ['BodySurface'],
+      skin: [5, 24, 0.3, 0.72, 0.8, 1],
+      keep: [340, 24, 0.3, 1, 0, 1],
+      height: [0.31, 1],
+    },
     'cro-magnon-hunter': { materials: ['BodySurface'], skin: SKIN },
     // Black cloth: a higher floor lets it show the colour.
     'cat-kunoichi': { materials: ['BodySurface'], skin: SKIN, lift: 0.45 },

@@ -210,4 +210,16 @@ export const CHARACTER_MODELS: readonly Readonly<CharacterModel>[] = Object.free
     cameraFocus: 1.15,
     petReachScale: 0.6,
   }),
+  // His arms hang above the knees (rig --body-over-knees): 524 is offered closer than to the woman.
+  Object.freeze({
+    species: 'cro',
+    gender: 'male',
+    key: 'cro-magnon-boy-mammoth',
+    carryable: false,
+    name: 'クロマニョン人 子マンモスずきんの男の子',
+    height: 1.45,
+    botHandRatios: { side: 0.12, front: 0.13, height: 0.6 },
+    cameraFocus: 1.15,
+    petReachScale: 0.6,
+  }),
 ]);

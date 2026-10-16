@@ -1,0 +1,51 @@
+{
+  "status": "retained-not-served",
+  "reviewed": "review-1.png",
+  "files": [
+    {
+      "url": "/models/cat-kunoichi/portraits/choice-r04-original.webp",
+      "sha256": "d6d943b90a3b2571cfad8abd57e6b3d419aaa85bd0d1816706f7a64564904fbf",
+      "bytes": 21066
+    },
+    {
+      "url": "/models/cat-kunoichi/portraits/choice-r04-red.webp",
+      "sha256": "aa3f433f57c72e3aa9f8793d3e7250cb9352fcdd2c0270a77c19a187cd269397",
+      "bytes": 23716
+    },
+    {
+      "url": "/models/cat-kunoichi/portraits/choice-r04-yellow.webp",
+      "sha256": "0dfc2f15abc00c78f16654b994f319d4c0bafa05ebc4317964be45c4d5a16233",
+      "bytes": 24108
+    },
+    {
+      "url": "/models/cat-kunoichi/portraits/choice-r04-green.webp",
+      "sha256": "3928d57e4747f27e1fc5386d05a0ec00f4108645209660618c4d7666faf4bd65",
+      "bytes": 22702
+    },
+    {
+      "url": "/models/cat-kunoichi/portraits/choice-r04-teal.webp",
+      "sha256": "2b110028ef98a8290ef07d841e47c8923c34c0cf44ae4dce01a5a9aa325e0b78",
+      "bytes": 22064
+    },
+    {
+      "url": "/models/cat-kunoichi/portraits/choice-r04-blue.webp",
+      "sha256": "c790b2fda1fd1a177bbbce25a99d841b94edf9016e0d6016a88615733042009e",
+      "bytes": 24138
+    },
+    {
+      "url": "/models/cat-kunoichi/portraits/choice-r04-purple.webp",
+      "sha256": "6de1c8b33529a9dced359fe03d9fbc42958aee64bf4023ffc4c367c368b1758d",
+      "bytes": 22956
+    },
+    {
+      "url": "/models/cat-kunoichi/portraits/choice-r04-pink.webp",
+      "sha256": "687a619998006f079f265895c0f334c888e8190af9a9c503d94098007c2c674d",
+      "bytes": 23666
+    },
+    {
+      "url": "/models/cat-kunoichi/portraits/choice-r04-white.webp",
+      "sha256": "a2ae187aff7652a826eb97f7c7cf0c681fa0733cc41be72a42bfaabd4d64f874",
+      "bytes": 21656
+    }
+  ]
+}

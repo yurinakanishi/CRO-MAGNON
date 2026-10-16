@@ -9,8 +9,10 @@ fraction of the radii) and that face the camera (normal z ramp --facing):
 
 1. erase: texels redder than the ramp --erase-redness (R - G, 0-255) are pulled to the --erase colour (the tunic);
 2. motif: the reference's motif (pixels within --motif-tolerance of --motif, the largest connected component inside
-   the ellipse, closed and slightly blurred) is painted where it lands, through --transform (the reference point
-   FROM is drawn at TO on the model grid, scaled by S about it) and, for texels that are the front-most surface there
+   the ellipse and, with --motif-min-area, every other component at least that large: the dots beside the chibi
+   mammoth boy's hem zigzag; closed and slightly blurred) is painted where it lands, through --transform (the
+   reference point FROM is drawn at TO on the model grid, scaled by S about it) and, for texels that are the
+   front-most surface there
    (a z-buffer of every primitive), with the reference colours passed through --map (per-channel linear fit through
    FROM:TO colour pairs, so that the motif's anti-aliased edge meets the model's tunic instead of the reference's).
 Texels brighter than --keep-bright (luminance ramp of the model's own colour: a necklace tooth, fur trim) are left as
@@ -48,6 +50,8 @@ ap.add_argument('--motif', required=True, help='R,G,B of the motif in the refere
 ap.add_argument('--motif-tolerance', type=float, default=48)
 ap.add_argument('--motif-close', type=int, default=3, help='closing radius of the motif mask (reference pixels)')
 ap.add_argument('--motif-blur', type=float, default=0.8, help='Gaussian sigma of the motif mask edge (reference pixels)')
+ap.add_argument('--motif-min-area', type=int, default=0, help='also keep every other motif component of at least this '
+                'many reference pixels (the dots beside a zigzag band); 0: the largest component only')
 ap.add_argument('--transform', default='', help='S,FX,FY,TX,TY: reference point FX,FY drawn at TX,TY, scaled by S')
 ap.add_argument('--erase', default='', help='R,G,B the redder texels inside the ellipse are pulled to')
 ap.add_argument('--erase-redness', default='55,75', help='R - G ramp (0-255) of the erase')
@@ -56,6 +60,8 @@ ap.add_argument('--keep-bright', default='', help='LO,HI luminance ramp (0-1) of
 ap.add_argument('--material', default='BodySurface')
 ap.add_argument('--feather', type=float, default=0.3)
 ap.add_argument('--facing', default='0.2,0.5')
+ap.add_argument('--two-sided', action='store_true', help='face the camera with either side (|normal z|): a double-sided '
+                'material on a thin shell whose front-most wall is wound inward (the tunic hem of the mammoth boy)')
 ap.add_argument('--gutter', type=float, default=2, help='atlas texels around the charts painted with them')
 ap.add_argument('--depth-tolerance', type=float, default=0.012, help='metres behind the front-most surface still painted')
 ap.add_argument('--webp-quality', type=int, default=92)
@@ -95,7 +101,9 @@ count, labels, comp_stats, _ = cv2.connectedComponentsWithStats((close & inside)
 if count < 2:
     raise SystemExit('no motif pixels inside the ellipse')
 largest = 1 + int(np.argmax(comp_stats[1:, cv2.CC_STAT_AREA]))
-mask = (labels == largest).astype(np.uint8)
+kept = [largest] + ([i for i in range(1, count) if i != largest and comp_stats[i, cv2.CC_STAT_AREA] >= args.motif_min_area]
+                    if args.motif_min_area > 0 else [])
+mask = np.isin(labels, kept).astype(np.uint8)
 if args.motif_close > 0:
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * args.motif_close + 1,) * 2)
     mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
@@ -201,7 +209,8 @@ def smooth(t):
 
 rr = np.sqrt(((q[:, 0] - eu) / erx) ** 2 + ((q[:, 1] - ev) / ery) ** 2)
 w_ellipse = smooth((1 - rr) / args.feather)
-w_facing = np.clip((normals[fid, 2] - f0) / (f1 - f0), 0, 1)
+facing_z = np.abs(normals[fid, 2]) if args.two_sided else normals[fid, 2]
+w_facing = np.clip((facing_z - f0) / (f1 - f0), 0, 1)
 qi = np.clip(q.round().astype(int), [0, 0], [RW - 1, RH - 1])
 w_visible = (X[:, 2] >= depth[qi[:, 1], qi[:, 0]] - args.depth_tolerance).astype(np.float32)
 before = albedo[ys, xs]
@@ -250,8 +259,10 @@ sha = lambda path: hashlib.sha256(Path(path).read_bytes()).hexdigest()  # noqa: 
 report = dict(script='scripts/remake/project_decal.py', source=args.glb, sourceSha256=sha(args.glb), reference=args.reference,
               referenceSha256=sha(args.reference), output=args.out, outputSha256=sha(args.out), material=args.material,
               registration=args.registration, ellipse=args.ellipse, feather=args.feather, facing=args.facing,
+              twoSided=args.two_sided,
               transform=args.transform or None, motif=args.motif, motifTolerance=args.motif_tolerance,
-              motifBoxReference=motif_box, motifPixels=int(comp_stats[largest, cv2.CC_STAT_AREA]),
+              motifBoxReference=motif_box, motifPixels=int(sum(comp_stats[i, cv2.CC_STAT_AREA] for i in kept)),
+              motifComponents=len(kept), motifMinArea=args.motif_min_area,
               erase=args.erase or None, eraseRedness=args.erase_redness if args.erase else None,
               keepBright=args.keep_bright or None, map=args.map,
               colourMap=[dict(slope=round(s, 4), offset=round(o, 4)) for s, o in colour_map],

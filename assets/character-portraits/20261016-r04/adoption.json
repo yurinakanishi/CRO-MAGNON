@@ -1,0 +1,958 @@
+{
+  "at": "2026-10-16T02:14:29.376782Z",
+  "capture": "capture.json",
+  "reviewed": [
+    "review-1.png",
+    "review-2.png",
+    "review-3.png",
+    "review-4.png",
+    "review-5.png"
+  ],
+  "files": [
+    {
+      "key": "cro-magnon-woman",
+      "dye": null,
+      "url": "/models/cro-magnon-woman/portraits/choice-r04-original.webp",
+      "bytes": 31146,
+      "sha256": "6103e44b2df65b88909065534ebe0aea4197d8d3895e3d4969a77bebd5500b1e"
+    },
+    {
+      "key": "cro-magnon-woman",
+      "dye": "red",
+      "url": "/models/cro-magnon-woman/portraits/choice-r04-red.webp",
+      "bytes": 31888,
+      "sha256": "1aa339ee789e0764f0f6605bc4bc970871c943effb8960e6021eaaa2d3b770bc"
+    },
+    {
+      "key": "cro-magnon-woman",
+      "dye": "yellow",
+      "url": "/models/cro-magnon-woman/portraits/choice-r04-yellow.webp",
+      "bytes": 31226,
+      "sha256": "c5032e9bcda8177f9673da7df09460878036002e0bcd22a27e393314a278309a"
+    },
+    {
+      "key": "cro-magnon-woman",
+      "dye": "green",
+      "url": "/models/cro-magnon-woman/portraits/choice-r04-green.webp",
+      "bytes": 31924,
+      "sha256": "6c0a8d510326ca2640e198628a86f733e16a618aba03495e61e995800b12a003"
+    },
+    {
+      "key": "cro-magnon-woman",
+      "dye": "teal",
+      "url": "/models/cro-magnon-woman/portraits/choice-r04-teal.webp",
+      "bytes": 30880,
+      "sha256": "ecd273e2718c41a8fcced24e6674af791f2f0dc4fc52bb88ec676509228b4da5"
+    },
+    {
+      "key": "cro-magnon-woman",
+      "dye": "blue",
+      "url": "/models/cro-magnon-woman/portraits/choice-r04-blue.webp",
+      "bytes": 31444,
+      "sha256": "457b869016464b1c5cfa01643cea056de0e1f66c6c21b83947927d28e5e3049e"
+    },
+    {
+      "key": "cro-magnon-woman",
+      "dye": "purple",
+      "url": "/models/cro-magnon-woman/portraits/choice-r04-purple.webp",
+      "bytes": 30464,
+      "sha256": "369f4a94800bb16d71f083f688ae88f6cc2d443376ad44ac135e97ede0648af2"
+    },
+    {
+      "key": "cro-magnon-woman",
+      "dye": "pink",
+      "url": "/models/cro-magnon-woman/portraits/choice-r04-pink.webp",
+      "bytes": 31706,
+      "sha256": "058ab3456af11c62c6483c80423c38866a7942df512e8069a7e83777668dffaf"
+    },
+    {
+      "key": "cro-magnon-woman",
+      "dye": "white",
+      "url": "/models/cro-magnon-woman/portraits/choice-r04-white.webp",
+      "bytes": 28124,
+      "sha256": "8a1a010b1d57d5303623d0078fa4ff59439b55570f79d939874583082019c903"
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "dye": null,
+      "url": "/models/cro-magnon-hunter/portraits/choice-r04-original.webp",
+      "bytes": 33758,
+      "sha256": "d57f57c4ed7818390c70fd96f6da9ef0be6bf2351e0a8df967fb6ebf3d97f395"
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "dye": "red",
+      "url": "/models/cro-magnon-hunter/portraits/choice-r04-red.webp",
+      "bytes": 34794,
+      "sha256": "32a63cf7a8921388a9344b67b399a8938bbd66e932fdc68bc2411ff8e67337ef"
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "dye": "yellow",
+      "url": "/models/cro-magnon-hunter/portraits/choice-r04-yellow.webp",
+      "bytes": 36202,
+      "sha256": "309450f6ef840c5b81e6221eb12cd18628625ce702d294688cc32d7a5891c44f"
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "dye": "green",
+      "url": "/models/cro-magnon-hunter/portraits/choice-r04-green.webp",
+      "bytes": 35576,
+      "sha256": "6f2542a39d36af9fd57e08f27cc4654b16999ed36e6bd7708e2acf6d500b8d98"
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "dye": "teal",
+      "url": "/models/cro-magnon-hunter/portraits/choice-r04-teal.webp",
+      "bytes": 35274,
+      "sha256": "7ab5d9216f64716e14894f7859b2b5b5c5889d457b86dc9806552a09720d268e"
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "dye": "blue",
+      "url": "/models/cro-magnon-hunter/portraits/choice-r04-blue.webp",
+      "bytes": 36444,
+      "sha256": "e2f849f9505f10fbfe15598ae17da377b7c717bdc4ce818fc955af1c78227772"
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "dye": "purple",
+      "url": "/models/cro-magnon-hunter/portraits/choice-r04-purple.webp",
+      "bytes": 34620,
+      "sha256": "ddce5a1357ee325b954c02326692175b837a893e30d0b0d24fa7e4ba1ca0c8c2"
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "dye": "pink",
+      "url": "/models/cro-magnon-hunter/portraits/choice-r04-pink.webp",
+      "bytes": 35670,
+      "sha256": "90000a19499012c4fbb0475a84450510d6e7c510c09434d8c68e6b4eb51550da"
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "dye": "white",
+      "url": "/models/cro-magnon-hunter/portraits/choice-r04-white.webp",
+      "bytes": 33712,
+      "sha256": "690e151f2f9eeda6fe809aad36eca145e243aa70087617841ca3e9a76e31c5ae"
+    },
+    {
+      "key": "desert-fennec-mage",
+      "dye": null,
+      "url": "/models/desert-fennec-mage/portraits/choice-r04-original.webp",
+      "bytes": 9792,
+      "sha256": "055c09fe046abb58f678d4b2164d892168b297ce80b749a467be047a495b4de4"
+    },
+    {
+      "key": "desert-fennec-mage",
+      "dye": "red",
+      "url": "/models/desert-fennec-mage/portraits/choice-r04-red.webp",
+      "bytes": 10070,
+      "sha256": "b39243dd71081a5c819002e0ebdd9579efbc4e59ecb8401d590462aa31982150"
+    },
+    {
+      "key": "desert-fennec-mage",
+      "dye": "yellow",
+      "url": "/models/desert-fennec-mage/portraits/choice-r04-yellow.webp",
+      "bytes": 10162,
+      "sha256": "9a723f29f5419d24b50ae4248c898c2325229b1f5c02df698a5abec87956eb1f"
+    },
+    {
+      "key": "desert-fennec-mage",
+      "dye": "green",
+      "url": "/models/desert-fennec-mage/portraits/choice-r04-green.webp",
+      "bytes": 10224,
+      "sha256": "89a0053a4bc92cbeddcd7690ae7167bde5f4b48d183fa29d53f61bb767929255"
+    },
+    {
+      "key": "desert-fennec-mage",
+      "dye": "teal",
+      "url": "/models/desert-fennec-mage/portraits/choice-r04-teal.webp",
+      "bytes": 10126,
+      "sha256": "e7e64fca6ece1c1afa9d8025ff3a238ddded215391c740feba7caa55eedfd1fa"
+    },
+    {
+      "key": "desert-fennec-mage",
+      "dye": "blue",
+      "url": "/models/desert-fennec-mage/portraits/choice-r04-blue.webp",
+      "bytes": 10254,
+      "sha256": "2dc8a16c1bd36ccd9aba57b72bbd44f2b0bb0de277f3d5b3ed14766e93d62c22"
+    },
+    {
+      "key": "desert-fennec-mage",
+      "dye": "purple",
+      "url": "/models/desert-fennec-mage/portraits/choice-r04-purple.webp",
+      "bytes": 10230,
+      "sha256": "bcd73f713a8dc0ac8b34f3bd2d9e428b6d8e4dcce7c2200329fb8c9c505dadce"
+    },
+    {
+      "key": "desert-fennec-mage",
+      "dye": "pink",
+      "url": "/models/desert-fennec-mage/portraits/choice-r04-pink.webp",
+      "bytes": 10200,
+      "sha256": "465c92fb611a30020360ff882ed8cfb6c03711ae2d7b2dfbf523e56a51833588"
+    },
+    {
+      "key": "desert-fennec-mage",
+      "dye": "white",
+      "url": "/models/desert-fennec-mage/portraits/choice-r04-white.webp",
+      "bytes": 9902,
+      "sha256": "cdf7bfebe736ef34d0d948a48b8902740abb8cf2f4d548245a02e6c9f49992db"
+    },
+    {
+      "key": "giant-ape",
+      "dye": null,
+      "url": "/models/giant-ape/portraits/choice-r04-original.webp",
+      "bytes": 82092,
+      "sha256": "64113067a1d7e82a4468e9b3f3b7eb7edfbcc48df87bb2e7a70b8c8375fb6102"
+    },
+    {
+      "key": "giant-ape",
+      "dye": "red",
+      "url": "/models/giant-ape/portraits/choice-r04-red.webp",
+      "bytes": 83318,
+      "sha256": "ebbb5d3657d79271f123d595e9112f82d1729f4d9b53d54cfc8967863c1e9d61"
+    },
+    {
+      "key": "giant-ape",
+      "dye": "yellow",
+      "url": "/models/giant-ape/portraits/choice-r04-yellow.webp",
+      "bytes": 88716,
+      "sha256": "178bfe55ccaaa5c72a167c24714de37543c1315d136d5f46429eeb10e11ffccc"
+    },
+    {
+      "key": "giant-ape",
+      "dye": "green",
+      "url": "/models/giant-ape/portraits/choice-r04-green.webp",
+      "bytes": 84370,
+      "sha256": "823a44f2977dfffbc97fd06fc1e212fa25d8fe964a58b02cb73b071c9eb5c727"
+    },
+    {
+      "key": "giant-ape",
+      "dye": "teal",
+      "url": "/models/giant-ape/portraits/choice-r04-teal.webp",
+      "bytes": 83716,
+      "sha256": "4c42024555053feeb41a8606e3694640d823f8775ac6f15ff4a989265172e8c5"
+    },
+    {
+      "key": "giant-ape",
+      "dye": "blue",
+      "url": "/models/giant-ape/portraits/choice-r04-blue.webp",
+      "bytes": 89248,
+      "sha256": "a90bc801150c65202eaf10ca7962c5794cbc466c24be24e269b03eb3eb60d7ec"
+    },
+    {
+      "key": "giant-ape",
+      "dye": "purple",
+      "url": "/models/giant-ape/portraits/choice-r04-purple.webp",
+      "bytes": 86668,
+      "sha256": "60929c0f5803fedab8ed334a9499c5d9ea23931483803c5cbc27efad2933f2de"
+    },
+    {
+      "key": "giant-ape",
+      "dye": "pink",
+      "url": "/models/giant-ape/portraits/choice-r04-pink.webp",
+      "bytes": 87096,
+      "sha256": "2fd5e064448c77fd5fb8d89a1caf3e44948027cbadb320238956333cf3acbeae"
+    },
+    {
+      "key": "giant-ape",
+      "dye": "white",
+      "url": "/models/giant-ape/portraits/choice-r04-white.webp",
+      "bytes": 78216,
+      "sha256": "3dd67e336d42a94b92dcfdfd26fc2033cd860fb5ce4b2272dea5c3a0aad65910"
+    },
+    {
+      "key": "maruimo-octopus",
+      "dye": null,
+      "url": "/models/maruimo-octopus/portraits/choice-r04-original.webp",
+      "bytes": 60984,
+      "sha256": "cbee40692fd1dd9ad1e8ade3eb490d5f54bebd6f3291185a2fc08789c8e6d541"
+    },
+    {
+      "key": "maruimo-octopus",
+      "dye": "red",
+      "url": "/models/maruimo-octopus/portraits/choice-r04-red.webp",
+      "bytes": 62310,
+      "sha256": "43835989bc48c6152b9456c376623511ad31b78d1f72188e800b00326c1f771c"
+    },
+    {
+      "key": "maruimo-octopus",
+      "dye": "yellow",
+      "url": "/models/maruimo-octopus/portraits/choice-r04-yellow.webp",
+      "bytes": 64092,
+      "sha256": "9e5d127ee9dcfc6a0da08f712d0a9b82053d51538535158eb776d7040e57f788"
+    },
+    {
+      "key": "maruimo-octopus",
+      "dye": "green",
+      "url": "/models/maruimo-octopus/portraits/choice-r04-green.webp",
+      "bytes": 64908,
+      "sha256": "2d15913278e899d71e0c868734771bc6770b36276f59a169742a5ba329a4d120"
+    },
+    {
+      "key": "maruimo-octopus",
+      "dye": "teal",
+      "url": "/models/maruimo-octopus/portraits/choice-r04-teal.webp",
+      "bytes": 65054,
+      "sha256": "68378beb8aa76a84e750a7411851e8eaad3e369f36c2180c96cc95a0b615cfa0"
+    },
+    {
+      "key": "maruimo-octopus",
+      "dye": "blue",
+      "url": "/models/maruimo-octopus/portraits/choice-r04-blue.webp",
+      "bytes": 65314,
+      "sha256": "35cab9c9ddb6b7f0b223039fcb9145d4f3f0f5563f55f08519b7ef0e2b57fe68"
+    },
+    {
+      "key": "maruimo-octopus",
+      "dye": "purple",
+      "url": "/models/maruimo-octopus/portraits/choice-r04-purple.webp",
+      "bytes": 64372,
+      "sha256": "a5db351a6cc5c07a52a89c4a09b1d72648180bea5e470354e668e7e139b7544b"
+    },
+    {
+      "key": "maruimo-octopus",
+      "dye": "pink",
+      "url": "/models/maruimo-octopus/portraits/choice-r04-pink.webp",
+      "bytes": 64210,
+      "sha256": "4d8fe8c9d96286c288c0993c8be6be2f4e2b5cab4d69f7f5c33443043c45a629"
+    },
+    {
+      "key": "maruimo-octopus",
+      "dye": "white",
+      "url": "/models/maruimo-octopus/portraits/choice-r04-white.webp",
+      "bytes": 63300,
+      "sha256": "bd38faf337c75978b9c93738d1406f6c3e810a7735d30bccc32b9b0f999356dc"
+    },
+    {
+      "key": "cro-magnon-girl-feather",
+      "dye": null,
+      "url": "/models/cro-magnon-girl-feather/portraits/choice-r04-original.webp",
+      "bytes": 33252,
+      "sha256": "af51a649140c8f935fe6c60124b688c859a743039cc5dd44bbc3103df0e0972a"
+    },
+    {
+      "key": "cro-magnon-girl-feather",
+      "dye": "red",
+      "url": "/models/cro-magnon-girl-feather/portraits/choice-r04-red.webp",
+      "bytes": 33260,
+      "sha256": "009a1431cb651f3c66c421c1480d8585aaefbb6b2d9722f05589ef2e9c7b138c"
+    },
+    {
+      "key": "cro-magnon-girl-feather",
+      "dye": "yellow",
+      "url": "/models/cro-magnon-girl-feather/portraits/choice-r04-yellow.webp",
+      "bytes": 33048,
+      "sha256": "2e4fedd6f387c06422ddcd80e9a6b6773b6bc4e65edea64d5827bc099938e41a"
+    },
+    {
+      "key": "cro-magnon-girl-feather",
+      "dye": "green",
+      "url": "/models/cro-magnon-girl-feather/portraits/choice-r04-green.webp",
+      "bytes": 33858,
+      "sha256": "77c5692691300aed8929245700923183b512d0eaa78b1a88a1ce819fba9a7950"
+    },
+    {
+      "key": "cro-magnon-girl-feather",
+      "dye": "teal",
+      "url": "/models/cro-magnon-girl-feather/portraits/choice-r04-teal.webp",
+      "bytes": 33310,
+      "sha256": "c26f60ec24840eec8622913e0fc261e64c90eb639c0132da8217f76297e11019"
+    },
+    {
+      "key": "cro-magnon-girl-feather",
+      "dye": "blue",
+      "url": "/models/cro-magnon-girl-feather/portraits/choice-r04-blue.webp",
+      "bytes": 34114,
+      "sha256": "1c784940e9f32da46612a5fe97cc40dc584508d5ad27837d4c19f3f3feec88ad"
+    },
+    {
+      "key": "cro-magnon-girl-feather",
+      "dye": "purple",
+      "url": "/models/cro-magnon-girl-feather/portraits/choice-r04-purple.webp",
+      "bytes": 33036,
+      "sha256": "dfe4bb728451934c389bc3a2e8a19199299b24984105cc43c4119e0d2da25f4b"
+    },
+    {
+      "key": "cro-magnon-girl-feather",
+      "dye": "pink",
+      "url": "/models/cro-magnon-girl-feather/portraits/choice-r04-pink.webp",
+      "bytes": 33344,
+      "sha256": "45a77c97f42a562d961dcd9b6a8b180942e6df7776861e2c24dc3edb8399c26f"
+    },
+    {
+      "key": "cro-magnon-girl-feather",
+      "dye": "white",
+      "url": "/models/cro-magnon-girl-feather/portraits/choice-r04-white.webp",
+      "bytes": 30256,
+      "sha256": "47a472d8718c80bc69b6c3acb9658c0959ae2051c7e136a51afae0cda702832b"
+    },
+    {
+      "key": "cro-magnon-girl-bear",
+      "dye": null,
+      "url": "/models/cro-magnon-girl-bear/portraits/choice-r04-original.webp",
+      "bytes": 34848,
+      "sha256": "12ab21cf6f09b3bea8dbada14674035376d6cf4f82d8f855f6759483954678b9"
+    },
+    {
+      "key": "cro-magnon-girl-bear",
+      "dye": "red",
+      "url": "/models/cro-magnon-girl-bear/portraits/choice-r04-red.webp",
+      "bytes": 36756,
+      "sha256": "8f7a73de6f6cfdab195878dde4ae5b2df36c0905b33c385b5762764a43f0abb5"
+    },
+    {
+      "key": "cro-magnon-girl-bear",
+      "dye": "yellow",
+      "url": "/models/cro-magnon-girl-bear/portraits/choice-r04-yellow.webp",
+      "bytes": 36730,
+      "sha256": "d35e6585b40f10b175b8e83b79615788f2a71339b47b26f42315022affa129f2"
+    },
+    {
+      "key": "cro-magnon-girl-bear",
+      "dye": "green",
+      "url": "/models/cro-magnon-girl-bear/portraits/choice-r04-green.webp",
+      "bytes": 37722,
+      "sha256": "df15efd7293cf3c146ebff01053fc2ecf4ef26fb579e293ebdd93be84305356e"
+    },
+    {
+      "key": "cro-magnon-girl-bear",
+      "dye": "teal",
+      "url": "/models/cro-magnon-girl-bear/portraits/choice-r04-teal.webp",
+      "bytes": 37310,
+      "sha256": "9413313088393f63ba3a6dd71e28868edc4158d3211a9b5a66e242c3e421e3fb"
+    },
+    {
+      "key": "cro-magnon-girl-bear",
+      "dye": "blue",
+      "url": "/models/cro-magnon-girl-bear/portraits/choice-r04-blue.webp",
+      "bytes": 37996,
+      "sha256": "3cebf485ebf8702325630c4f837a7e3c989ea6853da5be3e0a759e384e9cf34e"
+    },
+    {
+      "key": "cro-magnon-girl-bear",
+      "dye": "purple",
+      "url": "/models/cro-magnon-girl-bear/portraits/choice-r04-purple.webp",
+      "bytes": 36972,
+      "sha256": "6324120c5c444b103b9b15c49cc760d93599531c6d84f4e5a2d9caffc40ee209"
+    },
+    {
+      "key": "cro-magnon-girl-bear",
+      "dye": "pink",
+      "url": "/models/cro-magnon-girl-bear/portraits/choice-r04-pink.webp",
+      "bytes": 36724,
+      "sha256": "4cd45d0ed3c4bf16e62fa2099acd72708fad56afa46558a7a2cbb50c7df7ffb4"
+    },
+    {
+      "key": "cro-magnon-girl-bear",
+      "dye": "white",
+      "url": "/models/cro-magnon-girl-bear/portraits/choice-r04-white.webp",
+      "bytes": 34554,
+      "sha256": "79ede262b5273d6d7e0f5a0e4dc767abbce0d4c853a37b82ee944de640037784"
+    },
+    {
+      "key": "cro-magnon-girl-wolf",
+      "dye": null,
+      "url": "/models/cro-magnon-girl-wolf/portraits/choice-r04-original.webp",
+      "bytes": 34754,
+      "sha256": "343bc3a8aa2760c19fac4bdf69519fe04cb3843d1e8f989541e23e7504b01077"
+    },
+    {
+      "key": "cro-magnon-girl-wolf",
+      "dye": "red",
+      "url": "/models/cro-magnon-girl-wolf/portraits/choice-r04-red.webp",
+      "bytes": 36600,
+      "sha256": "bed2ceb52db2336d2f5c247d4aba8d4fd4a905f139ecd4a2d97885c4771abee8"
+    },
+    {
+      "key": "cro-magnon-girl-wolf",
+      "dye": "yellow",
+      "url": "/models/cro-magnon-girl-wolf/portraits/choice-r04-yellow.webp",
+      "bytes": 36246,
+      "sha256": "4462afb0e0c745ba738dbcd7203975b90bdf42909fb3791a990aeda74682d7bc"
+    },
+    {
+      "key": "cro-magnon-girl-wolf",
+      "dye": "green",
+      "url": "/models/cro-magnon-girl-wolf/portraits/choice-r04-green.webp",
+      "bytes": 36926,
+      "sha256": "2a90569e8d0f7464ae88b113af02728be3fb132b841d926db77e1b770a644a55"
+    },
+    {
+      "key": "cro-magnon-girl-wolf",
+      "dye": "teal",
+      "url": "/models/cro-magnon-girl-wolf/portraits/choice-r04-teal.webp",
+      "bytes": 35450,
+      "sha256": "b559f5c94cd6b75d921dd3dc06e09b4ee3301f6fa3e291627e4eeea06c4313d6"
+    },
+    {
+      "key": "cro-magnon-girl-wolf",
+      "dye": "blue",
+      "url": "/models/cro-magnon-girl-wolf/portraits/choice-r04-blue.webp",
+      "bytes": 36602,
+      "sha256": "0d8b524cc85e26a818ce79b9048a2f04417aa7598a9878ac8d7c0663ac84f3b9"
+    },
+    {
+      "key": "cro-magnon-girl-wolf",
+      "dye": "purple",
+      "url": "/models/cro-magnon-girl-wolf/portraits/choice-r04-purple.webp",
+      "bytes": 36564,
+      "sha256": "2b70d373d8ab075d41c48d63a740d718f924e0e87d0ab9a177acdccfe107aaab"
+    },
+    {
+      "key": "cro-magnon-girl-wolf",
+      "dye": "pink",
+      "url": "/models/cro-magnon-girl-wolf/portraits/choice-r04-pink.webp",
+      "bytes": 35736,
+      "sha256": "6b54e6d3c039235a449d96a12fe41691dc1e2d64cba886885e24aa5d5c302d6f"
+    },
+    {
+      "key": "cro-magnon-girl-wolf",
+      "dye": "white",
+      "url": "/models/cro-magnon-girl-wolf/portraits/choice-r04-white.webp",
+      "bytes": 33690,
+      "sha256": "1b84c89a2d35094c56313872756c34c0de46849c5aa22dd47bf94cf7f44dd36e"
+    },
+    {
+      "key": "cro-magnon-girl-twintails",
+      "dye": null,
+      "url": "/models/cro-magnon-girl-twintails/portraits/choice-r04-original.webp",
+      "bytes": 32656,
+      "sha256": "264bb9eca4a91c663d77a9df8babd34e656f3c1db00a2b2804991b70905f197b"
+    },
+    {
+      "key": "cro-magnon-girl-twintails",
+      "dye": "red",
+      "url": "/models/cro-magnon-girl-twintails/portraits/choice-r04-red.webp",
+      "bytes": 32692,
+      "sha256": "d527f2e07fc12fce381aaa4f38e5cb2ec7366b7a9c141dff28a32968aa9ff272"
+    },
+    {
+      "key": "cro-magnon-girl-twintails",
+      "dye": "yellow",
+      "url": "/models/cro-magnon-girl-twintails/portraits/choice-r04-yellow.webp",
+      "bytes": 32980,
+      "sha256": "3a0a25dfceb89f77fd33b9978d192e10a4e0de7a90bdc7fb43f8b5155a450f6c"
+    },
+    {
+      "key": "cro-magnon-girl-twintails",
+      "dye": "green",
+      "url": "/models/cro-magnon-girl-twintails/portraits/choice-r04-green.webp",
+      "bytes": 33298,
+      "sha256": "8096163f500cc9c48e94b91e0937887543df4e1b92a335c9a96317cf50705c1a"
+    },
+    {
+      "key": "cro-magnon-girl-twintails",
+      "dye": "teal",
+      "url": "/models/cro-magnon-girl-twintails/portraits/choice-r04-teal.webp",
+      "bytes": 32652,
+      "sha256": "788c72f6e540355f5644a5b6e61720e68deed276ede787a6a194ac0c8a7b0b49"
+    },
+    {
+      "key": "cro-magnon-girl-twintails",
+      "dye": "blue",
+      "url": "/models/cro-magnon-girl-twintails/portraits/choice-r04-blue.webp",
+      "bytes": 33428,
+      "sha256": "daed2a43aa4090de310d4bad734cc9da276ee590e69726af5cb1b6e609de0b63"
+    },
+    {
+      "key": "cro-magnon-girl-twintails",
+      "dye": "purple",
+      "url": "/models/cro-magnon-girl-twintails/portraits/choice-r04-purple.webp",
+      "bytes": 32464,
+      "sha256": "c44332d5970311cf1285e0a9e372a2562f4cb1d7abeccc667a81a7717c993721"
+    },
+    {
+      "key": "cro-magnon-girl-twintails",
+      "dye": "pink",
+      "url": "/models/cro-magnon-girl-twintails/portraits/choice-r04-pink.webp",
+      "bytes": 32854,
+      "sha256": "ad910436e3b81fe1d677c714f1d3f55b9b96f945c3a79d74f29b083a23afb146"
+    },
+    {
+      "key": "cro-magnon-girl-twintails",
+      "dye": "white",
+      "url": "/models/cro-magnon-girl-twintails/portraits/choice-r04-white.webp",
+      "bytes": 30454,
+      "sha256": "f7326b0731ea3cb230bf769daf901c49fd5a605985b895b1afac9e325a0f98f4"
+    },
+    {
+      "key": "cro-magnon-girl-reindeer",
+      "dye": null,
+      "url": "/models/cro-magnon-girl-reindeer/portraits/choice-r04-original.webp",
+      "bytes": 30454,
+      "sha256": "f8774d169c2047cd0a5998f02b6ba0f1a17855fc13087688c1108040c9c1a8d0"
+    },
+    {
+      "key": "cro-magnon-girl-reindeer",
+      "dye": "red",
+      "url": "/models/cro-magnon-girl-reindeer/portraits/choice-r04-red.webp",
+      "bytes": 30320,
+      "sha256": "c506752d0a0b2e5661b81be3e6ecb85ed7af716e9dd21b1e6d4c7a22c698a477"
+    },
+    {
+      "key": "cro-magnon-girl-reindeer",
+      "dye": "yellow",
+      "url": "/models/cro-magnon-girl-reindeer/portraits/choice-r04-yellow.webp",
+      "bytes": 30784,
+      "sha256": "682fe16ab6bb873a53424a2db758577d752a211d1a84fe8f362f0ee98a3a0104"
+    },
+    {
+      "key": "cro-magnon-girl-reindeer",
+      "dye": "green",
+      "url": "/models/cro-magnon-girl-reindeer/portraits/choice-r04-green.webp",
+      "bytes": 31146,
+      "sha256": "b8481598fa6e8b5d309f0e14025e25506a70bef85dbb8c54b65026de92572f86"
+    },
+    {
+      "key": "cro-magnon-girl-reindeer",
+      "dye": "teal",
+      "url": "/models/cro-magnon-girl-reindeer/portraits/choice-r04-teal.webp",
+      "bytes": 30532,
+      "sha256": "e27de6ac8d50e4c958e4c37d3927df7fbfd0b917b061581b2fe296824385056e"
+    },
+    {
+      "key": "cro-magnon-girl-reindeer",
+      "dye": "blue",
+      "url": "/models/cro-magnon-girl-reindeer/portraits/choice-r04-blue.webp",
+      "bytes": 31350,
+      "sha256": "9d39fc09f4517849aa797506f3c02974ad9b25344296f458b31b0e35d9e5c2a9"
+    },
+    {
+      "key": "cro-magnon-girl-reindeer",
+      "dye": "purple",
+      "url": "/models/cro-magnon-girl-reindeer/portraits/choice-r04-purple.webp",
+      "bytes": 29986,
+      "sha256": "820e48c50fe05885fd922a35ad93859b80ffa1acb3c1a29d71d813c008a5c9c4"
+    },
+    {
+      "key": "cro-magnon-girl-reindeer",
+      "dye": "pink",
+      "url": "/models/cro-magnon-girl-reindeer/portraits/choice-r04-pink.webp",
+      "bytes": 30602,
+      "sha256": "83ae7b75ef5fef9c08ee29bf63cfab63ca0765083d5681400fd4001af5f7219d"
+    },
+    {
+      "key": "cro-magnon-girl-reindeer",
+      "dye": "white",
+      "url": "/models/cro-magnon-girl-reindeer/portraits/choice-r04-white.webp",
+      "bytes": 27552,
+      "sha256": "5afc8ea141afd5d3a22a1c3ecfd7bb2fe020e516ae22186747a1c2a8f5e57e21"
+    },
+    {
+      "key": "cro-magnon-boy-headband",
+      "dye": null,
+      "url": "/models/cro-magnon-boy-headband/portraits/choice-r04-original.webp",
+      "bytes": 30440,
+      "sha256": "9a7d08a07b5d53de95daa523bdb3226664a10cd7c49dee1144c35799b2c5bd2b"
+    },
+    {
+      "key": "cro-magnon-boy-headband",
+      "dye": "red",
+      "url": "/models/cro-magnon-boy-headband/portraits/choice-r04-red.webp",
+      "bytes": 31592,
+      "sha256": "03cb1add3f74832e692b6a56b4ef773ecd47db254217a29391a9381895c2f63b"
+    },
+    {
+      "key": "cro-magnon-boy-headband",
+      "dye": "yellow",
+      "url": "/models/cro-magnon-boy-headband/portraits/choice-r04-yellow.webp",
+      "bytes": 31470,
+      "sha256": "9f361a4b0e69f9a0f22b8343e25aa14474e4623f0954d92f4a6574453311ec1a"
+    },
+    {
+      "key": "cro-magnon-boy-headband",
+      "dye": "green",
+      "url": "/models/cro-magnon-boy-headband/portraits/choice-r04-green.webp",
+      "bytes": 32308,
+      "sha256": "502672c26dd036ffc3f5af91b9ea8e52c2a2347f44522a19a9ba5bb1a98eed72"
+    },
+    {
+      "key": "cro-magnon-boy-headband",
+      "dye": "teal",
+      "url": "/models/cro-magnon-boy-headband/portraits/choice-r04-teal.webp",
+      "bytes": 31914,
+      "sha256": "705bd0aeae234775094b0824acc42e7955f434ec55a9908b845d3c218f620d10"
+    },
+    {
+      "key": "cro-magnon-boy-headband",
+      "dye": "blue",
+      "url": "/models/cro-magnon-boy-headband/portraits/choice-r04-blue.webp",
+      "bytes": 32148,
+      "sha256": "0d2a19eec1e93cc397003c7c4c8aa48c96c4ce94a1e558ad5e401d5a76145517"
+    },
+    {
+      "key": "cro-magnon-boy-headband",
+      "dye": "purple",
+      "url": "/models/cro-magnon-boy-headband/portraits/choice-r04-purple.webp",
+      "bytes": 31696,
+      "sha256": "1cd8e38450a9e1b5567706e0e78d22217c91c66ab6f85d2acaccd15790463dd2"
+    },
+    {
+      "key": "cro-magnon-boy-headband",
+      "dye": "pink",
+      "url": "/models/cro-magnon-boy-headband/portraits/choice-r04-pink.webp",
+      "bytes": 31788,
+      "sha256": "da3299cd34ea60bf69a016ede63a69bbacb85243427933ec0336ba067bbcc3d0"
+    },
+    {
+      "key": "cro-magnon-boy-headband",
+      "dye": "white",
+      "url": "/models/cro-magnon-boy-headband/portraits/choice-r04-white.webp",
+      "bytes": 28858,
+      "sha256": "dd77d1dad9270c3ac0bd2b100359e61df100ea0f908998175e26c969360ca5d8"
+    },
+    {
+      "key": "cro-magnon-boy-lion",
+      "dye": null,
+      "url": "/models/cro-magnon-boy-lion/portraits/choice-r04-original.webp",
+      "bytes": 35644,
+      "sha256": "3357f5637147ee024f47d6cee2686c7130f786da1c33c8c2b5f2a04ca54e3544"
+    },
+    {
+      "key": "cro-magnon-boy-lion",
+      "dye": "red",
+      "url": "/models/cro-magnon-boy-lion/portraits/choice-r04-red.webp",
+      "bytes": 38392,
+      "sha256": "d9ea8c56d2adfe61d448bb5f13eb5580f64182eeb91387847640fc5072374793"
+    },
+    {
+      "key": "cro-magnon-boy-lion",
+      "dye": "yellow",
+      "url": "/models/cro-magnon-boy-lion/portraits/choice-r04-yellow.webp",
+      "bytes": 38058,
+      "sha256": "6c629f260e576b1f319119132a0289c11dfa9104ec2ac836fa54d7a61b72472b"
+    },
+    {
+      "key": "cro-magnon-boy-lion",
+      "dye": "green",
+      "url": "/models/cro-magnon-boy-lion/portraits/choice-r04-green.webp",
+      "bytes": 39122,
+      "sha256": "ca00aaa1af84aaac5c4aaafa20d7722108383431220e3977abc6c61b283416a8"
+    },
+    {
+      "key": "cro-magnon-boy-lion",
+      "dye": "teal",
+      "url": "/models/cro-magnon-boy-lion/portraits/choice-r04-teal.webp",
+      "bytes": 38682,
+      "sha256": "c4889554f8cf8119d9afc10714cb3f0f7492cf4bf80521c81a83495c10b1e85b"
+    },
+    {
+      "key": "cro-magnon-boy-lion",
+      "dye": "blue",
+      "url": "/models/cro-magnon-boy-lion/portraits/choice-r04-blue.webp",
+      "bytes": 39068,
+      "sha256": "7a56d34e503e231d8facd0f0a10388398d22fac13037f1e0d12148ddbd9804fe"
+    },
+    {
+      "key": "cro-magnon-boy-lion",
+      "dye": "purple",
+      "url": "/models/cro-magnon-boy-lion/portraits/choice-r04-purple.webp",
+      "bytes": 39194,
+      "sha256": "df12e6450dc2c3bc3bd1fa7d95dbdb09c8be8b8281335d3de141f6a8be9b803b"
+    },
+    {
+      "key": "cro-magnon-boy-lion",
+      "dye": "pink",
+      "url": "/models/cro-magnon-boy-lion/portraits/choice-r04-pink.webp",
+      "bytes": 38774,
+      "sha256": "6618afd37e0305784331c180a803f7ab30581ff8371482714a54f388f518fba6"
+    },
+    {
+      "key": "cro-magnon-boy-lion",
+      "dye": "white",
+      "url": "/models/cro-magnon-boy-lion/portraits/choice-r04-white.webp",
+      "bytes": 35924,
+      "sha256": "0d2c176f51f4941e170080bf05dbb7559281c25d7265d77a1fdb1c5ec645d622"
+    },
+    {
+      "key": "cro-magnon-boy-braid",
+      "dye": null,
+      "url": "/models/cro-magnon-boy-braid/portraits/choice-r04-original.webp",
+      "bytes": 32180,
+      "sha256": "b277d4e56ac5f6ac9a32ecf6ca7a12b02781c7e2449b711b8faba5e17de410d6"
+    },
+    {
+      "key": "cro-magnon-boy-braid",
+      "dye": "red",
+      "url": "/models/cro-magnon-boy-braid/portraits/choice-r04-red.webp",
+      "bytes": 32082,
+      "sha256": "4fa5050a1931cc39eae71772801e4fa43448732f211d7900f6b6264708e44dbb"
+    },
+    {
+      "key": "cro-magnon-boy-braid",
+      "dye": "yellow",
+      "url": "/models/cro-magnon-boy-braid/portraits/choice-r04-yellow.webp",
+      "bytes": 32232,
+      "sha256": "b86a3411412963f5936032c44994d06b6237c54748ed177c1b21f34c7c9c42b3"
+    },
+    {
+      "key": "cro-magnon-boy-braid",
+      "dye": "green",
+      "url": "/models/cro-magnon-boy-braid/portraits/choice-r04-green.webp",
+      "bytes": 32796,
+      "sha256": "f9dc9093d3fec67657cf69d2e9501cdc147210954403a12349503bf10c4fdc7e"
+    },
+    {
+      "key": "cro-magnon-boy-braid",
+      "dye": "teal",
+      "url": "/models/cro-magnon-boy-braid/portraits/choice-r04-teal.webp",
+      "bytes": 32348,
+      "sha256": "63228076411d485194d8f2190c20bc5baea654910ce9f039e0a8600f1bfc2591"
+    },
+    {
+      "key": "cro-magnon-boy-braid",
+      "dye": "blue",
+      "url": "/models/cro-magnon-boy-braid/portraits/choice-r04-blue.webp",
+      "bytes": 32852,
+      "sha256": "8f696f0807c878b613568da98456a47ef47fe9a3236958939a0610e38a8af981"
+    },
+    {
+      "key": "cro-magnon-boy-braid",
+      "dye": "purple",
+      "url": "/models/cro-magnon-boy-braid/portraits/choice-r04-purple.webp",
+      "bytes": 31694,
+      "sha256": "29612a24337b5d9c7d2fc57fb1b1ae9e2e84eb1ece6edf838590d4a4ef8a4ea4"
+    },
+    {
+      "key": "cro-magnon-boy-braid",
+      "dye": "pink",
+      "url": "/models/cro-magnon-boy-braid/portraits/choice-r04-pink.webp",
+      "bytes": 32176,
+      "sha256": "a9787b55129f369521cc6af1839f9d14ad8ab83d213644280e0ea3725bb3875b"
+    },
+    {
+      "key": "cro-magnon-boy-braid",
+      "dye": "white",
+      "url": "/models/cro-magnon-boy-braid/portraits/choice-r04-white.webp",
+      "bytes": 29046,
+      "sha256": "94faa38caa8adab3048d7cd6897078a3966523e0a142c5fe121048de559beb4c"
+    },
+    {
+      "key": "cro-magnon-boy-topknot",
+      "dye": null,
+      "url": "/models/cro-magnon-boy-topknot/portraits/choice-r04-original.webp",
+      "bytes": 27136,
+      "sha256": "34e40c861520af40d9ad63c913563d17d41c151425355b28040b37675f90c792"
+    },
+    {
+      "key": "cro-magnon-boy-topknot",
+      "dye": "red",
+      "url": "/models/cro-magnon-boy-topknot/portraits/choice-r04-red.webp",
+      "bytes": 27062,
+      "sha256": "93b454906e194e5b4d4ba7108aeb62dcd825b2aeaa20a157340b318a00e0210c"
+    },
+    {
+      "key": "cro-magnon-boy-topknot",
+      "dye": "yellow",
+      "url": "/models/cro-magnon-boy-topknot/portraits/choice-r04-yellow.webp",
+      "bytes": 27310,
+      "sha256": "1a575257a4e834a383bbdf3112572bb2016244c3eca834e5365f70d84c93c638"
+    },
+    {
+      "key": "cro-magnon-boy-topknot",
+      "dye": "green",
+      "url": "/models/cro-magnon-boy-topknot/portraits/choice-r04-green.webp",
+      "bytes": 27860,
+      "sha256": "ab32649dc61ff4f6660954766a333ae7cbb08ece608d134ffecaef997d114d81"
+    },
+    {
+      "key": "cro-magnon-boy-topknot",
+      "dye": "teal",
+      "url": "/models/cro-magnon-boy-topknot/portraits/choice-r04-teal.webp",
+      "bytes": 27200,
+      "sha256": "e5610c3b41f0831a8ac94c6c933f0337f7d677b0beb44000bee6e6298acf4fa3"
+    },
+    {
+      "key": "cro-magnon-boy-topknot",
+      "dye": "blue",
+      "url": "/models/cro-magnon-boy-topknot/portraits/choice-r04-blue.webp",
+      "bytes": 27888,
+      "sha256": "e8c2d99005c8dc678f631c3e0a316ac50575a0a1338abf2ff33014bba6b4cfe9"
+    },
+    {
+      "key": "cro-magnon-boy-topknot",
+      "dye": "purple",
+      "url": "/models/cro-magnon-boy-topknot/portraits/choice-r04-purple.webp",
+      "bytes": 26872,
+      "sha256": "c453ee8d32e2c0a0379042169dd51f017e398027d92aa1f75c33db80f90b2031"
+    },
+    {
+      "key": "cro-magnon-boy-topknot",
+      "dye": "pink",
+      "url": "/models/cro-magnon-boy-topknot/portraits/choice-r04-pink.webp",
+      "bytes": 27146,
+      "sha256": "8fec528cd5824d4107b69672c9980bc620daf27942b9b89bd696565f910c862f"
+    },
+    {
+      "key": "cro-magnon-boy-topknot",
+      "dye": "white",
+      "url": "/models/cro-magnon-boy-topknot/portraits/choice-r04-white.webp",
+      "bytes": 24772,
+      "sha256": "50b2d73506d183776ee1c670d341dfcfa292eddec615f336b68498c95f6546b9"
+    },
+    {
+      "key": "cro-magnon-boy-mammoth",
+      "dye": null,
+      "url": "/models/cro-magnon-boy-mammoth/portraits/choice-r04-original.webp",
+      "bytes": 35438,
+      "sha256": "3e1b23003bc833799bc7c3b061a550a0ee72fa35608bc4b5082a8ffba91a31c9"
+    },
+    {
+      "key": "cro-magnon-boy-mammoth",
+      "dye": "red",
+      "url": "/models/cro-magnon-boy-mammoth/portraits/choice-r04-red.webp",
+      "bytes": 37588,
+      "sha256": "29390839edc8b24e28f7dd51c36e133602f91c1e6d5c5c99fa32d10fe1c1caee"
+    },
+    {
+      "key": "cro-magnon-boy-mammoth",
+      "dye": "yellow",
+      "url": "/models/cro-magnon-boy-mammoth/portraits/choice-r04-yellow.webp",
+      "bytes": 38490,
+      "sha256": "55e9020e60561217d6080918ee878c34bf078388fed7b5f82283fd1544b1c582"
+    },
+    {
+      "key": "cro-magnon-boy-mammoth",
+      "dye": "green",
+      "url": "/models/cro-magnon-boy-mammoth/portraits/choice-r04-green.webp",
+      "bytes": 38058,
+      "sha256": "83f5c2891860faaae569a68271c633658f0b5712aad94c12e263b948b1f3493e"
+    },
+    {
+      "key": "cro-magnon-boy-mammoth",
+      "dye": "teal",
+      "url": "/models/cro-magnon-boy-mammoth/portraits/choice-r04-teal.webp",
+      "bytes": 38500,
+      "sha256": "55fb6c73e6d897b14ee6d5830e310cc375f90c08d033b70055a24a4f3428c411"
+    },
+    {
+      "key": "cro-magnon-boy-mammoth",
+      "dye": "blue",
+      "url": "/models/cro-magnon-boy-mammoth/portraits/choice-r04-blue.webp",
+      "bytes": 38248,
+      "sha256": "9de09f4bdc468d60286c0a047aa348bcf025b5a878cb00ee6f19729d0176b019"
+    },
+    {
+      "key": "cro-magnon-boy-mammoth",
+      "dye": "purple",
+      "url": "/models/cro-magnon-boy-mammoth/portraits/choice-r04-purple.webp",
+      "bytes": 39132,
+      "sha256": "b272300ea90b82d2e2424ae67b745a87c416c855e6c6a3dec0826034621587ee"
+    },
+    {
+      "key": "cro-magnon-boy-mammoth",
+      "dye": "pink",
+      "url": "/models/cro-magnon-boy-mammoth/portraits/choice-r04-pink.webp",
+      "bytes": 39004,
+      "sha256": "e14332d874882e7f89982b82e7669c0b22e3056016c22614402bfa82ef73d40b"
+    },
+    {
+      "key": "cro-magnon-boy-mammoth",
+      "dye": "white",
+      "url": "/models/cro-magnon-boy-mammoth/portraits/choice-r04-white.webp",
+      "bytes": 35776,
+      "sha256": "6dea0401fc60df6fb02a28b8e17d72897e0316ee7799faa6b4e506e64e086916"
+    }
+  ]
+}

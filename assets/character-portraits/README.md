@@ -1,9 +1,9 @@
 # キャラクター選択用の色別写真
 
 2026-10-15のユーザー指定「色を選んだらキャラクターの画像も変えて、ちゃんと写真を撮る」に対応。
-現在採用するのは [20261015-r03](20261015-r03/capture.json)。有効な14キャラクターそれぞれに元の色と8色、合計126枚を撮影した。
+現在採用するのは [20261016-r04](20261016-r04/capture.json)。ちびキャラの仲間の10人目「子マンモスずきんの男の子」（`cro-magnon-boy-mammoth`）の追加に合わせ、下の「再撮影」の手順で有効な15キャラクターを撮り直した（元の色と8色、合計135枚、5,035,616 bytes）。撮影条件と処理は r03 と同じで、r03 以降に顔のスキンウェイトを直した人物は修正後の配信GLBを写している。
 ローカル・公開の非表示人物は既存の人物名簿と配信フィルターに従い、選択肢を増やさない。
-猫耳のクノイチの9枚は [復元用の別revision](20261015-r03-cat-restoration/restoration.json) に保管し、通常配信と公開用ビルドからは除外する。
+猫耳のクノイチの9枚は [r04の復元用revision](20261016-r04-cat-restoration/restoration.json)（`--retained=cat-kunoichi`）に保管し、通常配信と公開用ビルドからは除外する。r03 の [20261015-r03](20261015-r03/capture.json) と [その復元用](20261015-r03-cat-restoration/restoration.json) は配信ファイルとともに保持する。
 
 ## 撮影と採用
 
@@ -13,20 +13,20 @@
 人物の写真を描き直したり、画像全体を色フィルターで着色したりせず、服の着色範囲もゲームと一致させた。
 
 - 元画像：各人物フォルダーの `original.png` と `red/yellow/green/teal/blue/purple/pink/white.png`。
-- 配信画像：336×384の可逆WebP、全126枚で4,703,242 bytes。見えるRGBと全画素の透明度がPNGと完全一致することを確認。
-- 配信先：`public/models/<modelKey>/portraits/choice-r03-<colour>.webp`。元の `portrait.png` と過去のrevisionは保持。
-- [capture.json](20261015-r03/capture.json)：配信GLBのURL・SHA、撮影設定、入力コードのSHA、写真のSHA、衣服の変化画素数・外周余白。
-- [source-models.json](20261015-r03/source-models.json)：採用元GLBと配信GLBの対応。
-- [adoption.json](20261015-r03/adoption.json)：配信画像のURL・SHA・サイズ。
-- [撮影時のスクリプト](20261015-r03/capture-character-portraits.mjs)：撮影時のソースを保存。実行入口はリポジトリの `scripts/capture-character-portraits.mjs`。
-- `review-1.png`〜`review-5.png`：全126枚を実ブラウザーで並べた確認画像。身長比・足元・全身・服の色・顔・透明な縁を目視済み。復元用のクノイチ9枚も別の `review-1.png` で確認済み。
+- 配信画像：336×384の可逆WebP、r04は全135枚で5,035,616 bytes（r03は126枚で4,703,242 bytes）。見えるRGBと全画素の透明度がPNGと完全一致することを撮影スクリプトが確認する。
+- 配信先：`public/models/<modelKey>/portraits/choice-r04-<colour>.webp`。元の `portrait.png` と過去のrevision（`choice-r02`・`choice-r03`）は保持。
+- [capture.json](20261016-r04/capture.json)：配信GLBのURL・SHA、撮影設定、入力コードのSHA、写真のSHA、衣服の変化画素数・外周余白。
+- [source-models.json](20261016-r04/source-models.json)：採用元GLBと配信GLBの対応。
+- [adoption.json](20261016-r04/adoption.json)：配信画像のURL・SHA・サイズ。
+- [撮影時のスクリプト](20261016-r04/capture-character-portraits.mjs)：撮影時のソースを保存。実行入口はリポジトリの `scripts/capture-character-portraits.mjs`。
+- `review-1.png`〜`review-5.png`：全135枚を実ブラウザーで並べた確認画像。新しい子マンモスずきんの男の子は、ずきんに続く毛皮のケープ・靴・脚の毛皮が元の色のまま、服と白い毛皮の縁だけが染まることを目視した。復元用のクノイチ9枚も別の `review-1.png` で確認済み。r03 の記録は `20261015-r03/` に同じ構成で残す。
 
 `20261015-r01` はブラウザーの非可逆WebP出力で半透明の縁に色のにじみが見つかった試作。
 採用せず原本ごと保持し、r02でPNGから可逆WebPにした。r02は人物ごとに同程度の大きさへ収めた旧写真で、実物の比率を求める追加指定によりr03へ置き換えた。
 
 ## 再撮影
 
-`npm run build` の後、`node scripts/capture-character-portraits.mjs assets/character-portraits/<新しいrevision>` を実行する。
+`npm run build` の後、`node scripts/capture-character-portraits.mjs assets/character-portraits/<新しいrevision>` を実行する。人物を新しく採用した後は `npm run cook`（ビルドと配信用変換の準備）を先に行い、他の人物と同じく変換後の配信GLBを写す（r04）。人物を足すと全員の写真が同じrevisionで揃う必要があるため（`tests/character-portraits.test.mjs`）、新しい人物だけでなく全員を撮り直す。
 保存を使わない独立サーバーとChromeを使用する。既存3000番やユーザー保存は操作しない。
 候補を上書きせず、実画像の確認後に新しい配信名で追加し、`src/character-portraits.ts` のrevisionを更新する。
 元のPNG・配信モデルのSHA・コードのSHA・確認画像を保存し、公開用の写真は公開人物名簿にあるものだけ収集する。

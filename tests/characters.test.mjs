@@ -23,7 +23,7 @@ test('new and legacy profiles default to female in either species', () => {
 });
 
 test('every explicit choice resolves to a distinct model and male choices are retained', () => {
-  assert.equal(new Set(CHARACTER_MODELS.map((model) => model.key)).size, 18);
+  assert.equal(new Set(CHARACTER_MODELS.map((model) => model.key)).size, 19);
   for (const model of CHARACTER_MODELS)
     assert.equal(characterModel({ ...model, character: model.key }).key, model.key);
   assert.equal(characterModel({ species: 'nea', gender: 'male' }).key, 'neanderthal-hunter');

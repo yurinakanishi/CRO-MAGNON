@@ -208,7 +208,7 @@ test('three local toggles independently control the served catalog and direct mo
             `data:text/javascript,${encodeURIComponent(module)}`
           );
           // The released looks and chibi cast, with the retained kunoichi always excluded.
-          assert.equal(CHARACTER_MODELS.length, 13 + Number(maruimo));
+          assert.equal(CHARACTER_MODELS.length, 14 + Number(maruimo));
           assert.ok(CHARACTER_MODELS.every((model) => model.species !== 'cat'));
           assert.equal(
             CHARACTER_MODELS.some((p) => p.species === 'maruimo'),
