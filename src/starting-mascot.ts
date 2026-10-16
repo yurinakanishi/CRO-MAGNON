@@ -1,10 +1,10 @@
 import { mascotModelReleased } from '../shared/mascot-roster.mjs';
 import { MASCOT_KEYS } from '../shared/mascot-selection.mjs';
-import { mascotName, mascotPictureMarkup } from './mascot-menu.js';
+import { mascotChoiceOrder, mascotName, mascotPictureMarkup } from './mascot-menu.js';
 import { setLocalizedText } from './language-ui.js';
 
-export const STARTING_MASCOTS = MASCOT_KEYS.filter((key) =>
-  mascotModelReleased(key === '524' ? 'yellow-524-mascot' : key),
+export const STARTING_MASCOTS = mascotChoiceOrder(
+  MASCOT_KEYS.filter((key) => mascotModelReleased(key === '524' ? 'yellow-524-mascot' : key)),
 );
 
 /** Older browsers have no cached companion yet. Keep that saved choice until the

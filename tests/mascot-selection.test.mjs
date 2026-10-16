@@ -45,7 +45,7 @@ test('every available card selects one personal body; replacing it dismisses onl
   const markup = mascotMenuMarkup(w.room().mascotKeys);
   assert.deepEqual(
     [...markup.matchAll(/data-mascot="([^"]+)"/g)].map((m) => m[1]),
-    [...MASCOT_KEYS],
+    ['524', 'rimo-neko', ...MASCOT_KEYS.slice(2)],
   );
   assert.doesNotMatch(markup, /data-mascot="all"|data-mascot-all/);
   assert.match(markup, /data-mascot-none/);

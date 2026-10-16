@@ -7,7 +7,7 @@ import { createGameCore } from '../dist/application/game-core.mjs';
 import { activeMascot, mascotBodies, mascotKeyOf } from '../dist/shared/mascot-selection.mjs';
 import { MascotSocket } from './mascot-fixture.mjs';
 import { STARTING_MASCOTS, startingMascotMarkup } from '../dist/src/starting-mascot.js';
-import { mascotMenuMarkup } from '../dist/src/mascot-menu.js';
+import { mascotChoiceOrder, mascotMenuMarkup } from '../dist/src/mascot-menu.js';
 import { MASCOT_PORTRAITS } from '../dist/src/mascot-portraits.js';
 
 function fixture(t) {
@@ -31,6 +31,13 @@ function fixture(t) {
   };
   return { core, room, join };
 }
+
+test('mascot presentation leads with 524 without changing the available or saved roster', () => {
+  const keys = ['rimo-neko', 'white', '524'];
+  assert.deepEqual(mascotChoiceOrder(keys), ['524', 'rimo-neko', 'white']);
+  assert.deepEqual(keys, ['rimo-neko', 'white', '524']);
+  assert.deepEqual(mascotChoiceOrder(['rimo-neko', 'white']), ['rimo-neko', 'white']);
+});
 
 test('five new visitors can each arrive with the same single companion in their first snapshot', (t) => {
   const { room, join } = fixture(t);
@@ -119,9 +126,16 @@ test('a failed arrival leaves the saved companion and possessions available for 
 
 test('setup offers the released roster, exactly one chosen card, and the same real photos as the menu', () => {
   assert.equal(STARTING_MASCOTS.length, 11);
+  assert.deepEqual(STARTING_MASCOTS.slice(0, 2), ['524', 'rimo-neko']);
   assert.deepEqual(new Set(MASCOT_PORTRAITS.map((photo) => photo.key)), new Set(STARTING_MASCOTS));
   assert.ok(!STARTING_MASCOTS.includes('mae'));
   const markup = startingMascotMarkup(STARTING_MASCOTS, '524', false);
+  const menu = mascotMenuMarkup(STARTING_MASCOTS);
+  assert.ok(
+    markup.indexOf('data-starting-mascot="524"') <
+      markup.indexOf('data-starting-mascot="rimo-neko"'),
+  );
+  assert.ok(menu.indexOf('data-mascot="524"') < menu.indexOf('data-mascot="rimo-neko"'));
   assert.equal((markup.match(/aria-pressed="true"/g) || []).length, 1);
   assert.match(markup, /data-starting-mascot="524" aria-pressed="true"/);
   assert.doesNotMatch(markup, /type="submit"/);

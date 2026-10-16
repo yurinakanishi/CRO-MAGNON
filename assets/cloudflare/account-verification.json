@@ -1,9 +1,9 @@
 {
-  "checkedAt": "2026-10-15T07:06:57.992Z",
+  "checkedAt": "2026-10-16T07:09:48.329Z",
   "accountId": "a211102818d484cb668c6b62bebff3f9",
   "accountName": "CRO-MAGNON Free",
   "workersPlan": "Free",
-  "evidence": "Observed CRO-MAGNON Free account and Free / $0 / Current plan in the exact Workers plans dashboard in Chrome through CUA, tab 1912683918, on 2026-10-15. No plan or billing settings were changed.",
+  "evidence": "Reloaded the exact Workers plans dashboard in Chrome through CUA, tab 1179543454. The page title identified CRO-MAGNON Free and the visible Free card showed $0 and disabled Current plan. Both the accessibility tree and screenshot were observed in this chat. No plan or billing settings were changed.",
   "dashboard": "https://dash.cloudflare.com/a211102818d484cb668c6b62bebff3f9/workers/plans",
   "deploymentAllowed": true
 }

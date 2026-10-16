@@ -134,13 +134,12 @@ try {
       .then((names) => names.includes('OpenAI Dots')),
     true,
   );
-  // A card is the person's name, verbatim: no image, platform mark, character name or handle.
+  // Keep names verbatim; each available X link has the platform mark.
   assert.equal(await page.locator('.mural-people-dialog .contributor small').count(), 0);
+  assert.equal(await page.locator('.mural-people-dialog .contributor img').count(), 0);
   assert.equal(
-    await page
-      .locator('.mural-people-dialog .contributor img, .mural-people-dialog .contributor svg')
-      .count(),
-    0,
+    await page.locator('.mural-people-dialog .contributor svg.contributor-x').count(),
+    await page.locator('.mural-people-dialog a.contributor').count(),
   );
   await shot('03c-cave-murals-en');
   await page.locator('#modal-close').click();

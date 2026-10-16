@@ -29,7 +29,7 @@ import {
 } from './companions.mjs';
 import { GROUND_MASCOT_KEYS, friendDefinition } from './friend-mascots.mjs';
 
-/** Every mascot a person can choose, in selection card order. */
+/** Every choice, in legacy save-migration order. Presentation orders its cards separately. */
 export const MASCOT_KEYS = ['rimo-neko', '524', ...GROUND_MASCOT_KEYS, ...BOT_KINDS] as const;
 export type MascotKey = (typeof MASCOT_KEYS)[number];
 

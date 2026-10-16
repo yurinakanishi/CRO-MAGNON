@@ -1,0 +1,182 @@
+{
+  "adoptedAtUtc": "2026-10-16T06:33:27.466Z",
+  "request": "524が左上に浮く画像をゲームのタイトルへ採用し、OG画像も同じ絵に背景を付けた不透明画像へ変更。",
+  "source": {
+    "path": "assets/title-credits/20261016-original-four-r02/cro-magnon-original-four-524-left.png",
+    "bytes": 2572703,
+    "sha256": "a2095eca1c4c4cf961ab5052cbb04eea153dbfca4ddf33b537377414eabc0e2b"
+  },
+  "previous": [
+    {
+      "path": "assets/title-credits/20261016-original-four-r02/before-adoption/cro-magnon-mmo-transparent.png",
+      "bytes": 2525727,
+      "sha256": "615f8844aac3a00f78885eb5475d0a08aa140443312405228feea0af5a7c002b"
+    },
+    {
+      "path": "assets/title-credits/20261016-original-four-r02/before-adoption/cro-magnon-mmo-transparent.webp",
+      "bytes": 1771796,
+      "sha256": "4e18b0480e684c39b556cdb06d5ab1c1b8d24605c98da1b25f68c747c26d0647"
+    }
+  ],
+  "installed": [
+    {
+      "path": "public/title/cro-magnon-mmo-transparent.png",
+      "bytes": 2572703,
+      "sha256": "a2095eca1c4c4cf961ab5052cbb04eea153dbfca4ddf33b537377414eabc0e2b"
+    },
+    {
+      "path": "public/title/cro-magnon-mmo-transparent.webp",
+      "bytes": 1810732,
+      "sha256": "f000aed150fce57625cc373f0e534b3a5337c384185d62115866ad5b895566cd"
+    }
+  ],
+  "encoding": {
+    "library": "sharp",
+    "options": {
+      "lossless": true,
+      "exact": true,
+      "effort": 6,
+      "alphaQuality": 100
+    },
+    "decodedRgbaExactlyEqual": true,
+    "width": 1536,
+    "height": 1024
+  },
+  "titleImageGenerationCalls": 0,
+  "og": {
+    "method": "built-in image_gen, transparent_background=false",
+    "imageGenerationCalls": 1,
+    "prompt": {
+      "path": "assets/title-credits/20261016-original-four-r02/og-background-r01/prompt.txt",
+      "bytes": 2389,
+      "sha256": "416dc72a0b0c5e37fc3d7e4160cee5db27ad003e5cbe9e96d1f6b5b0fcbe770b"
+    },
+    "generated": {
+      "path": "assets/title-credits/20261016-original-four-r02/og-background-r01/generated.png",
+      "bytes": 2986046,
+      "sha256": "f39afda7fe20e5b4a4adaba948695ea508aec90743753ae56c1f5665477fc865"
+    },
+    "generatedSize": [
+      1731,
+      909
+    ],
+    "generatedAlphaFullyOpaque": true,
+    "delivered": {
+      "path": "public/title/cro-magnon-mmo-og-20261016-r02.jpg",
+      "bytes": 461313,
+      "sha256": "2c3b8435d78ec0f5ec4b3998b308864039cb83b8abd251cb4a0d781df865fe2c"
+    },
+    "size": [
+      1200,
+      630
+    ],
+    "hasAlpha": false,
+    "encoding": {
+      "format": "jpeg",
+      "quality": 94,
+      "chromaSubsampling": "4:4:4",
+      "mozjpeg": true,
+      "resizeFit": "cover"
+    },
+    "limitation": "Background added using generative editing; foreground checked visually, not claimed pixel-identical."
+  },
+  "qaFolder": "output/playwright/title-524-left-og-20261016",
+  "serverRestarted": false,
+  "deployed": false,
+  "metadata": {
+    "htmlScopeOnlySocialImageMetadata": true,
+    "paths": [
+      {
+        "file": "public/index.html",
+        "sha256": "2327c383df8543499df11dad7d278e2ecb78393562ae1c64c3b38bc02b99c853",
+        "og": "https://cromagnonmmo.cro-magnon.workers.dev/title/cro-magnon-mmo-og-20261016-r02.jpg",
+        "status": 200
+      },
+      {
+        "file": "public/en/index.html",
+        "sha256": "f181589ab1e3243f7a9667ee00eaabfae19b1cc43eb1de027550e9c4afad4022",
+        "og": "https://cromagnonmmo.cro-magnon.workers.dev/title/cro-magnon-mmo-og-20261016-r02.jpg",
+        "status": 200
+      }
+    ]
+  },
+  "qa": {
+    "verifiedAtUtc": "2026-10-16T06:39:08.445Z",
+    "browserViews": [
+      {
+        "name": "desktop",
+        "width": 1440,
+        "height": 960
+      },
+      {
+        "name": "mobile-390",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "name": "mobile-320",
+        "width": 320,
+        "height": 700
+      },
+      {
+        "name": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      {
+        "name": "desktop-en",
+        "width": 1280,
+        "height": 800
+      }
+    ],
+    "browserErrors": 0,
+    "browserGameApiOrWebSocketRequests": 0,
+    "savedFilesUnchanged": true,
+    "served": [
+      {
+        "path": "/title/cro-magnon-mmo-transparent.png",
+        "bytes": 2572703,
+        "sha256": "a2095eca1c4c4cf961ab5052cbb04eea153dbfca4ddf33b537377414eabc0e2b",
+        "type": "image/png",
+        "cacheControl": "no-cache"
+      },
+      {
+        "path": "/title/cro-magnon-mmo-transparent.webp",
+        "bytes": 1810732,
+        "sha256": "f000aed150fce57625cc373f0e534b3a5337c384185d62115866ad5b895566cd",
+        "type": "image/webp",
+        "cacheControl": "no-cache"
+      },
+      {
+        "path": "/title/cro-magnon-mmo-og-20261016-r02.jpg",
+        "bytes": 461313,
+        "sha256": "2c3b8435d78ec0f5ec4b3998b308864039cb83b8abd251cb4a0d781df865fe2c",
+        "type": "image/jpeg",
+        "cacheControl": "no-cache"
+      }
+    ],
+    "healthOk": true,
+    "statusOk": true,
+    "visualChecks": [
+      "Desktop and mobile title: 524 above the seated woman, four characters and complete logo visible",
+      "OG: pale stone-paper background, full illustration and logo inside 1200x630, no transparency"
+    ],
+    "checks": {
+      "build": "passed",
+      "relatedTests": {
+        "passed": 15,
+        "failed": 0
+      },
+      "npmCheck": "passed; TypeScript, 686 JavaScript syntax, architecture boundaries",
+      "changedHtmlFormatting": "passed",
+      "repositoryFormatCheck": "failed only on concurrently edited src/title-credits.ts; file left untouched",
+      "diffWhitespace": "passed"
+    },
+    "limitations": [
+      "Normal port 3000 was stopped; verification used a temporary nonpersistent server",
+      "No physical smartphone or live social network crawler verification",
+      "Not deployed"
+    ],
+    "evidenceFolder": "output/playwright/title-524-left-og-20261016"
+  }
+}

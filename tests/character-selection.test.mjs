@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { bindCharacterSelection, characterChoicesMarkup } from '../dist/src/character-selection.js';
+import { PLAYABLE_CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 
 function fixture(t) {
   const previous = globalThis.document;
@@ -91,4 +92,19 @@ test('character cards do not paint stored checked state or mouse hover as a seco
   assert.doesNotMatch(characterChoicesMarkup(), /character-check/);
   assert.doesNotMatch(css, /\.character-choice:has\(input:checked\)|\.character-choice:hover/);
   assert.match(css, /\.character-choice:focus-within \.character-art\s*\{\s*filter: none/);
+});
+
+test('small boys and girls lead the shared picker; the adult hunter, fox and ape finish it', () => {
+  const keys = [...characterChoicesMarkup().matchAll(/data-character-image="([^"]+)"/g)].map(
+    (match) => match[1],
+  );
+  assert.deepEqual(keys.slice(0, 4), [
+    'cro-magnon-boy-headband',
+    'cro-magnon-woman',
+    'cro-magnon-boy-lion',
+    'cro-magnon-girl-feather',
+  ]);
+  assert.deepEqual(keys.slice(-3), ['cro-magnon-hunter', 'desert-fennec-mage', 'giant-ape']);
+  assert.equal(new Set(keys).size, PLAYABLE_CHARACTER_MODELS.length);
+  assert.deepEqual(new Set(keys), new Set(PLAYABLE_CHARACTER_MODELS.map((model) => model.key)));
 });

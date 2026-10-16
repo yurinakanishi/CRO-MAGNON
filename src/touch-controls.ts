@@ -1,4 +1,5 @@
 import { setData, setFlag, setText } from './hud-dom.js';
+import { setLocalizedAttribute, setLocalizedText } from './language-ui.js';
 import {
   touchIcon,
   touchLayout,
@@ -11,7 +12,7 @@ import {
   type TouchMovement,
 } from './touch-input.js';
 
-export type TouchAction = TouchCommand | 'menu' | 'map' | 'chat' | 'mascots' | 'center';
+export type TouchAction = TouchCommand | 'menu' | 'map' | 'chat' | 'mascots' | 'center' | 'sound';
 
 export const touchDevice = () =>
   navigator.maxTouchPoints > 0 && matchMedia('(pointer: coarse)').matches;
@@ -35,6 +36,7 @@ export class TouchControls {
   private attack: HTMLButtonElement;
   private jump: HTMLButtonElement;
   private center: HTMLButtonElement;
+  private sound: HTMLButtonElement;
   private chat: HTMLButtonElement | null;
   private peek: HTMLElement;
   private peekTimer = 0;
@@ -72,7 +74,9 @@ export class TouchControls {
         ([action, glyph, label]) =>
           `<button type="button" data-touch-action="${action}" aria-label="${label}"${action === 'chat' ? ' aria-haspopup="dialog" aria-controls="chat-dialog"' : ''}>${hooks.icon(glyph)}</button>`,
       )
-      .join('')}</nav>
+      .join(
+        '',
+      )}<button type="button" data-touch-action="sound" aria-label="音をオンにする" aria-pressed="false"><span data-sound-icon>${hooks.icon('muted')}</span><small data-sound-label>音オフ</small></button></nav>
       <p class="touch-chat-peek" role="status" translate="no" hidden><b></b><span></span></p>
       <div class="touch-move" role="group" aria-label="移動パッド。触れた所から、浅く倒すと歩き、深く倒すと走ります"><span id="touch-stick" class="touch-stick" data-gait="rest" aria-hidden="true"><i class="touch-stick-knob"></i></span></div>
       <div class="touch-prompts" aria-label="いま使える行動"></div>
@@ -87,6 +91,7 @@ export class TouchControls {
     this.attack = $('[data-touch-action="attack"]');
     this.jump = $('[data-touch-action="jump"]');
     this.center = $('[data-touch-action="center"]');
+    this.sound = $('[data-touch-action="sound"]');
     this.chat = this.root.querySelector<HTMLButtonElement>('[data-touch-action="chat"]');
     this.peek = $('.touch-chat-peek');
     this.setWeapon('spear');
@@ -118,6 +123,18 @@ export class TouchControls {
     this.applyDevice();
     if (!enabled) this.root.hidden = true;
     this.hooks.changed();
+  }
+
+  setSoundEnabled(enabled: boolean) {
+    this.sound.setAttribute('aria-pressed', String(enabled));
+    setLocalizedAttribute(this.sound, 'aria-label', enabled ? '音をオフにする' : '音をオンにする');
+    this.sound.querySelector('[data-sound-icon]')!.innerHTML = this.hooks.icon(
+      enabled ? 'sound' : 'muted',
+    );
+    setLocalizedText(
+      this.sound.querySelector('[data-sound-label]')!,
+      enabled ? '音オン' : '音オフ',
+    );
   }
 
   private chooseTouch = (event: PointerEvent) => {

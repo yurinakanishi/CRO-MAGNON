@@ -1,14 +1,17 @@
 {
-  "checkedAt": "2026-10-15T07:13:41.890Z",
+  "checkedAt": "2026-10-16T04:51:24.028Z",
   "status": "passed",
-  "browser": "Real Chrome desktop and 390px touch emulation; independent test storage",
-  "base": "https://cromagnonmmo.cro-magnon.workers.dev/",
+  "base": "https://cromagnonmmo.com/",
+  "buildId": "00d3f8c78cdf8b28e0be0dab398f54dc90466f6eb5ba21c1c4084cbdec1aabaa",
+  "browser": "155.0.8059.41",
+  "scope": "Real Chrome on Windows; desktop and 390px touch emulation; isolated test storage. Physical phones, native Safari, physical gamepads and long-duration play are unverified.",
   "checks": [
     "The title enables solo and disables online entry",
     "First entry runs and autosaves a local character, outfit and one companion",
     "Title/reload restores the same person, inventory and location while applying new clothes",
     "A second tab cannot overwrite a live game and can resume after the first returns to title",
     "390px touch flow keeps both title buttons visible and runs solo after separate character and companion screens",
+    "Native Chrome touch moves, cancellation stops, jump works, and the menu saves the moved position",
     "No WebSocket or game API request"
   ],
   "errors": [],
@@ -28,47 +31,15 @@
     },
     {
       "path": "/api/status",
-      "status": 503,
-      "body": {
-        "ok": false,
-        "text": "現在はソロプレイのみ利用できます。"
-      }
+      "status": 503
     },
     {
       "path": "/ws",
-      "status": 503,
-      "body": {
-        "ok": false,
-        "text": "現在はソロプレイのみ利用できます。"
-      }
+      "status": 503
     }
   ],
-  "packagedEdge": [
-    {
-      "route": "/",
-      "status": 200
-    },
-    {
-      "route": "/src/solo-worker.js",
-      "status": 200
-    },
-    {
-      "route": "/api/health",
-      "status": 200
-    },
-    {
-      "route": "/api/status",
-      "status": 503
-    },
-    {
-      "route": "/ws?room=EMBER",
-      "status": 503
-    },
-    {
-      "route": "/api/save",
-      "status": 404
-    }
-  ],
-  "durableObjectAccesses": 0,
-  "physicalSmartphoneVerified": false
+  "screenshots": "output/playwright/solo-cromagnonmmo-com-20261016",
+  "productionGate": "output/production-domain-20261016/verification.json",
+  "domainQA": "assets/cloudflare/custom-domain-qa.json",
+  "workersDevBrowserEvidence": "output/playwright/solo-live-domain-20261016/result.json"
 }

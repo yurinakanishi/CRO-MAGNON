@@ -29,6 +29,7 @@
   "clips": [],
   "lods": [],
   "notes": [
+    "Gallery r38 adds the helmeted Ryuichi-typeR among a mammoth, horse and aurochs on the existing deep west-wall bay, completing the shared 16-person contributor cast (nine Dots share one credit). Yuri remains a creator credit only. Geometry, earlier paintings and mascot availability are retained.",
     "Geometry r28-deep (user request 2026-10-14) remaps the same retained TRELLIS shell: the mouth and apron unchanged, the gallery uniformly lengthened by 7.9 m (x1.287) and the rounded rear chamber with its spring basin moved back 7.9 m along the bend, so one more 7.5 m procession fits on each wall. Topology, UVs and the embedded 1024 px textures are unchanged; model-r27-rounded.glb is kept.",
     "Gallery r37 paints @daredaro_F, a silver-haired gentleman whose eyes are hidden behind a bar, among a woolly rhinoceros, a reindeer and an ibex on the new east-wall bay; the upper animal register continues over the new bay on both walls.",
     "Geometry r27-rounded sculpts the retained TRELLIS shell into a rounded rear chamber and irregular shallow spring basin. The gallery through local Z=-29.5, all topology, UVs and 1024px textures are retained. Shared dim lighting, held torches and runtime water are identical in the waiting cave and live world. Earlier r26 files and immutable optimization records remain archived.",
@@ -229,7 +230,7 @@
       }
     }
   },
-  "galleryRevision": "37",
+  "galleryRevision": "38",
   "rimoPigment": {
     "source": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
     "url": "/models/camp-cave/rimo-lascaux-frieze-r30.opt-8a2acbfbfaa6d2c2.png",
@@ -680,6 +681,48 @@
         },
         "resize": "whole image, Lanczos-3, 2172x724 to 1024x341 (sharp)"
       }
+    },
+    "ryuichiFrieze": {
+      "url": "/models/camp-cave/ryuichi-lascaux-r38.png",
+      "subjects": [
+        "ryuichi"
+      ],
+      "source": "assets/camp-cave/ryuichi-frieze-r38/paint.png",
+      "sha256": "2434d2899f1698b8ade9a66f5b2c488556ec0cb420b330e4d5c5e893f51fc553",
+      "bytes": 494217,
+      "image": {
+        "width": 1024,
+        "height": 341
+      },
+      "generator": "Codex built-in image_gen",
+      "prompt": "assets/camp-cave/ryuichi-frieze-r38/prompt.txt",
+      "references": [
+        {
+          "path": "assets/camp-cave/ryuichi-frieze-r38/reference-archived.jpg",
+          "sha256": "06cba8b57b036a3d1551a74c6be9748271ebdd702402dbf71f6adbfe9cbcc2e5"
+        },
+        {
+          "path": "public/models/camp-cave/daredaro-lascaux-r37.png",
+          "sha256": "672fd8d9ed8de4d9364bf895be3c1f7a4ec1dda9e3d5e0841dadd10c9259fbc1"
+        }
+      ],
+      "animals": [
+        "woolly mammoth",
+        "prehistoric horse",
+        "aurochs"
+      ],
+      "application": "Gallery r38: west-wall bay opposite daredaro, centre Z=-37.0, bottom Y=1.4, width 7.5 m, strength 0.84. Mineral pigment projected onto the retained limestone triangles.",
+      "generated": {
+        "path": "assets/camp-cave/ryuichi-frieze-r38/generated.png",
+        "sha256": "998f00a40aa857c3ed4f453b62d2b7b712cfc122e341f360f82c348561609698",
+        "bytes": 2229175,
+        "image": {
+          "width": 2172,
+          "height": 724
+        },
+        "resize": "whole image, sharp Lanczos-3, 2172x724 to 1024x341"
+      },
+      "review": "assets/camp-cave/qa/gallery-pigment-coverage-r38.json"
     }
   },
   "sourceRevision": {
@@ -687,8 +730,8 @@
     "sha256": "d1dfbd766730cfb9e585f14f983d603e186969d287e4b23e5aa276715a324690"
   },
   "muralComposition": {
-    "recipe": "assets/camp-cave/modular-r37/recipe.json",
+    "recipe": "assets/camp-cave/modular-r38/recipe.json",
     "visibility": "cave-mural-visibility.json",
-    "characters": 23
+    "characters": 24
   }
 }

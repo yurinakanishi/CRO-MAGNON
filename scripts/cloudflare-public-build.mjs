@@ -38,11 +38,10 @@ const { MASCOT_PORTRAITS } = await import('../dist/src/mascot-portraits.js');
 const { CHARACTER_ROSTER, characterModelReleased, characterSpeciesReleased } =
   await import('../dist/shared/character-roster.mjs');
 const { GROUND_MASCOTS } = await import('../dist/shared/friend-mascots.mjs');
-const { mascotModelReleased, mascotCreditReleased, mascotAsset, ACTIVE_MASCOT_MODELS } =
+const { mascotModelReleased, mascotAsset, ACTIVE_MASCOT_MODELS } =
   await import('../dist/shared/mascot-roster.mjs');
 const { TITLE_CREDITS, TITLE_GUEST, TITLE_SUPPORT, TITLE_DOTS, TITLE_FRIENDS } =
   await import('../dist/src/title-credit-profiles.js');
-const { muralPeople } = await import('../dist/src/title-credits.js');
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const {
@@ -72,7 +71,8 @@ const workerFiles = [];
 const release = JSON.parse(
   await readFile(path.join(root, 'cloudflare/public-release.json'), 'utf8'),
 );
-if (!['public', 'full'].includes(release.credits)) throw new Error('Invalid public credits mode');
+if (release.credits !== 'full')
+  throw new Error('The shared contributor list requires full credits');
 if (
   !Array.isArray(release.excludedCharacters) ||
   release.excludedCharacters.some(
@@ -96,13 +96,9 @@ const publicCharacters = CHARACTER_MODELS.filter(
 if (!publicCharacters.some((model) => model.species === 'cro'))
   throw new Error('Missing default public character');
 const hasOctopus = publicCharacters.some((model) => model.bodyPlan === 'octopus');
-const credits = release.credits === 'full' ? TITLE_CREDITS : TITLE_CREDITS.slice(0, 1);
-// The cave's 「壁画の人々」 lists everyone painted (2026-10-13), so their profiles ship
-// independently of mascot release. This also includes the explicitly credited Asahina.
-const painted = new Set(muralPeople().map((person) => person.key));
-const friends = TITLE_FRIENDS.filter(
-  (person) => mascotCreditReleased(person.qr) || painted.has(person.qr),
-);
+// The title and cave share the complete cast (2026-10-16), independently of mascot release.
+const credits = TITLE_CREDITS;
+const friends = TITLE_FRIENDS;
 const fileLimit = 25 * 1024 * 1024;
 const partSize = 24 * 1024 * 1024;
 const hash = (bytes) => createHash('sha256').update(bytes).digest('hex');

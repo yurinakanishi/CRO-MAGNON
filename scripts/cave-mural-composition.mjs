@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import sharp from 'sharp';
 
-export const MURAL_RECIPE = 'assets/camp-cave/modular-r37/recipe.json';
+export const MURAL_RECIPE = 'assets/camp-cave/modular-r38/recipe.json';
 export const digest = (data) => createHash('sha256').update(data).digest('hex');
 export const readJson = async (file) => JSON.parse(await readFile(file, 'utf8'));
 export const entryAt = (asset, entry) => entry.split('.').reduce((a, k) => a[k], asset);

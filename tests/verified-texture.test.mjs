@@ -840,7 +840,7 @@ test('the gallery fails on one bad image, releasing the rest, and leaving mid-de
     const transport = network(files).transport;
     const cave = gallery(manifest, { download: verified(transport), decode: decoder.decode });
     await assert.rejects(cave.load(), /friendsRiver\.png: undecodable/);
-    await until(() => allClosed(decoder.images, 9));
+    await until(() => allClosed(decoder.images, CAVE_IMAGES - 1));
     cave.dispose();
     for (const image of decoder.images) {
       assert.equal(image.closed, 1);

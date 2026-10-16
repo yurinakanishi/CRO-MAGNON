@@ -1,5 +1,5 @@
-/** Retained cast. Turn on an entry to restore its 3D model and guest credit.
- * Dots are always available; cave paintings are independent of this roster. */
+/** Retained mascots. Turn on an entry to restore its 3D model.
+ * Dots are always available; credits and cave paintings are independent of this roster. */
 export const MASCOT_ROSTER = [
   { modelKey: 'rimo-neko', credit: 'rimo', enabled: true },
   { modelKey: 'yellow-524-mascot', credit: 'r524', enabled: true },

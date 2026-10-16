@@ -42,8 +42,10 @@ test('retained friends can be restored as selectable cards and keep credits, pai
   }
   for (const key of ['friendsMeadow', 'friendsRiver'])
     assert.ok(CAVE_MURALS.some((m) => m.motif === key && m.wall === 'west'));
-  assert.equal(people.has('risa'), false);
-  assert.equal(people.has('hawkie'), false);
+  assert.equal(people.has('risa'), true);
+  assert.equal(people.has('hawkie'), true);
+  assert.equal(people.get('risa').appears, undefined, 'crediting does not release a mascot');
+  assert.equal(people.get('hawkie').appears, undefined);
   assert.equal(CONTRIBUTOR_CHARACTERS.risa.name, 'こはくちゃん');
   assert.equal(CONTRIBUTOR_CHARACTERS.hawkie.name, 'Howkey');
 });

@@ -135,6 +135,7 @@ test('both animal galleries retain a broad room and full standing height all the
     'friendsMeadow',
     'friendsRiver',
     'daredaroFrieze',
+    'ryuichiFrieze',
   ];
   for (const wall of ['east', 'west']) {
     const paintings = CAVE_MURALS.filter((m) => m.wall === wall);
@@ -151,13 +152,14 @@ test('both animal galleries retain a broad room and full standing height all the
             'friendsRiver',
             'shapeBots',
             'daredaroFrieze',
+            'ryuichiFrieze',
           ].includes(m.motif),
         )
         .map((m) => m.motif)
         .sort(),
       (wall === 'east'
         ? ['maruimoFrieze', 'rimoFrieze', 'roundBots', 'maeKohaku', 'daredaroFrieze']
-        : ['creature524', 'friendsMeadow', 'friendsRiver', 'shapeBots']
+        : ['creature524', 'friendsMeadow', 'friendsRiver', 'shapeBots', 'ryuichiFrieze']
       ).sort(),
     );
     if (wall === 'west') {

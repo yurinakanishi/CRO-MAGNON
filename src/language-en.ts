@@ -800,6 +800,10 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   // Settings, connection and recovery.
   設定: 'Settings',
   サウンド: 'Sound',
+  音をオンにする: 'Turn sound on',
+  音をオフにする: 'Turn sound off',
+  音オン: 'Sound on',
+  音オフ: 'Sound off',
   オン: 'On',
   オフ: 'Off',
   '環境音・鳥の声': 'Nature and birds',

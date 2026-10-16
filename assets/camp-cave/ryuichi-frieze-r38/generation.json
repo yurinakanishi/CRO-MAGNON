@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-16",
+  "generator": "Codex built-in image_gen",
+  "prompts": [
+    "assets/camp-cave/ryuichi-frieze-r38/prompt.txt",
+    "assets/camp-cave/ryuichi-frieze-r38/animals-prompt.txt"
+  ],
+  "references": [
+    {
+      "path": "assets/camp-cave/ryuichi-frieze-r38/reference-archived.jpg",
+      "sha256": "06cba8b57b036a3d1551a74c6be9748271ebdd702402dbf71f6adbfe9cbcc2e5"
+    },
+    {
+      "path": "public/models/camp-cave/daredaro-lascaux-r37.png",
+      "sha256": "672fd8d9ed8de4d9364bf895be3c1f7a4ec1dda9e3d5e0841dadd10c9259fbc1"
+    }
+  ],
+  "generated": {
+    "path": "assets/camp-cave/ryuichi-frieze-r38/generated.png",
+    "sha256": "998f00a40aa857c3ed4f453b62d2b7b712cfc122e341f360f82c348561609698",
+    "bytes": 2229175,
+    "image": {
+      "width": 2172,
+      "height": 724
+    }
+  },
+  "animals": {
+    "path": "assets/camp-cave/ryuichi-frieze-r38/animals-generated.png",
+    "sha256": "7c78075a5f4c1fc573fa1df6080351dd26f84a8e54373989a9eeb80430f7fa1d",
+    "bytes": 1947103,
+    "image": {
+      "width": 2172,
+      "height": 724
+    }
+  },
+  "delivery": {
+    "path": "assets/camp-cave/ryuichi-frieze-r38/paint.png",
+    "sha256": "2434d2899f1698b8ade9a66f5b2c488556ec0cb420b330e4d5c5e893f51fc553",
+    "bytes": 494217,
+    "image": {
+      "width": 1024,
+      "height": 341
+    }
+  },
+  "animalDelivery": {
+    "path": "assets/camp-cave/ryuichi-frieze-r38/animals.png",
+    "sha256": "6c70be9040594f1441199298f4c6f83eb26ff8769852e887a677c1f1e6d95ede",
+    "bytes": 473481,
+    "image": {
+      "width": 1024,
+      "height": 341
+    }
+  },
+  "geometry": {
+    "url": "/models/camp-cave/model-r28-deep.glb",
+    "sha256": "932c96905891f77b766c9e668ca80f42c7f3073a4f992a559e87f4f53e770c4d"
+  }
+}

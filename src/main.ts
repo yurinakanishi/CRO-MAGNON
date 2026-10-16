@@ -251,8 +251,8 @@ const joinFields = () =>
       ? `<div class="setup-identity solo-identity"><label>あなたの名前<input name="name" maxlength="16" required autocomplete="off" autofocus></label><input type="hidden" name="room" value="SOLO"></div>`
       : `<div class="setup-identity"><label>あなたの名前<input name="name" maxlength="16" required autocomplete="off" autofocus></label><label>部屋のコード<span>英数字・ハイフン・アンダースコア / 最大16文字</span><input name="room" maxlength="16" pattern="[A-Za-z0-9_\\-]+" required autocomplete="off"></label></div>`) +
   characterPickerMarkup(fixedIdentity ? null : profile.dye, 'setup-flow-yes', '次へ');
-// The title shell's title and dialog stay the same nodes: the title artwork is not
-// requested again and an open contributors dialog stays open (TitleHandoff).
+// Keep the title and its ancestors mounted: even moving the same image/title to a
+// new viewport restarts the CSS fades, briefly making the artwork transparent.
 const titleHandoff = takeTitleShell();
 const viewportMarkup = `
   <section class="game-viewport" aria-label="${GAME_TITLE} ゲーム画面">
@@ -279,10 +279,15 @@ const viewportMarkup = `
     </div>
   </section>`;
 if (titleHandoff) {
-  // The detached title joins the game's screens; the dialog stays where it is.
-  titleHandoff.viewport.insertAdjacentHTML('beforebegin', viewportMarkup);
-  titleHandoff.viewport.remove();
-  $('#screens').prepend(titleHandoff.title);
+  // Parse the new game UI offscreen and add it around the existing title. Its
+  // viewport, #screens, image, animations and an open dialog all stay in place.
+  const template = document.createElement('template');
+  template.innerHTML = viewportMarkup;
+  const incoming = template.content.querySelector<HTMLElement>('.game-viewport')!;
+  const incomingScreens = incoming.querySelector<HTMLElement>('#screens')!;
+  titleHandoff.title.parentElement!.append(...incomingScreens.childNodes);
+  incomingScreens.remove();
+  titleHandoff.viewport.prepend(...incoming.childNodes);
 } else $('#app').innerHTML = `${viewportMarkup}\n  ${modalMarkup()}`;
 installLanguageUI($('#app'));
 bindLanguageToggle($('#screen-title'));
@@ -339,12 +344,15 @@ function performCue(command: TouchAction) {
     renderUnavailable ||
     screens.active ||
     $('#modal').open ||
-    (player()?.downedUntil && !['menu', 'map', 'chat', 'mascots', 'bag'].includes(command))
+    (player()?.downedUntil && !['menu', 'map', 'chat', 'mascots', 'bag', 'sound'].includes(command))
   )
     return;
   if (assistedControls() && ['inspect', 'zoomIn', 'zoomOut', 'endInspect'].includes(command))
     return;
   switch (command) {
+    case 'sound':
+      toggleSound();
+      break;
     case 'menu':
       openPauseMenu();
       break;
@@ -2795,6 +2803,7 @@ function toggleSound() {
     ...renderer.audio.settings,
     enabled: !renderer.audio.settings.enabled,
   });
+  touchControls?.setSoundEnabled(renderer.audio.settings.enabled);
   const button = $('[data-setting="sound"]');
   if (button) {
     const enabled = renderer.audio.settings.enabled;
@@ -3181,7 +3190,8 @@ function touchPlayable(command?: TouchAction) {
     !document.hidden &&
     document.hasFocus() &&
     !!player() &&
-    (!player()?.downedUntil || ['menu', 'map', 'chat', 'mascots', 'bag'].includes(command ?? '')) &&
+    (!player()?.downedUntil ||
+      ['menu', 'map', 'chat', 'mascots', 'bag', 'sound'].includes(command ?? '')) &&
     !motionControls?.ownsInput &&
     ($('#chat-content')?.hidden ?? true) &&
     !document.activeElement?.closest('input,textarea,select,[contenteditable]')
@@ -3209,6 +3219,7 @@ touchControls = new TouchControls($('.game-viewport'), {
     drawMinimap();
   },
 });
+touchControls.setSoundEnabled(renderer.audio.settings.enabled);
 /** The phone's round minimap leaves out the corner captions its own HUD already shows. */
 function compactMinimap() {
   $('#minimap').dataset.compact = String(touchMode());

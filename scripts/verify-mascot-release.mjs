@@ -4,7 +4,7 @@ import { readFile, access } from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { EventEmitter } from 'node:events';
-import { MASCOT_ROSTER, mascotCreditReleased } from '../dist/shared/mascot-roster.mjs';
+import { MASCOT_ROSTER } from '../dist/shared/mascot-roster.mjs';
 import { TITLE_CREDITS, TITLE_DOTS, TITLE_FRIENDS } from '../dist/src/title-credit-profiles.js';
 import { muralPeople, titleContributors } from '../dist/src/title-credits.js';
 import { runtimeTextureRecords } from './environment-assets.mjs';
@@ -46,36 +46,42 @@ for (const entry of MASCOT_ROSTER) {
 const profiles = await import(
   pathToFileURL(path.resolve(buildRoot, 'dist-cloudflare/src/title-credit-profiles.js')).href
 );
-assert.deepEqual(
-  profiles.TITLE_CREDITS,
-  build.credits === 'full' ? TITLE_CREDITS : TITLE_CREDITS.slice(0, 1),
-);
+assert.equal(build.credits, 'full');
+assert.deepEqual(profiles.TITLE_CREDITS, TITLE_CREDITS);
 // The dots are in every build, so their credit always ships.
 assert.deepEqual(profiles.TITLE_DOTS, TITLE_DOTS);
 const guestCredits = titleContributors()
   .filter((person) => person.role === '友情出演')
   .map((person) => person.key);
-// Asahina is explicitly credited; other dormant friends appear only in the cave's
-// 「壁画の人々」 list. A painted friend's profile ships independently of their mascot.
+// Credits are the same common cast as the cave, independent of mascot availability.
 const painted = muralPeople().map((person) => person.key);
-assert.deepEqual(
-  profiles.TITLE_FRIENDS,
-  TITLE_FRIENDS.filter((p) => mascotCreditReleased(p.qr) || painted.includes(p.qr)),
-);
-// What the shipped title modules show: everyone painted (supervisors only with full credits),
-// and the same explicitly credited people as the source title.
+assert.deepEqual(profiles.TITLE_FRIENDS, TITLE_FRIENDS);
+// Exercise the actual shipped modules, including the creator-only exception.
 const shipped = await import(
   pathToFileURL(path.resolve(buildRoot, 'dist-cloudflare/src/title-credits.js')).href
 );
 const listed = shipped.muralPeople();
 assert.deepEqual(
   listed.map((person) => person.key),
-  painted.filter(
-    (key) => build.credits === 'full' || !TITLE_CREDITS.slice(1).some((c) => c.qr === key),
-  ),
+  painted,
 );
-assert.doesNotMatch(shipped.muralPeopleDialogMarkup(listed), /<img\b|<svg\b|avatar-/);
-assert.doesNotMatch(shipped.contributorsDialogMarkup(), /<img\b|<svg\b|avatar-/);
+assert.deepEqual(
+  listed,
+  shipped
+    .titleContributors()
+    .filter((person) => person.key !== 'yuri')
+    .map(({ key, name, profile }) => ({ key, name, profile })),
+);
+for (const markup of [
+  shipped.muralPeopleDialogMarkup(listed),
+  shipped.contributorsDialogMarkup(),
+]) {
+  assert.doesNotMatch(markup, /<img\b|avatar-/);
+  assert.equal(
+    (markup.match(/<svg class="contributor-x"/g) ?? []).length,
+    (markup.match(/<a class="contributor"/g) ?? []).length,
+  );
+}
 assert.deepEqual(
   shipped
     .titleContributors()

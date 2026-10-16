@@ -1,0 +1,23 @@
+Use case: precise-object-edit
+Asset type: CRO-MAGNON MMO game title artwork, transparent PNG.
+Task: ONE SINGLE EDIT from the ORIGINAL title, making all four character changes together. Image 1 is the only base canvas. Do not use any previously edited title.
+
+INPUT ROLES:
+1. EDIT TARGET: original CRO-MAGNON MMO title, before all character replacements.
+2. Boy design reference: shell-headband boy.
+3. Girl design reference: feather-haired girl.
+4. Cat APPEARANCE reference only. Do not copy its raised-paw pose.
+5. Yellow floating mascot 524 appearance reference.
+
+LOCAL CHANGES:
+A. Replace the smaller adult man to the right of the tall CENTRAL spearman (the rear axe-holder in front of the mammoth) with the cute boy from image 2. Keep spiky brown hair, shell headband, big amber eyes, red ochre cheek stripes, cream stitched hide tunic, dark fur vest, tooth necklace, brown shorts, belt pouch and furry boots. Large head, short limbs and small chibi body, shorter than the central adult. Place him around x=935, feet around y=625, holding one small stone axe, facing RIGHT in a slightly frontal three-quarter view.
+B. Replace the RIGHTMOST adult woman in front of the mammoth with the cute girl from image 3. Keep chestnut bob, short front braids, single feather, big amber eyes, red cheek dots, rusty fur cape, cream-trimmed tan hide dress, red zigzag hem, shell necklace, belt pouch and furry boots. Same chibi proportions as the boy. Place her around x=1090, feet around y=660, holding one slender prehistoric spear, facing RIGHT like the boy. Replace these two adults entirely, with no leftover adult faces or limbs.
+C. Add the small fluffy grey-and-white cat from image 4 on the rocky ground to the girl's right, beneath the mammoth, around x=1245,y=620. BATTLE-READY feline pose: all four paws on the ground, BOTH FRONT PAWS DOWN, braced front legs, slightly lowered shoulders, bent hind legs, leaning forward ready to spring. Focused closed-mouth expression, green eyes looking RIGHT, white muzzle/chest/paws, pink nose, fluffy grey tail. Cute and recognizable, around 140 px tall with ground contact around y=680. No raised paw, waving, human pose, weapons or armour.
+D. Place ONE small floating 524 in the UPPER LEFT, in front of the orange SUN and snowy MOUNTAINS, directly ABOVE the seated/crouching adult woman's head. Approximate center x=470,y=255 on the 1536x1024 canvas, around 100 px tall. Its bottom is well above the woman's hair, with a visible air gap. It hovers in the open air, not resting on a mountain or on her head. It is slightly smaller than the chibi humans' heads. Keep the original sun, mountains and woman intact around it. Turn the mascot to face LEFT in a slightly frontal three-quarter view, in the same general direction as the crouching woman and sabertooth tiger. Its rounded golden-yellow body, soft nubs and white connected face marking remain recognizable. Show the orange-red digits exactly "524" in normal reading order, NEVER mirrored. The teal arrow below the digits points LEFT to make the facing direction clear. No new eyes, mouth, hands, legs or wings. Do NOT put another 524 at the bottom right or anywhere else.
+
+LOCKED ORIGINAL AREAS:
+Preserve the tall central adult spearman and crouching adult woman on the left. Preserve the sabertooth tiger, mammoth and both tusks, orange sun, mountains, three birds, rocks, plants, framing and perspective from image 1. Keep original subdued natural colours, painted fine detail, light and shadows; integrate the added characters into that same artwork. Do not globally restyle, redraw, beautify or sharpen the image.
+Preserve the entire bottom logo from image 1: exact text "CRO-MAGNON MMO", original shapes, spacing, positions, VERY DARK BROWN almost-black texture, and the slender red-to-ochre underline. No shiny gold, new lettering, metallic facets, enhanced contrast or extra detail.
+Exactly FOUR humans total: two unchanged original left/central adults and two replacement chibi humans. Exactly ONE small cat and ONE 524, besides the original tiger and mammoth.
+
+OUTPUT: one finished 1536 x 1024 image, original 3:2 aspect ratio, full canvas, no crop or zoom. Genuine alpha transparency in all empty exterior areas and between the logo letters. Preserve opaque snow, white fur and other actual artwork. No background haze, opaque white/black backdrop, checkerboard, new text or watermark.

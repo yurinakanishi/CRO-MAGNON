@@ -23,9 +23,9 @@ import {
 const recipe = await readJson(MURAL_RECIPE);
 const raw = async (bytes) => sharp(bytes).ensureAlpha().raw().toBuffer();
 
-test('the nine complete processions share scale, baseline, density and even gaps', () => {
+test('the ten complete processions share scale, baseline, density and even gaps', () => {
   const main = CAVE_MURALS.filter((m) => m.motif in recipe.panels);
-  assert.equal(main.length, 9);
+  assert.equal(main.length, 10);
   for (const m of main) {
     assert.equal(m.width, 7.5);
     assert.equal(m.bottom, 1.4);
@@ -39,7 +39,7 @@ test('the nine complete processions share scale, baseline, density and even gaps
       assert(Math.abs(group[i - 1].centre - group[i].centre - 7.9) < 1e-6);
   }
   // The deepened gallery's bay (r28) carries the upper register on to both walls.
-  assert.equal(CAVE_MURALS.length, 35);
+  assert.equal(CAVE_MURALS.length, 36);
   assert.equal(
     CAVE_MURALS.filter((m) =>
       ['mammoth', 'bison', 'deer', 'redHorse', 'ochreHorse'].includes(m.motif),
@@ -57,7 +57,7 @@ test('each current character has its own verified, transparent animal replacemen
   ];
   const slots = Object.values(recipe.panels).flatMap((p) => p.slots.map((s) => s.character));
   assert.deepEqual(slots.sort(), characters.sort());
-  assert.equal(slots.length, 23);
+  assert.equal(slots.length, 24);
   for (const panel of Object.values(recipe.panels)) {
     await exactBytes(panel.source.path, panel.source);
     const bytes = await exactBytes(panel.animals.path, panel.animals);

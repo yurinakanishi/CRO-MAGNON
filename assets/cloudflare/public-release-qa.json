@@ -1,47 +1,61 @@
 {
-  "checkedAt": "2026-10-15T07:09:44.994Z",
-  "base": "https://cromagnonmmo.cro-magnon.workers.dev",
+  "checkedAt": "2026-10-16T04:51:24.028Z",
   "status": "passed",
+  "base": "https://cromagnonmmo.com",
+  "buildId": "00d3f8c78cdf8b28e0be0dab398f54dc90466f6eb5ba21c1c4084cbdec1aabaa",
   "mode": "solo",
-  "servedFilesVerified": 185,
-  "titleShellFilesVerified": 5,
-  "browserBundleFilesVerified": 6,
-  "publicCreditsOnly": false,
+  "servedFilesVerified": 777,
+  "bytesVerified": 143742600,
+  "glbsVerified": 87,
+  "publicCharacterCount": 14,
+  "selectionPhotographsVerified": 137,
+  "creditsProfile": "full",
   "supervisorCreditsIncluded": true,
-  "excludedSupervisorFiles": [
-    "/title/qr-ryuichi.png",
-    "/title/avatar-ryuichi.jpg",
-    "/title/qr-nukonuko.png",
-    "/title/avatar-nukonuko.jpg",
-    "/title/qr-otani.png",
-    "/title/avatar-otani.jpg",
-    "/title/qr-urata.png",
-    "/title/avatar-urata.jpg"
+  "allServedFilesMatchSHA256": true,
+  "securityHeadersVerified": true,
+  "immutableGLBCacheVerified": true,
+  "denied": [
+    {
+      "path": "/api/status",
+      "status": 503
+    },
+    {
+      "path": "/ws",
+      "status": 503
+    },
+    {
+      "path": "/models/maruimo-octopus/asset.json",
+      "status": 404
+    },
+    {
+      "path": "/models/cat-kunoichi/asset.json",
+      "status": 404
+    },
+    {
+      "path": "/models/kunoichi-katana/asset.json",
+      "status": 404
+    },
+    {
+      "path": "/models/neanderthal-hunter/asset.json",
+      "status": 404
+    },
+    {
+      "path": "/models/neanderthal-woman/asset.json",
+      "status": 404
+    },
+    {
+      "path": "/motion/assets.json",
+      "status": 404
+    },
+    {
+      "path": "/.env",
+      "status": 404
+    },
+    {
+      "path": "/missing-page",
+      "status": 404
+    }
   ],
-  "runtimeTexturesVerified": 11,
-  "publicCharacterCount": 13,
-  "publicClothingDyeRulesVerified": true,
-  "excludedCharacterFiles": [
-    "/models/maruimo-octopus/asset.json",
-    "/models/maruimo-octopus/portrait.png",
-    "/models/maruimo-octopus/model-c2.glb",
-    "/models/maruimo-octopus/lod-c2.glb",
-    "/src/octopus-pose.js",
-    "/models/maruimo-octopus/model-c2-12886dd609a4.part-1.bin"
-  ],
-  "dormantCharacterFiles": [
-    "/models/cat-kunoichi/asset.json",
-    "/models/cat-kunoichi/portrait.png",
-    "/models/cat-kunoichi/startup.opt-ca2213d32f027f41.glb",
-    "/models/kunoichi-katana/asset.json",
-    "/models/kunoichi-katana/portrait.png",
-    "/models/kunoichi-katana/model-c2.opt-624f6bbc73dc6fde.glb",
-    "/models/neanderthal-hunter/asset.json",
-    "/models/neanderthal-hunter/portrait.png",
-    "/models/neanderthal-hunter/model-face-lp-r08.glb",
-    "/models/neanderthal-woman/asset.json",
-    "/models/neanderthal-woman/portrait.png",
-    "/models/neanderthal-woman/model-face-lp-r08.glb"
-  ],
-  "selectionPhotographsVerified": 128
+  "evidence": "output/cloudflare-deploy/deploy-domain-20261016/live-files-cromagnonmmo.com.json",
+  "workersDevEvidence": "output/cloudflare-deploy/deploy-domain-20261016/live-files-cromagnonmmo.cro-magnon.workers.dev.json"
 }

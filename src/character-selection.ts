@@ -37,11 +37,15 @@ export function characterChoiceName(model: Readonly<CharacterModel>) {
 
 // Only the picker order changes. The model roster's first female/male looks still
 // resolve old saved choices, so never reorder that shared roster for presentation.
-const isCroGirl = (model: Readonly<CharacterModel>) =>
-  model.species === 'cro' && model.gender === 'female';
+const lastChoices = ['cro-magnon-hunter', 'desert-fennec-mage', 'giant-ape'];
+const firstChoices = PLAYABLE_CHARACTER_MODELS.filter((model) => !lastChoices.includes(model.key));
+const boys = firstChoices.filter((model) => model.species === 'cro' && model.gender === 'male');
+const girls = firstChoices.filter((model) => model.species === 'cro' && model.gender === 'female');
 const characterChoices = [
-  ...PLAYABLE_CHARACTER_MODELS.filter((model) => !isCroGirl(model)),
-  ...PLAYABLE_CHARACTER_MODELS.filter(isCroGirl),
+  ...boys.flatMap((boy, index) => [boy, ...girls.slice(index, index + 1)]),
+  ...girls.slice(boys.length),
+  ...firstChoices.filter((model) => model.species !== 'cro'),
+  ...lastChoices.flatMap((key) => PLAYABLE_CHARACTER_MODELS.filter((model) => model.key === key)),
 ];
 
 export function characterChoicesMarkup(dye: unknown = null) {
@@ -50,7 +54,7 @@ export function characterChoicesMarkup(dye: unknown = null) {
       (model) =>
         `<label class="character-choice"><input type="radio" name="character" value="${cardValue(model)}" required><img class="character-art" data-character-image="${model.key}" src="${characterPortraitUrl(model.key, dye)}" width="336" height="384" alt="" decoding="async" draggable="false"><span class="character-name"><strong>${characterChoiceName(model)}</strong></span></label>`,
     )
-    .join('')}</div><p class="character-scroll-hint">左右にスワイプして選ぶ</p></fieldset>`;
+    .join('')}</div></fieldset>`;
 }
 
 export function bindCharacterSelection(form: HTMLFormElement, profile: CharacterProfile) {

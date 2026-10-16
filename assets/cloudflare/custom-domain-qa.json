@@ -1,0 +1,104 @@
+{
+  "checkedAt": "2026-10-16T04:51:24.028Z",
+  "status": "passed",
+  "buildId": "00d3f8c78cdf8b28e0be0dab398f54dc90466f6eb5ba21c1c4084cbdec1aabaa",
+  "hostname": "cromagnonmmo.com",
+  "zoneId": "aea4d49230f05d07c13065cdb428616a",
+  "zonePlan": "Free",
+  "zoneStatus": "active",
+  "nameservers": ["leif.ns.cloudflare.com", "nora.ns.cloudflare.com"],
+  "publicResolvers": ["1.1.1.1", "8.8.8.8"],
+  "defaultMailMXAndSPFPreserved": true,
+  "tls": [
+    {
+      "hostname": "cromagnonmmo.com",
+      "authorized": true,
+      "protocol": "TLSv1.3",
+      "subjectaltname": "DNS:cromagnonmmo.com, DNS:*.cromagnonmmo.com",
+      "valid_from": "Oct 16 03:48:39 2026 GMT",
+      "valid_to": "Jan 14 04:48:36 2027 GMT",
+      "fingerprint256": "7B:13:29:31:58:BA:4C:F1:E9:A2:D6:F7:5B:09:C3:41:20:7E:58:89:B4:98:8E:B6:17:C9:62:CA:C9:14:FE:D0"
+    },
+    {
+      "hostname": "www.cromagnonmmo.com",
+      "authorized": true,
+      "protocol": "TLSv1.3",
+      "subjectaltname": "DNS:cromagnonmmo.com, DNS:*.cromagnonmmo.com",
+      "valid_from": "Oct 16 03:48:39 2026 GMT",
+      "valid_to": "Jan 14 04:48:36 2027 GMT",
+      "fingerprint256": "7B:13:29:31:58:BA:4C:F1:E9:A2:D6:F7:5B:09:C3:41:20:7E:58:89:B4:98:8E:B6:17:C9:62:CA:C9:14:FE:D0"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "http://cromagnonmmo.com/en/?lang=en&qa=domain%20check",
+      "final": "https://cromagnonmmo.com/en/?lang=en&qa=domain%20check",
+      "hops": [
+        {
+          "url": "http://cromagnonmmo.com/en/?lang=en&qa=domain%20check",
+          "status": 301,
+          "location": "https://cromagnonmmo.com/en/?lang=en&qa=domain%20check"
+        },
+        {
+          "url": "https://cromagnonmmo.com/en/?lang=en&qa=domain%20check",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "source": "http://www.cromagnonmmo.com/en/?lang=en&qa=domain%20check",
+      "final": "https://cromagnonmmo.com/en/?lang=en&qa=domain%20check",
+      "hops": [
+        {
+          "url": "http://www.cromagnonmmo.com/en/?lang=en&qa=domain%20check",
+          "status": 301,
+          "location": "https://www.cromagnonmmo.com/en/?lang=en&qa=domain%20check"
+        },
+        {
+          "url": "https://www.cromagnonmmo.com/en/?lang=en&qa=domain%20check",
+          "status": 301,
+          "location": "https://cromagnonmmo.com/en/?lang=en&qa=domain%20check"
+        },
+        {
+          "url": "https://cromagnonmmo.com/en/?lang=en&qa=domain%20check",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "source": "https://www.cromagnonmmo.com/en/?lang=en&qa=domain%20check",
+      "final": "https://cromagnonmmo.com/en/?lang=en&qa=domain%20check",
+      "hops": [
+        {
+          "url": "https://www.cromagnonmmo.com/en/?lang=en&qa=domain%20check",
+          "status": 301,
+          "location": "https://cromagnonmmo.com/en/?lang=en&qa=domain%20check"
+        },
+        {
+          "url": "https://cromagnonmmo.com/en/?lang=en&qa=domain%20check",
+          "status": 200,
+          "location": null
+        }
+      ]
+    }
+  ],
+  "tlsValidationBypassed": false,
+  "liveFilesVerified": 777,
+  "liveGLBsVerified": 87,
+  "browser": "155.0.8059.41",
+  "browserChecks": [
+    "The title enables solo and disables online entry",
+    "First entry runs and autosaves a local character, outfit and one companion",
+    "Title/reload restores the same person, inventory and location while applying new clothes",
+    "A second tab cannot overwrite a live game and can resume after the first returns to title",
+    "390px touch flow keeps both title buttons visible and runs solo after separate character and companion screens",
+    "Native Chrome touch moves, cancellation stops, jump works, and the menu saves the moved position",
+    "No WebSocket or game API request"
+  ],
+  "errors": [],
+  "gameAPIOrWebSocketRequests": [],
+  "evidence": "output/cloudflare-deploy/deploy-domain-20261016/domain-dns-tls-redirect-qa.json",
+  "browserEvidence": "output/playwright/solo-cromagnonmmo-com-20261016/result.json"
+}

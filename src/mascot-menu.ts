@@ -17,6 +17,11 @@ const portraits: Record<string, { name: string; image: string; color: string }> 
 
 export { mascotName };
 
+/** 524 leads both pickers without changing legacy saved-companion migration. */
+export function mascotChoiceOrder(keys: readonly string[]) {
+  return [...keys.filter((key) => key === '524'), ...keys.filter((key) => key !== '524')];
+}
+
 export function mascotPictureMarkup(key: string) {
   const portrait = portraits[key];
   const design = BOT_DESIGNS[key as keyof typeof BOT_DESIGNS];
@@ -35,7 +40,7 @@ function mascotCard(key: string) {
 /** One companion each, chosen from every mascot this build offers. Any number of
  * travelers may bring the same one, so no card is ever taken by someone else. */
 export function mascotMenuMarkup(keys: readonly string[]) {
-  const cards = keys.map(mascotCard).join('');
+  const cards = mascotChoiceOrder(keys).map(mascotCard).join('');
   return `<div class="mascot-menu"><header class="mascot-menu-heading"><div><h2>連れていく仲間</h2><p class="modal-intro">1人1匹まで。同じ仲間をほかの旅人も連れていけます。</p></div><div class="mascot-bulk"><button type="button" class="button button-outline" data-mascot-none>連れていかない</button></div></header><div class="mascot-cards">${cards}</div></div>`;
 }
 

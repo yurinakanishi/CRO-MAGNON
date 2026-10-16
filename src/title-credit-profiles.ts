@@ -1,4 +1,4 @@
-/** Local credits remain complete; the public build writes a filtered copy. */
+/** One complete cast for local and public builds, shared by title cards and cave murals. */
 export const TITLE_CREDITS = [
   { name: 'yuri', profile: 'https://x.com/yurinakanishi33', qr: 'yuri' },
   { name: 'Ryuichi-typeR', profile: 'https://x.com/WabisukeTyper', qr: 'ryuichi' },
@@ -35,9 +35,8 @@ export const TITLE_DOTS = {
 } as const;
 
 /**
- * Retained guest profiles, named as on X. The contributor list includes released
- * mascots' guests and explicitly credited people; the cave also uses painted
- * people's profiles. Crediting a person does not release their mascot or its files.
+ * Retained guest profiles, named as on X, included in both contributor lists.
+ * Crediting a person does not release their mascot or its files.
  * They have no QR code; all credit displays use the contributors dialog.
  */
 export const TITLE_FRIENDS = [

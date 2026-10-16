@@ -304,6 +304,7 @@
 .contributor {
   display: flex;
   align-items: center;
+  gap: 12px;
   min-height: 48px;
   padding: 12px 14px;
   border: 1px solid #e0c99a26;
@@ -320,11 +321,19 @@ a.contributor.gamepad-focus {
   outline: none;
 }
 .contributor strong {
+  min-width: 0;
   color: #f2ead4;
   font-size: 14px;
   font-weight: 600;
   line-height: 1.4;
   overflow-wrap: anywhere;
+}
+.contributor-x {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  margin-left: auto;
+  color: #f2ead4;
 }
 
 /* The online home keeps the original logo and immediate menu, with no mural band. */

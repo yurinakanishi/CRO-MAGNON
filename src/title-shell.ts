@@ -8,7 +8,7 @@ import { bindLanguageToggle, installLanguageUI } from './language-ui.js';
 /**
  * The title before the game module: the same title screen and dialog the game
  * renders, working from modules that load no 3D or world data. The game module
- * (main.ts) takes the shell once: it adopts the same title and dialog nodes, and
+ * (main.ts) takes the shell once: it adopts the mounted viewport, title and dialog, and
  * performs the visitor's last pending title action once (TitleHandoff). Without a
  * shell (a direct main.js import, ?autostart=1) main.ts renders its own title.
  */
@@ -55,9 +55,9 @@ export type TitleStatus =
   | null;
 
 export interface TitleNodes {
-  /** The shell's viewport section, replaced by the game's. */
+  /** The mounted viewport: the game adds its canvas/HUD without moving the title. */
   viewport: HTMLElement;
-  /** #screen-title, already detached: the game inserts it into its #screens. */
+  /** #screen-title remains mounted in its original #screens; its animations continue. */
   title: HTMLElement;
   /** #modal, left in place (an open modal dialog keeps its state). */
   dialog: HTMLDialogElement;
@@ -75,7 +75,7 @@ export interface TitleShellView {
   status(status: TitleStatus): void;
   openContributors(links: boolean): void;
   contributorsOpen(): boolean;
-  /** Remove every shell listener and the shell's screen handling; detach the title. */
+  /** Release the shell's listeners and screen handling, leaving the visible DOM mounted. */
   release(): TitleNodes;
 }
 
@@ -243,7 +243,6 @@ export function renderTitleShell(
     release() {
       events.abort();
       screens.destroy();
-      title.remove();
       return { viewport, title, dialog };
     },
   };

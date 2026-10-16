@@ -1,0 +1,88 @@
+{
+  "date": "2026-10-16",
+  "status": "single-pass-alternate-created-not-adopted",
+  "request": "最初のタイトル原本から男の子・女の子・猫・524をまとめて加え直し、524だけを左上の太陽と山、座る女性の上へ浮かせて左向きにする。猫は前足を下ろして身構える。",
+  "method": "built-in image_gen; transparent_background=true",
+  "imageGenerationCalls": 1,
+  "iterativelyEditedTitleUsedAsInput": false,
+  "inputs": [
+    {
+      "path": "assets/title-credits/20261016-original-four-r01/inputs/original-title.png",
+      "bytes": 2463687,
+      "sha256": "74f97d00b9db805edbd35d25f86a299a8f387148e71737ecde753a104fe02876"
+    },
+    {
+      "path": "assets/title-credits/20261016-original-four-r01/inputs/boy.png",
+      "bytes": 1803212,
+      "sha256": "a820ed3b9c80ab5aacd7ed594f9d18350706d3563dc9a85b0359d0517b30a921"
+    },
+    {
+      "path": "assets/title-credits/20261016-original-four-r01/inputs/girl.png",
+      "bytes": 1706165,
+      "sha256": "1589caedd718740a501aacdd3dcd490afaee31f04bbd1db193ff26989b540340"
+    },
+    {
+      "path": "assets/title-credits/20261016-original-four-r01/inputs/cat.png",
+      "bytes": 167805,
+      "sha256": "da95c2287d8d7311cd15fb8ed55bfd10f92d3d4fe7c9f22741de43afefdfe1df"
+    },
+    {
+      "path": "assets/title-credits/20261016-original-four-r01/inputs/524.png",
+      "bytes": 40966,
+      "sha256": "d445adaa10510e98db22a41508d739cbe2e8c4919398c0700d50e1169cad58bc"
+    }
+  ],
+  "prompt": {
+    "path": "assets/title-credits/20261016-original-four-r02/prompt.txt",
+    "bytes": 4392,
+    "sha256": "322211a87c46ab00bcff1e40de216b4fcedec716cd8647624205f31aaeee5476"
+  },
+  "generatedSource": {
+    "path": "C:/Users/yurin/.codex/generated_images/01a13e69-cf72-74e3-bb74-5179a55cd9af/exec-ae5c6ed9-6893-42a5-8aab-6ade0b3b300e.png",
+    "bytes": 2572703,
+    "sha256": "a2095eca1c4c4cf961ab5052cbb04eea153dbfca4ddf33b537377414eabc0e2b"
+  },
+  "output": {
+    "path": "assets/title-credits/20261016-original-four-r02/cro-magnon-original-four-524-left.png",
+    "bytes": 2572703,
+    "sha256": "a2095eca1c4c4cf961ab5052cbb04eea153dbfca4ddf33b537377414eabc0e2b"
+  },
+  "size": [
+    1536,
+    1024
+  ],
+  "alpha": {
+    "transparent": 639760,
+    "partialBelow240": 151540,
+    "atLeast240": 781564,
+    "max": 254,
+    "corners": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "encoding": "Original generated PNG copied byte-for-byte; no re-encoding, retouching, resize or additional generation",
+  "activeTitles": [
+    {
+      "path": "public/title/cro-magnon-mmo-transparent.png",
+      "bytes": 2525727,
+      "sha256": "615f8844aac3a00f78885eb5475d0a08aa140443312405228feea0af5a7c002b"
+    },
+    {
+      "path": "public/title/cro-magnon-mmo-transparent.webp",
+      "bytes": 1771796,
+      "sha256": "4e18b0480e684c39b556cdb06d5ab1c1b8d24605c98da1b25f68c747c26d0647"
+    }
+  ],
+  "activeTitleChangedByThisTask": false,
+  "visualChecks": [
+    "524 floats above the seated woman in front of the upper-left sun and mountains, facing left with readable 524",
+    "No 524 at the lower-right edge",
+    "Right adult pair replaced by the shell-headband boy and feather-haired girl, both facing right",
+    "Grey-white cat braced with front paws down and looking right",
+    "Four humans total; central man, seated woman, tiger, mammoth, mountains, sun, birds and dark CRO-MAGNON MMO logo retained in the composition"
+  ],
+  "limitations": "One generative edit; no assertion of pixel-identical preservation outside edited regions. PNG alpha checked numerically; no game adoption or in-game verification for this variant."
+}

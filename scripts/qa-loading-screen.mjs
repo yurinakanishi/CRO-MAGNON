@@ -182,9 +182,13 @@ async function murals(page) {
   const dialog = page.locator('#modal[open] .mural-people-dialog');
   await dialog.waitFor();
   assert.equal(await dialog.locator('h2').innerText(), '壁画の人々');
-  // Each card is the name only: no images, platform marks, character name or @handle.
+  // Each card keeps its name and shows an X mark when it has an X link.
   assert.equal(await dialog.locator('.contributor small').count(), 0);
-  assert.equal(await dialog.locator('.contributor img, .contributor svg').count(), 0);
+  assert.equal(await dialog.locator('.contributor img').count(), 0);
+  assert.equal(
+    await dialog.locator('.contributor svg.contributor-x').count(),
+    await dialog.locator('a.contributor').count(),
+  );
   const text = await dialog.innerText();
   for (const person of muralPeople())
     if (person.profile) assert.ok(!text.includes(`@${person.profile.split('/').pop()}`));

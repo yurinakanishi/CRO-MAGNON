@@ -96,6 +96,19 @@ body.touch-mode .game-viewport {
   width: 20px;
   height: 20px;
 }
+#touch-controls .touch-toolbar [data-touch-action='sound'] {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+#touch-controls [data-sound-icon] {
+  display: flex;
+}
+#touch-controls [data-sound-label] {
+  font-size: 9px;
+  line-height: 1;
+  white-space: nowrap;
+}
 #touch-controls .touch-toolbar [data-unread='true']::after {
   content: '';
   position: absolute;
@@ -1112,9 +1125,6 @@ body.touch-mode[data-screen] {
   width: 44px;
   height: 44px;
 }
-.touch-mode .character-switch .character-choice-grid {
-  --character-card-height: clamp(180px, 35dvh, 260px);
-}
 .touch-mode .setup-heading h2 {
   font-size: 22px;
 }
@@ -1157,27 +1167,27 @@ body.touch-mode[data-screen] {
   letter-spacing: 0.2em;
 }
 .touch-mode .character-choice-grid {
-  --character-card-height: clamp(208px, calc(var(--screen-height, 100dvh) - 440px), 260px);
+  --character-grid-height: clamp(244px, calc(var(--screen-height, 100dvh) - 380px), 410px);
   flex: none;
-  height: var(--character-card-height);
+  height: var(--character-grid-height);
   min-height: 0;
-  grid-template-columns: none;
-  grid-template-rows: minmax(0, 1fr);
-  grid-auto-flow: column;
-  grid-auto-columns: min(44vw, 160px);
-  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: none;
+  grid-auto-flow: row;
+  grid-auto-rows: calc((var(--character-grid-height) - 20px) / 2);
+  grid-auto-columns: auto;
+  gap: 8px;
   padding: 6px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  touch-action: pan-x;
-  overscroll-behavior: contain;
-  scroll-snap-type: x proximity;
+  overflow-x: hidden;
+  overflow-y: auto;
+  touch-action: pan-y;
+  overscroll-behavior-y: contain;
   scroll-padding: 6px;
   scrollbar-width: thin;
 }
 .touch-mode .character-choice {
   display: grid;
-  grid-template-rows: minmax(0, 1fr) 88px;
+  grid-template-rows: minmax(0, 1fr) 58px;
   min-height: 0;
   scroll-snap-align: start;
 }
@@ -1196,16 +1206,7 @@ body.touch-mode[data-screen] {
   padding: 6px;
 }
 .touch-mode .character-name strong {
-  font-size: 14px;
-}
-.touch-mode .character-scroll-hint {
-  display: block;
-  flex-shrink: 0;
-  margin: 6px 0 0;
-  text-align: center;
-  font-size: 11px;
-  line-height: 16px;
-  color: var(--muted);
+  font-size: 12px;
 }
 .touch-mode .setup-actions {
   flex-shrink: 0;
@@ -1282,10 +1283,23 @@ body.touch-mode[data-screen] {
   .touch-mode .setup-identity label > span {
     display: none;
   }
+  .touch-mode .character-choice-grid {
+    --character-grid-height: clamp(208px, calc(var(--screen-height, 100dvh) - 358px), 340px);
+  }
+  .touch-mode .character-choice-controls .dye-swatches {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 4px;
+    touch-action: pan-x;
+    scrollbar-width: thin;
+  }
+  .touch-mode .character-choice-controls .dye-swatch {
+    flex-shrink: 0;
+  }
 }
 @media (orientation: landscape) {
   .touch-mode .setup-card .character-choice-grid {
-    --character-card-height: clamp(128px, calc(var(--screen-height, 100dvh) - 140px), 250px);
+    --character-grid-height: clamp(180px, calc(var(--screen-height, 100dvh) - 120px), 320px);
   }
   .touch-mode #screen-title .title-content,
   .touch-mode #screen-title .title-content:has([data-credits='public']) {
