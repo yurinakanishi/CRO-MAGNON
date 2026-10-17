@@ -1,8 +1,11 @@
 import { setText } from './dom-updates.js';
 import { controllerKind } from './controller-labels.js';
 import { type PadDevice } from './gamepad-input.js';
+import { icon } from './icons.js';
+import { touchIcon } from './touch-input.js';
 import {
   contextCues,
+  desktopCueLayout,
   controllerDiagram,
   controlAction,
   controlLabel,
@@ -11,6 +14,13 @@ import {
   type CueContext,
   type InputCue,
 } from './input-cues.js';
+
+const DESKTOP_SHORTCUTS: InputCue[] = [
+  { action: 'bag', label: 'もちもの', key: 'I', controls: [] },
+  { action: 'mascots', label: '仲間', key: '', controls: [] },
+  { action: 'map', label: '地図', key: 'M', controls: [] },
+  { action: 'menu', label: 'メニュー', key: 'Esc', controls: [] },
+];
 
 /** A small in-world cue, never a modal or a required tutorial step. */
 export class InputCues {
@@ -52,7 +62,7 @@ export class InputCues {
     this.root.dataset.layout = layout;
     this.root.innerHTML = this.pad
       ? `${controllerDiagram(controllerKind())}<span class="input-feedback" aria-hidden="true"></span><div class="input-actions" aria-live="polite"></div>`
-      : '<div class="input-basics"><span class="input-move"><span class="input-keys"><kbd data-key="w">W</kbd><kbd data-key="a">A</kbd><kbd data-key="s">S</kbd><kbd data-key="d">D</kbd></span><span>歩く</span><kbd data-key="shift">Shift</kbd><span>走る</span></span><span class="input-look"><svg viewBox="0 0 24 28" aria-hidden="true"><rect x="4" y="1" width="16" height="24" rx="8"/><path d="M12 1v10 M4 11h16 M9 5l3-2 3 2"/></svg>ドラッグ<span>見渡す</span></span></div><div class="input-actions" aria-live="polite"></div>';
+      : '<div class="input-actions" aria-live="polite"></div><div class="input-skills" aria-label="基本の行動"></div><div class="input-shortcuts" aria-label="メニューと地図"></div><div class="input-basics"><span class="input-move"><span class="input-keys"><kbd data-key="w">W</kbd><kbd data-key="a">A</kbd><kbd data-key="s">S</kbd><kbd data-key="d">D</kbd></span><span>歩く</span><kbd data-key="shift">Shift</kbd><span>走る</span></span><span class="input-look"><svg viewBox="0 0 24 28" aria-hidden="true"><rect x="4" y="1" width="16" height="24" rx="8"/><path d="M12 1v10 M4 11h16 M9 5l3-2 3 2"/></svg>ドラッグ<span>見渡す</span></span></div>';
     this.controls = [...this.root.querySelectorAll<SVGElement>('[data-pad-control]')];
     this.signature = '';
     this.paintSignature = '';
@@ -78,28 +88,77 @@ export class InputCues {
     if (lookLabel) setText(lookLabel, context.viewing ? '回す' : '見渡す');
     const captions = this.root.querySelectorAll('.pad-caption');
     if (captions[1]) setText(captions[1], this.automaticCamera ? '視点は自動' : '見渡す');
-    const cues = contextCues(context, this.pad);
-    const signature = JSON.stringify(cues);
+    const layout = this.pad
+      ? { prompts: contextCues(context, true), skills: [] }
+      : desktopCueLayout(context);
+    const shortcuts = !this.pad && !context.viewing ? DESKTOP_SHORTCUTS : [];
+    const signature = JSON.stringify([layout, shortcuts]);
     if (signature !== this.signature) {
       this.signature = signature;
-      this.cues = cues;
-      const actions = this.root.querySelector('.input-actions')!;
-      actions.replaceChildren();
-      for (const cue of cues) {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = 'input-action';
-        button.dataset.cue = cue.action;
-        const key = document.createElement('kbd');
-        setText(key, this.pad ? cue.controls.map(controlLabel).join(' / ') : cue.key);
-        const label = document.createElement('span');
-        setText(label, cue.label);
-        button.append(key, label);
-        button.onclick = () => this.perform(cue.action);
-        actions.append(button);
+      this.cues = [...layout.prompts, ...layout.skills, ...shortcuts];
+      this.renderActions(this.root.querySelector('.input-actions')!, layout.prompts, false);
+      if (!this.pad) {
+        this.renderActions(this.root.querySelector('.input-skills')!, layout.skills, true);
+        this.renderActions(this.root.querySelector('.input-shortcuts')!, shortcuts, true);
       }
     }
     this.paint();
+  }
+
+  private renderActions(parent: Element, cues: InputCue[], skill: boolean) {
+    const previous = new Map(
+      [...parent.querySelectorAll<HTMLButtonElement>('[data-cue]')].map((button) => [
+        button.dataset.cue,
+        button,
+      ]),
+    );
+    for (const [action, button] of previous)
+      if (!cues.some((cue) => cue.action === action)) button.remove();
+    cues.forEach((cue, index) => {
+      let button = previous.get(cue.action);
+      if (!button) {
+        button = document.createElement('button');
+        button.type = 'button';
+        button.className = skill ? 'input-action input-skill' : 'input-action';
+        button.dataset.cue = cue.action;
+        button.innerHTML = this.pad
+          ? '<kbd></kbd><span class="input-action-label"></span>'
+          : '<span class="input-action-icon" aria-hidden="true"></span><span class="input-action-copy"><span class="input-action-label"></span><small class="input-action-target"></small></span><kbd aria-hidden="true"></kbd>';
+        button.onclick = (event) => {
+          this.perform(cue.action);
+          // A mouse click must not leave Space bound to the last clicked action.
+          // Keyboard activation keeps focus; menus that took focus keep it too.
+          if (event.detail > 0 && document.activeElement === button)
+            this.root.parentElement
+              ?.querySelector<HTMLElement>('#world')
+              ?.focus({ preventScroll: true });
+        };
+      }
+      const key = button.querySelector('kbd')!;
+      setText(key, this.pad ? cue.controls.map(controlLabel).join(' / ') : cue.key);
+      key.hidden = !key.textContent;
+      setText(button.querySelector('.input-action-label')!, cue.label);
+      if (!this.pad) {
+        const glyph =
+          ({ menu: 'more', map: 'compass', mascots: 'paw' } as Partial<Record<CueAction, string>>)[
+            cue.action
+          ] ?? touchIcon(cue.action, cue.label);
+        if (button.dataset.icon !== glyph) {
+          button.dataset.icon = glyph;
+          button.querySelector('.input-action-icon')!.innerHTML = icon(glyph);
+        }
+        const target = button.querySelector<HTMLElement>('.input-action-target')!;
+        setText(target, cue.target ?? '');
+        target.hidden = !cue.target;
+        button.setAttribute('aria-label', cue.target ? `${cue.target}を${cue.label}` : cue.label);
+        if (cue.key)
+          button.setAttribute('aria-keyshortcuts', cue.key === 'Esc' ? 'Escape' : cue.key);
+        else button.removeAttribute('aria-keyshortcuts');
+      }
+      // Preserve the actual button during HUD changes, including a held mouse/Enter press.
+      if (parent.children[index] !== button)
+        parent.insertBefore(button, parent.children[index] ?? null);
+    });
   }
 
   frame(pad: PadDevice | null, playing: boolean) {

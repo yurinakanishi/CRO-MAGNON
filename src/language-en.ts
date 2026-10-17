@@ -250,6 +250,9 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   調べる: 'Inspect',
   採集: 'Gather',
   撫でる: 'Pet',
+  近くで見る: 'Look closely',
+  基本の行動: 'Basic actions',
+  メニューと地図: 'Menus and map',
   なでています: 'Petting',
   横なで: 'Stroke',
   呼び戻す: 'Call back',
@@ -470,6 +473,7 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   '{item}を連れて行く': 'Bring {item} along',
   '{item}を連れていくのをやめる': 'Stop bringing {item}',
   '{item}を撫でる': 'Pet {item}',
+  '{item}を近くで見る': 'Look closely at {item}',
 
   // Map and locations.
   世界地図: 'World map',

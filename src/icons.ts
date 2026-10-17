@@ -68,5 +68,5 @@ const icons = {
   tentacle:
     '<path d="M8 21c-2.5-3-2-7 1.5-9 3-1.7 5.5-1.4 6.5-4 .8-2-.8-3.8-2.7-3.4-1.6.3-2.2 2.2-1 3"/><path d="M12.5 21c-.5-2.4.6-4.3 3.2-5 2-.6 3.3.4 3.3 1.8"/>',
 };
-export const icon = (name, cls = '') =>
-  `<svg class="icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[name] || icons.leaf}</svg>`;
+export const icon = (name: string, cls = '') =>
+  `<svg class="icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${(icons as Record<string, string>)[name] || icons.leaf}</svg>`;

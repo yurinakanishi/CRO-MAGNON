@@ -332,7 +332,6 @@ const mascotTarget = new MascotTarget($('.game-viewport'), {
       viewTargetedCompanion();
     }
   },
-  perform: performCue,
 });
 function targetedCompanionId() {
   return mascotBodies(state).find(
@@ -1755,16 +1754,8 @@ function updateHuntingHUD() {
     document.hasFocus() &&
     !motionControls?.ownsInput &&
     !document.activeElement?.closest('input,textarea,select,[contenteditable]');
-  const visibleCues = mascotTarget.expanded
-    ? { ...cueContext, pet: undefined, inspect: undefined }
-    : cueContext;
-  inputCues?.update(visibleCues, playVisible && !touchMode());
-  mascotTarget.update(
-    playVisible && solo,
-    !!petChoice,
-    !!cueContext.inspect && !assistedControls(),
-    renderer.viewingCompanion,
-  );
+  inputCues?.update(cueContext, playVisible && !touchMode());
+  mascotTarget.update(playVisible && solo);
   const combat = attackProfile(me ?? profile);
   const cooldownLeft =
     me?.attackSequence > 0 ? Math.max(0, combat.cooldownMs - (serverNow - me.attackAt)) : 0;
@@ -1797,7 +1788,7 @@ function updateHuntingHUD() {
     downed
       ? { automaticCamera: assistedControls(), weapon: combat.key }
       : {
-          ...visibleCues,
+          ...cueContext,
           attack: attackAvailable,
           // The fire's own interaction already cooks when it is the nearest thing to do.
           cook: canCook && closeAction?.action !== 'cook' ? '肉を焼く' : undefined,

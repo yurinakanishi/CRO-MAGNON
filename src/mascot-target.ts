@@ -19,7 +19,6 @@ export class MascotTarget {
       keys(): readonly string[];
       changed(): void;
       opened(): void;
-      perform(action: 'pet' | 'inspect' | 'endInspect'): void;
     },
   ) {
     this.root = document.createElement('section');
@@ -27,7 +26,7 @@ export class MascotTarget {
     this.root.hidden = true;
     this.root.setAttribute('aria-label', '仲間のターゲット');
     this.root.innerHTML = `<button type="button" class="mascot-target-toggle" aria-label="仲間を選ぶ" aria-expanded="false" aria-controls="mascot-target-panel"></button>
-      <div id="mascot-target-panel" hidden><div class="mascot-target-row"><button type="button" data-mascot-step="-1" aria-label="前の仲間">‹</button><div class="mascot-target-strip" aria-label="見る・撫でる仲間"></div><button type="button" data-mascot-step="1" aria-label="次の仲間">›</button></div><div class="mascot-target-actions"><button type="button" data-mascot-command="inspect">見る</button><button type="button" data-mascot-command="pet">撫でる</button></div></div>`;
+      <div id="mascot-target-panel" hidden><div class="mascot-target-row"><button type="button" data-mascot-step="-1" aria-label="前の仲間">‹</button><div class="mascot-target-strip" aria-label="対象の仲間"></div><button type="button" data-mascot-step="1" aria-label="次の仲間">›</button></div></div>`;
     parent.append(this.root);
     this.strip = this.root.querySelector('.mascot-target-strip')!;
     this.toggle = this.root.querySelector('.mascot-target-toggle')!;
@@ -66,10 +65,14 @@ export class MascotTarget {
         this.scrolling = false;
       }, 140);
     });
-    this.root.querySelectorAll<HTMLButtonElement>('[data-mascot-command]').forEach((button) => {
-      button.onclick = () =>
-        this.hooks.perform(button.dataset.mascotCommand as 'pet' | 'inspect' | 'endInspect');
-    });
+    // Closing the picker must not consume the same tap on a normal action button.
+    document.addEventListener(
+      'pointerdown',
+      (event) => {
+        if (this.open && !this.root.contains(event.target as Node)) this.setOpen(false);
+      },
+      true,
+    );
     this.root.addEventListener('keydown', (event) => {
       if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
         event.preventDefault();
@@ -89,14 +92,14 @@ export class MascotTarget {
     return keys.includes(this.selected) ? this.selected : keys[0];
   }
 
-  get expanded() {
-    return this.open && !!this.key;
-  }
-
   private setOpen(open: boolean) {
     this.open = open;
     this.panel.hidden = !open;
     this.toggle.setAttribute('aria-expanded', String(open));
+    if (!open) {
+      this.scrolling = false;
+      clearTimeout(this.scrollTimer);
+    }
     this.signature = '';
     this.refresh();
     if (open) {
@@ -156,19 +159,9 @@ export class MascotTarget {
     this.root.dataset.targetKey = key ?? '';
   }
 
-  update(visible: boolean, pet: boolean, inspect: boolean, viewing: boolean) {
+  update(visible: boolean) {
     this.refresh();
     setFlag(this.root, 'hidden', !visible || !this.key);
-    const petButton = this.root.querySelector<HTMLButtonElement>('[data-mascot-command="pet"]')!;
-    const viewButton = this.root.querySelector<HTMLButtonElement>(
-      '[data-mascot-command="inspect"], [data-mascot-command="endInspect"]',
-    )!;
-    setFlag(petButton, 'disabled', !pet);
-    setFlag(viewButton, 'disabled', !inspect && !viewing);
-    const command = viewing ? 'endInspect' : 'inspect';
-    if (viewButton.dataset.mascotCommand !== command) {
-      viewButton.dataset.mascotCommand = command;
-      viewButton.textContent = viewing ? '戻る' : '見る';
-    }
+    if (this.root.hidden && this.open) this.setOpen(false);
   }
 }

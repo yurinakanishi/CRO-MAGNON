@@ -1,7 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { contextCues, pressedControls, controllerDiagram } from '../dist/src/input-cues.js';
+import {
+  contextCues,
+  desktopCueLayout,
+  pressedControls,
+  controllerDiagram,
+} from '../dist/src/input-cues.js';
 import {
   detectControllerLayout,
   setControllerLayout,
@@ -96,6 +101,56 @@ test('a thrown companion keeps its recall visible among the three contextual act
     assert.equal(cues.length, 3);
     assert.deepEqual(cues.find((c) => c.action === 'recall').controls, ['b12']);
   }
+});
+
+test('desktop abilities cannot displace petting, closeup or a reachable world action', () => {
+  const layout = desktopCueLayout({
+    pet: 'りもねこを撫でる',
+    inspect: 'りもねこ',
+    interaction: '木材を採集する',
+    recall: true,
+    throw: true,
+    attack: true,
+    jump: true,
+    board: '船に乗る',
+    needsFood: true,
+  });
+  assert.equal(layout.prompts.length, 3);
+  assert.deepEqual(
+    layout.prompts.map((cue) => cue.action),
+    ['pet', 'interact', 'inspect'],
+  );
+  assert.equal(layout.prompts.find((cue) => cue.action === 'pet').target, 'りもねこ');
+  assert.equal(layout.prompts.find((cue) => cue.action === 'inspect').label, '近くで見る');
+  assert.deepEqual(
+    layout.skills.map((cue) => cue.action),
+    ['attack', 'jump', 'throw', 'recall'],
+  );
+  assert.equal(
+    desktopCueLayout({ needsFood: true }).prompts.length,
+    0,
+    'inventory has a permanent shortcut',
+  );
+});
+
+test('desktop closeup hides other actions and busy work has a click-only cancel', () => {
+  const viewing = desktopCueLayout({ viewing: true, busy: true, jump: true, pet: '撫でる' });
+  assert.deepEqual(
+    viewing.prompts.map((cue) => cue.action),
+    ['endInspect'],
+  );
+  assert.deepEqual(viewing.skills, []);
+  const busy = desktopCueLayout({ busy: true, jump: true, throw: true, inspect: '524' });
+  assert.deepEqual(
+    busy.prompts.map((cue) => [cue.action, cue.key]),
+    [['cancel', '']],
+  );
+  assert.deepEqual(busy.skills, []);
+  const assisted = desktopCueLayout({ automaticCamera: true, inspect: '524', pet: '524を撫でる' });
+  assert.deepEqual(
+    assisted.prompts.map((cue) => cue.action),
+    ['pet'],
+  );
 });
 
 test('device detection is client-local and exhibition configuration can override it', () => {

@@ -13,6 +13,9 @@ export type CueAction =
   | 'cancel'
   | 'torch'
   | 'bag'
+  | 'menu'
+  | 'map'
+  | 'mascots'
   | 'inspect'
   | 'zoomIn'
   | 'zoomOut'
@@ -20,6 +23,7 @@ export type CueAction =
 export interface InputCue {
   action: CueAction;
   label: string;
+  target?: string;
   key: string;
   controls: readonly string[];
 }
@@ -41,7 +45,7 @@ export interface CueContext {
 }
 
 /** Priority follows the real handlers: the bottom button pets before boarding/riding. */
-export function contextCues(context: CueContext, pad: boolean): InputCue[] {
+function availableCues(context: CueContext, pad: boolean): InputCue[] {
   const cues: InputCue[] = [];
   const add = (action: CueAction, label: string, key: string, ...controls: string[]) =>
     cues.push({ action, label, key, controls });
@@ -68,8 +72,39 @@ export function contextCues(context: CueContext, pad: boolean): InputCue[] {
   if (context.throw) add('throw', '投げる', 'C', 'b10');
   if (context.needsFood) add('bag', 'もちもの', 'I', 'b14');
   if (context.torch && !pad) add('torch', context.torch, 'L');
-  if (context.jump && cues.length < 3) add('jump', 'ジャンプ', 'Space', 'b3');
-  return cues.slice(0, 3);
+  if (context.jump) add('jump', 'ジャンプ', 'Space', 'b3');
+  return cues;
+}
+
+export function contextCues(context: CueContext, pad: boolean): InputCue[] {
+  return availableCues(context, pad).slice(0, 3);
+}
+
+/** Like touch, common abilities have their own row so they cannot hide a nearby action. */
+export function desktopCueLayout(context: CueContext): {
+  prompts: InputCue[];
+  skills: InputCue[];
+} {
+  const cues = availableCues(context, false);
+  // Busy keyboard players can click to stop even though there is no cancel shortcut.
+  if (context.busy && !(context.viewing && !context.automaticCamera))
+    cues.push({ action: 'cancel', label: 'やめる', key: '', controls: [] });
+  const skills: readonly CueAction[] = ['attack', 'jump', 'throw', 'recall', 'torch'];
+  return {
+    prompts: cues
+      .filter((cue) => !skills.includes(cue.action) && cue.action !== 'bag')
+      .slice(0, 3)
+      .map((cue) => {
+        if (cue.action === 'inspect')
+          return { ...cue, label: '近くで見る', target: context.inspect };
+        if (cue.action === 'pet' && cue.label.endsWith('を撫でる'))
+          return { ...cue, label: '撫でる', target: cue.label.slice(0, -4) };
+        return cue;
+      }),
+    skills: cues
+      .filter((cue) => skills.includes(cue.action))
+      .sort((a, b) => skills.indexOf(a.action) - skills.indexOf(b.action)),
+  };
 }
 
 export function pressedControls(pad: PadDevice | null): Set<string> {
