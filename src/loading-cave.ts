@@ -126,7 +126,7 @@ export class LoadingCave {
       <div class="loading-cave-wait" role="status">洞窟を準備しています…</div>
       <div class="loading-cave-stick" aria-label="ドラッグして移動"><i></i><span>移動</span></div>
       <button class="button button-outline loading-cave-torch" data-cave-torch aria-pressed="true">松明を消す</button>
-      <footer class="loading-cave-footer"><p class="loading-cave-help">WASDで移動 · ドラッグで見回す · Shiftで走る</p><button class="button button-accent loading-cave-proceed" data-cave-proceed disabled aria-busy="true"><i class="loading-cave-spinner" aria-hidden="true"></i><span>世界へ進む</span></button></footer>`;
+      <footer class="loading-cave-footer"><p class="loading-cave-help">WASDで移動 · ドラッグで見回す · Shiftで走る</p><button class="button button-accent loading-cave-proceed" data-cave-proceed disabled aria-busy="true"><i class="loading-cave-spinner" aria-hidden="true"></i><span>ゲームを始める</span></button></footer>`;
     this.proceed = this.overlay.querySelector('[data-cave-proceed]')!;
     this.world.canvas.parentElement!.append(this.overlay);
     document.body.classList.add('loading-cave-active');

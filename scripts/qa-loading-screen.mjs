@@ -473,7 +473,7 @@ try {
   assert.equal(await proceed.getAttribute('aria-busy'), 'false');
   assert.equal(await proceed.isEnabled(), true);
   assert.equal(await page.locator('.loading-cave-spinner').isVisible(), false);
-  assert.equal(await proceed.innerText(), '世界へ進む');
+  assert.equal(await proceed.innerText(), 'ゲームを始める');
   assert.doesNotMatch(
     await page.locator('.loading-cave-footer').innerText(),
     /世界を|準備ができ|読み込み中|入っています|%/,

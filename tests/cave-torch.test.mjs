@@ -60,6 +60,11 @@ test('cave entry equips a personal torch; switching it never changes someone els
     'far wall is only a small fraction of the close light',
   );
   assert.equal(attenuation(5), 0);
+  for (const distance of [0.01, 0.05, 0.1, 0.25, 0.5])
+    assert.ok(
+      attenuation(distance) <= attenuation(1) * 1.02,
+      'moving a face close to the flame must not amplify its light into a hotspot',
+    );
 });
 
 test('all nine delivered rigs hold the torch while walking and restore every bone without moving the feet', async () => {

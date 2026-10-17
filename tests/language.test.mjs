@@ -24,6 +24,7 @@ const en = (text) => translateText(text, 'en');
 test('new loading screens, tips and renamed warp places also support English', () => {
   for (const text of [
     '読み込み中',
+    'ゲームを始める',
     '読み込みの進み具合',
     '招待',
     '参加者',

@@ -5,18 +5,21 @@ import { CAMP_CAVE_SURFACE_DATA } from './camp-cave-surface-data.mjs';
 // Shared by the waiting gallery and the live world, including fog and stone shading.
 export const CAVE_LIGHT = Object.freeze({
   sky: '#c0ccd2',
-  ground: '#69675c',
+  ground: '#b8b6aa',
   sun: '#e4e9df',
   sunDirection: [-45, 47, -32] as const,
   background: '#1b2328',
-  // A small lift to the diffuse fill keeps faces readable without a stronger torch hotspot.
-  hemisphere: 1.4,
+  // Soft, neutral bounce reaches faces and the underside of brows even with the torch off.
+  hemisphere: 3,
   directional: 0.22,
-  stoneDaylight: 0.5,
+  // Keep the chamber dim while giving characters enough diffuse fill.
+  stoneDaylight: 0.18,
   fogNear: 12,
   fogFar: 55,
 });
-export const CAVE_TORCH = Object.freeze({ distance: 5, intensity: 12, decay: 2 });
+// A bounded warm accent: inverse-square falloff burned out skin/hair close to the flame,
+// especially on small characters. The distance cutoff still fades it smoothly to zero.
+export const CAVE_TORCH = Object.freeze({ distance: 4, intensity: 2.5, decay: 0 });
 
 /** Measured roof/floor exclude the open apron and the mountain above the cave. */
 export function caveInteriorWeight(p: { x: number; z: number; y?: number }) {

@@ -86,7 +86,7 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   アプデの洞窟: 'Update Cave',
   '洞窟を準備しています…': 'Preparing the cave…',
   洞窟を準備しています: 'Preparing the cave',
-  世界へ進む: 'Enter the world',
+  ゲームを始める: 'Start game',
   '読み込み中 {percent}%': 'Loading {percent}%',
   壁画の人々: 'People in the murals',
   'WASDで移動 · ドラッグで見回す · Shiftで走る': 'WASD to move · Drag to look · Shift to run',
