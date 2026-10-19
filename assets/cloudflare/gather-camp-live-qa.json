@@ -1,0 +1,77 @@
+{
+  "results": [
+    {
+      "name": "desktop-wood",
+      "icon": {
+        "src": "/favicon.svg?v=20261016",
+        "loaded": true,
+        "x": 20,
+        "w": 44
+      },
+      "hint": "E木材を採集する",
+      "errors": [],
+      "forbidden": []
+    },
+    {
+      "name": "desktop-stone",
+      "icon": {
+        "src": "/favicon.svg?v=20261016",
+        "loaded": true,
+        "x": 20,
+        "w": 44
+      },
+      "hint": "E石を採集する",
+      "errors": [],
+      "forbidden": []
+    },
+    {
+      "name": "desktop-camp",
+      "icon": {
+        "src": "/favicon.svg?v=20261016",
+        "loaded": true,
+        "x": 20,
+        "w": 44
+      },
+      "campDeliveryShown": false,
+      "errors": [],
+      "forbidden": []
+    },
+    {
+      "name": "phone-wood",
+      "icon": {
+        "src": "/favicon.svg?v=20261016",
+        "loaded": true,
+        "x": 20,
+        "w": 44
+      },
+      "hint": "E木材を採集する",
+      "errors": [],
+      "forbidden": []
+    },
+    {
+      "name": "phone-stone",
+      "icon": {
+        "src": "/favicon.svg?v=20261016",
+        "loaded": true,
+        "x": 20,
+        "w": 44
+      },
+      "hint": "E石を採集する",
+      "errors": [],
+      "forbidden": []
+    },
+    {
+      "name": "phone-camp",
+      "icon": {
+        "src": "/favicon.svg?v=20261016",
+        "loaded": true,
+        "x": 20,
+        "w": 44
+      },
+      "campDeliveryShown": false,
+      "errors": [],
+      "forbidden": []
+    }
+  ],
+  "failure": null
+}
