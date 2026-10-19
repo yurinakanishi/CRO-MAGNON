@@ -6,7 +6,7 @@ import vm from 'node:vm';
 
 const repo = new URL('../', import.meta.url);
 const { createGameCore } = await import(new URL('dist/application/game-core.mjs', repo));
-const { GATHER_RANGE, interactionVisible } = await import(
+const { GATHER_RANGE, gatherDistance, interactionVisible } = await import(
   new URL('dist/shared/interactions.mjs', repo)
 );
 const { StableAssistTarget } = await import(new URL('dist/src/assisted-controls.js', repo));
@@ -14,6 +14,7 @@ const { contextCues } = await import(new URL('dist/src/input-cues.js', repo));
 const { touchActions } = await import(new URL('dist/src/touch-input.js', repo));
 const { interactionTarget } = await import(new URL('dist/src/interaction-target.js', repo));
 const { WorldRenderer } = await import(new URL('dist/src/world3d.js', repo));
+const { CollisionWorld } = await import(new URL('dist/shared/collision.mjs', repo));
 const main = await readFile(new URL('dist/src/main.js', repo), 'utf8');
 const nearbySource = main.slice(
   main.indexOf('function nearby()'),
@@ -70,7 +71,6 @@ function fixture(kind, pet, assisting = false) {
       serverNow: () => now,
       setAssistMarker() {},
     },
-    campContribution: () => null,
     coastalInteraction: () => null,
     fishingInteraction: () => null,
     huntInteraction: () => null,
@@ -79,6 +79,7 @@ function fixture(kind, pet, assisting = false) {
     residentInteraction: () => null,
     gulfInteraction: () => null,
     GATHER_RANGE,
+    gatherDistance,
     interactionVisible,
     interactionTarget,
     distance: (a, b) => Math.hypot(a.x - b.x, a.z - b.z),
@@ -150,10 +151,68 @@ test('a loaded berry bush stays a gathering target independently of the last dra
   f.core.close();
 });
 
+for (const kind of ['wood', 'stone'])
+  test(`${kind} can be gathered from all unobstructed sides of real piles, including beyond 1m from their centres`, () => {
+    const f = fixture(kind, null);
+    let checked = 0,
+      formerlyUnreachable = 0;
+    try {
+      for (const resource of f.room.resources.filter((r) => r.type === kind).slice(0, 3)) {
+        f.context.state.resources = [resource];
+        for (let i = 0; i < 16; i++) {
+          const angle = (i * Math.PI) / 8;
+          // Find the first body-clear position along this side of the actual collision box.
+          let point;
+          for (let distance = 0; distance < 2; distance += 0.01) {
+            const p = {
+              x: resource.x + Math.sin(angle) * distance,
+              z: resource.z + Math.cos(angle) * distance,
+            };
+            if (
+              f.room.collision.free(p, f.player.radius) &&
+              interactionVisible(f.room.collision, p, resource)
+            ) {
+              point = p;
+              break;
+            }
+          }
+          if (!point) continue; // Another real obstacle blocks this approach.
+          for (const assisting of [false, true]) {
+            f.context.assistedControls = () => assisting;
+            resource.amount = resource.maxAmount;
+            f.player.inventory[kind] = 0;
+            Object.assign(f.player, point);
+            const hint = f.hint();
+            assert.equal(
+              hint?.targetId,
+              resource.id,
+              `${resource.id}, side ${i}, assisted=${assisting}`,
+            );
+            assert.equal(hint.action, 'gather');
+            assert.ok(
+              touchActions({ interaction: hint.label }).some((a) => a.action === 'interact'),
+            );
+            f.socket.command({ type: 'action', action: hint.action, targetId: hint.targetId });
+            assert.equal(f.player.inventory[kind], 1);
+            assert.equal(resource.amount, resource.maxAmount - 1);
+            f.advance();
+          }
+          checked++;
+          if (Math.hypot(point.x - resource.x, point.z - resource.z) > GATHER_RANGE)
+            formerlyUnreachable++;
+        }
+      }
+      assert.equal(checked, 48);
+      assert.ok(formerlyUnreachable > 0, 'covers the old centre-distance bug');
+    } finally {
+      f.core.close();
+    }
+  });
+
 test('gathering still hides outside range, behind obstacles, when depleted, full or unloaded', () => {
   for (const blocked of ['range', 'wall', 'empty', 'full', 'unloaded', 'downed', 'mounted']) {
     const f = fixture('stone', { action: 'petMascot', label: '撫でる', targetId: 'white@p1#1' });
-    if (blocked === 'range') f.player.z = f.resource.z + GATHER_RANGE + 0.01;
+    if (blocked === 'range') f.player.z = f.resource.z + GATHER_RANGE + 3;
     if (blocked === 'wall') f.context.renderer.collision = { segmentFree: () => false };
     if (blocked === 'empty') f.resource.amount = 0;
     if (blocked === 'full') f.player.inventory.stone = 99;
@@ -162,6 +221,32 @@ test('gathering still hides outside range, behind obstacles, when depleted, full
     if (blocked === 'mounted') f.player.mountId = 'mammoth';
     assert.equal(f.hint() ?? null, null, blocked);
     f.core.close();
+  }
+});
+
+test('the outside edge has the same strict one-metre limit for the hint and authoritative collection', () => {
+  for (const kind of ['wood', 'stone']) {
+    const f = fixture(kind, null);
+    try {
+      const obstacle = f.room.collision.obstacles.find((o) => o.resourceId === f.resource.id);
+      f.context.renderer.collision = f.room.collision = new CollisionWorld([obstacle]);
+      for (const [gap, accepted] of [
+        [GATHER_RANGE - 0.001, true],
+        [GATHER_RANGE + 0.001, false],
+      ]) {
+        Object.assign(f.player, {
+          x: obstacle.x + obstacle.c * (obstacle.hx + gap),
+          z: obstacle.z - obstacle.s * (obstacle.hx + gap),
+        });
+        assert.equal(f.hint()?.action === 'gather', accepted);
+        const before = f.player.inventory[kind];
+        f.socket.command({ type: 'action', action: 'gather', targetId: f.resource.id, range: 99 });
+        assert.equal(f.player.inventory[kind], before + Number(accepted));
+        f.advance();
+      }
+    } finally {
+      f.core.close();
+    }
   }
 });
 

@@ -212,6 +212,7 @@ export class CollisionWorld {
     placement: any;
   }[];
   declare grid: Map<string, Obstacle[]>;
+  private resourceObstacles = new Map<string, Obstacle>();
 
   // The shallow river is fordable, including by mounted mammoths.
   // Clients and the authoritative server must use the same default.
@@ -231,6 +232,7 @@ export class CollisionWorld {
     this.walkSurfaces = walkSurfaces;
     this.grid = new Map();
     for (const o of obstacles) {
+      if (o.resourceId) this.resourceObstacles.set(o.resourceId, o);
       const rx = o.radius ?? Math.abs(o.c) * o.hx + Math.abs(o.s) * o.hz,
         rz = o.radius ?? Math.abs(o.s) * o.hx + Math.abs(o.c) * o.hz;
       for (let x = Math.floor((o.x - rx) / CELL); x <= Math.floor((o.x + rx) / CELL); x++)
@@ -240,6 +242,18 @@ export class CollisionWorld {
           this.grid.get(key).push(o);
         }
     }
+  }
+  /** Distance to the solid resource's footprint, including its rotation and pile size. */
+  resourceDistance(point: Point, id: string): number | undefined {
+    const obstacle = this.resourceObstacles.get(id);
+    if (!obstacle || !this.active(obstacle)) return undefined;
+    const dx = point.x - obstacle.x,
+      dz = point.z - obstacle.z;
+    if (obstacle.type === 'circle') return Math.max(0, Math.hypot(dx, dz) - obstacle.radius);
+    return Math.hypot(
+      Math.max(0, Math.abs(obstacle.c * dx - obstacle.s * dz) - obstacle.hx),
+      Math.max(0, Math.abs(obstacle.s * dx + obstacle.c * dz) - obstacle.hz),
+    );
   }
   nearby(point, radius) {
     const found = new Set<Obstacle>();

@@ -79,6 +79,14 @@
 .title-welcome {
   width: min(280px, 100%);
 }
+.title-icon {
+  position: absolute;
+  top: max(16px, env(safe-area-inset-top));
+  left: max(20px, env(safe-area-inset-left));
+  width: 44px;
+  height: 44px;
+  pointer-events: none;
+}
 .title-fullscreen {
   position: absolute;
   top: 16px;

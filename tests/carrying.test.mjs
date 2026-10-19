@@ -167,16 +167,7 @@ test('unavailable world actions return quiet notices without changing inventory 
   f.room.resources = [];
   f.a.x = f.a.z = -100;
   const inventory = structuredClone(f.a.inventory);
-  for (const action of [
-    'gather',
-    'ride',
-    'boardBoat',
-    'harvest',
-    'cook',
-    'contribute',
-    'trade',
-    'carry',
-  ]) {
+  for (const action of ['gather', 'ride', 'boardBoat', 'harvest', 'cook', 'trade', 'carry']) {
     const start = f.peers[0].socket.messages.length;
     f.action(0, action, 'missing');
     const notices = f.peers[0].socket.messages.slice(start).filter((m) => m.type === 'notice');

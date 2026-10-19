@@ -1,8 +1,13 @@
-// Resources must be within this many metres of the player to be gathered
-// (server check and client hint alike).
+// Solid resources use their outside edge; passable plants use their centre.
+// The server check and every client input use the same one-metre reach.
 export const GATHER_RANGE = 1;
 
-export const CAMP_CONTRIBUTION_RANGE = 3.5;
+export function gatherDistance(collision, player, resource): number {
+  return (
+    collision?.resourceDistance?.(player, resource.id) ??
+    Math.hypot(player.x - resource.x, player.z - resource.z)
+  );
+}
 
 // Ignore only the destination's own solid model. Interactions still require a
 // clear path through every intervening tree, rock, building and landmark.

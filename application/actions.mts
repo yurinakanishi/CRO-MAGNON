@@ -9,12 +9,7 @@ import { equippedItem } from '../shared/equipment.mjs';
 import { equipItem } from '../shared/equipment-actions.mjs';
 import { attackProfile, shoulderMagic } from '../shared/combat-profiles.mjs';
 import { handleHuntingAction } from '../shared/hunting.mjs';
-import {
-  CAMP_CONTRIBUTION_RANGE,
-  GATHER_RANGE,
-  interactionVisible,
-} from '../shared/interactions.mjs';
-import { campContribution } from '../shared/camp-contribution.mjs';
+import { GATHER_RANGE, gatherDistance, interactionVisible } from '../shared/interactions.mjs';
 import { handleRidingAction } from '../shared/riding.mjs';
 import { NPC } from '../shared/world.mjs';
 import { roomRules } from '../shared/room-rules.mjs';
@@ -53,6 +48,8 @@ export function createActionHandler({
     sendNotice(player, text, tone, false);
   return function act(room, player, message, now) {
     const action = message.action;
+    // Retired commands from an older client must not consume items or emit a notice.
+    if (action === 'contribute') return;
     if (action === 'equipItem') {
       const result = equipItem(player, message.targetId, now);
       if (result.ok) broadcast(room, snapshot(room, true));
@@ -238,17 +235,20 @@ export function createActionHandler({
         (resource) =>
           resource.amount > 0 &&
           (!message.targetId || resource.id === message.targetId) &&
-          distance(resource, player) <= GATHER_RANGE &&
+          gatherDistance(room.collision, player, resource) <= GATHER_RANGE &&
           interactionVisible(room.collision, player, resource),
       );
       const nearest = candidates
         .filter((resource) => player.inventory[resource.type] < 99)
-        .sort((a, b) => distance(a, player) - distance(b, player))[0];
+        .sort(
+          (a, b) =>
+            gatherDistance(room.collision, player, a) - gatherDistance(room.collision, player, b),
+        )[0];
       if (!nearest)
         return notice(
           player,
           candidates.length
-            ? '持ち物がいっぱいです。焚き火に届けよう。'
+            ? '持ち物がいっぱいです。'
             : '資源に近づいてから採集しよう。遮られている場合は回り込もう。',
           'error',
         );
@@ -257,7 +257,7 @@ export function createActionHandler({
         equippedItem(player) === 'axe' && nearest.type !== 'berry' ? 2 : 1,
       );
       if (player.inventory[nearest.type] >= 99)
-        return notice(player, '持ち物がいっぱいです。焚き火に届けよう。', 'error');
+        return notice(player, '持ち物がいっぱいです。', 'error');
       const collected = Math.min(amount, 99 - player.inventory[nearest.type]);
       nearest.amount -= collected;
       nearest.regeneratedAt = runtime.now();
@@ -270,30 +270,6 @@ export function createActionHandler({
         nearest.type
       ];
       notice(player, `${label} +${collected}`, 'success');
-    } else if (action === 'contribute') {
-      if (distance(player, room.camp) > CAMP_CONTRIBUTION_RANGE)
-        return notice(player, '焚き火に近づいてから届けよう。', 'error');
-      if (!interactionVisible(room.collision, player, room.camp))
-        return notice(player, '焚き火までの間がふさがれています。回り込もう。', 'error');
-      const contribution = campContribution(room.camp, player, now);
-      if (!contribution)
-        return notice(player, 'いま、この焚き火へ届けられる資材はありません。', 'error');
-      const { wood, stone } = contribution;
-      room.camp.wood += wood;
-      room.camp.stone += stone;
-      player.inventory.wood -= wood;
-      player.inventory.stone -= stone;
-      notice(player, `焚き火に木材 ${wood}・石 ${stone} を届けた。`, 'success');
-      systemChat(room, `${player.name} が木材 ${wood}・石 ${stone} を届けた。`);
-      if (
-        !room.camp.level &&
-        room.camp.wood >= room.camp.goalWood &&
-        room.camp.stone >= room.camp.goalStone
-      ) {
-        room.camp.level = 1;
-        for (const member of room.players.values()) member.ready = true;
-        systemChat(room, '焚き火が完成！ みんなの力で、最初の夜を迎える準備ができた。');
-      }
     } else if (action === 'craft') {
       if (player.tool) return notice(player, 'すでに石斧を持っています。');
       if (player.inventory.wood < 3 || player.inventory.stone < 2)

@@ -156,7 +156,8 @@ test('the shell renders exactly the title and dialog the game renders without it
   assert.equal(GAME_TITLE, 'CRO-MAGNON MMO');
   assert.equal(titleArtPath, '/title/cro-magnon-mmo-transparent.webp');
   assert.equal(title.match(/\/title\/cro-magnon-mmo-transparent\.webp/g).length, 2);
-  assert.equal(title.match(/<img /g).length, 1, 'one title artwork element');
+  assert.equal(title.match(/<img /g).length, 2, 'title artwork and corner favicon');
+  assert.match(title, /class="title-icon" src="\/favicon\.svg\?v=20261016"/);
   assert.match(
     title,
     /^<section id="screen-title" class="screen title-screen" data-variant="classic" hidden>/,

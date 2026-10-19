@@ -80,6 +80,9 @@ else if (!checkOnly) {
     'cave-preview-label.js.map',
   ])
     await rm(path.join(root, 'dist/src', file), { force: true });
+  // Camp deliveries are retired; never keep their old module in incremental builds.
+  for (const file of ['camp-contribution.mjs', 'camp-contribution.mjs.map'])
+    await rm(path.join(root, 'dist/shared', file), { force: true });
   // Module workers do not inherit the document's import map. Publish the exact
   // same fitter and Three utility with explicit relative URLs, no second algorithm.
   const workerModules = [

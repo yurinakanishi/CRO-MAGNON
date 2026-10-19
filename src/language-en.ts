@@ -285,7 +285,6 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   '{item}を見る': 'Look at {item}',
   '{item}を採集する': 'Gather {item}',
   黒曜石を採掘する: 'Mine obsidian',
-  焚き火に資材を届ける: 'Bring supplies to the campfire',
   オルと物々交換する: 'Trade with Or',
   近づいてE: 'Approach and press E',
   '近づいて E': 'Approach and press E',
@@ -603,12 +602,6 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   '{name} が谷をあとにした。': '{name} left the valley.',
   '{name} が手を振った。': '{name} waved.',
   '{item} +{count}': '{item} +{count}',
-  '{name} が木材 {count}・石 {count2} を届けた。':
-    '{name} delivered {count} wood and {count2} stone.',
-  '焚き火に木材 {count}・石 {count2} を届けた。':
-    'Delivered {count} wood and {count2} stone to the campfire.',
-  '焚き火が完成！ みんなの力で、最初の夜を迎える準備ができた。':
-    'The campfire is complete! Together, you are ready for the first night.',
   'この部屋は現在の上限{count}人に達しました。別の部屋の名前で参加してください。':
     'This room is full ({count} players). Join using a different room name.',
   '安全な参加地点がありません。': 'No safe starting location is available.',
@@ -625,15 +618,8 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
     'Dismount before attacking, gathering or eating.',
   '調理中です。先に調理を終えるか中止しよう。': 'Finish or cancel cooking first.',
   '攻撃が終わってから行おう。': 'Finish your attack first.',
-  '持ち物がいっぱいです。焚き火に届けよう。':
-    'Your inventory is full. Bring supplies to the campfire.',
   '資源に近づいてから採集しよう。遮られている場合は回り込もう。':
     'Move closer to gather. Go around any obstacles.',
-  '焚き火に近づいてから届けよう。': 'Move closer to the campfire to deliver supplies.',
-  '焚き火までの間がふさがれています。回り込もう。':
-    'The path to the campfire is blocked. Go around.',
-  'いま、この焚き火へ届けられる資材はありません。':
-    'You have no supplies to deliver to this campfire.',
   'すでに石斧を持っています。': 'You already have a stone axe.',
   '石斧には木材 3・石 2 が必要です。': 'A stone axe requires 3 wood and 2 stone.',
   '石斧を持ち物に追加しました。装備すると木材と石を一度に2つ採集できます。':

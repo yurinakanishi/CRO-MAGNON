@@ -107,6 +107,8 @@ export function decodeCommand(text: string): ClientCommand | null {
         ? { type: 'gait', running: message.running }
         : null;
     case 'action':
+      // The removed camp delivery must not trigger cooldowns or busy-state popups.
+      if (message.action === 'contribute') return null;
       if (
         message.cropId !== undefined &&
         (typeof message.cropId !== 'string' || message.cropId.length > 24)

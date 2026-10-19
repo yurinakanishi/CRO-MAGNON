@@ -4,13 +4,7 @@ import { EventEmitter } from 'node:events';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import { createGameCore } from '../dist/application/game-core.mjs';
-import { CollisionWorld } from '../dist/shared/collision.mjs';
-import { campContribution } from '../dist/shared/camp-contribution.mjs';
-import {
-  CAMP_CONTRIBUTION_RANGE,
-  GATHER_RANGE,
-  interactionVisible,
-} from '../dist/shared/interactions.mjs';
+import { GATHER_RANGE, gatherDistance, interactionVisible } from '../dist/shared/interactions.mjs';
 import { coastalInteraction } from '../dist/src/coastal-ui.js';
 import { fishingInteraction } from '../dist/src/fishing-ui.js';
 import { huntInteraction } from '../dist/src/hunting-ui.js';
@@ -39,26 +33,24 @@ class Socket extends EventEmitter {
     this.emit('message', Buffer.from(JSON.stringify(message)), false);
   }
 }
-function fixture() {
+function fixture(t) {
   let now = 100000,
     id = 0;
   const core = createGameCore({
     runtime: { now: () => now, id: () => `camp-${++id}`, token: () => `session-${++id}` },
   });
+  t.after(() => core.close());
   const socket = new Socket();
   core.connect(socket, new URLSearchParams({ room: 'CAMP', name: '旅人', resume: '1' }));
-  const room = core.rooms.get('CAMP');
-  const player = [...room.players.values()][0];
-  Object.assign(player, { x: room.camp.x, z: room.camp.z + 3 });
+  const room = core.rooms.get('CAMP'),
+    player = [...room.players.values()][0];
   const hint = () =>
     vm.runInNewContext(`${nearbySource}\nnearby()`, {
       state: core.snapshot(room, true),
-      fixedIdentity: false,
+      fixedIdentity: true,
       assistedControls: () => false,
       player: () => player,
-      preferredPet: () => null, // This fixture isolates the camp's resource interaction.
       renderer: { collision: room.collision, resourceVisible: () => true, serverNow: () => now },
-      campContribution,
       coastalInteraction,
       fishingInteraction,
       huntInteraction,
@@ -66,112 +58,48 @@ function fixture() {
       adventureInteraction,
       residentInteraction,
       gulfInteraction,
-      CAMP_CONTRIBUTION_RANGE,
       GATHER_RANGE,
+      gatherDistance,
       interactionVisible,
       distance: (a, b) => Math.hypot(a.x - b.x, a.z - b.z),
     });
-  const act = (message = {}) => {
-    socket.command({ type: 'action', action: 'contribute', ...message });
+  const act = () => {
+    socket.command({ type: 'action', action: 'contribute', wood: 99, stone: 99 });
     now += 1000;
   };
-  return { core, room, player, socket, hint, act, now: () => now };
+  return { core, room, player, socket, hint, act };
 }
 
-test('empty hands hide the actual HUD contribution candidate and a direct command consumes nothing', () => {
-  const f = fixture();
-  assert.notEqual(f.hint()?.action, 'contribute');
-  const before = JSON.stringify([f.player.inventory, f.room.camp]);
-  f.act();
-  assert.equal(JSON.stringify([f.player.inventory, f.room.camp]), before);
-  assert.equal(f.socket.messages.findLast((m) => m.type === 'notice').popup, false);
+test('camp delivery is absent with empty or full hands, near or far, including old completed saves', (t) => {
+  const f = fixture(t);
+  for (const level of [0, 1])
+    for (const distance of [1.5, 3, 3.5, 10])
+      for (const quantity of [0, 7, 99]) {
+        Object.assign(f.player, { x: f.room.camp.x, z: f.room.camp.z + distance });
+        Object.assign(f.player.inventory, { wood: quantity, stone: quantity });
+        Object.assign(f.room.camp, { level, wood: 11, stone: 5 });
+        assert.notEqual(f.hint()?.action, 'contribute');
+        const before = structuredClone([
+          f.player.inventory,
+          f.room.camp,
+          f.player.ready,
+          f.player.lastAction,
+        ]);
+        const messages = f.socket.messages.length;
+        f.act();
+        assert.deepEqual(
+          [f.player.inventory, f.room.camp, f.player.ready, f.player.lastAction],
+          before,
+        );
+        assert.deepEqual(
+          f.socket.messages.slice(messages),
+          [],
+          'no notice, popup, completion chat or state mutation',
+        );
+      }
 });
 
-test('stone alone can be delivered while the camp still needs stone', () => {
-  const f = fixture();
-  f.player.inventory.stone = 3;
-  assert.equal(f.hint()?.action, 'contribute');
-  f.act();
-  assert.equal(f.room.camp.stone, 3);
-  assert.equal(f.player.inventory.stone, 0);
-  assert.notEqual(f.hint()?.action, 'contribute');
-});
-
-test('camp delivery retains its 3.5 metre boundary independently of the shorter gathering range', () => {
-  const f = fixture();
-  f.player.inventory.wood = 5;
-  assert.equal(CAMP_CONTRIBUTION_RANGE, 3.5);
-  assert.ok(GATHER_RANGE < CAMP_CONTRIBUTION_RANGE);
-  for (const distance of [10, CAMP_CONTRIBUTION_RANGE + 0.001]) {
-    f.player.z = f.room.camp.z + distance;
-    assert.notEqual(f.hint()?.action, 'contribute');
-    f.act({ x: f.room.camp.x, z: f.room.camp.z, range: 100 });
-    assert.equal(f.room.camp.wood, 0);
-    assert.equal(f.player.inventory.wood, 5);
-  }
-  f.player.z = f.room.camp.z + CAMP_CONTRIBUTION_RANGE;
-  assert.equal(f.hint()?.action, 'contribute');
-  f.act();
-  assert.equal(f.room.camp.wood, 5);
-});
-
-test('a wall hides the hint and blocks the authoritative delivery inside the distance limit', () => {
-  const f = fixture();
-  f.player.inventory.wood = 4;
-  f.room.collision = new CollisionWorld(
-    [{ id: 'wall', type: 'box', x: 50, z: 51.5, hx: 2, hz: 0.1, c: 1, s: 0, height: 3 }],
-    { river: false },
-  );
-  assert.notEqual(f.hint()?.action, 'contribute');
-  f.act();
-  assert.equal(f.room.camp.wood, 0);
-  assert.equal(f.player.inventory.wood, 4);
-});
-
-test('only missing quantities are taken; completion rejects repeated and competing deliveries', () => {
-  const f = fixture();
-  const peer = new Socket();
-  f.core.connect(peer, new URLSearchParams({ room: 'CAMP', name: '仲間' }));
-  const p2 = [...f.room.players.values()].find((p) => p !== f.player);
-  Object.assign(p2, { x: 51, z: 52 });
-  Object.assign(p2.inventory, { wood: 9, stone: 2 });
-  Object.assign(f.room.camp, { wood: 11, stone: 5 });
-  Object.assign(f.player.inventory, { wood: 7, stone: 4, berry: 6 });
-  assert.equal(f.hint()?.action, 'contribute');
-  f.act({ wood: 99, stone: 99 });
-  assert.deepEqual([f.room.camp.wood, f.room.camp.stone, f.room.camp.level], [12, 6, 1]);
-  assert.deepEqual(
-    [f.player.inventory.wood, f.player.inventory.stone, f.player.inventory.berry],
-    [6, 3, 6],
-  );
-  assert.ok(f.player.ready && p2.ready);
-  assert.notEqual(f.hint()?.action, 'contribute');
-  const before = JSON.stringify([f.room.camp, f.player.inventory, p2.inventory]);
-  peer.command({ type: 'action', action: 'contribute' });
-  f.act();
-  assert.equal(JSON.stringify([f.room.camp, f.player.inventory, p2.inventory]), before);
-  assert.equal(
-    f.socket.messages.filter((m) => m.type === 'chat' && m.text.includes('焚き火が完成')).length,
-    1,
-  );
-});
-
-test('already supplied material does not enable delivery or consume surplus, including older overfilled saves', () => {
-  const f = fixture();
-  f.room.camp.wood = 18;
-  f.room.camp.stone = 4;
-  f.player.inventory.wood = 8;
-  assert.notEqual(f.hint()?.action, 'contribute');
-  f.act();
-  assert.equal(f.player.inventory.wood, 8);
-  f.player.inventory.stone = 5;
-  assert.equal(f.hint()?.action, 'contribute');
-  f.act();
-  assert.deepEqual([f.room.camp.wood, f.room.camp.stone, f.room.camp.level], [18, 6, 1]);
-  assert.deepEqual([f.player.inventory.wood, f.player.inventory.stone], [8, 3]);
-});
-
-test('busy players do not receive a contribution hint, and server actions cannot bypass the restriction', () => {
+test('an old delivery command is silent even while another action is busy', (t) => {
   for (const busy of [
     { downedUntil: 110000 },
     { mountId: 'mount' },
@@ -184,12 +112,29 @@ test('busy players do not receive a contribution hint, and server actions cannot
     { jumpAt: 100000, jumpSequence: 1 },
     { attackAt: 100000, attackSequence: 1 },
   ]) {
-    const f = fixture();
-    f.player.inventory.wood = 4;
-    Object.assign(f.player, busy);
-    assert.notEqual(f.hint()?.action, 'contribute', JSON.stringify(busy));
+    const f = fixture(t);
+    Object.assign(f.player, busy, { x: 50, z: 53 });
+    f.player.inventory.wood = 7;
+    const before = structuredClone([f.player.inventory, f.room.camp]);
+    const messages = f.socket.messages.length;
     f.act();
-    assert.equal(f.player.inventory.wood, 4, JSON.stringify(busy));
-    assert.equal(f.room.camp.wood, 0);
+    assert.deepEqual([f.player.inventory, f.room.camp], before);
+    assert.deepEqual(f.socket.messages.slice(messages), []);
   }
+});
+
+test('a full inventory never recommends the removed camp delivery', (t) => {
+  const f = fixture(t),
+    resource = f.room.resources.find((r) => r.type === 'wood');
+  Object.assign(f.player, { x: resource.x, z: resource.z });
+  f.player.inventory.wood = 99;
+  f.socket.command({ type: 'action', action: 'gather', targetId: resource.id });
+  const notice = f.socket.messages.findLast((m) => m.type === 'notice');
+  assert.equal(notice.text, '持ち物がいっぱいです。');
+  assert.equal(notice.popup, false);
+  assert.equal(f.player.inventory.wood, 99);
+});
+
+test('the client has no camp delivery prompt or shortcut', () => {
+  assert.doesNotMatch(main, /['"]contribute['"]|焚き火に資材を届ける/);
 });

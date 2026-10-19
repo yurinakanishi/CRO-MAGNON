@@ -101,12 +101,7 @@ import {
   movementKey,
   acceptsGameShortcut,
 } from './combat-input.js';
-import {
-  CAMP_CONTRIBUTION_RANGE,
-  GATHER_RANGE,
-  interactionVisible,
-} from '../shared/interactions.mjs';
-import { campContribution } from '../shared/camp-contribution.mjs';
+import { GATHER_RANGE, gatherDistance, interactionVisible } from '../shared/interactions.mjs';
 import { caveFireInteraction } from '../shared/cave-fire.mjs';
 import { caveTorchAvailable, caveTorchLit } from '../shared/cave-light.mjs';
 import { ENEMY_GROUNDS, SCENERY } from '../shared/scenery-layout.mjs';
@@ -1228,33 +1223,35 @@ function nearby(): { action: string; label: string; targetId?: string } | null {
   if (resident) return resident;
   const gulf = gulfInteraction(state, me, collision);
   if (gulf) return gulf;
-  const objects: { x: number; z: number; action: string; label: string; range: number }[] =
-    state.resources
-      .filter((r) => r.amount > 0 && me.inventory[r.type] < 99 && renderer.resourceVisible?.(r.id))
-      .map((r) => ({
-        ...r,
-        action: 'gather',
-        targetId: r.id,
-        label:
-          r.type === 'obsidian'
-            ? '黒曜石を採掘する'
-            : `${{ wood: '木材', stone: '石', berry: 'ベリー' }[r.type]}を採集する`,
-        range: GATHER_RANGE,
-      }));
-  if (campContribution(state.camp, me, renderer.serverNow()))
-    objects.push({
-      ...state.camp,
-      action: 'contribute',
-      label: '焚き火に資材を届ける',
-      range: CAMP_CONTRIBUTION_RANGE,
-    });
+  const objects: {
+    x: number;
+    z: number;
+    action: string;
+    label: string;
+    range: number;
+    reachDistance?: number;
+  }[] = state.resources
+    .filter((r) => r.amount > 0 && me.inventory[r.type] < 99 && renderer.resourceVisible?.(r.id))
+    .map((r) => ({
+      ...r,
+      action: 'gather',
+      targetId: r.id,
+      label:
+        r.type === 'obsidian'
+          ? '黒曜石を採掘する'
+          : `${{ wood: '木材', stone: '石', berry: 'ベリー' }[r.type]}を採集する`,
+      range: GATHER_RANGE,
+      reachDistance: gatherDistance(renderer.collision, me, r),
+    }));
   if (!fixedIdentity && state.npc)
     objects.push({ ...state.npc, action: 'trade', label: 'オルと物々交換する', range: 10 });
   const available = objects
     .filter(
-      (o) => distance(me, o) <= o.range && (!collision || interactionVisible(collision, me, o)),
+      (o) =>
+        (o.reachDistance ?? distance(me, o)) <= o.range &&
+        (!collision || interactionVisible(collision, me, o)),
     )
-    .sort((a, b) => distance(me, a) - distance(me, b));
+    .sort((a, b) => (a.reachDistance ?? distance(me, a)) - (b.reachDistance ?? distance(me, b)));
   if (assisting) {
     const chosen = interactionAssist.choose(
       available.map((o) => ({
@@ -1408,10 +1405,7 @@ function action(type, targetId?, cropId?) {
   )
     return;
   if (type === 'trade' && !state.npc) return;
-  if (
-    type === 'gulfOpen' ||
-    (inGulf(player()?.x, player()?.z) && ['contribute', 'trade'].includes(type))
-  ) {
+  if (type === 'gulfOpen' || (inGulf(player()?.x, player()?.z) && type === 'trade')) {
     gulfUI.open(targetId);
     return;
   }
@@ -3094,8 +3088,9 @@ document.addEventListener('keydown', (e) => {
     e.preventDefault();
     attack();
   }
-  if (['1', '2', '3', '4'].includes(k))
-    action(['gather', 'craft', 'contribute', 'trade'][Number(k) - 1]);
+  if (k === '1') action('gather');
+  if (k === '2') action('craft');
+  if (k === '4') action('trade');
   if (k === 'enter' && !fixedIdentity) {
     e.preventDefault();
     chatUI?.setOpen(true);

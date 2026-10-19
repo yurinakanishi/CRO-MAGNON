@@ -789,7 +789,6 @@ export class WorldRenderer {
       this.syncResources();
       this.syncEnemies();
       this.updateActorResidency();
-      this.campLabel.element.classList.toggle('complete', this.state.camp.level > 0);
       this.adventureEffects = new AdventureEffects(this);
       if (COUNTRIES.length) {
         this.gulfRenderer = new GulfRenderer(this);
@@ -1631,7 +1630,6 @@ export class WorldRenderer {
         this.labels.splice(this.labels.indexOf(entity.label), 1);
         this.players.delete(id);
       }
-    this.campLabel?.element.classList.toggle('complete', state.camp.level > 0);
     this.updateActorResidency();
   }
 

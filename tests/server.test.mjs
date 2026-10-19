@@ -101,7 +101,7 @@ test('female is the server default and dormant appearances resolve consistently 
   assert.equal(states[0].npc, undefined);
 });
 
-test('resource gathering and camp completion are decided by the server', async (t) => {
+test('resource gathering is authoritative and retired camp delivery consumes nothing', async (t) => {
   const { game, url } = await start(t);
   const client = connect(url);
   const { id } = await client.wait((message) => message.type === 'welcome');
@@ -125,19 +125,20 @@ test('resource gathering and camp completion are decided by the server', async (
   player.inventory.stone = 6;
   player.lastAction = 0;
   client.send({ type: 'action', action: 'contribute' });
-  await client.wait(
-    (message) => message.type === 'notice' && message.text.startsWith('焚き火に近づいて'),
-  );
+  client.send({ type: 'ping', at: 'delivery-far' });
+  await client.wait((message) => message.type === 'pong' && message.at === 'delivery-far');
   assert.equal(room.camp.wood, 0);
   player.x = 50;
   player.z = 50;
   player.lastAction = 0;
   client.send({ type: 'action', action: 'contribute' });
-  const complete = await client.wait((message) => message.type === 'state' && message.completed);
-  assert.equal(complete.camp.level, 1);
-  assert.equal(complete.players[0].ready, true);
-  assert.equal(player.inventory.wood, 0);
-  assert.equal(player.inventory.stone, 0);
+  client.send({ type: 'ping', at: 'delivery-near' });
+  await client.wait((message) => message.type === 'pong' && message.at === 'delivery-near');
+  assert.equal(room.camp.level, 0);
+  assert.equal(player.ready, false);
+  assert.equal(player.inventory.wood, 12);
+  assert.equal(player.inventory.stone, 6);
+  assert.ok(!client.messages.some((message) => /届け|焚き火が完成/.test(message.text ?? '')));
 });
 
 test('movement is normalized, times out, and ignores client-authored position', async (t) => {

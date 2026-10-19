@@ -130,7 +130,7 @@ test('every touch action and weapon has a glyph; targets come from the label', (
     ['木材を採集する', 'wood'],
     ['黒曜石を採掘する', 'stone'],
     ['ベリーを採集する', 'berry'],
-    ['焚き火に資材を届ける', 'flame'],
+    ['火を灯す', 'flame'],
     ['貝を探す', 'shell'],
     ['村人と話す', 'hand'],
   ])

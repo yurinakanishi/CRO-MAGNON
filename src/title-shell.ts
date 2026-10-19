@@ -18,6 +18,7 @@ export const titleArtPath = '/title/cro-magnon-mmo-transparent.webp';
 
 export function titleScreenMarkup(): string {
   return `<section id="screen-title" class="screen title-screen" data-variant="classic" hidden>
+        <img class="title-icon" src="/favicon.svg?v=20261016" width="64" height="64" alt="" aria-hidden="true">
         <div class="title-content">
           <div class="title-hero">
           <div class="title-logo" style="--title-art: url('${titleArtPath}')"><h1>${GAME_TITLE}</h1><img class="title-art" src="${titleArtPath}" width="1536" height="1024" alt="${GAME_TITLE} — 氷河時代の旅人たちとマンモス" fetchpriority="high"></div>

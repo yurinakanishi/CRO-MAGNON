@@ -10,8 +10,11 @@ import { SoloRuntime } from '../dist/infrastructure/browser/solo-runtime.mjs';
 import { readDeliveryOverlay } from '../dist/infrastructure/node/delivery-overlay.mjs';
 import { enterPreparedWorld } from './qa-game-entry.mjs';
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
-const output = process.argv[2] || `output/playwright/resource-visibility-${Date.now()}`;
+const output =
+  process.argv.slice(2).find((arg) => !arg.startsWith('--')) ||
+  `output/playwright/resource-visibility-${Date.now()}`;
 const baseline = process.argv.includes('--baseline');
+const campOnly = process.argv.includes('--camp-only');
 await mkdir(output, { recursive: true });
 const storage = {
   async load() {
@@ -73,6 +76,7 @@ async function observe(page, id) {
       visible: item?.model.visible,
       meshes,
       distance: item ? Math.hypot(player.x - item.resource.x, player.z - item.resource.z) : null,
+      edgeDistance: world.collision.resourceDistance?.(player, id),
       level: item?.model.getCurrentLevel?.(),
       camera: world.camera.position.toArray(),
       hint: document.querySelector('#interaction-hint')?.textContent,
@@ -80,7 +84,7 @@ async function observe(page, id) {
     };
   }, id);
 }
-async function approach(page, mobile, id) {
+async function approach(page, mobile, id, type) {
   let cdp, point;
   if (mobile) {
     const box = await page.locator('.touch-move').boundingBox();
@@ -94,17 +98,18 @@ async function approach(page, mobile, id) {
   } else await page.keyboard.down('w');
   try {
     await page.waitForFunction(
-      (id) => {
+      ({ id, type }) => {
         const world = globalThis.qaWorld,
           item = world.resources.get(id);
         const player = world.state.players.find((p) => p.id === world.selfId);
         return (
           player &&
           item &&
-          Math.hypot(player.x - item.resource.x, player.z - item.resource.z) < 0.82
+          Math.hypot(player.x - item.resource.x, player.z - item.resource.z) <
+            (type === 'berry' ? 0.82 : 1.35)
         );
       },
-      id,
+      { id, type },
       { timeout: 10000 },
     );
   } finally {
@@ -117,14 +122,16 @@ async function approach(page, mobile, id) {
 }
 try {
   for (const mobile of [false, true])
-    for (const type of ['berry', 'stone']) {
+    for (const type of campOnly ? ['camp'] : ['wood', 'stone', 'berry', 'camp']) {
       const name = `${mobile ? 'phone' : 'desktop'}-${type}`;
       const data = structuredClone(storage.data),
         room = data.game.rooms[0];
       const resource = room.resources.find(
-        (r) => r.id === (type === 'berry' ? 'berry-25' : 'stone-16'),
+        (r) => r.id === { wood: 'wood-2', stone: 'stone-17', berry: 'berry-25' }[type],
       );
-      Object.assign(room.sessions[0].player, { x: resource.x, z: resource.z + 3, facing: Math.PI });
+      const start = type === 'camp' ? room.camp : resource;
+      Object.assign(room.sessions[0].player, { x: start.x, z: start.z + 3, facing: Math.PI });
+      if (type === 'camp') Object.assign(room.sessions[0].player.inventory, { wood: 12, stone: 6 });
       const context = await browser.newContext(
         mobile
           ? { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true }
@@ -151,6 +158,49 @@ try {
         await route.fulfill({ response, body: (await response.text()) + probe });
       });
       await page.goto(base);
+      if (!baseline) {
+        const corner = await page.locator('.title-icon').evaluate((img) => {
+          const r = img.getBoundingClientRect();
+          return {
+            src: img.getAttribute('src'),
+            loaded: img.complete && img.naturalWidth > 0,
+            x: r.x,
+            y: r.y,
+            w: r.width,
+            h: r.height,
+            viewport: innerWidth,
+          };
+        });
+        assert.match(corner.src, /^\/favicon\.svg/);
+        assert.equal(corner.loaded, true);
+        assert.ok(corner.x >= 0 && corner.y >= 0 && corner.x + corner.w < corner.viewport / 2);
+        assert.equal(corner.w, 44);
+        assert.equal(corner.h, 44);
+        if (type === 'wood' || campOnly) {
+          await page.locator('.title-art').evaluate((img) => img.decode());
+          await page.screenshot({
+            path: `${output}/${mobile ? 'phone' : 'desktop'}-title.png`,
+            animations: 'disabled',
+          });
+          if (mobile && campOnly) {
+            for (const viewport of [
+              { width: 320, height: 568 },
+              { width: 844, height: 390 },
+            ]) {
+              await page.setViewportSize(viewport);
+              const icon = await page.locator('.title-icon').boundingBox();
+              const button = await page.locator('#title-start').boundingBox();
+              assert.ok(icon.x >= 0 && icon.y >= 0 && icon.x + icon.width < viewport.width);
+              assert.ok(icon.y + icon.height <= button.y || icon.x + icon.width <= button.x);
+              await page.screenshot({
+                path: `${output}/title-${viewport.width}x${viewport.height}.png`,
+                animations: 'disabled',
+              });
+            }
+            await page.setViewportSize({ width: 390, height: 844 });
+          }
+        }
+      }
       await page.evaluate(async (data) => {
         const { openSoloSave } = await import('/qa-save.mjs');
         const save = await openSoloSave();
@@ -164,6 +214,42 @@ try {
       await page.locator('#setup-flow-yes').click();
       await page.locator('#mascot-start').click();
       await enterPreparedWorld(page, mobile);
+      if (type === 'camp') {
+        await page.waitForFunction(() => globalThis.qaWorld?.state.players.length);
+        await page.waitForTimeout(700);
+        const inspect = () =>
+          page.evaluate(() => {
+            const w = globalThis.qaWorld,
+              p = w.state.players.find((p) => p.id === w.selfId);
+            return {
+              inventory: p.inventory,
+              camp: w.state.camp,
+              hint: document.querySelector('#interaction-hint')?.textContent,
+              prompts: [
+                ...document.querySelectorAll('.touch-prompts button, .input-actions button'),
+              ].map((n) => n.textContent),
+              toasts: document.querySelector('#toast-stack')?.textContent,
+            };
+          });
+        const before = await inspect();
+        if (!baseline) {
+          await page.keyboard.press('3');
+          await page.keyboard.press('e');
+          await page.waitForTimeout(700);
+          const after = await inspect();
+          assert.deepEqual(after.inventory, before.inventory);
+          assert.deepEqual(after.camp, before.camp);
+          assert.doesNotMatch(
+            JSON.stringify([after.hint, after.prompts, after.toasts]),
+            /届け|資材|完成/,
+          );
+          results.push({ name, before, after });
+        } else results.push({ name, before });
+        await page.screenshot({ path: `${output}/${name}.png` });
+        console.log('CAMP', name, JSON.stringify(before));
+        await context.close();
+        continue;
+      }
       await page.waitForFunction((id) => globalThis.qaWorld?.resources.has(id), resource.id);
       await page.evaluate((id) => {
         globalThis.qaWorld.yaw = 0;
@@ -174,7 +260,7 @@ try {
       await page.waitForTimeout(1800);
       const before = await observe(page, resource.id);
       await page.screenshot({ path: `${output}/${name}-before.png` });
-      await approach(page, mobile, resource.id);
+      await approach(page, mobile, resource.id, type);
       const near = await observe(page, resource.id);
       await page.screenshot({ path: `${output}/${name}-near.png` });
       const samples = await page.evaluate(() => globalThis.qaSamples.splice(0));
@@ -188,8 +274,14 @@ try {
           near: near.visible,
           distance: near.distance,
           meshes: near.meshes,
+          hint: near.hint,
+          touch: near.touch,
         }),
       );
+      if (baseline) {
+        await context.close();
+        continue;
+      }
       if (!baseline) {
         assert.equal(before.visible, true, `${name}: visible before approach`);
         assert.equal(near.visible, true, `${name}: visible within gathering reach`);
@@ -202,7 +294,7 @@ try {
       if (mobile) {
         await page
           .locator('.touch-prompts button')
-          .filter({ hasText: type === 'berry' ? 'ベリー' : '石' })
+          .filter({ hasText: { wood: '木材', stone: '石', berry: 'ベリー' }[type] })
           .tap();
       } else await page.keyboard.press('e');
       await page.waitForFunction(
@@ -233,7 +325,7 @@ try {
         if (mobile)
           await page
             .locator('.touch-prompts button')
-            .filter({ hasText: type === 'berry' ? 'ベリー' : '石' })
+            .filter({ hasText: { wood: '木材', stone: '石', berry: 'ベリー' }[type] })
             .tap();
         else await page.keyboard.press('e');
         await page.waitForFunction(

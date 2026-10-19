@@ -362,10 +362,6 @@ button kbd {
   color: #dbc89c;
   letter-spacing: 1px;
 }
-.world-label.camp.complete:before {
-  content: '✦ ';
-  color: #ebc36b;
-}
 .world-label[hidden] {
   display: none;
 }
