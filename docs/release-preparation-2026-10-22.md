@@ -1,5 +1,7 @@
 # 現在の変更のコミット・pushとソロ公開準備（2026-10-22）
 
+**22:59 JST追記：ユーザーのログイン／規約同意・公開承認を受け、Free表示の実際の確認後、同じ候補を22:48 JSTに公開した。公開後の全配信SHAと実Chrome検証も合格。[公開完了記録](solo-release-2026-10-22.md)。以下は21:08 JST時点の準備と承認待ちの記録。**
+
 ユーザー指定「今のchanges all commit then push then release」。現在の全変更をコミットし、既存の未pushコミットとともに `origin/main` へpushした。**公開候補は一括検証・追加Chrome検証に合格。Cloudflareログインの承認と公開直前のWorkers Free表示の確認待ちで、アップロードは未実行。**
 
 ## ソースと候補
