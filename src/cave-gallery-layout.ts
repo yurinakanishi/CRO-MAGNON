@@ -40,8 +40,8 @@ export const CAVE_EXTRA_PIGMENTS = {
     subjects: ['beret', 'frog', 'triangle', 'heart'],
   },
   maeKohaku: {
-    url: '/models/camp-cave/mae-kohaku-sprites-r39-89a83ebad514c613.png',
-    subjects: ['mae', 'kohaku'],
+    url: '/models/camp-cave/mae-kohaku-sprites-r42-f95eaf3ec1b5ca8b.png',
+    subjects: ['mae', 'kohaku', 'jank0vic'],
   },
   friendsMeadow: {
     url: '/models/camp-cave/friends-meadow-sprites-r41-f42da105eead65b7.png',

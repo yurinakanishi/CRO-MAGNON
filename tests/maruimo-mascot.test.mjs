@@ -104,8 +104,8 @@ test('the 2026-10 remake mascot keeps the octopus rig and clips at 55 cm with it
   assert.deepEqual(
     new Set(['rimo-neko', '524', ...Object.values(CAVE_EXTRA_PIGMENTS).flatMap((p) => p.subjects)]),
     // Every mascot is painted; Howkey keeps its retained character model, and
-    // Daredaro and Ryuichi also have their own contributor paintings.
-    new Set([...MASCOT_KEYS, 'howkey-scientist', 'daredaro', 'ryuichi']),
+    // Daredaro, Ryuichi and Jank0vic also have their own contributor paintings.
+    new Set([...MASCOT_KEYS, 'howkey-scientist', 'daredaro', 'ryuichi', 'jank0vic']),
   );
 });
 

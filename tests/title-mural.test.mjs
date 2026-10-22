@@ -46,7 +46,7 @@ test('the title mural is the baked strip of the unmodified cave friezes', async 
 test('contributors link only to verified x.com profiles', () => {
   const people = titleContributors();
   assert.equal(people[0].name, 'yuri');
-  assert.equal(people.length, 17);
+  assert.equal(people.length, 18);
   assert.deepEqual(
     people.filter((p) => p.role === '監修').map((p) => p.key),
     ['ryuichi', 'nukonuko', 'otani', 'urata'],
@@ -81,7 +81,7 @@ test('the common cast deduplicates both credit ids and case-insensitive X accoun
       { qr: 'same-ryuichi', name: 'Duplicate Ryuichi', profile: 'https://x.com/wabisuketyper' },
     );
     assert.deepEqual(titleContributors(), before);
-    assert.equal(muralPeople().length, 16);
+    assert.equal(muralPeople().length, 17);
   } finally {
     TITLE_FRIENDS.splice(count);
   }
@@ -140,8 +140,8 @@ test('title and cave share the same cards, names, links and order, except creato
       .filter((person) => person.key !== 'yuri')
       .map(({ key, name, profile }) => ({ key, name, profile })),
   );
-  assert.equal(people.length, 16);
-  assert.equal(new Set(people.map((person) => person.key)).size, 16);
+  assert.equal(people.length, 17);
+  assert.equal(new Set(people.map((person) => person.key)).size, 17);
   assert.ok(people.some((person) => person.key === 'ryuichi'));
   assert.ok(!people.some((person) => person.key === 'yuri'));
   const titleGroups = contributorsDialogMarkup().split('<section class="contributor-group">');

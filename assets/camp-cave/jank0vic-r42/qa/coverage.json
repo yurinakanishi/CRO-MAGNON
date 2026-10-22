@@ -1,0 +1,706 @@
+{
+  "geometry": {
+    "url": "/models/camp-cave/model-r28-deep.glb",
+    "sha256": "932c96905891f77b766c9e668ca80f42c7f3073a4f992a559e87f4f53e770c4d"
+  },
+  "shaderSha256": "60b3289ec04f3e52283dd5ee40cf4a1847c0073beb4b836dcff053a4db72fd00",
+  "measurements": "assets/camp-cave/jank0vic-r42/qa/surfaces.json",
+  "placements": [
+    {
+      "motif": "redHorse",
+      "wall": "east",
+      "centre": -2.8974257037207916,
+      "subject": "redHorse",
+      "paintedSamples": 152,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 13
+    },
+    {
+      "motif": "mammoth",
+      "wall": "east",
+      "centre": -5.807704451899226,
+      "subject": "mammoth",
+      "paintedSamples": 225,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 47
+    },
+    {
+      "motif": "ryuichiFrieze",
+      "wall": "east",
+      "centre": -10.068425921753477,
+      "subject": "aurochs",
+      "paintedSamples": 158,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 17
+    },
+    {
+      "motif": "bison",
+      "wall": "east",
+      "centre": -13.24205811635947,
+      "subject": "bison",
+      "paintedSamples": 218,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "maruimoFrieze",
+      "wall": "east",
+      "centre": -14.889293634540135,
+      "subject": "ibex",
+      "paintedSamples": 162,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "daredaroFrieze",
+      "wall": "east",
+      "centre": -17.482847747209508,
+      "subject": "woollyRhino",
+      "paintedSamples": 211,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "deer",
+      "wall": "east",
+      "centre": -19.756143424349677,
+      "subject": "deer",
+      "paintedSamples": 131,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "ochreHorse",
+      "wall": "east",
+      "centre": -21.19941951288186,
+      "subject": "ochreHorse",
+      "paintedSamples": 157,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "bison",
+      "wall": "east",
+      "centre": -23.323281663387665,
+      "subject": "bison",
+      "paintedSamples": 218,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "maruimoFrieze",
+      "wall": "east",
+      "centre": -25.188233816496655,
+      "subject": "ibex",
+      "paintedSamples": 162,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "daredaroFrieze",
+      "wall": "east",
+      "centre": -27.062901987517943,
+      "subject": "woollyRhino",
+      "paintedSamples": 211,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "deer",
+      "wall": "east",
+      "centre": -29.346608760199395,
+      "subject": "deer",
+      "paintedSamples": 131,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "ochreHorse",
+      "wall": "east",
+      "centre": -31.056633021013436,
+      "subject": "ochreHorse",
+      "paintedSamples": 157,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "redHorse",
+      "wall": "east",
+      "centre": -32.61268474230357,
+      "subject": "redHorse",
+      "paintedSamples": 152,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "mammoth",
+      "wall": "east",
+      "centre": -35.321638710137776,
+      "subject": "mammoth",
+      "paintedSamples": 225,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "ryuichiFrieze",
+      "wall": "east",
+      "centre": -38.54613343629469,
+      "subject": "aurochs",
+      "paintedSamples": 158,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "roundBots",
+      "wall": "east",
+      "centre": -2.074059335567689,
+      "subject": "white",
+      "paintedSamples": 281,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "redHorse",
+      "wall": "east",
+      "centre": -4.153584510820609,
+      "subject": "redHorse",
+      "paintedSamples": 152,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 16
+    },
+    {
+      "motif": "roundBots",
+      "wall": "east",
+      "centre": -6.2003611712217275,
+      "subject": "green",
+      "paintedSamples": 280,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 25
+    },
+    {
+      "motif": "roundBots",
+      "wall": "east",
+      "centre": -7.412204847902271,
+      "subject": "orange",
+      "paintedSamples": 280,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "bison",
+      "wall": "east",
+      "centre": -9.350348951490286,
+      "subject": "bison",
+      "paintedSamples": 218,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "shapeBots",
+      "wall": "east",
+      "centre": -11.310002787782446,
+      "subject": "beret",
+      "paintedSamples": 268,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "shapeBots",
+      "wall": "east",
+      "centre": -12.592576307957758,
+      "subject": "triangle",
+      "paintedSamples": 238,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "deer",
+      "wall": "east",
+      "centre": -14.321981930381577,
+      "subject": "deer",
+      "paintedSamples": 131,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "mammoth",
+      "wall": "east",
+      "centre": -17.342396575913014,
+      "subject": "mammoth",
+      "paintedSamples": 225,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "maeKohaku",
+      "wall": "east",
+      "centre": -19.916012172063734,
+      "subject": "mae",
+      "paintedSamples": 273,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "rimoFrieze",
+      "wall": "east",
+      "centre": -21.2,
+      "subject": "rimo-neko",
+      "paintedSamples": 246,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "friendsMeadow",
+      "wall": "east",
+      "centre": -22.612663175633962,
+      "subject": "saber-mascot",
+      "paintedSamples": 210,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "maruimoFrieze",
+      "wall": "east",
+      "centre": -24.4749214207701,
+      "subject": "ibex",
+      "paintedSamples": 162,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "friendsMeadow",
+      "wall": "east",
+      "centre": -26.182094214718326,
+      "subject": "nukonuko-mascot",
+      "paintedSamples": 197,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "ochreHorse",
+      "wall": "east",
+      "centre": -27.936156804356553,
+      "subject": "ochreHorse",
+      "paintedSamples": 157,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "friendsRiver",
+      "wall": "east",
+      "centre": -29.633810063105788,
+      "subject": "otani-mascot",
+      "paintedSamples": 220,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "friendsRiver",
+      "wall": "east",
+      "centre": -30.984229382205303,
+      "subject": "howkey-scientist",
+      "paintedSamples": 204,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "ryuichiFrieze",
+      "wall": "east",
+      "centre": -33.60547616026151,
+      "subject": "aurochs",
+      "paintedSamples": 158,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "daredaroFrieze",
+      "wall": "east",
+      "centre": -35.99227817717409,
+      "subject": "daredaro",
+      "paintedSamples": 210,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "maeKohaku",
+      "wall": "east",
+      "centre": -37.02714381413546,
+      "subject": "jank0vic",
+      "paintedSamples": 179,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "daredaroFrieze",
+      "wall": "east",
+      "centre": -39.01471699817311,
+      "subject": "woollyRhino",
+      "paintedSamples": 211,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "hands",
+      "wall": "east",
+      "centre": -13.33711587841575,
+      "subject": "hands",
+      "paintedSamples": 152,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 14
+    },
+    {
+      "motif": "signs",
+      "wall": "east",
+      "centre": -29.627500898536166,
+      "subject": "signs",
+      "paintedSamples": 122,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "mammoth",
+      "wall": "west",
+      "centre": -3.646955794049128,
+      "subject": "mammoth",
+      "paintedSamples": 225,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "ryuichiFrieze",
+      "wall": "west",
+      "centre": -7.525852372859867,
+      "subject": "aurochs",
+      "paintedSamples": 158,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "bison",
+      "wall": "west",
+      "centre": -10.969341601780352,
+      "subject": "bison",
+      "paintedSamples": 218,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "maruimoFrieze",
+      "wall": "west",
+      "centre": -13.055688978366707,
+      "subject": "ibex",
+      "paintedSamples": 162,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "daredaroFrieze",
+      "wall": "west",
+      "centre": -15.131407599877011,
+      "subject": "woollyRhino",
+      "paintedSamples": 211,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "deer",
+      "wall": "west",
+      "centre": -17.628813660420413,
+      "subject": "deer",
+      "paintedSamples": 131,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "ochreHorse",
+      "wall": "west",
+      "centre": -19.474789206226202,
+      "subject": "ochreHorse",
+      "paintedSamples": 157,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "redHorse",
+      "wall": "west",
+      "centre": -21.13778943278317,
+      "subject": "redHorse",
+      "paintedSamples": 152,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "maruimoFrieze",
+      "wall": "west",
+      "centre": -23.241459444080864,
+      "subject": "ibex",
+      "paintedSamples": 162,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "daredaroFrieze",
+      "wall": "west",
+      "centre": -25.496882321500106,
+      "subject": "woollyRhino",
+      "paintedSamples": 211,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "deer",
+      "wall": "west",
+      "centre": -27.28441666431579,
+      "subject": "deer",
+      "paintedSamples": 131,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "ochreHorse",
+      "wall": "west",
+      "centre": -29.168445649218054,
+      "subject": "ochreHorse",
+      "paintedSamples": 157,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "redHorse",
+      "wall": "west",
+      "centre": -31.083097307861877,
+      "subject": "redHorse",
+      "paintedSamples": 152,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "mammoth",
+      "wall": "west",
+      "centre": -33.294602733235884,
+      "subject": "mammoth",
+      "paintedSamples": 225,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "ryuichiFrieze",
+      "wall": "west",
+      "centre": -36.803802649158165,
+      "subject": "aurochs",
+      "paintedSamples": 158,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "bison",
+      "wall": "west",
+      "centre": -39.39241980582868,
+      "subject": "bison",
+      "paintedSamples": 218,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "roundBots",
+      "wall": "west",
+      "centre": -2.0696760565449113,
+      "subject": "blue",
+      "paintedSamples": 282,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "mammoth",
+      "wall": "west",
+      "centre": -4.775360338634871,
+      "subject": "mammoth",
+      "paintedSamples": 225,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "roundBots",
+      "wall": "west",
+      "centre": -7.430822382927719,
+      "subject": "purple",
+      "paintedSamples": 281,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "maruimoFrieze",
+      "wall": "west",
+      "centre": -8.773282994241818,
+      "subject": "maruimo-mascot",
+      "paintedSamples": 212,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "maruimoFrieze",
+      "wall": "west",
+      "centre": -10.732680146752603,
+      "subject": "ibex",
+      "paintedSamples": 162,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "shapeBots",
+      "wall": "west",
+      "centre": -12.473424146449656,
+      "subject": "frog",
+      "paintedSamples": 267,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "ochreHorse",
+      "wall": "west",
+      "centre": -14.254388888663472,
+      "subject": "ochreHorse",
+      "paintedSamples": 157,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "shapeBots",
+      "wall": "west",
+      "centre": -15.995584490959931,
+      "subject": "heart",
+      "paintedSamples": 250,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "ryuichiFrieze",
+      "wall": "west",
+      "centre": -18.647082885345707,
+      "subject": "aurochs",
+      "paintedSamples": 158,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "creature524",
+      "wall": "west",
+      "centre": -21.2,
+      "subject": "524",
+      "paintedSamples": 239,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "maeKohaku",
+      "wall": "west",
+      "centre": -22.621971798966502,
+      "subject": "kohaku",
+      "paintedSamples": 203,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "daredaroFrieze",
+      "wall": "west",
+      "centre": -25.048851313022105,
+      "subject": "woollyRhino",
+      "paintedSamples": 211,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "friendsMeadow",
+      "wall": "west",
+      "centre": -27.316585572015256,
+      "subject": "fairy-mascot",
+      "paintedSamples": 211,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "friendsMeadow",
+      "wall": "west",
+      "centre": -28.675260998128234,
+      "subject": "sagasa-mascot",
+      "paintedSamples": 200,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "redHorse",
+      "wall": "west",
+      "centre": -30.57659832125949,
+      "subject": "redHorse",
+      "paintedSamples": 152,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "friendsRiver",
+      "wall": "west",
+      "centre": -32.53677469851244,
+      "subject": "urata-mascot",
+      "paintedSamples": 198,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "bison",
+      "wall": "west",
+      "centre": -34.44646689551515,
+      "subject": "bison",
+      "paintedSamples": 218,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "friendsRiver",
+      "wall": "west",
+      "centre": -36.45239181513572,
+      "subject": "rei-mascot",
+      "paintedSamples": 200,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "ryuichiFrieze",
+      "wall": "west",
+      "centre": -37.91962524778017,
+      "subject": "ryuichi",
+      "paintedSamples": 201,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "deer",
+      "wall": "west",
+      "centre": -39.55285960274377,
+      "subject": "deer",
+      "paintedSamples": 131,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    },
+    {
+      "motif": "hands",
+      "wall": "west",
+      "centre": -13.33711587841575,
+      "subject": "hands",
+      "paintedSamples": 152,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 8
+    },
+    {
+      "motif": "signs",
+      "wall": "west",
+      "centre": -29.627500898536166,
+      "subject": "signs",
+      "paintedSamples": 122,
+      "rejected": 0,
+      "formerSteepNormalCutoff": 0
+    }
+  ],
+  "totalPainted": 14862,
+  "totalRejected": 0,
+  "scope": "Alpha samples on delivered image files, first intersections from inside the cave, correct side of the curved chamber. Curvature rendering and appearance verified separately in real Chrome."
+}

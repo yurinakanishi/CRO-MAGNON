@@ -24,7 +24,7 @@ const recipe = await readJson(MURAL_RECIPE);
 const raw = async (bytes) => sharp(bytes).ensureAlpha().raw().toBuffer();
 
 test('the legacy group bays are replaced by independent characters and animals on both walls', () => {
-  assert.equal(CAVE_MURALS.filter((m) => m.kind === 'character').length, 24);
+  assert.equal(CAVE_MURALS.filter((m) => m.kind === 'character').length, 25);
   assert(CAVE_MURALS.filter((m) => m.kind === 'animal').length >= 48);
   assert.equal(
     CAVE_MURALS.filter((m) => m.kind === 'animal' && m.layer === 'foreground').length,
@@ -34,14 +34,19 @@ test('the legacy group bays are replaced by independent characters and animals o
   assert(!CAVE_MURALS.some((m) => m.motif === 'comingSoon'));
 });
 
-test('each current character has its own verified, transparent animal replacement', async () => {
+// Painted after the r38 group friezes: hiding them reflows the continuous procession
+// (r39+), so they have no animal replacement in the archived r38 composition.
+const ADDED_AFTER_R38 = ['jank0vic'];
+
+test('each r38 character has its own verified, transparent animal replacement', async () => {
   const characters = [
     '524',
     'rimo-neko',
     ...Object.values(CAVE_EXTRA_PIGMENTS).flatMap((p) => p.subjects),
   ];
+  for (const id of ADDED_AFTER_R38) assert.ok(characters.includes(id), id);
   const slots = Object.values(recipe.panels).flatMap((p) => p.slots.map((s) => s.character));
-  assert.deepEqual(slots.sort(), characters.sort());
+  assert.deepEqual(slots.sort(), characters.filter((c) => !ADDED_AFTER_R38.includes(c)).sort());
   assert.equal(slots.length, 24);
   for (const panel of Object.values(recipe.panels)) {
     await exactBytes(panel.source.path, panel.source);

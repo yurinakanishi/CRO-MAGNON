@@ -105,27 +105,46 @@ test('an isolated source preserves all original alpha islands, while legacy shar
   await assert.rejects(extractMuralSprite(bytes, { ...s, isolation: 'unknown' }), /isolation/);
 });
 
-test('all 24 identity comparisons have archived references, with only seven subjects regenerated', async () => {
+// Atlas SHA-256 by recipe key, from a revision's own packing record.
+async function packedAtlases(revision) {
+  const atlases = {};
+  for (const t of (await json(`${revision}/qa/packing.json`)).textures) {
+    const key = /\/packed\/([A-Za-z0-9]+)-[0-9a-f]{16}\.png$/.exec(t.path)?.[1];
+    if (key) atlases[key] = t.sha256;
+  }
+  return atlases;
+}
+const servedAtlas = (images, key) =>
+  key === 'creature524'
+    ? images.characterPigment
+    : key === 'rimoFrieze'
+      ? images.rimoPigment
+      : images.extras[key];
+
+test('r41 compared all 24 characters with archived references and regenerated only seven', async () => {
   const review = await json(`${root}/qa/identity-review.json`);
   assert.deepEqual(
     review.subjects.map((s) => s.id).sort(),
-    CAVE_SUBJECT_ART.map((s) => s.id).sort(),
+    recipe.subjects.map((s) => s.id).sort(),
   );
+  assert.equal(review.subjects.length, 24);
   assert.equal(review.subjects.filter((s) => s.decision === 'repair').length, 7);
   assert.equal(review.subjects.filter((s) => s.decision === 'retain').length, 17);
-  const before = await json(`${root}/previous-asset.json`),
-    old = caveMuralImages(before),
-    now = caveMuralImages(asset);
-  const pairs = [
-    ['rimo', old.rimoPigment, now.rimoPigment],
-    ...['roundBots', 'shapeBots', 'maeKohaku', 'maruimoFrieze', 'ryuichiFrieze'].map((k) => [
-      k,
-      old.extras[k],
-      now.extras[k],
-    ]),
-  ];
-  for (const [id, a, b] of pairs)
-    assert.equal(a.sha256, b.sha256, `${id}: retain the exact accepted PNG`);
+  const old = caveMuralImages(await json(`${root}/previous-asset.json`)),
+    packed = await packedAtlases(root);
+  for (const key of [
+    'rimoFrieze',
+    'roundBots',
+    'shapeBots',
+    'maeKohaku',
+    'maruimoFrieze',
+    'ryuichiFrieze',
+  ])
+    assert.equal(
+      packed[key],
+      servedAtlas(old, key).sha256,
+      `${key}: retain the exact accepted PNG`,
+    );
   for (const entry of review.subjects) {
     assert.equal(hash(await readFile(entry.reference.path)), entry.reference.sha256);
     const s = recipe.subjects.find((s) => s.id === entry.id),
@@ -137,4 +156,66 @@ test('all 24 identity comparisons have archived references, with only seven subj
       assert(source.references.some((r) => r.path === entry.before));
     }
   }
+});
+
+test('the current art revision compares every painted character with an archived reference', async () => {
+  const current = await json(asset.muralComposition.recipe),
+    review = await json(current.identityReview);
+  assert.deepEqual(
+    review.subjects.map((s) => s.id).sort(),
+    CAVE_SUBJECT_ART.map((s) => s.id).sort(),
+  );
+  for (const entry of review.subjects) {
+    assert.equal(hash(await readFile(entry.reference.path)), entry.reference.sha256);
+    const s = current.subjects.find((s) => s.id === entry.id),
+      source = current.sources[s.source];
+    assert.equal(hash(await readFile(source.path)), source.sha256);
+    // Repaired and newly added characters come from isolated sources made from their reference.
+    if (entry.decision !== 'retain') {
+      assert.equal(s.isolation, 'whole');
+      assert(source.references.some((r) => r.path === entry.reference.path));
+    }
+    if (entry.decision === 'repair') assert(source.references.some((r) => r.path === entry.before));
+  }
+});
+
+test('r42 adds Jank0vic and keeps all 24 r41 cutouts and nine atlases byte-identical', async () => {
+  const r42 = 'assets/camp-cave/jank0vic-r42',
+    review = await json(`${r42}/qa/identity-review.json`),
+    r42Recipe = await json(`${r42}/recipe.json`),
+    earlier = await json(`${root}/qa/identity-review.json`);
+  assert.deepEqual(
+    review.subjects.filter((s) => s.decision === 'new').map((s) => s.id),
+    ['jank0vic'],
+  );
+  assert.equal(review.subjects.filter((s) => s.decision === 'retain').length, 24);
+  for (const before of earlier.subjects) {
+    const entry = review.subjects.find((s) => s.id === before.id);
+    assert.deepEqual(entry.reference, before.reference);
+    assert.equal(entry.before, before.after);
+    const [a, b] = await Promise.all(
+      [before.after, entry.after].map((p) => sharp(p).ensureAlpha().raw().toBuffer()),
+    );
+    assert(a.equals(b), `${before.id}: delivered pixels changed`);
+  }
+  // Only the storage atlas that received the new cutout was repacked.
+  const old = caveMuralImages(await json(`${r42}/previous-asset.json`)),
+    packed = await packedAtlases(r42);
+  for (const key of Object.keys(r42Recipe.atlases))
+    if (key === 'maeKohaku') assert.notEqual(packed[key], servedAtlas(old, key).sha256);
+    else assert.equal(packed[key], servedAtlas(old, key).sha256, `${key}: retain the exact PNG`);
+  // The user-approved X photo is a production reference only, never a served file.
+  const s = r42Recipe.subjects.find((s) => s.id === 'jank0vic');
+  assert.deepEqual(s, {
+    id: 'jank0vic',
+    atlas: 'maeKohaku',
+    source: 'jank0vic-identity',
+    crop: [252, 14, 1114, 1244],
+    size: 'person',
+    isolation: 'whole',
+  });
+  assert.equal(
+    r42Recipe.sources[s.source].references[0].path,
+    `${r42}/references/x-avatar-400x400.jpg`,
+  );
 });

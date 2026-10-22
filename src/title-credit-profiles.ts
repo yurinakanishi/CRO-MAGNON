@@ -54,4 +54,6 @@ export const TITLE_FRIENDS = [
   { name: '朝日南', profile: 'https://x.com/asahina_AIauto', qr: 'asahina' },
   // Painted in the deepened cave (2026-10-14); a mural person, not a companion.
   { name: '匿名F＠構造婚', profile: 'https://x.com/daredaro_F', qr: 'daredaro' },
+  // Painted at the back of the east wall (2026-10-22); a mural person, not a companion.
+  { name: '個人開発・タコス・ビリヤニ・やんこ', profile: 'https://x.com/Jank0vic', qr: 'jank0vic' },
 ] as const;

@@ -112,6 +112,7 @@ test('the complete guest cast is credited without releasing dormant mascots', ()
       'hawkie',
       'asahina',
       'daredaro',
+      'jank0vic',
       'dots',
     ],
   );

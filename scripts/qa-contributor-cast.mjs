@@ -1,15 +1,18 @@
 // Real Chrome, ephemeral solo server and isolated browser storage. Card checks use real
 // clicks/taps; only the review camera/position is a fixture for inspecting the new painting.
+// Usage: node scripts/qa-contributor-cast.mjs [output] [painted subject, default ryuichi]
 import assert from 'node:assert/strict';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { createGameServer } from '../dist/server.mjs';
 import { readLocalVisibility } from '../dist/infrastructure/node/local-visibility.mjs';
 import { caveWorldAt } from '../dist/shared/camp-cave-layout.mjs';
+import { CAVE_MURALS, caveMuralImages } from '../dist/src/cave-gallery-layout.js';
 import { titleContributors, muralPeople } from '../dist/src/title-credits.js';
 import { enterPreparedWorld } from './qa-game-entry.mjs';
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const output = process.argv[2] || `output/playwright/contributor-cast-${Date.now()}`;
+const subject = process.argv[3] || 'ryuichi';
 await mkdir(output, { recursive: true });
 const server = createGameServer({
   host: '127.0.0.1',
@@ -19,7 +22,14 @@ const server = createGameServer({
 const base = `http://127.0.0.1:${(await server.listen()).port}/`;
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const caveAsset = JSON.parse(await readFile('public/models/camp-cave/asset.json', 'utf8'));
-const mural = caveAsset.mascotPigments.ryuichiFrieze;
+const placed = CAVE_MURALS.find((m) => m.kind === 'character' && m.subject === subject);
+assert.ok(placed, `${subject}: not painted in the cave`);
+const images = caveMuralImages(caveAsset);
+const mural =
+  images.extras[placed.motif] ??
+  (placed.motif === 'creature524' ? images.characterPigment : images.rimoPigment);
+const titleCards = titleContributors().length,
+  muralCards = muralPeople().length;
 const cases = [],
   errors = [],
   forbidden = [];
@@ -67,21 +77,22 @@ async function inspectDialog(page, name, expected) {
 }
 async function painting(page, phase, name) {
   await page.evaluate(
-    ({ pos, phase }) => {
+    ({ pos, phase, sign }) => {
       const renderer = phase === 'waiting' ? window.qaCave : window.qaWorld;
       if (phase === 'waiting') {
         renderer.movement.position = pos;
-        renderer.movement.facing = -Math.PI / 2;
+        renderer.movement.facing = (sign * Math.PI) / 2;
       }
       const camera = renderer.camera.clone();
-      camera.position.set(pos.x + 0.9, 2.6, pos.z);
-      camera.lookAt(pos.x - 5.7, 2.25, pos.z);
+      camera.position.set(pos.x - sign * 0.9, 2.6, pos.z);
+      camera.lookAt(pos.x + sign * 5.7, 2.25, pos.z);
       camera.fov = 75;
       camera.updateProjectionMatrix();
       camera.updateMatrixWorld();
       window.qaReviewCamera = camera;
     },
-    { pos: caveWorldAt(-37), phase },
+    // The east wall lies toward world +x.
+    { pos: caveWorldAt(placed.centre), phase, sign: placed.wall === 'east' ? 1 : -1 },
   );
   await page.waitForTimeout(1200);
   await page.screenshot({ path: `${output}/${name}.png` });
@@ -145,25 +156,30 @@ try {
     await inspectDialog(page, `${name}-mural-people`, muralPeople());
     assert.equal(await page.locator('#modal[open] .contributor:has-text("yuri")').count(), 0);
     await tap('#modal-close');
-    await painting(page, 'waiting', `${name}-waiting-ryuichi`);
+    await painting(page, 'waiting', `${name}-waiting-${subject}`);
     if (!mobile) {
       await enterPreparedWorld(page, mobile);
       await page.waitForFunction(() => !!window.qaWorld?.landmarks?.cavePigment, undefined, {
         timeout: 180000,
       });
-      await painting(page, 'live', `${name}-live-ryuichi`);
+      await painting(page, 'live', `${name}-live-${subject}`);
     }
     cases.push({
       name,
       viewport: page.viewportSize(),
-      titleCards: 17,
-      muralCards: 16,
+      titleCards,
+      muralCards,
       creatorOnlyInTitle: true,
       identicalNonCreatorCards: true,
+      painted: { subject, wall: placed.wall, localZ: placed.centre },
       texture: { url: mural.url, sha256: mural.sha256, bytes: bytes.length },
       paintings: mobile ? ['waiting'] : ['waiting', 'live'],
     });
-    console.log('PASS', name, '17 title cards, 16 identical mural cards, verified painting');
+    console.log(
+      'PASS',
+      name,
+      `${titleCards} title cards, ${muralCards} identical mural cards, verified ${subject} painting`,
+    );
     await context.close();
   }
   assert.deepEqual(errors, []);

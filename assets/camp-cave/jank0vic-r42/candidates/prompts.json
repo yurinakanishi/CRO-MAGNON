@@ -1,0 +1,44 @@
+[
+  {
+    "file": "jank0vic-candidate-01.png",
+    "prompt": "Use case: new character for an existing cave mural, identity reference from a user-approved photo.\nInput 1 is the STYLE reference: an existing figure from the same cave mural. Match its technique exactly: a flat illustration painted with weathered charcoal and earth/mineral pigments, a dark brown speckled outline, granular speckled fill with dry weathering and worn transparent flecks, chibi proportions with a large head (about 40% of the full height), and a simple friendly painted face. Do not copy its hair, glasses, lab coat, flask, badge or character.\nInput 2 is the IDENTITY reference: a photo of the real person to depict, approved by the game's creator. Keep a recognisable likeness in the mural style: short, thick, jet-black hair swept up and slightly to one side at the front with short sides, straight dark eyebrows, dark almond-shaped eyes, a broad warm open smile showing the upper teeth, slightly prominent ears and light warm skin. Clothing follows the visible collar: a dark navy jacket with a stand-up collar over a white shirt, simple dark trousers and plain dark shoes. Use restrained earth-pigment colours: black hair, navy-charcoal jacket, chalk-white shirt.\nPose: full body in three-quarter view facing right, walking forward with an easy stride, the near hand raised beside the head in a friendly wave and the other arm swinging naturally; both shoes fully visible.\nOne full isolated figure on a genuinely transparent canvas with generous empty margins around the hair, hands and both shoes. No background, scenery, ground shadow, text, watermark (do not copy the photo's \"FaceApp\" mark), logo, frame, animal, prop or other character. No glossy 3D rendering, no photorealism and no pixel art.\nCanvas: square, 1024 × 1024 pixels or larger. Output: PNG with alpha.",
+    "options": {
+      "transparent_background": true,
+      "size_request_in_prompt": "square, 1024 × 1024 pixels or larger",
+      "size_parameter": null
+    },
+    "referenced_image_paths": [
+      "C:/Users/yurin/Desktop/projects/CRO-MAGNON/assets/camp-cave/identity-r41/source/howkey-scientist-r01.png",
+      "C:/Users/yurin/Desktop/projects/CRO-MAGNON/assets/camp-cave/jank0vic-r42/references/x-avatar-400x400.jpg"
+    ],
+    "original_path": "C:/Users/yurin/.codex/generated_images/01a16322-5f89-7b73-b197-2d1c5bd2da11/exec-28e0dfec-de21-46ab-81d1-7cdfa6bfe06c.png"
+  },
+  {
+    "file": "jank0vic-candidate-02.png",
+    "prompt": "Use case: new character for an existing cave mural, identity reference from a user-approved photo.\nInput 1 is the STYLE reference: an existing figure from the same cave mural. Match its technique exactly: a flat illustration painted with weathered charcoal and earth/mineral pigments, a dark brown speckled outline, granular speckled fill with dry weathering and worn transparent flecks, chibi proportions with a large head (about 40% of the full height), and a simple friendly painted face. Do not copy its hair, glasses, lab coat, flask, badge or character.\nInput 2 is the IDENTITY reference: a photo of the real person to depict, approved by the game's creator. Keep a recognisable likeness in the mural style: short, thick, jet-black hair swept up and slightly to one side at the front with short sides, straight dark eyebrows, dark almond-shaped eyes, a broad warm open smile showing the upper teeth, slightly prominent ears and light warm skin. Clothing follows the visible collar: a dark navy jacket with a stand-up collar over a white shirt, simple dark trousers and plain dark shoes. Use restrained earth-pigment colours: black hair, navy-charcoal jacket, chalk-white shirt.\nPose: full body standing upright in a relaxed frontal three-quarter view turned slightly right, one hand raised in a friendly wave at shoulder height and the other hand relaxed at the side; both feet planted on the same level and fully visible.\nOne full isolated figure on a genuinely transparent canvas with generous empty margins around the hair, hands and both shoes. No background, scenery, ground shadow, text, watermark (do not copy the photo's \"FaceApp\" mark), logo, frame, animal, prop or other character. No glossy 3D rendering, no photorealism and no pixel art.\nCanvas: square, 1024 × 1024 pixels or larger. Output: PNG with alpha.",
+    "options": {
+      "transparent_background": true,
+      "size_request_in_prompt": "square, 1024 × 1024 pixels or larger",
+      "size_parameter": null
+    },
+    "referenced_image_paths": [
+      "C:/Users/yurin/Desktop/projects/CRO-MAGNON/assets/camp-cave/identity-r41/source/howkey-scientist-r01.png",
+      "C:/Users/yurin/Desktop/projects/CRO-MAGNON/assets/camp-cave/jank0vic-r42/references/x-avatar-400x400.jpg"
+    ],
+    "original_path": "C:/Users/yurin/.codex/generated_images/01a16322-5f89-7b73-b197-2d1c5bd2da11/exec-cde6129c-368f-4d42-a5d7-ac61adeb8547.png"
+  },
+  {
+    "file": "jank0vic-candidate-03.png",
+    "prompt": "Use case: new character for an existing cave mural, identity reference from a user-approved photo.\nInput 1 is the STYLE reference: an existing figure from the same cave mural. Match its technique exactly: a flat illustration painted with weathered charcoal and earth/mineral pigments, a dark brown speckled outline, granular speckled fill with dry weathering and worn transparent flecks, chibi proportions with a large head (about 40% of the full height), and a simple friendly painted face. Do not copy its hair, glasses, lab coat, flask, badge or character.\nInput 2 is the IDENTITY reference: a photo of the real person to depict, approved by the game's creator. Keep a recognisable likeness in the mural style: short, thick, jet-black hair swept up and slightly to one side at the front with short sides, straight dark eyebrows, dark almond-shaped eyes, a broad warm open smile showing the upper teeth, slightly prominent ears and light warm skin. Clothing follows the visible collar: a dark navy jacket with a stand-up collar over a white shirt, simple dark trousers and plain dark shoes. Use restrained earth-pigment colours: black hair, navy-charcoal jacket, chalk-white shirt.\nPose: full body in profile three-quarter view facing right, mid-stride in a cheerful brisk walk, both arms swinging, head turned slightly toward the viewer with the big smile; both shoes fully visible.\nOne full isolated figure on a genuinely transparent canvas with generous empty margins around the hair, hands and both shoes. No background, scenery, ground shadow, text, watermark (do not copy the photo's \"FaceApp\" mark), logo, frame, animal, prop or other character. No glossy 3D rendering, no photorealism and no pixel art.\nCanvas: square, 1024 × 1024 pixels or larger. Output: PNG with alpha.",
+    "options": {
+      "transparent_background": true,
+      "size_request_in_prompt": "square, 1024 × 1024 pixels or larger",
+      "size_parameter": null
+    },
+    "referenced_image_paths": [
+      "C:/Users/yurin/Desktop/projects/CRO-MAGNON/assets/camp-cave/identity-r41/source/howkey-scientist-r01.png",
+      "C:/Users/yurin/Desktop/projects/CRO-MAGNON/assets/camp-cave/jank0vic-r42/references/x-avatar-400x400.jpg"
+    ],
+    "original_path": "C:/Users/yurin/.codex/generated_images/01a16322-5f89-7b73-b197-2d1c5bd2da11/exec-3072daf7-8a89-4438-aaea-8a4c70fd3b8c.png"
+  }
+]

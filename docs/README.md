@@ -33,7 +33,7 @@ PCの入力UI: [2026-10-17 マウス・キーボード向けの文字付き行�
 
 ソロの仲間: [2026-10-16 複数選択・全選択／全解除・横送りのターゲット・連続投げ](solo-mascots-2026-10-16.md)。ローカル実装・検証、未公開。
 
-洞窟の壁画: [2026-10-16 原画の特徴を7体で修復し、全24体を比較](../assets/camp-cave/identity-r41/README.md)・[原画と変更前後の一覧](../assets/camp-cave/identity-r41/qa/index.html)。[共通縮尺と上下の重なり](../assets/camp-cave/layered-r40/README.md)、[両壁の連続配置と新キャラの自動配置](cave-mural-continuity-2026-10-16.md)を継承。[22:23 JSTに公開済み](mural-deploy-2026-10-16.md)。[今後の追加手順](../assets/camp-cave/continuous-r39/README.md)。
+洞窟の壁画: [2026-10-22 Jank0vicさんを東壁の奥に追加（素材r42、全25体）](../assets/camp-cave/jank0vic-r42/README.md)・[参照と配信素材の一覧](../assets/camp-cave/jank0vic-r42/qa/index.html)。未公開。[2026-10-16 原画の特徴を7体で修復し、全24体を比較](../assets/camp-cave/identity-r41/README.md)・[原画と変更前後の一覧](../assets/camp-cave/identity-r41/qa/index.html)。[共通縮尺と上下の重なり](../assets/camp-cave/layered-r40/README.md)、[両壁の連続配置と新キャラの自動配置](cave-mural-continuity-2026-10-16.md)を継承。[22:23 JSTに公開済み](mural-deploy-2026-10-16.md)。[今後の追加手順](../assets/camp-cave/continuous-r39/README.md)。
 
 - [2026-09](changelog/2026-09.md)
 - [2026-10](changelog/2026-10.md)

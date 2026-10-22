@@ -150,6 +150,7 @@ export const CONTRIBUTOR_MURAL_SUBJECTS: Readonly<Record<string, readonly string
   hawkie: ['howkey-scientist'],
   asahina: ['rei-mascot'],
   daredaro: ['daredaro'],
+  jank0vic: ['jank0vic'],
   dots: ['white', 'blue', 'green', 'purple', 'orange', 'beret', 'frog', 'triangle', 'heart'],
 };
 
