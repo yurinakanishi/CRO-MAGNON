@@ -9,6 +9,7 @@ import { campContribution } from '../dist/shared/camp-contribution.mjs';
 import {
   CAMP_CONTRIBUTION_RANGE,
   GATHER_RANGE,
+  gatherRange,
   interactionVisible,
 } from '../dist/shared/interactions.mjs';
 import { coastalInteraction } from '../dist/src/coastal-ui.js';
@@ -67,7 +68,7 @@ function fixture() {
       residentInteraction,
       gulfInteraction,
       CAMP_CONTRIBUTION_RANGE,
-      GATHER_RANGE,
+      gatherRange,
       interactionVisible,
       distance: (a, b) => Math.hypot(a.x - b.x, a.z - b.z),
     });

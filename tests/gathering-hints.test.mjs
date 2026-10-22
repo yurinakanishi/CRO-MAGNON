@@ -6,9 +6,10 @@ import vm from 'node:vm';
 
 const repo = new URL('../', import.meta.url);
 const { createGameCore } = await import(new URL('dist/application/game-core.mjs', repo));
-const { GATHER_RANGE, interactionVisible } = await import(
+const { GATHER_RANGE, gatherRange, interactionVisible } = await import(
   new URL('dist/shared/interactions.mjs', repo)
 );
+const { characterModel } = await import(new URL('dist/shared/characters.mjs', repo));
 const { StableAssistTarget } = await import(new URL('dist/src/assisted-controls.js', repo));
 const { contextCues } = await import(new URL('dist/src/input-cues.js', repo));
 const { touchActions } = await import(new URL('dist/src/touch-input.js', repo));
@@ -78,7 +79,7 @@ function fixture(kind, pet, assisting = false) {
     adventureInteraction: () => null,
     residentInteraction: () => null,
     gulfInteraction: () => null,
-    GATHER_RANGE,
+    gatherRange,
     interactionVisible,
     interactionTarget,
     distance: (a, b) => Math.hypot(a.x - b.x, a.z - b.z),
@@ -163,6 +164,43 @@ test('gathering still hides outside range, behind obstacles, when depleted, full
     assert.equal(f.hint() ?? null, null, blocked);
     f.core.close();
   }
+});
+
+test('the broad ape gathers every wood, stone and obsidian pile from where its body can stand', () => {
+  const ape = characterModel({ species: 'ape' });
+  // Its 0.76 m body stays more than 1 m from every pile's centre; reach counts from its edge.
+  const standing = (room, resource) => {
+    for (let d = 0.6; d <= gatherRange(ape) + 1e-9; d += 0.02)
+      for (let a = 0; a < 360; a += 5) {
+        const p = {
+          x: resource.x + Math.sin((a * Math.PI) / 180) * d,
+          z: resource.z + Math.cos((a * Math.PI) / 180) * d,
+        };
+        if (room.collision.free(p, ape.radius) && interactionVisible(room.collision, p, resource))
+          return p;
+      }
+    return null;
+  };
+  for (const kind of ['wood', 'stone']) {
+    const f = fixture(kind, null);
+    if (kind === 'wood')
+      for (const resource of f.room.resources.filter((r) => r.type !== 'berry'))
+        assert.ok(standing(f.room, resource), resource.id);
+    Object.assign(f.player, standing(f.room, f.resource), {
+      species: ape.species,
+      gender: ape.gender,
+      character: ape.key,
+      radius: ape.radius,
+    });
+    const hint = f.hint();
+    assert.equal(hint?.action, 'gather', kind);
+    const before = f.player.inventory[kind];
+    f.socket.command({ type: 'action', action: 'gather', targetId: hint.targetId });
+    assert.equal(f.player.inventory[kind], before + 1, kind);
+    f.core.close();
+  }
+  assert.equal(gatherRange({ radius: 0.32 }), GATHER_RANGE);
+  assert.equal(gatherRange({}), GATHER_RANGE);
 });
 
 test('gathering has an independent visible cue with companions, recall, inspection and combat competing for three slots', () => {

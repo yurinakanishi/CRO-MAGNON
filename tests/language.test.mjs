@@ -112,6 +112,11 @@ test('templates preserve numbers, arbitrary player names, whitespace and unknown
     en('採集用・装備中は木材と石の採集量が2倍。今の装備は持ち物に残ります。'),
     'Gathering tool: gather twice as much wood and stone when equipped. Your current equipment stays in your inventory.',
   );
+  assert.equal(
+    en('黒曜石の槍を持ち物に追加しました。この人物は武器を持てません。'),
+    'Added Obsidian spear to your inventory. This character cannot hold weapons.',
+  );
+  assert.equal(en('黒曜石の槍 1個 持てません'), 'Obsidian spear: 1 · Cannot hold');
   assert.equal(en('https://x.com/test?language=ja'), 'https://x.com/test?language=ja');
 });
 

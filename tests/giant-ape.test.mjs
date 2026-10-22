@@ -30,7 +30,7 @@ const enemy = (id, z) => ({
   phase: 'alive',
 });
 
-test('giant ape keeps its identity in old gender fields and cannot acquire spear upgrades', () => {
+test('giant ape keeps its identity in old gender fields; a stored spear never changes its strike', () => {
   for (const gender of [undefined, 'female', 'male', '<invalid>']) {
     const profile = { species: 'ape', gender, spearHead: 'obsidian' };
     assert.deepEqual(normalizeCharacter(profile), {

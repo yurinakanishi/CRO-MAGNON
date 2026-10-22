@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { equippedItem, ownsEquipment } from '../dist/shared/equipment.mjs';
+import { canHoldEquipment, equippedItem, ownsEquipment } from '../dist/shared/equipment.mjs';
 import { equipItem } from '../dist/shared/equipment-actions.mjs';
+import { handleCharacterSwitch } from '../dist/shared/character-switching.mjs';
 import { craftInventory } from '../dist/shared/inventory-crafting.mjs';
 import { attackProfile } from '../dist/shared/combat-profiles.mjs';
 import { startAttack, resolveAttack } from '../dist/shared/combat.mjs';
@@ -43,7 +44,8 @@ test('legacy ownership resolves to one weapon; an invalid/unowned slot never equ
   assert.equal(ownsEquipment(player, 'axe'), false);
   player.species = 'cat';
   assert.equal(equippedItem(player), 'character');
-  assert.equal(ownsEquipment(player, 'obsidianSpear'), false);
+  assert.equal(ownsEquipment(player, 'obsidianSpear'), true);
+  assert.equal(canHoldEquipment(player, 'obsidianSpear'), false);
 });
 
 test('crafting a spear while holding wood spear or axe keeps the old selection until equipping', () => {
@@ -90,6 +92,8 @@ test('invalid, unowned and busy equip requests are atomic and do not interrupt a
     ['obsidianSpear', { spearHead: 'wood' }],
     ['character', {}],
     ['spear', { species: 'cat' }],
+    ['obsidianSpear', { species: 'ape' }],
+    ['obsidianSpear', { species: 'bear', equippedItem: 'axe' }],
     ['axe', { downedUntil: 11000 }],
     ['axe', { mountId: 'a' }],
     ['axe', { boatId: 'b' }],
@@ -155,6 +159,38 @@ test('gathering applies the axe bonus only when that slot is selected', () => {
     act(room, player, { action: 'gather', targetId: 'wood' }, 10000);
     assert.equal(player.inventory.wood - before, amount);
   }
+});
+
+test('the ape keeps a crafted spear it cannot hold; the human it becomes holds it until it changes back', () => {
+  const { player, room } = fixture();
+  Object.assign(player, { species: 'ape', gender: 'male', radius: 0.76, spearHead: 'wood' });
+  assert.equal(craftInventory(room, player, 'spear', 10000).ok, true);
+  assert.equal(ownsEquipment(player, 'obsidianSpear'), true);
+  const before = structuredClone(player);
+  assert.deepEqual(equipItem(player, 'obsidianSpear', 10000), {
+    ok: false,
+    text: 'この人物は武器を持てません。',
+  });
+  assert.deepEqual(player, before);
+  assert.equal(attackProfile(player).key, 'unarmed');
+  assert.equal(
+    handleCharacterSwitch(room, player, { targetId: 'cro-magnon-hunter' }, 10000).ok,
+    true,
+  );
+  // The ape's hands are no human's item: the human takes up its best spear, the stored one.
+  assert.equal(equippedItem(player), 'obsidianSpear');
+  assert.equal(attackProfile(player).damage, 30);
+  assert.equal(handleCharacterSwitch(room, player, { targetId: 'giant-ape' }, 10000).ok, true);
+  assert.equal(equippedItem(player), 'character');
+  assert.equal(attackProfile(player).modelKey, undefined, 'no spear drawn in its hand');
+  assert.equal(player.spearHead, 'obsidian', 'the spear stays in the bag');
+  // An ape holding the axe keeps holding it as a human.
+  assert.equal(equipItem(player, 'axe', 10000).ok, true);
+  assert.equal(
+    handleCharacterSwitch(room, player, { targetId: 'cro-magnon-hunter' }, 10000).ok,
+    true,
+  );
+  assert.equal(equippedItem(player), 'axe');
 });
 
 test('native character attacks and the axe also share the one equipment slot', () => {

@@ -81,12 +81,15 @@ export const GRASS_KEEP = 0.6,
 // Share of grassland cover spots that are tufts (the rest are sprigs); the
 // ground colour match in src/paleo-materials.ts weights the two blade greens by it.
 export const GROUNDCOVER_TUFT_SHARE = GRASS_TUFT / GRASS_KEEP;
+// The harvest piles the scatter keeps clear of. The gulf's were archived; the volcano's
+// obsidian (2026-10-22) stands on ground the scatter had already left clear and moves nothing.
+export const SCATTERED_HARVEST = INITIAL_RESOURCES.filter(
+  (r) => !r.id.startsWith('gulf-') && r.type !== 'obsidian',
+);
 const SCATTER_RESOURCES = [
   // Retain the old scatter exclusion when moving this harvest node. Otherwise
   // a previously rejected boulder appears directly on the mammoth arrival.
-  ...INITIAL_RESOURCES.filter((r) => !r.id.startsWith('gulf-')).map((r) =>
-    r.id === 'wood-7' ? { ...r, x: 32, z: 32 } : r,
-  ),
+  ...SCATTERED_HARVEST.map((r) => (r.id === 'wood-7' ? { ...r, x: 32, z: 32 } : r)),
   ...LEGACY_RESOURCE_POINTS,
 ];
 const scatterBiomeAt = (x, z) => biomeById(legacySceneryBiome(x, z));
@@ -448,8 +451,5 @@ export function scatterScenery(ask: SceneryQuestions) {
   );
   // Last, and asking nothing: off the mountain's slopes and clear of one another and of
   // every harvest pile where it really stands.
-  return spaceScenery(
-    reserved,
-    INITIAL_RESOURCES.filter((r) => !r.id.startsWith('gulf-')),
-  );
+  return spaceScenery(reserved, SCATTERED_HARVEST);
 }

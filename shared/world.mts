@@ -84,6 +84,26 @@ for (const stop of EXPEDITION_STOPS.slice(1)) {
   if (biome !== 'ice') nodes.push(['wood', stop.x - 8, stop.z + 5, 7]);
   if (biome === 'grassland' || biome === 'snow') nodes.push(['berry', stop.x - 4, stop.z + 8, 5]);
 }
+// 2026-10-22: obsidian just south of the West Asian volcanic fire (+z is south), beside that
+// stop's stone and wood, so one visit gathers a whole obsidian spear. Named apart, after every
+// older node's id.
+const volcano = EXPEDITION_STOPS.find((stop) => stop.id === 'volcano')!;
+export const VOLCANO_OBSIDIAN: readonly Resource[] = Object.freeze(
+  [
+    [1, 12.5],
+    [-3, 10.5],
+    [-3, 14.5],
+  ].map(([dx, dz], i) =>
+    Object.freeze({
+      id: `obsidian-volcano-${i + 1}`,
+      type: 'obsidian' as const,
+      x: volcano.x + dx,
+      z: volcano.z + dz,
+      amount: 8,
+      maxAmount: 8,
+    }),
+  ),
+);
 
 export const INITIAL_RESOURCES: readonly Resource[] = Object.freeze([
   ...nodes.map(([type, x, z, amount], index) =>
@@ -92,4 +112,5 @@ export const INITIAL_RESOURCES: readonly Resource[] = Object.freeze([
   ...ADVENTURE_RESOURCES,
   ...GULF_RESOURCES,
   ...OBSIDIAN_OUTCROPS,
+  ...VOLCANO_OBSIDIAN,
 ]);

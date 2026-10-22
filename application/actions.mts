@@ -11,7 +11,7 @@ import { attackProfile, shoulderMagic } from '../shared/combat-profiles.mjs';
 import { handleHuntingAction } from '../shared/hunting.mjs';
 import {
   CAMP_CONTRIBUTION_RANGE,
-  GATHER_RANGE,
+  gatherRange,
   interactionVisible,
 } from '../shared/interactions.mjs';
 import { campContribution } from '../shared/camp-contribution.mjs';
@@ -238,7 +238,7 @@ export function createActionHandler({
         (resource) =>
           resource.amount > 0 &&
           (!message.targetId || resource.id === message.targetId) &&
-          distance(resource, player) <= GATHER_RANGE &&
+          distance(resource, player) <= gatherRange(player) &&
           interactionVisible(room.collision, player, resource),
       );
       const nearest = candidates

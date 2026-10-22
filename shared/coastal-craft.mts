@@ -9,8 +9,7 @@ import { ensureGulfPlayer } from './gulf-life.mjs';
 import { interactionVisible } from './interactions.mjs';
 import { stopActor } from './combat.mjs';
 import { attackProfile } from './combat-profiles.mjs';
-import { characterModel } from './characters.mjs';
-import { equippedItem } from './equipment.mjs';
+import { CANNOT_HOLD, canHoldEquipment, equippedItem } from './equipment.mjs';
 
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 const moving = (p) => !!(p.target || p.path?.length || Math.hypot(p.dx || 0, p.dz || 0) > 0.01);
@@ -80,8 +79,6 @@ export function handleCoastalAction(room, player, message, now) {
     return response(`貝殻${amount}個を積んだ。みんなの貝塚は${midden.shells}個。`, true);
   }
   if (action === 'haftSpear') {
-    if (characterModel(player).weapon)
-      return response('槍先は人間系の木槍に取り付けます。今の武器はそのまま使えます。');
     if (player.spearHead === 'obsidian') return response('すでに黒曜石の槍先を取り付けています。');
     if (!inv.obsidianBlade || inv.wood < COASTAL.haftWood)
       return response('黒曜石の刃1・木材1が必要です。先に原石を削ろう。');
@@ -89,7 +86,12 @@ export function handleCoastalAction(room, player, message, now) {
     inv.wood -= COASTAL.haftWood;
     player.equippedItem = equippedItem(player);
     player.spearHead = 'obsidian';
-    return response('黒曜石の槍を持ち物に追加しました。持ち物から装備できます。', true);
+    return response(
+      canHoldEquipment(player, 'obsidianSpear')
+        ? '黒曜石の槍を持ち物に追加しました。持ち物から装備できます。'
+        : `黒曜石の槍を持ち物に追加しました。${CANNOT_HOLD}`,
+      true,
+    );
   }
   if (moving(player)) return response('移動を止めてから作業しよう。');
   if (action === 'gatherShellfish') {

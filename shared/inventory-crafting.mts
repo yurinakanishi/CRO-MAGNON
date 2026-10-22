@@ -1,12 +1,11 @@
 import { BOATING } from './boats.mjs';
 import { COASTAL } from './coastal-sites.mjs';
 import { ROOT_RECIPES } from './crops.mjs';
-import { characterModel } from './characters.mjs';
 import { attackProfile } from './combat-profiles.mjs';
 import { jumpProgress } from './jumping.mjs';
 import { HUNTING, usableCookingFire } from './hunting.mjs';
 import { ensureGulfPlayer } from './gulf-life.mjs';
-import { equippedItem } from './equipment.mjs';
+import { CANNOT_HOLD, canHoldEquipment, equippedItem } from './equipment.mjs';
 
 export interface InventoryRecipe {
   id: string;
@@ -44,7 +43,7 @@ export const INVENTORY_RECIPES: readonly InventoryRecipe[] = [
     cost: { obsidian: COASTAL.obsidianCost },
     tools: { stone: 1 },
     output: 'obsidianBlade',
-    note: '黒曜石の槍の材料',
+    note: '槍の材料・原石は西アジアの火山地帯で採れる',
   },
   {
     id: 'spear',
@@ -124,8 +123,6 @@ export function inventoryCraftReason(room, player, recipe: InventoryRecipe, now:
     (player.attackSequence && now - player.attackAt < attackProfile(player).durationMs)
   )
     return '今の動作が終わると作れます';
-  if (recipe.equipment === 'spear' && characterModel(player).weapon)
-    return '木槍を使うキャラクター用';
   if (recipe.equipment && craftedCount(player, recipe)) return '所持済み';
   if (!recipe.equipment && craftedCount(player, recipe) >= HUNTING.inventoryLimit)
     return '所持数が上限です';
@@ -156,9 +153,9 @@ export function craftInventory(room, player, id: unknown, now: number) {
     ensureGulfPlayer(player).bladesKnapped++;
     player.energy = Math.max(0, player.energy - 2);
   }
-  return {
-    ok: true,
-    text: `${recipe.name}を持ち物に追加しました。`,
-    equipment: recipe.equipment === 'spear' ? 'obsidianSpear' : recipe.equipment,
-  };
+  const equipment = recipe.equipment === 'spear' ? 'obsidianSpear' : recipe.equipment;
+  // The ape or the mage keeps its spear in the bag: there is nothing to offer to equip.
+  if (equipment && !canHoldEquipment(player, equipment))
+    return { ok: true, text: `${recipe.name}を持ち物に追加しました。${CANNOT_HOLD}` };
+  return { ok: true, text: `${recipe.name}を持ち物に追加しました。`, equipment };
 }
