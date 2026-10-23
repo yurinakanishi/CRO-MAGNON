@@ -1,0 +1,98 @@
+{
+  "checkedAt": "2026-10-23T00:13:03.306Z",
+  "status": "passed",
+  "browser": "authenticated Chrome via CUA",
+  "searchConsole": {
+    "property": "sc-domain:cromagnonmmo.com",
+    "sitemap": "https://cromagnonmmo.com/sitemap.xml",
+    "status": "Success",
+    "discoveredPages": 4,
+    "submittedDate": "2026-10-23",
+    "lastReadDate": "2026-10-23",
+    "screenshot": "output/cloudflare-deploy/deploy-seo-20261023-01/search-console-sitemap-success.png",
+    "searchIndexingConfirmed": false
+  },
+  "analytics": {
+    "accountId": "57469670",
+    "propertyId": "560390167",
+    "streamId": "16185055742",
+    "measurementId": "G-4T2Y4X52RH",
+    "realtimeActiveUsers": 1,
+    "realtimePageViews": 1,
+    "pageTitle": "CRO-MAGNON MMO",
+    "events": ["first_visit", "page_view", "session_start"],
+    "screenshot": "output/cloudflare-deploy/deploy-seo-20261023-01/ga4-realtime-received.png"
+  },
+  "scope": "Observed displayed metrics after controlled opt-in visits. No claims about organic visitors or completed search indexing.",
+  "network": {
+    "googleRequestsBeforeConsent": 0,
+    "collection": [
+      {
+        "endpoint": "https://www.google-analytics.com/g/collect",
+        "status": 204,
+        "measurementId": "G-4T2Y4X52RH",
+        "event": "page_view",
+        "pageLocation": "https://cromagnonmmo.com/",
+        "adPersonalization": "1",
+        "consentState": "G101"
+      }
+    ],
+    "metadata": [
+      {
+        "path": "/robots.txt",
+        "status": 200,
+        "contentType": "text/plain; charset=utf-8",
+        "robots": null,
+        "hasSitemap": true,
+        "locCount": 0
+      },
+      {
+        "path": "/sitemap.xml",
+        "status": 200,
+        "contentType": "application/xml; charset=utf-8",
+        "robots": null,
+        "hasSitemap": false,
+        "locCount": 4
+      },
+      {
+        "path": "/",
+        "status": 200,
+        "contentType": "text/html",
+        "robots": null,
+        "canonical": "https://cromagnonmmo.com/",
+        "hasSitemap": false,
+        "locCount": 0
+      },
+      {
+        "path": "/en/",
+        "status": 200,
+        "contentType": "text/html",
+        "robots": null,
+        "canonical": "https://cromagnonmmo.com/en/",
+        "hasSitemap": false,
+        "locCount": 0
+      },
+      {
+        "path": "/privacy",
+        "status": 200,
+        "contentType": "text/html",
+        "robots": null,
+        "canonical": "https://cromagnonmmo.com/privacy",
+        "hasSitemap": false,
+        "locCount": 0
+      },
+      {
+        "path": "/en/privacy",
+        "status": 200,
+        "contentType": "text/html",
+        "robots": null,
+        "canonical": "https://cromagnonmmo.com/en/privacy",
+        "hasSitemap": false,
+        "locCount": 0
+      }
+    ],
+    "evidence": "output/cloudflare-deploy/deploy-seo-20261023-01/google-live.json"
+  },
+  "privacy": "Basic opt-in, no Google requests before consent; sanitized URL, denied ad storage/data/personalization; no game saves or player names.",
+  "searchConsoleAnalyticsLink": "Created and verified before publication; dedicated property and stream only."
+}

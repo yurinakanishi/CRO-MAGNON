@@ -1,11 +1,11 @@
 {
-  "checkedAt": "2026-10-22T13:59:01.475Z",
+  "checkedAt": "2026-10-23T00:13:03.306Z",
   "status": "passed",
   "base": "https://cromagnonmmo.com/",
-  "buildId": "8d067fe78294da77f5700abdbcc4d55cf3272606f56b017325ea40af95d345cd",
-  "sourceCommit": "603e444e932f639b972f31371427fe578bf18859",
+  "buildId": "da8c32bb626df7818d5d9b0789f8189132fa172a3a457c80a6b1009c5093e23b",
+  "sourceCommit": "6b1cd2fdcba1184c3e4e130318840d0ffbdbb9c5",
   "browser": "155.0.8059.85",
-  "scope": "Real Chrome on Windows; desktop and 390px touch emulation with isolated browser saves. Physical phones, Safari, physical controllers and long-duration performance not tested.",
+  "scope": "Real Chrome on Windows; desktop and 390px touch emulation with isolated saves; the actual analytics rejection button is clicked before gameplay. Physical phones, Safari, physical controllers and long-duration performance not tested.",
   "checks": [
     "The title enables solo and disables online entry",
     "First entry runs and autosaves a local character, outfit and one companion",
@@ -25,30 +25,11 @@
     "maxPlayers": 1,
     "room": "SOLO"
   },
-  "screenshots": "output/playwright/solo-live-20261022-01",
+  "screenshots": "output/playwright/solo-live-seo-20261023-02",
   "visuallyReviewed": [
-    "output/playwright/solo-live-20261022-01/solo-world.png",
-    "output/playwright/solo-live-20261022-01/solo-mobile.png",
-    "output/playwright/live-cast-20261022-01/pc-title-jank0vic.png"
+    "output/playwright/solo-live-seo-20261023-02/solo-world.png",
+    "output/playwright/solo-live-seo-20261023-02/solo-mobile.png"
   ],
-  "productionGate": "output/production-20261022-01/verification.json",
-  "evidence": "output/playwright/solo-live-20261022-01/result.json",
-  "contributorCast": {
-    "status": "passed",
-    "cases": [
-      {
-        "label": "pc",
-        "titleCards": 18,
-        "muralCards": 17,
-        "newContributor": "jank0vic"
-      },
-      {
-        "label": "phone",
-        "titleCards": 18,
-        "muralCards": 17,
-        "newContributor": "jank0vic"
-      }
-    ],
-    "evidence": "output/playwright/live-cast-20261022-01/report.json"
-  }
+  "productionGate": "output/seo-production-20261023-r02/verification.json",
+  "evidence": "output/playwright/solo-live-seo-20261023-02/result.json"
 }
