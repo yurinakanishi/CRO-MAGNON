@@ -22,6 +22,7 @@ import { compileScene } from './context-recovery.js';
 import { startupMarks } from './startup-marks.js';
 import { CaveTorch } from './cave-torch.js';
 import { CAVE_LIGHT } from '../shared/cave-light.mjs';
+import { CAMP_DAYLIGHT, wearDaylight } from './actor-daylight.js';
 import { CaveSpring } from './cave-spring.js';
 
 const DIRECTION_KEYS = ['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
@@ -445,6 +446,8 @@ export class LoadingCave {
     this.updateCamera();
     this.torch?.update(true, this.elapsed, dt, this.world.renderer.getPixelRatio(), this.torchLit);
     this.spring?.update(this.elapsed);
+    // The visitor stands lit as at the camp outside (actor-daylight.ts).
+    wearDaylight(CAMP_DAYLIGHT);
     if (this.ready) this.world.renderer.render(this.scene, this.camera);
     Object.assign(this.world.canvas.dataset, {
       cavePosition: `${this.movement.position.x.toFixed(3)},${this.movement.position.z.toFixed(3)}`,

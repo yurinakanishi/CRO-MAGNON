@@ -19,6 +19,7 @@ import {
 } from './embedded-glb.js';
 import { configureActorPerformance, disposeActorPerformance } from './performance-lod.js';
 import { installClothingDye } from './clothing-dye.js';
+import { installActorDaylight } from './actor-daylight.js';
 import { AssetLoadQueue, LOAD_TIER, LoadTicket } from './asset-load-queue.js';
 
 export function handGripPlacement(root) {
@@ -226,6 +227,7 @@ export class CharacterAssets {
           : tint(node.material);
       });
       const clothing = dye === undefined ? null : installClothingDye(root, asset.modelKey, dye);
+      installActorDaylight(root);
       configureActorPerformance(root, lod?.scene, asset);
       const { grip, rotation: gripUp } = handGripPlacement(root);
       const axeGrip = axeGripPlacement(

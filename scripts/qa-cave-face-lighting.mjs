@@ -1,5 +1,8 @@
 // Controlled lighting comparison in real Chrome. The camera, pose and torch time
 // are identical between the old/new ambient intensities. Placement is a QA fixture.
+// Record of 2026-10-15. Since 2026-10-23 characters wear the outdoor daylight in the cave and
+// neither the cave's fill nor the torch lights them (src/actor-daylight.ts), so its "fill lifts
+// the face" checks no longer hold: use scripts/qa-cave-character-daylight.mjs.
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { createGameServer } from '../dist/server.mjs';
