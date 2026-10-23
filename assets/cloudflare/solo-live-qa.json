@@ -1,11 +1,11 @@
 {
-  "checkedAt": "2026-10-23T00:13:03.306Z",
+  "checkedAt": "2026-10-23T01:53:20.870Z",
   "status": "passed",
   "base": "https://cromagnonmmo.com/",
-  "buildId": "da8c32bb626df7818d5d9b0789f8189132fa172a3a457c80a6b1009c5093e23b",
-  "sourceCommit": "6b1cd2fdcba1184c3e4e130318840d0ffbdbb9c5",
+  "buildId": "86f5a029353687c97aebe78faa70ab11d61c9587a0a5cbbd7131756db61cef9e",
+  "sourceCommit": "7771c74c3cb3335275da93547022c545eb5a93b5",
   "browser": "155.0.8059.85",
-  "scope": "Real Chrome on Windows; desktop and 390px touch emulation with isolated saves; the actual analytics rejection button is clicked before gameplay. Physical phones, Safari, physical controllers and long-duration performance not tested.",
+  "scope": "Real Chrome on Windows; desktop and 390px touch emulation with isolated saves; analytics rejected through the actual UI. Physical phones, Safari, physical controllers and long-duration performance untested.",
   "checks": [
     "The title enables solo and disables online entry",
     "First entry runs and autosaves a local character, outfit and one companion",
@@ -25,11 +25,11 @@
     "maxPlayers": 1,
     "room": "SOLO"
   },
-  "screenshots": "output/playwright/solo-live-seo-20261023-02",
+  "screenshots": "output/playwright/solo-live-daylight-20261023-01",
   "visuallyReviewed": [
-    "output/playwright/solo-live-seo-20261023-02/solo-world.png",
-    "output/playwright/solo-live-seo-20261023-02/solo-mobile.png"
+    "output/playwright/solo-live-daylight-20261023-01/solo-world.png",
+    "output/playwright/solo-live-daylight-20261023-01/solo-mobile.png"
   ],
-  "productionGate": "output/seo-production-20261023-r02/verification.json",
-  "evidence": "output/playwright/solo-live-seo-20261023-02/result.json"
+  "productionGate": "output/daylight-production-20261023-r01/verification.json",
+  "evidence": "output/playwright/solo-live-daylight-20261023-01/result.json"
 }
