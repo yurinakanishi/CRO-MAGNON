@@ -103,6 +103,18 @@ try {
         language,
       );
       assert.equal(await page.locator('html').getAttribute('lang'), language);
+      assert.equal(
+        await page.locator('link[rel="canonical"]').getAttribute('href'),
+        `https://cromagnonmmo.com${language === 'en' ? '/en/' : '/'}`,
+      );
+      assert.equal(
+        await page.locator('meta[property="og:locale"]').getAttribute('content'),
+        language === 'en' ? 'en_US' : 'ja_JP',
+      );
+      assert.equal(
+        await page.locator('#title-privacy').getAttribute('href'),
+        language === 'en' ? '/en/privacy' : '/privacy',
+      );
     };
     await page.goto(`${origin}/en/?room=EMBER#preview`, { waitUntil: 'domcontentloaded' });
     await title('en');

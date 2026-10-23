@@ -21,6 +21,8 @@
 
 ## 作業記録（月別）
 
+検索・計測：[2026-10-23 GA4専用プロパティ・Search Console所有権確認と連携、robots/サイトマップ](analytics-search-2026-10-23.md)。Google側は設定済み。サイト側はNode 24.22.1の一括ゲートと実Chrome検証に合格。公開反映・サイトマップ提出・GA4実受信は未実施。
+
 最新の公開: [2026-10-22 22:48 JST 壁画・採集・槍・黒曜石をソロ公開](solo-release-2026-10-22.md)。全変更をコミット・push後、Free契約を実確認して公開。1,853テスト、公開782ファイルのSHA、PC／タッチの実Chrome検証が合格。[承認前の公開準備記録](release-preparation-2026-10-22.md)。
 
 黒曜石: [2026-10-22 西アジアの火山地帯に黒曜石の露頭を3つ](changelog/2026-10.md#2026-10-22-西アジアの火山地帯に黒曜石の露頭を3つ)。同日公開・検証済み。焚き火の南、石と木の山の隣で、その場で刃と槍を作れる。景観は不変。
@@ -35,7 +37,7 @@ PCの入力UI: [2026-10-17 マウス・キーボード向けの文字付き行�
 
 ソロの仲間: [2026-10-16 複数選択・全選択／全解除・横送りのターゲット・連続投げ](solo-mascots-2026-10-16.md)。10月22日までに公開・検証済み。
 
-洞窟の壁画: [2026-10-22 Jank0vicさんを東壁の奥に追加（素材r42、全25体）](../assets/camp-cave/jank0vic-r42/README.md)・[参照と配信素材の一覧](../assets/camp-cave/jank0vic-r42/qa/index.html)。同日22:48 JSTに公開・検証済み。[2026-10-16 原画の特徴を7体で修復し、全24体を比較](../assets/camp-cave/identity-r41/README.md)・[原画と変更前後の一覧](../assets/camp-cave/identity-r41/qa/index.html)。[共通縮尺と上下の重なり](../assets/camp-cave/layered-r40/README.md)、[両壁の連続配置と新キャラの自動配置](cave-mural-continuity-2026-10-16.md)を継承。[10月16日の公開記録](mural-deploy-2026-10-16.md)。[今後の追加手順](../assets/camp-cave/continuous-r39/README.md)。
+洞窟の壁画: [2026-10-22 Jank0vicさんの顔の周りに、横がそろった「！」を64個並べる（素材r44）](../assets/camp-cave/jank0vic-exclaim-r44/README.md)・[参照と配信素材の一覧](../assets/camp-cave/jank0vic-exclaim-r44/qa/index.html)。未公開。[2026-10-22 Jank0vicさんを写真に似せた正面の顔だけに描き直し（素材r43）](../assets/camp-cave/jank0vic-face-r43/README.md)・[参照と配信素材の一覧](../assets/camp-cave/jank0vic-face-r43/qa/index.html)。未公開。[2026-10-22 Jank0vicさんを東壁の奥に追加（素材r42、全25体）](../assets/camp-cave/jank0vic-r42/README.md)・[参照と配信素材の一覧](../assets/camp-cave/jank0vic-r42/qa/index.html)。同日22:48 JSTに公開・検証済み。[2026-10-16 原画の特徴を7体で修復し、全24体を比較](../assets/camp-cave/identity-r41/README.md)・[原画と変更前後の一覧](../assets/camp-cave/identity-r41/qa/index.html)。[共通縮尺と上下の重なり](../assets/camp-cave/layered-r40/README.md)、[両壁の連続配置と新キャラの自動配置](cave-mural-continuity-2026-10-16.md)を継承。[10月16日の公開記録](mural-deploy-2026-10-16.md)。[今後の追加手順](../assets/camp-cave/continuous-r39/README.md)。
 
 - [2026-09](changelog/2026-09.md)
 - [2026-10](changelog/2026-10.md)

@@ -219,3 +219,124 @@ test('r42 adds Jank0vic and keeps all 24 r41 cutouts and nine atlases byte-ident
     `${r42}/references/x-avatar-400x400.jpg`,
   );
 });
+
+test('r43 repaints Jank0vic as a front-facing head and keeps the other 24 cutouts and nine atlases', async () => {
+  const r43 = 'assets/camp-cave/jank0vic-face-r43',
+    review = await json(`${r43}/qa/identity-review.json`),
+    r43Recipe = await json(`${r43}/recipe.json`),
+    earlier = await json('assets/camp-cave/jank0vic-r42/qa/identity-review.json');
+  assert.deepEqual(
+    review.subjects.filter((s) => s.decision !== 'retain').map((s) => [s.id, s.decision]),
+    [['jank0vic', 'redraw']],
+  );
+  for (const before of earlier.subjects.filter((s) => s.id !== 'jank0vic')) {
+    const entry = review.subjects.find((s) => s.id === before.id);
+    assert.deepEqual(entry.reference, before.reference);
+    assert.equal(entry.before, before.after);
+    const [a, b] = await Promise.all(
+      [before.after, entry.after].map((p) => sharp(p).ensureAlpha().raw().toBuffer()),
+    );
+    assert(a.equals(b), `${before.id}: delivered pixels changed`);
+  }
+  // Only the storage atlas that holds the repainted cutout was repacked.
+  const old = caveMuralImages(await json(`${r43}/previous-asset.json`)),
+    packed = await packedAtlases(r43);
+  for (const key of Object.keys(r43Recipe.atlases))
+    if (key === 'maeKohaku') assert.notEqual(packed[key], servedAtlas(old, key).sha256);
+    else assert.equal(packed[key], servedAtlas(old, key).sha256, `${key}: retain the exact PNG`);
+  // A head only, at the shared height of the round faces (user request 2026-10-22).
+  const s = r43Recipe.subjects.find((s) => s.id === 'jank0vic');
+  assert.equal(s.size, 'small');
+  assert.equal(s.isolation, 'whole');
+  assert.equal(
+    r43Recipe.sources[s.source].references[0].path,
+    'assets/camp-cave/jank0vic-r42/references/x-avatar-400x400.jpg',
+  );
+});
+
+test('r44 frames the unchanged r43 face with aligned rows of exclamation marks', async () => {
+  const r44 = 'assets/camp-cave/jank0vic-exclaim-r44',
+    review = await json(`${r44}/qa/identity-review.json`),
+    r44Recipe = await json(`${r44}/recipe.json`),
+    r43Recipe = await json('assets/camp-cave/jank0vic-face-r43/recipe.json'),
+    earlier = await json('assets/camp-cave/jank0vic-face-r43/qa/identity-review.json'),
+    layout = await json(`${r44}/qa/frame-layout.json`);
+  assert.deepEqual(
+    review.subjects.filter((s) => s.decision !== 'retain').map((s) => [s.id, s.decision]),
+    [['jank0vic', 'redraw']],
+  );
+  for (const before of earlier.subjects.filter((s) => s.id !== 'jank0vic')) {
+    const entry = review.subjects.find((s) => s.id === before.id);
+    const [a, b] = await Promise.all(
+      [before.after, entry.after].map((p) => sharp(p).ensureAlpha().raw().toBuffer()),
+    );
+    assert(a.equals(b), `${before.id}: delivered pixels changed`);
+  }
+  const old = caveMuralImages(await json(`${r44}/previous-asset.json`)),
+    packed = await packedAtlases(r44);
+  for (const key of Object.keys(r44Recipe.atlases))
+    if (key === 'maeKohaku') assert.notEqual(packed[key], servedAtlas(old, key).sha256);
+    else assert.equal(packed[key], servedAtlas(old, key).sha256, `${key}: retain the exact PNG`);
+  // The r43 face is copied into the frame, never repainted.
+  const s = r44Recipe.subjects.find((s) => s.id === 'jank0vic'),
+    source = r44Recipe.sources[s.source],
+    bytes = await readFile(source.path);
+  assert.equal(hash(bytes), layout.output.sha256);
+  const faceSubject = r43Recipe.subjects.find((s) => s.id === 'jank0vic'),
+    face = await extractMuralSprite(
+      await readFile(r43Recipe.sources[faceSubject.source].path),
+      faceSubject,
+    ),
+    composite = await sharp(bytes).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  let copied = 0;
+  for (let y = 0; y < face.info.height; y++)
+    for (let x = 0; x < face.info.width; x++) {
+      const p = (y * face.info.width + x) * 4;
+      if (!face.data[p + 3]) continue;
+      copied++;
+      const q = ((y + layout.face.top) * composite.info.width + x + layout.face.left) * 4;
+      assert(face.data.compare(composite.data, q, q + 4, p, p + 4) === 0, `face pixel ${x},${y}`);
+    }
+  assert.equal(copied, layout.face.unchangedPixels);
+  assert(copied > 700000);
+  // Ten per row: two full rows above and below the face, three either side of it.
+  assert.equal(layout.placements.length, 64);
+  for (let row = 0; row < 8; row++)
+    assert.deepEqual(
+      layout.placements.filter((p) => p.row === row).map((p) => p.column),
+      row >= 2 && row <= 5 ? [0, 1, 2, 7, 8, 9] : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    );
+  // Rows share one painted baseline and columns one centre, measured from the pixels.
+  const { margin, rowPitch, columnPitch } = layout.grid,
+    baselines = new Map(),
+    centres = new Map();
+  for (const p of layout.placements) {
+    const x0 = Math.floor(margin + p.column * columnPitch),
+      x1 = Math.ceil(margin + (p.column + 1) * columnPitch),
+      y0 = Math.floor(margin + p.row * rowPitch),
+      y1 = Math.ceil(margin + (p.row + 1) * rowPitch);
+    let left = Infinity,
+      right = -1,
+      bottom = -1;
+    for (let y = y0; y < y1; y++)
+      for (let x = x0; x < x1; x++)
+        if (composite.data[(y * composite.info.width + x) * 4 + 3] >= 24) {
+          left = Math.min(left, x);
+          right = Math.max(right, x + 1);
+          bottom = Math.max(bottom, y + 1);
+        }
+    assert(right > left, `mark ${p.row},${p.column}`);
+    baselines.set(p.row, [...(baselines.get(p.row) ?? []), bottom]);
+    centres.set(p.column, [...(centres.get(p.column) ?? []), (left + right) / 2]);
+  }
+  for (const values of [...baselines.values(), ...centres.values()])
+    assert(Math.max(...values) - Math.min(...values) <= 2, `misaligned marks: ${values}`);
+  // The face stays the 0.72 m body; the bottom row of marks rests on the shared baseline.
+  assert.equal(s.size, 'small');
+  assert.equal(s.isolation, 'whole');
+  assert.deepEqual(
+    [s.bodyTop, s.bodyBottom, s.lift],
+    [layout.recipe.bodyTop, layout.recipe.bodyBottom, layout.recipe.lift],
+  );
+  assert(Math.abs(Math.max(...baselines.get(7)) - layout.ink[3]) <= 1);
+});

@@ -13,6 +13,7 @@ export const COMPRESSIBLE = new Set([
   '.json',
   '.svg',
   '.txt',
+  '.xml',
   '.glb',
 ]);
 

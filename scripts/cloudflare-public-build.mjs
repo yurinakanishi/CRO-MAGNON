@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { prepareVendor } from './prepare-vendor.mjs';
 import { bundleBrowser, bundledIndex } from './bundle-browser.mjs';
+import { publicSiteHtml, siteHeaders } from './site-metadata.mjs';
 import {
   assertPublicCharacterData,
   publicClothingDyeRulesModule,
@@ -212,7 +213,14 @@ await collect('public/title', /\.(png|jpe?g|webp)$/, (name) => {
   if (name === 'cro-magnon-mmo-transparent.png') return false;
   return !name.startsWith('qr-') && !name.startsWith('avatar-');
 });
-for (const file of ['favicon.svg', 'favicon.ico'])
+for (const file of [
+  'favicon.svg',
+  'favicon.ico',
+  'robots.txt',
+  'sitemap.xml',
+  'site-analytics.js',
+  'site-privacy.css',
+])
   await publish('/' + file, await readFile(path.join(root, 'public', file)));
 await publish('/build-profile.json', Buffer.from(JSON.stringify(profile)));
 await publish(
@@ -241,8 +249,13 @@ await publish(
 // must be applied before bundling. Never bundle the unfiltered source tree.
 const browserBundle = await bundleBrowser(staging);
 for (const file of browserBundle.files) await publish('/' + file.name, file.bytes);
-for (const file of ['index.html', 'en/index.html'])
-  await publish('/' + file, bundledIndex(await readFile(path.join(root, 'public', file))));
+const siteConfig = JSON.parse(
+  await readFile(path.join(root, 'cloudflare/site-config.json'), 'utf8'),
+);
+for (const file of ['index.html', 'en/index.html', 'privacy.html', 'en/privacy.html']) {
+  const html = publicSiteHtml(await readFile(path.join(root, 'public', file)), siteConfig);
+  await publish('/' + file, file.endsWith('index.html') ? bundledIndex(html) : html);
+}
 
 const catalog = JSON.parse(
   await readFile(path.join(root, 'public/models/world-assets.json'), 'utf8'),
@@ -439,6 +452,7 @@ await publish(
   '/_headers',
   Buffer.from(
     '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: no-referrer\n  X-Frame-Options: DENY\n  Permissions-Policy: camera=(), microphone=()\n  Cache-Control: no-cache\n/models/*.bin\n  Cache-Control: public, max-age=31536000, immutable\n' +
+      siteHeaders +
       (immutableModels
         ? '/models/*.glb\n  Cache-Control: public, max-age=31536000, immutable\n'
         : ''),

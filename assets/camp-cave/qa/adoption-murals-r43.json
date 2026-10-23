@@ -1,0 +1,177 @@
+{
+  "decision": "adopt",
+  "modelKey": "camp-cave",
+  "galleryRevision": "43",
+  "sha256": "932c96905891f77b766c9e668ca80f42c7f3073a4f992a559e87f4f53e770c4d",
+  "textures": [
+    {
+      "url": "/models/camp-cave/creature524-sprites-r41-a6c8f1b0a85bb17d.png",
+      "sha256": "a6c8f1b0a85bb17d8155bf62955a24f6c4dd708fe0175c06548bf5b4e0e0e96a",
+      "bytes": 168192,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "url": "/models/camp-cave/daredaro-frieze-sprites-r41-8334b0a72303bc9e.png",
+      "sha256": "8334b0a72303bc9ebfc47b89c8d14d67a51e77b08c27722e7d3568cd76f761de",
+      "bytes": 429354,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "url": "/models/camp-cave/friends-meadow-sprites-r41-f42da105eead65b7.png",
+      "sha256": "f42da105eead65b79c7b4afc2b6439926560c08940cf9fae1bed93a9030c2ef7",
+      "bytes": 568019,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "url": "/models/camp-cave/friends-river-sprites-r41-8ff4736a7f5ccd89.png",
+      "sha256": "8ff4736a7f5ccd89d826251255556d92c49e29b7440a1274cb1e4124e7b3324b",
+      "bytes": 482869,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "url": "/models/camp-cave/limestone-r05.opt-373ad7d95a04bc2c.png",
+      "sha256": "373ad7d95a04bc2cd56303ebae90eca3045353323949f081615f2bc996dbdbbd",
+      "bytes": 2228940,
+      "image": {
+        "width": 1024,
+        "height": 1024
+      },
+      "uvSource": {
+        "width": 1254,
+        "height": 1254
+      }
+    },
+    {
+      "url": "/models/camp-cave/mae-kohaku-sprites-r43-1c613ec1b6055b81.png",
+      "sha256": "1c613ec1b6055b8144d1a41b5ba6efa8f54a0ec81994062f3e38c70426b08762",
+      "bytes": 619474,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "url": "/models/camp-cave/maruimo-frieze-sprites-r39-8e8a66ed9d4b940e.png",
+      "sha256": "8e8a66ed9d4b940e66c1278bac673690b5430c60cc79af5cce78899e458b35f1",
+      "bytes": 355630,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "url": "/models/camp-cave/mural-atlas-r05.opt-94ca1aebe422e2a0.png",
+      "sha256": "94ca1aebe422e2a0de6582654e9475167c895acd227cb28526e9873d8b3a4e85",
+      "bytes": 1276113,
+      "image": {
+        "width": 1024,
+        "height": 1024
+      },
+      "uvSource": {
+        "width": 1254,
+        "height": 1254
+      }
+    },
+    {
+      "url": "/models/camp-cave/mural-side-r04.png",
+      "sha256": "1cbdd091523b48fea81f70eba5cc3840c7328ccfab4b8d1ef63e44b49e0ff5af"
+    },
+    {
+      "url": "/models/camp-cave/rimo-frieze-sprites-r39-ec249779442b8ede.png",
+      "sha256": "ec249779442b8edeb6a2052f0f6deffa31c2624107cf24f44bd56058fda8a761",
+      "bytes": 190974,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "url": "/models/camp-cave/round-bots-sprites-r39-4e5d49d65bd48974.png",
+      "sha256": "4e5d49d65bd48974e34f47d054ea6b26a55ce228e23443fb46242d0d47f7ca41",
+      "bytes": 474866,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "url": "/models/camp-cave/ryuichi-frieze-sprites-r39-38a533fa1a5459cf.png",
+      "sha256": "38a533fa1a5459cf6ff84c2fdd37e6421c06225af82ca6b8b68b471a7a65a0f7",
+      "bytes": 434518,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "url": "/models/camp-cave/shape-bots-sprites-r39-15effe4966ef81fd.png",
+      "sha256": "15effe4966ef81fd2d41f60ccf5e4e4e9130ebf572074f7da1c63fd9f5e717d3",
+      "bytes": 479477,
+      "image": {
+        "width": 1024,
+        "height": 341
+      }
+    }
+  ],
+  "evidence": [
+    {
+      "path": "output/playwright/cave-jank0vic-face-20261022-r01/report.json",
+      "sha256": "fc191b4175b915d360d8372a476ba869f244a87463873e25e52f4af7e3e65250",
+      "bytes": 67980
+    },
+    {
+      "path": "assets/camp-cave/jank0vic-face-r43/qa/coverage.json",
+      "sha256": "9b20b28805bd7d178b0ef526d2e37d82c858b05154e157fe29b46f4312973e12",
+      "bytes": 16997
+    },
+    {
+      "path": "assets/camp-cave/jank0vic-face-r43/recipe.json",
+      "sha256": "3cd7c95d0e833fa53dc24b53983a78e486b5243affb2778187c9d5643e5ec93f",
+      "bytes": 18613
+    },
+    {
+      "path": "shared/cave-mural-art.mts",
+      "sha256": "03a508e4771453c51ebd706cc05852fa031fdd17f6d66912d3c7fbc5d84bb304",
+      "bytes": 14381
+    },
+    {
+      "path": "src/cave-gallery-layout.ts",
+      "sha256": "625577a61aec24c0d30ee2844b639951e6366c651ea81c59d6dc901ba5e57806",
+      "bytes": 21439
+    },
+    {
+      "path": "src/cave-materials.ts",
+      "sha256": "9580dc2b62555e53723a7ae4371400b80fcac0d7c2c6c8d5b43ab12df6c68e6d",
+      "bytes": 8160
+    },
+    {
+      "path": "assets/camp-cave/jank0vic-face-r43/qa/identity-review.json",
+      "sha256": "d47ae18ca32c50d07aad70e0a20065df4ba72c5afd47d4904764320a56775ccb",
+      "bytes": 29509
+    }
+  ],
+  "review": [
+    "All 25 characters present as independently measured pigment cutouts. No group frame sets scale.",
+    "Humanoid head-crown to foot = 1.4 painted m; hats and ears keep their extra height. Species and small companions use fixed shared heights.",
+    "Both continuous walls, native entry/walking, ten 11.5 m orthographic views and PC/mobile-emulated waiting/live views inspected.",
+    "77 placements; 14950 painted samples on the accepted wall, zero rejected.",
+    "Old GLB, paintings, source images and optimization records retained.",
+    "Identity compared for all 25 characters; 0 targeted repairs, 1 redrawn at the user's request and 24 existing source images retained. Poses reviewed against their before cutouts; detached parts preserved in isolated sources."
+  ],
+  "unverified": [
+    "Physical phones, Safari, gamepads and multiplayer; no performance benchmark or publication."
+  ],
+  "checkedAt": "2026-10-22T14:29:54.238Z"
+}

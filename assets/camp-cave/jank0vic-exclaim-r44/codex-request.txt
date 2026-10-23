@@ -1,0 +1,20 @@
+Use your built-in image generation tool (image_gen) to create TWO separate transparent PNG images for the cave mural of the prehistoric fantasy game CRO-MAGNON. Do not write code, do not use Python/PIL or any drawing library, do not draw or edit pixels yourself, and do not create or edit any files other than the two PNGs and prompts.json named below.
+
+One image is attached: the style reference (an existing painted head from the same mural). Attach it to every image_gen call.
+
+Shared prompt for every image (replace VARIANT_LINE with that image's variant line):
+"Use case: decorative marks for an existing cave mural.
+Paint EIGHT separate exclamation marks (!) on one canvas, arranged as a loose grid of 4 columns by 2 rows with wide empty gaps between them. Each mark stays completely inside its own grid cell, well away from the cell edges and from its neighbours, so no two marks touch or overlap.
+Each mark is an upright exclamation mark: a tapered vertical bar above a separate round dot, hand-painted with a brush in red ochre (iron-oxide) mineral pigment. Match the painting technique of the input image exactly: a darker red-brown speckled outline, granular speckled fill, dry weathering and worn transparent flecks. All eight marks have the same height and the same upright angle; only the brushwork varies slightly (stroke width, taper, dot shape).
+Do not paint the face, hair or any figure from the input image. No letters, numbers, other symbols, background, frame, ground, shadow or text. Genuinely transparent background. VARIANT_LINE"
+
+Variant lines:
+- Image 1 (save as exclaim-sheet-01.png): "Medium stroke width."
+- Image 2 (save as exclaim-sheet-02.png): "Slightly bolder strokes and a larger round dot."
+
+Request a transparent background (PNG with alpha) for every image; use a landscape canvas of about 1536 x 1024 px if available, otherwise square of at least 1024 px.
+
+Save the two generated images as PNG files exactly at (copy them from wherever the image tool stores its outputs, byte for byte, without re-encoding):
+C:/Users/yurin/Desktop/projects/CRO-MAGNON/assets/camp-cave/jank0vic-exclaim-r44/marks/exclaim-sheet-01.png
+C:/Users/yurin/Desktop/projects/CRO-MAGNON/assets/camp-cave/jank0vic-exclaim-r44/marks/exclaim-sheet-02.png
+Then write prompts.json in the same folder (UTF-8 without BOM) listing, for each file, the exact full prompt and any size/background options you sent to the image tool, the attached input images in order, and the original path the tool saved it to. Reply with the two saved paths.

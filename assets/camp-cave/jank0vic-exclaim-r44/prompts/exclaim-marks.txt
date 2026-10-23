@@ -1,0 +1,5 @@
+Use case: decorative marks for an existing cave mural.
+Paint EIGHT separate exclamation marks (!) on one canvas, arranged as a loose grid of 4 columns by 2 rows with wide empty gaps between them. Each mark stays completely inside its own grid cell, well away from the cell edges and from its neighbours, so no two marks touch or overlap.
+Each mark is an upright exclamation mark: a tapered vertical bar above a separate round dot, hand-painted with a brush in red ochre (iron-oxide) mineral pigment. Match the painting technique of the input image exactly: a darker red-brown speckled outline, granular speckled fill, dry weathering and worn transparent flecks. All eight marks have the same height and the same upright angle; only the brushwork varies slightly (stroke width, taper, dot shape).
+Do not paint the face, hair or any figure from the input image. No letters, numbers, other symbols, background, frame, ground, shadow or text. Genuinely transparent background. Slightly bolder strokes and a larger round dot.
+Canvas: landscape, about 1536 x 1024 px; if unavailable, square at least 1024 px. Input image 1 is a painting-technique reference only.

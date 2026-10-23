@@ -128,6 +128,7 @@ registerTranslations({
   '接続設定を読み込めません。起動ウィンドウを確認してください。':
     'Could not load connection settings. Check the server window.',
   制作: 'Created by',
+  'プライバシー・計測設定': 'Privacy and analytics settings',
   開発者: 'Developer',
   監修: 'Advisers',
   友情出演: 'Special appearances',

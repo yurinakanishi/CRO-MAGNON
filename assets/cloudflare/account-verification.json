@@ -1,9 +1,9 @@
 {
-  "checkedAt": "2026-10-22T13:45:45.936Z",
+  "checkedAt": "2026-10-23T00:07:01.4441053Z",
   "accountId": "a211102818d484cb668c6b62bebff3f9",
   "accountName": "CRO-MAGNON Free",
   "workersPlan": "Free",
-  "evidence": "Observed authenticated Chrome CUA tab 1179547017: exact account URL; account switcher CRO-MAGNON Free; Free card showed $0 and disabled Current plan. Accessibility tree and screenshot observed. Existing session was already authenticated on resume after explicit user authorization. No plan, billing or permissions changed.",
+  "evidence": "Observed authenticated Chrome CUA tab 1179547897 on exact account URL: CRO-MAGNON Free account; Free card showed $0 and disabled Current plan. Screenshot output/cloudflare-deploy/deploy-seo-20261023-01/workers-free.png. No plan, billing or permission changes.",
   "dashboard": "https://dash.cloudflare.com/a211102818d484cb668c6b62bebff3f9/workers/plans",
   "deploymentAllowed": true
 }

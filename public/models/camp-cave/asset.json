@@ -29,6 +29,8 @@
   "clips": [],
   "lods": [],
   "notes": [
+    "Gallery r44 uses independently measured pigment cutouts, common character/animal scales and one continuous surface-distance procession on each wall. Previous art and unchanged TRELLIS geometry remain archived.",
+    "Gallery r43 uses independently measured pigment cutouts, common character/animal scales and one continuous surface-distance procession on each wall. Previous art and unchanged TRELLIS geometry remain archived.",
     "Gallery r42 uses independently measured pigment cutouts, common character/animal scales and one continuous surface-distance procession on each wall. Previous art and unchanged TRELLIS geometry remain archived.",
     "Gallery r41 uses independently measured pigment cutouts, common character/animal scales and one continuous surface-distance procession on each wall. Previous art and unchanged TRELLIS geometry remain archived.",
     "Gallery r39 replaces group frames with independently measured pigment cutouts, common character/animal scales and one continuous surface-distance procession on each wall. All r38 art and unchanged TRELLIS geometry remain archived.",
@@ -129,7 +131,7 @@
       }
     }
   },
-  "gameQA": "output/playwright/cave-jank0vic-20261022-r01/report.json",
+  "gameQA": "output/playwright/cave-jank0vic-exclaim-20261023-r01/report.json",
   "rockSurface": {
     "url": "/models/camp-cave/limestone-r05.opt-373ad7d95a04bc2c.png",
     "source": "assets/camp-cave/source/limestone-r05.png",
@@ -172,7 +174,7 @@
     }
   },
   "characterPigment": {
-    "source": "assets/camp-cave/jank0vic-r42/packed/creature524-a6c8f1b0a85bb17d.png",
+    "source": "assets/camp-cave/jank0vic-exclaim-r44/packed/creature524-a6c8f1b0a85bb17d.png",
     "url": "/models/camp-cave/creature524-sprites-r41-a6c8f1b0a85bb17d.png",
     "sha256": "a6c8f1b0a85bb17d8155bf62955a24f6c4dd708fe0175c06548bf5b4e0e0e96a",
     "bytes": 168192,
@@ -198,12 +200,12 @@
     "subjects": [
       "524"
     ],
-    "application": "r42: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
-    "review": "assets/camp-cave/qa/adoption-murals-r42.json",
+    "application": "r44: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
+    "review": "assets/camp-cave/qa/adoption-murals-r44.json",
     "provenance": {
       "continuousMural": {
         "version": 2,
-        "recipe": "assets/camp-cave/jank0vic-r42/recipe.json",
+        "recipe": "assets/camp-cave/jank0vic-exclaim-r44/recipe.json",
         "subjects": [
           "524"
         ],
@@ -216,9 +218,9 @@
       "assets/camp-cave/identity-r41/prompts/524.txt"
     ]
   },
-  "galleryRevision": "42",
+  "galleryRevision": "44",
   "rimoPigment": {
-    "source": "assets/camp-cave/jank0vic-r42/packed/rimoFrieze-ec249779442b8ede.png",
+    "source": "assets/camp-cave/jank0vic-exclaim-r44/packed/rimoFrieze-ec249779442b8ede.png",
     "url": "/models/camp-cave/rimo-frieze-sprites-r39-ec249779442b8ede.png",
     "sha256": "ec249779442b8edeb6a2052f0f6deffa31c2624107cf24f44bd56058fda8a761",
     "bytes": 190974,
@@ -235,12 +237,12 @@
     "subjects": [
       "rimo-neko"
     ],
-    "application": "r42: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
-    "review": "assets/camp-cave/qa/adoption-murals-r42.json",
+    "application": "r44: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
+    "review": "assets/camp-cave/qa/adoption-murals-r44.json",
     "provenance": {
       "continuousMural": {
         "version": 2,
-        "recipe": "assets/camp-cave/jank0vic-r42/recipe.json",
+        "recipe": "assets/camp-cave/jank0vic-exclaim-r44/recipe.json",
         "subjects": [
           "rimo-neko"
         ],
@@ -263,7 +265,7 @@
         "purple",
         "orange"
       ],
-      "source": "assets/camp-cave/jank0vic-r42/packed/roundBots-4e5d49d65bd48974.png",
+      "source": "assets/camp-cave/jank0vic-exclaim-r44/packed/roundBots-4e5d49d65bd48974.png",
       "sha256": "4e5d49d65bd48974e34f47d054ea6b26a55ce228e23443fb46242d0d47f7ca41",
       "bytes": 474866,
       "image": {
@@ -278,11 +280,11 @@
         "public/models/orb-bot-purple/portrait.png",
         "public/models/orb-bot-orange/portrait.png"
       ],
-      "application": "r42: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
+      "application": "r44: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
       "provenance": {
         "continuousMural": {
           "version": 2,
-          "recipe": "assets/camp-cave/jank0vic-r42/recipe.json",
+          "recipe": "assets/camp-cave/jank0vic-exclaim-r44/recipe.json",
           "subjects": [
             "white",
             "blue",
@@ -295,7 +297,7 @@
           ]
         }
       },
-      "review": "assets/camp-cave/qa/adoption-murals-r42.json",
+      "review": "assets/camp-cave/qa/adoption-murals-r44.json",
       "prompts": [
         "assets/camp-cave/continuous-r39/prompts/round-and-maruimo.txt"
       ]
@@ -308,7 +310,7 @@
         "triangle",
         "heart"
       ],
-      "source": "assets/camp-cave/jank0vic-r42/packed/shapeBots-15effe4966ef81fd.png",
+      "source": "assets/camp-cave/jank0vic-exclaim-r44/packed/shapeBots-15effe4966ef81fd.png",
       "sha256": "15effe4966ef81fd2d41f60ccf5e4e4e9130ebf572074f7da1c63fd9f5e717d3",
       "bytes": 479477,
       "image": {
@@ -322,11 +324,11 @@
         "public/models/orb-bot-triangle/portrait.png",
         "public/models/orb-bot-heart/portrait.png"
       ],
-      "application": "r42: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
+      "application": "r44: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
       "provenance": {
         "continuousMural": {
           "version": 2,
-          "recipe": "assets/camp-cave/jank0vic-r42/recipe.json",
+          "recipe": "assets/camp-cave/jank0vic-exclaim-r44/recipe.json",
           "subjects": [
             "beret",
             "frog",
@@ -338,21 +340,21 @@
           ]
         }
       },
-      "review": "assets/camp-cave/qa/adoption-murals-r42.json",
+      "review": "assets/camp-cave/qa/adoption-murals-r44.json",
       "prompts": [
         "assets/camp-cave/continuous-r39/prompts/shapes-and-companions.txt"
       ]
     },
     "maeKohaku": {
-      "url": "/models/camp-cave/mae-kohaku-sprites-r42-f95eaf3ec1b5ca8b.png",
+      "url": "/models/camp-cave/mae-kohaku-sprites-r44-ce962ad820c3df46.png",
       "subjects": [
         "mae",
         "kohaku",
         "jank0vic"
       ],
-      "source": "assets/camp-cave/jank0vic-r42/packed/maeKohaku-f95eaf3ec1b5ca8b.png",
-      "sha256": "f95eaf3ec1b5ca8b9a4e224ad4d2cabfa59be2fe4f6a43a19913e2e3471a48dc",
-      "bytes": 569672,
+      "source": "assets/camp-cave/jank0vic-exclaim-r44/packed/maeKohaku-ce962ad820c3df46.png",
+      "sha256": "ce962ad820c3df467109b49a6e11b605639dffdb705d101241bd2ab18c320eda",
+      "bytes": 566311,
       "image": {
         "width": 1024,
         "height": 341
@@ -362,11 +364,11 @@
         "public/models/mae/portrait.png",
         "public/models/kohaku/portrait-r05.png"
       ],
-      "application": "r42: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
+      "application": "r44: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
       "provenance": {
         "continuousMural": {
           "version": 2,
-          "recipe": "assets/camp-cave/jank0vic-r42/recipe.json",
+          "recipe": "assets/camp-cave/jank0vic-exclaim-r44/recipe.json",
           "subjects": [
             "mae",
             "kohaku",
@@ -374,18 +376,18 @@
           ],
           "sources": [
             "7d743a1388624af6ae0758744ded44b884bd925b82b448a6596a0eeaf26287a7",
-            "7d5b7ebd462642929c3acab8bec015cee904a08fa038df03308bfa26415424e1"
+            "6e4ed4933e8c92f86e15b97f215d48d321dec9d5682098c3a0f7e9bdb8456e80"
           ]
         }
       },
-      "review": "assets/camp-cave/qa/adoption-murals-r42.json",
+      "review": "assets/camp-cave/qa/adoption-murals-r44.json",
       "prompts": [
         "assets/camp-cave/continuous-r39/prompts/meadow-people.txt",
-        "assets/camp-cave/jank0vic-r42/prompts/jank0vic.txt"
+        "assets/camp-cave/jank0vic-exclaim-r44/prompts/exclaim-marks.txt"
       ]
     },
     "maruimoFrieze": {
-      "source": "assets/camp-cave/jank0vic-r42/packed/maruimoFrieze-8e8a66ed9d4b940e.png",
+      "source": "assets/camp-cave/jank0vic-exclaim-r44/packed/maruimoFrieze-8e8a66ed9d4b940e.png",
       "url": "/models/camp-cave/maruimo-frieze-sprites-r39-8e8a66ed9d4b940e.png",
       "sha256": "8e8a66ed9d4b940e66c1278bac673690b5430c60cc79af5cce78899e458b35f1",
       "bytes": 355630,
@@ -412,12 +414,12 @@
           "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df"
         }
       ],
-      "application": "r42: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
-      "review": "assets/camp-cave/qa/adoption-murals-r42.json",
+      "application": "r44: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
+      "review": "assets/camp-cave/qa/adoption-murals-r44.json",
       "provenance": {
         "continuousMural": {
           "version": 2,
-          "recipe": "assets/camp-cave/jank0vic-r42/recipe.json",
+          "recipe": "assets/camp-cave/jank0vic-exclaim-r44/recipe.json",
           "subjects": [
             "maruimo-mascot"
           ],
@@ -433,7 +435,7 @@
       ]
     },
     "friendsMeadow": {
-      "source": "assets/camp-cave/jank0vic-r42/packed/friendsMeadow-f42da105eead65b7.png",
+      "source": "assets/camp-cave/jank0vic-exclaim-r44/packed/friendsMeadow-f42da105eead65b7.png",
       "url": "/models/camp-cave/friends-meadow-sprites-r41-f42da105eead65b7.png",
       "sha256": "f42da105eead65b79c7b4afc2b6439926560c08940cf9fae1bed93a9030c2ef7",
       "bytes": 568019,
@@ -475,12 +477,12 @@
           "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732"
         }
       ],
-      "application": "r42: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
-      "review": "assets/camp-cave/qa/adoption-murals-r42.json",
+      "application": "r44: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
+      "review": "assets/camp-cave/qa/adoption-murals-r44.json",
       "provenance": {
         "continuousMural": {
           "version": 2,
-          "recipe": "assets/camp-cave/jank0vic-r42/recipe.json",
+          "recipe": "assets/camp-cave/jank0vic-exclaim-r44/recipe.json",
           "subjects": [
             "saber-mascot",
             "fairy-mascot",
@@ -503,7 +505,7 @@
       ]
     },
     "friendsRiver": {
-      "source": "assets/camp-cave/jank0vic-r42/packed/friendsRiver-8ff4736a7f5ccd89.png",
+      "source": "assets/camp-cave/jank0vic-exclaim-r44/packed/friendsRiver-8ff4736a7f5ccd89.png",
       "url": "/models/camp-cave/friends-river-sprites-r41-8ff4736a7f5ccd89.png",
       "sha256": "8ff4736a7f5ccd89d826251255556d92c49e29b7440a1274cb1e4124e7b3324b",
       "bytes": 482869,
@@ -549,12 +551,12 @@
           "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732"
         }
       ],
-      "application": "r42: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
-      "review": "assets/camp-cave/qa/adoption-murals-r42.json",
+      "application": "r44: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
+      "review": "assets/camp-cave/qa/adoption-murals-r44.json",
       "provenance": {
         "continuousMural": {
           "version": 2,
-          "recipe": "assets/camp-cave/jank0vic-r42/recipe.json",
+          "recipe": "assets/camp-cave/jank0vic-exclaim-r44/recipe.json",
           "subjects": [
             "otani-mascot",
             "urata-mascot",
@@ -579,7 +581,7 @@
       "subjects": [
         "daredaro"
       ],
-      "source": "assets/camp-cave/jank0vic-r42/packed/daredaroFrieze-8334b0a72303bc9e.png",
+      "source": "assets/camp-cave/jank0vic-exclaim-r44/packed/daredaroFrieze-8334b0a72303bc9e.png",
       "sha256": "8334b0a72303bc9ebfc47b89c8d14d67a51e77b08c27722e7d3568cd76f761de",
       "bytes": 429354,
       "image": {
@@ -602,12 +604,12 @@
           "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732"
         }
       ],
-      "application": "r42: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
-      "review": "assets/camp-cave/qa/adoption-murals-r42.json",
+      "application": "r44: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
+      "review": "assets/camp-cave/qa/adoption-murals-r44.json",
       "provenance": {
         "continuousMural": {
           "version": 2,
-          "recipe": "assets/camp-cave/jank0vic-r42/recipe.json",
+          "recipe": "assets/camp-cave/jank0vic-exclaim-r44/recipe.json",
           "subjects": [
             "daredaro"
           ],
@@ -627,7 +629,7 @@
       "subjects": [
         "ryuichi"
       ],
-      "source": "assets/camp-cave/jank0vic-r42/packed/ryuichiFrieze-38a533fa1a5459cf.png",
+      "source": "assets/camp-cave/jank0vic-exclaim-r44/packed/ryuichiFrieze-38a533fa1a5459cf.png",
       "sha256": "38a533fa1a5459cf6ff84c2fdd37e6421c06225af82ca6b8b68b471a7a65a0f7",
       "bytes": 434518,
       "image": {
@@ -650,12 +652,12 @@
         "prehistoric horse",
         "aurochs"
       ],
-      "application": "r42: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
-      "review": "assets/camp-cave/qa/adoption-murals-r42.json",
+      "application": "r44: independent character cutouts; physical scale and continuous placement come from shared/cave-mural-art.mts, not the atlas frame.",
+      "review": "assets/camp-cave/qa/adoption-murals-r44.json",
       "provenance": {
         "continuousMural": {
           "version": 2,
-          "recipe": "assets/camp-cave/jank0vic-r42/recipe.json",
+          "recipe": "assets/camp-cave/jank0vic-exclaim-r44/recipe.json",
           "subjects": [
             "ryuichi"
           ],
@@ -676,12 +678,12 @@
     "sha256": "d1dfbd766730cfb9e585f14f983d603e186969d287e4b23e5aa276715a324690"
   },
   "muralComposition": {
-    "recipe": "assets/camp-cave/jank0vic-r42/recipe.json",
+    "recipe": "assets/camp-cave/jank0vic-exclaim-r44/recipe.json",
     "version": 2,
     "hidden": []
   },
   "textureRevision": {
-    "record": "assets/camp-cave/qa/source-texture-revision-r42.json",
-    "sha256": "80d6140a37acdb3da81e164266046dd2ff04aea76ccff9a6a0eb3082045665fa"
+    "record": "assets/camp-cave/qa/source-texture-revision-r44.json",
+    "sha256": "f663d0a9e982852ffc069f1bec0c3d0bbf483afe3ff397949ba98aeeb88be6f5"
   }
 }

@@ -6,7 +6,7 @@ import { serveStatic, sendFailure } from '../dist/infrastructure/node/static-fil
 import { bundledIndex } from '../scripts/bundle-browser.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const site = 'https://cromagnonmmo.cro-magnon.workers.dev';
+const site = 'https://cromagnonmmo.com';
 const meta = (html, key) =>
   html.match(new RegExp(`<meta (?:name|property)="${key}" content="([^"]*)"`))?.[1];
 
@@ -50,10 +50,9 @@ test('shared URLs serve distinct Japanese and English metadata before JavaScript
     assert.equal(await head.text(), '');
   }
   // Both entries must keep boot/import maps and styles in sync with the same game.
-  assert.equal(
-    pages[0].slice(pages[0].indexOf('  <body>')),
-    pages[1].slice(pages[1].indexOf('  <body>')),
-  );
+  const body = (html) =>
+    html.slice(html.indexOf('  <body>')).replace(/<noscript>[\s\S]*?<\/noscript>/, '');
+  assert.equal(body(pages[0]), body(pages[1]));
   const styles = (html) => [...html.matchAll(/<link rel="stylesheet"[^>]+>/g)].map(([tag]) => tag);
   assert.deepEqual(styles(pages[0]), styles(pages[1]));
   for (const pathname of ['/en', '/en/index.html', '/en/?room=EMBER']) {

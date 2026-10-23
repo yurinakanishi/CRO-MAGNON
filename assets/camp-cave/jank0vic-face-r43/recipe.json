@@ -1,0 +1,751 @@
+{
+  "version": 2,
+  "generator": "Built-in image_gen",
+  "identityReview": "assets/camp-cave/jank0vic-face-r43/qa/identity-review.json",
+  "sources": {
+    "round-and-maruimo": {
+      "path": "assets/camp-cave/continuous-r39/source/round-and-maruimo-r01.png",
+      "bytes": 1844090,
+      "sha256": "2d3dc72080c38bc914ef7cdadcdee7e25ac3fd8fec39a922fe5a3a691655499e",
+      "prompt": "assets/camp-cave/continuous-r39/prompts/round-and-maruimo.txt"
+    },
+    "shapes-and-companions": {
+      "path": "assets/camp-cave/continuous-r39/source/shapes-and-companions-r01.png",
+      "bytes": 1853910,
+      "sha256": "1a395ea1cd95ec3dfcd8f3f60368dce03f788885a97c6f90f6d6673e577dd0f3",
+      "prompt": "assets/camp-cave/continuous-r39/prompts/shapes-and-companions.txt"
+    },
+    "meadow-people": {
+      "path": "assets/camp-cave/continuous-r39/source/meadow-people-r01.png",
+      "bytes": 1883945,
+      "sha256": "7d743a1388624af6ae0758744ded44b884bd925b82b448a6596a0eeaf26287a7",
+      "prompt": "assets/camp-cave/continuous-r39/prompts/meadow-people.txt"
+    },
+    "river-people": {
+      "path": "assets/camp-cave/continuous-r39/source/river-people-r01.png",
+      "bytes": 1887838,
+      "sha256": "843a108a7675956e22e5e8108f878fc42d53ef324783937529fd4d09b0d12a8e",
+      "prompt": "assets/camp-cave/continuous-r39/prompts/river-people.txt"
+    },
+    "extra-animals": {
+      "path": "assets/camp-cave/continuous-r39/source/extra-animals-r01.png",
+      "bytes": 1493990,
+      "sha256": "f7bc7691caeb77bb9483fbcd2d2614bc0ae58c7be827e86690493820d4ee1105",
+      "prompt": "assets/camp-cave/continuous-r39/prompts/extra-animals.txt"
+    },
+    "524-identity": {
+      "path": "assets/camp-cave/identity-r41/source/524-r01.png",
+      "bytes": 1502133,
+      "sha256": "834ed7f03cf3af3b12db68408fb9458865ae46a04f5e5aab3bd5300608aeea10",
+      "prompt": "assets/camp-cave/identity-r41/prompts/524.txt",
+      "references": [
+        {
+          "path": "assets/camp-cave/source/character-524-reference-user.png",
+          "sha256": "8231914f43d9e8454823a923c8004df44c0bad1ee1aec9e2f140493d5f2af273",
+          "bytes": 88969
+        },
+        {
+          "path": "assets/camp-cave/identity-r41/inputs/524-before.png",
+          "sha256": "3279579c4cd19f7a210598aacf5e8258e2e540f53104bafa63ab7354559a770b",
+          "bytes": 240120
+        }
+      ]
+    },
+    "nukonuko-mascot-identity": {
+      "path": "assets/camp-cave/identity-r41/source/nukonuko-mascot-r01.png",
+      "bytes": 1635253,
+      "sha256": "c1acfde3aa90db7caddf60209b2ded929eaaba38b2c80dc5485aea1084e4d0e0",
+      "prompt": "assets/camp-cave/identity-r41/prompts/nukonuko-mascot.txt",
+      "references": [
+        {
+          "path": "assets/friend-mascots/nukonuko-mascot/source/reference-v1.png",
+          "sha256": "7c8bcdcc1fc0101d920ffa77720128901b19fea5413313674ffe14328bc796d5",
+          "bytes": 1145485
+        },
+        {
+          "path": "assets/camp-cave/identity-r41/inputs/nukonuko-mascot-before.png",
+          "sha256": "961ef9340036f15f626b6383f1cc8d0a697950ee26d377322d6c3d64f9b19f3c",
+          "bytes": 140131
+        }
+      ]
+    },
+    "sagasa-mascot-identity": {
+      "path": "assets/camp-cave/identity-r41/source/sagasa-mascot-r01.png",
+      "bytes": 1613449,
+      "sha256": "dd207f6a0e27e8a45b1c5bfc6e5b53a36e66ea62a25b5604f0ef421126563914",
+      "prompt": "assets/camp-cave/identity-r41/prompts/sagasa-mascot.txt",
+      "references": [
+        {
+          "path": "assets/friend-mascots/sagasa-mascot/source/user-reference.jpg",
+          "sha256": "851595b134cf1f1548da30b6614d8dd04a7c6882e53f36588e98b712ad5dbb76",
+          "bytes": 206957
+        },
+        {
+          "path": "assets/camp-cave/identity-r41/inputs/sagasa-mascot-before.png",
+          "sha256": "d45e220e1eb4e91c6075fbc23cdd713cd98a14cc83079a457156ccbd14390702",
+          "bytes": 118620
+        }
+      ]
+    },
+    "saber-mascot-identity": {
+      "path": "assets/camp-cave/identity-r41/source/saber-mascot-r01.png",
+      "bytes": 2067641,
+      "sha256": "64ddc5e3a3f89a1d9dd386e1834b3e94d5b273082c96e185a0b70177c7a43067",
+      "prompt": "assets/camp-cave/identity-r41/prompts/saber-mascot.txt",
+      "references": [
+        {
+          "path": "assets/friend-mascots/saber-mascot/source/user-reference.jpg",
+          "sha256": "8c0f23c3c1d9acdf60509fa0a8a38f8d95c4562522513389d90a52491634caf0",
+          "bytes": 347309
+        },
+        {
+          "path": "assets/camp-cave/identity-r41/inputs/saber-mascot-before.png",
+          "sha256": "ca55e003dd5cfa07b96f65685448c684f8a74266c46707d086daaf32adb6cc22",
+          "bytes": 162642
+        }
+      ]
+    },
+    "otani-mascot-identity": {
+      "path": "assets/camp-cave/identity-r41/source/otani-mascot-r01.png",
+      "bytes": 2056621,
+      "sha256": "4b55ef861130febec870ca52dd61e15f2c57ad9bb9e91b0d6a134564a5ec6065",
+      "prompt": "assets/camp-cave/identity-r41/prompts/otani-mascot.txt",
+      "references": [
+        {
+          "path": "assets/friend-mascots/otani-mascot/source/reference-v1.png",
+          "sha256": "e6ac386f6f560e0eeca784441715c2962e8e4986312bf21142ca2d71dc568639",
+          "bytes": 1230479
+        },
+        {
+          "path": "assets/camp-cave/identity-r41/inputs/otani-mascot-before.png",
+          "sha256": "a140b714e37b2c6c8af40744daa9485f03746e61ccdf35a37e589b765460399c",
+          "bytes": 122005
+        }
+      ]
+    },
+    "howkey-scientist-identity": {
+      "path": "assets/camp-cave/identity-r41/source/howkey-scientist-r01.png",
+      "bytes": 2187802,
+      "sha256": "6b8967c8ba1857e3e00afd37fa5cc761c7b4949c95f561d0fb1ac3302f3459e6",
+      "prompt": "assets/camp-cave/identity-r41/prompts/howkey-scientist.txt",
+      "references": [
+        {
+          "path": "assets/howkey-scientist/source/user-reference-01.png",
+          "sha256": "a2505d35e691796d0172cfbc53f4405efd9d22944f2503154de4af203c75731c",
+          "bytes": 407754
+        },
+        {
+          "path": "assets/camp-cave/identity-r41/inputs/howkey-scientist-before.png",
+          "sha256": "385e14a004a3fecee4c37e5226e5b9fb46db1a32a0417e560979bbc25c15a713",
+          "bytes": 122028
+        }
+      ]
+    },
+    "daredaro-identity": {
+      "path": "assets/camp-cave/identity-r41/source/daredaro-r01.png",
+      "bytes": 2051072,
+      "sha256": "f3316d955f15b4e9951ece50b8b271bd247cf9a0cf497e02cac21f66d91057d2",
+      "prompt": "assets/camp-cave/identity-r41/prompts/daredaro.txt",
+      "references": [
+        {
+          "path": "assets/camp-cave/source/daredaro-reference-user.png",
+          "sha256": "857463e4e35ea8a8ee88c3d44190bf565ab3043087f7b71e4f0b46aa6cfad727",
+          "bytes": 236357
+        },
+        {
+          "path": "assets/camp-cave/identity-r41/inputs/daredaro-before.png",
+          "sha256": "37e9d14e7a1a7f3f3cb3fc0bab69d49452e760c87a5fa13e209e72fa6ca14ba1",
+          "bytes": 103615
+        }
+      ]
+    },
+    "jank0vic-face": {
+      "path": "assets/camp-cave/jank0vic-face-r43/source/jank0vic-face-r01.png",
+      "bytes": 2318145,
+      "sha256": "3654946f68d7820314f257180df7bb1c68215d20c50328dbd4b6277371ef69f3",
+      "prompt": "assets/camp-cave/jank0vic-face-r43/prompts/jank0vic-face.txt",
+      "references": [
+        {
+          "path": "assets/camp-cave/jank0vic-r42/references/x-avatar-400x400.jpg",
+          "sha256": "f3bf812411300fd17c36c6a883ddea78ff547376b2684e5dc471411430ecb191",
+          "bytes": 27473
+        },
+        {
+          "path": "assets/camp-cave/identity-r41/source/howkey-scientist-r01.png",
+          "sha256": "6b8967c8ba1857e3e00afd37fa5cc761c7b4949c95f561d0fb1ac3302f3459e6",
+          "bytes": 2187802
+        }
+      ]
+    }
+  },
+  "atlases": {
+    "roundBots": {
+      "entry": "mascotPigments.roundBots",
+      "originalSourceSize": {
+        "width": 2172,
+        "height": 724
+      }
+    },
+    "maruimoFrieze": {
+      "entry": "mascotPigments.maruimoFrieze",
+      "originalSourceSize": {
+        "width": 2172,
+        "height": 724
+      }
+    },
+    "shapeBots": {
+      "entry": "mascotPigments.shapeBots",
+      "originalSourceSize": {
+        "width": 2172,
+        "height": 724
+      }
+    },
+    "creature524": {
+      "entry": "characterPigment",
+      "originalSourceSize": {
+        "width": 2171,
+        "height": 724
+      }
+    },
+    "rimoFrieze": {
+      "entry": "rimoPigment",
+      "originalSourceSize": {
+        "width": 2172,
+        "height": 724
+      }
+    },
+    "maeKohaku": {
+      "entry": "mascotPigments.maeKohaku",
+      "originalSourceSize": {
+        "width": 2172,
+        "height": 724
+      }
+    },
+    "friendsMeadow": {
+      "entry": "mascotPigments.friendsMeadow",
+      "originalSourceSize": {
+        "width": 2172,
+        "height": 724
+      }
+    },
+    "friendsRiver": {
+      "entry": "mascotPigments.friendsRiver",
+      "originalSourceSize": {
+        "width": 2172,
+        "height": 724
+      }
+    },
+    "daredaroFrieze": {
+      "entry": "mascotPigments.daredaroFrieze",
+      "originalSourceSize": {
+        "width": 1024,
+        "height": 341
+      }
+    },
+    "ryuichiFrieze": {
+      "entry": "mascotPigments.ryuichiFrieze",
+      "originalSourceSize": {
+        "width": 1024,
+        "height": 341
+      }
+    }
+  },
+  "animals": [
+    {
+      "id": "woollyRhino",
+      "atlas": "daredaroFrieze",
+      "source": "extra-animals",
+      "crop": [
+        204,
+        27,
+        924,
+        437
+      ],
+      "size": "woollyRhino"
+    },
+    {
+      "id": "ibex",
+      "atlas": "maruimoFrieze",
+      "source": "extra-animals",
+      "crop": [
+        362,
+        438,
+        923,
+        864
+      ],
+      "size": "ibex"
+    },
+    {
+      "id": "aurochs",
+      "atlas": "ryuichiFrieze",
+      "source": "extra-animals",
+      "crop": [
+        220,
+        838,
+        1138,
+        1232
+      ],
+      "size": "aurochs"
+    }
+  ],
+  "recordedAnimalArt": [
+    {
+      "id": "bison",
+      "motif": "bison",
+      "size": "bison",
+      "rect": [
+        0.012675737750556793,
+        0.06912409060846561,
+        0.9709597717149221,
+        0.897398933531746
+      ],
+      "aspect": 1.2851985559566788,
+      "bodySpan": 0.9783393501805054,
+      "foot": 0.9891696750902527,
+      "ink": [
+        0.008426966292134831,
+        0.010830324909747292,
+        0.9915730337078652,
+        0.9891696750902527
+      ]
+    },
+    {
+      "id": "redHorse",
+      "motif": "redHorse",
+      "size": "redHorse",
+      "rect": [
+        0.02446425963785047,
+        0.12848191034226192,
+        0.9470693998247663,
+        0.8492082868303571
+      ],
+      "aspect": 1.4206008583690988,
+      "bodySpan": 0.9742489270386266,
+      "foot": 0.9871244635193133,
+      "ink": [
+        0.00906344410876133,
+        0.012875536480686695,
+        0.9909365558912386,
+        0.9871244635193133
+      ]
+    },
+    {
+      "id": "ochreHorse",
+      "motif": "ochreHorse",
+      "size": "ochreHorse",
+      "rect": [
+        0.018071388711734693,
+        0.13470187314540058,
+        0.9621930803571429,
+        0.8394206695103857
+      ],
+      "aspect": 1.3333333333333333,
+      "bodySpan": 0.974025974025974,
+      "foot": 0.987012987012987,
+      "ink": [
+        0.00974025974025974,
+        0.012987012987012988,
+        0.9902597402597403,
+        0.987012987012987
+      ]
+    },
+    {
+      "id": "mammoth",
+      "motif": "mammoth",
+      "size": "mammoth",
+      "rect": [
+        0.016902914733178655,
+        0.04965638431232092,
+        0.9688904799883991,
+        0.9368788055157593
+      ],
+      "aspect": 1.2771535580524345,
+      "bodySpan": 0.9775280898876404,
+      "foot": 0.9887640449438202,
+      "ink": [
+        0.008797653958944282,
+        0.011235955056179775,
+        0.9912023460410557,
+        0.9887640449438202
+      ]
+    },
+    {
+      "id": "deer",
+      "motif": "deer",
+      "size": "deer",
+      "rect": [
+        0.04057793674698795,
+        0.020307268415178572,
+        0.9324736445783133,
+        0.9293910435267857
+      ],
+      "aspect": 0.9294117647058824,
+      "bodySpan": 0.9823529411764705,
+      "foot": 0.9911764705882353,
+      "ink": [
+        0.00949367088607595,
+        0.008823529411764706,
+        0.990506329113924,
+        0.9911764705882353
+      ]
+    },
+    {
+      "id": "hands",
+      "motif": "hands",
+      "size": "hands",
+      "rect": [
+        0.061182037601626015,
+        0.05525376228501228,
+        0.9093305386178862,
+        0.902660472972973
+      ],
+      "aspect": 0.9133333333333333,
+      "bodySpan": 0.98,
+      "foot": 0.99,
+      "ink": [
+        0.010948905109489052,
+        0.01,
+        0.9890510948905109,
+        0.99
+      ]
+    },
+    {
+      "id": "signs",
+      "motif": "signs",
+      "size": "signs",
+      "rect": [
+        0.053348352413366336,
+        0.06708042512690356,
+        0.8820824953589109,
+        0.8454156091370558
+      ],
+      "aspect": 1.0698529411764706,
+      "bodySpan": 0.9779411764705882,
+      "foot": 0.9889705882352942,
+      "ink": [
+        0.010309278350515464,
+        0.011029411764705883,
+        0.9896907216494846,
+        0.9889705882352942
+      ]
+    }
+  ],
+  "subjects": [
+    {
+      "id": "white",
+      "atlas": "roundBots",
+      "source": "round-and-maruimo",
+      "crop": [
+        59,
+        198,
+        407,
+        544
+      ],
+      "size": "small"
+    },
+    {
+      "id": "blue",
+      "atlas": "roundBots",
+      "source": "round-and-maruimo",
+      "crop": [
+        453,
+        198,
+        800,
+        547
+      ],
+      "size": "small"
+    },
+    {
+      "id": "green",
+      "atlas": "roundBots",
+      "source": "round-and-maruimo",
+      "crop": [
+        850,
+        197,
+        1189,
+        540
+      ],
+      "size": "small"
+    },
+    {
+      "id": "purple",
+      "atlas": "roundBots",
+      "source": "round-and-maruimo",
+      "crop": [
+        56,
+        739,
+        395,
+        1081
+      ],
+      "size": "small"
+    },
+    {
+      "id": "orange",
+      "atlas": "roundBots",
+      "source": "round-and-maruimo",
+      "crop": [
+        445,
+        736,
+        782,
+        1079
+      ],
+      "size": "small"
+    },
+    {
+      "id": "maruimo-mascot",
+      "atlas": "maruimoFrieze",
+      "source": "round-and-maruimo",
+      "crop": [
+        785,
+        641,
+        1243,
+        1160
+      ],
+      "size": "person"
+    },
+    {
+      "id": "beret",
+      "atlas": "shapeBots",
+      "source": "shapes-and-companions",
+      "crop": [
+        28,
+        214,
+        423,
+        557
+      ],
+      "size": "small"
+    },
+    {
+      "id": "frog",
+      "atlas": "shapeBots",
+      "source": "shapes-and-companions",
+      "crop": [
+        451,
+        241,
+        814,
+        553
+      ],
+      "size": "small"
+    },
+    {
+      "id": "triangle",
+      "atlas": "shapeBots",
+      "source": "shapes-and-companions",
+      "crop": [
+        849,
+        232,
+        1241,
+        559
+      ],
+      "size": "small"
+    },
+    {
+      "id": "heart",
+      "atlas": "shapeBots",
+      "source": "shapes-and-companions",
+      "crop": [
+        27,
+        714,
+        418,
+        1056
+      ],
+      "size": "small"
+    },
+    {
+      "id": "524",
+      "atlas": "creature524",
+      "source": "524-identity",
+      "crop": [
+        162,
+        95,
+        1093,
+        1113
+      ],
+      "size": "small",
+      "lift": 0.22,
+      "isolation": "whole",
+      "bodyTop": 107,
+      "bodyBottom": 982
+    },
+    {
+      "id": "rimo-neko",
+      "atlas": "rimoFrieze",
+      "source": "shapes-and-companions",
+      "crop": [
+        786,
+        619,
+        1236,
+        1119
+      ],
+      "size": "cat"
+    },
+    {
+      "id": "mae",
+      "atlas": "maeKohaku",
+      "source": "meadow-people",
+      "crop": [
+        58,
+        319,
+        368,
+        546
+      ],
+      "size": "small"
+    },
+    {
+      "id": "kohaku",
+      "atlas": "maeKohaku",
+      "source": "meadow-people",
+      "crop": [
+        405,
+        119,
+        795,
+        580
+      ],
+      "size": "person",
+      "bodyTop": 161
+    },
+    {
+      "id": "saber-mascot",
+      "atlas": "friendsMeadow",
+      "source": "saber-mascot-identity",
+      "crop": [
+        71,
+        0,
+        1152,
+        1229
+      ],
+      "size": "person",
+      "isolation": "whole",
+      "bodyTop": 295
+    },
+    {
+      "id": "fairy-mascot",
+      "atlas": "friendsMeadow",
+      "source": "meadow-people",
+      "crop": [
+        47,
+        699,
+        394,
+        1187
+      ],
+      "size": "person"
+    },
+    {
+      "id": "nukonuko-mascot",
+      "atlas": "friendsMeadow",
+      "source": "nukonuko-mascot-identity",
+      "crop": [
+        139,
+        1,
+        1143,
+        1192
+      ],
+      "size": "person",
+      "isolation": "whole",
+      "bodyTop": 110
+    },
+    {
+      "id": "sagasa-mascot",
+      "atlas": "friendsMeadow",
+      "source": "sagasa-mascot-identity",
+      "crop": [
+        199,
+        39,
+        1077,
+        1241
+      ],
+      "size": "person",
+      "isolation": "whole"
+    },
+    {
+      "id": "otani-mascot",
+      "atlas": "friendsRiver",
+      "source": "otani-mascot-identity",
+      "crop": [
+        96,
+        17,
+        1179,
+        1222
+      ],
+      "size": "duck",
+      "isolation": "whole",
+      "bodyTop": 315
+    },
+    {
+      "id": "urata-mascot",
+      "atlas": "friendsRiver",
+      "source": "river-people",
+      "crop": [
+        443,
+        124,
+        835,
+        585
+      ],
+      "size": "person"
+    },
+    {
+      "id": "howkey-scientist",
+      "atlas": "friendsRiver",
+      "source": "howkey-scientist-identity",
+      "crop": [
+        63,
+        20,
+        1220,
+        1194
+      ],
+      "size": "person",
+      "isolation": "whole"
+    },
+    {
+      "id": "rei-mascot",
+      "atlas": "friendsRiver",
+      "source": "river-people",
+      "crop": [
+        15,
+        720,
+        495,
+        1187
+      ],
+      "size": "person"
+    },
+    {
+      "id": "daredaro",
+      "atlas": "daredaroFrieze",
+      "source": "daredaro-identity",
+      "crop": [
+        26,
+        45,
+        914,
+        1551
+      ],
+      "size": "person",
+      "isolation": "whole"
+    },
+    {
+      "id": "ryuichi",
+      "atlas": "ryuichiFrieze",
+      "source": "river-people",
+      "crop": [
+        891,
+        706,
+        1202,
+        1186
+      ],
+      "size": "person"
+    },
+    {
+      "id": "jank0vic",
+      "atlas": "maeKohaku",
+      "source": "jank0vic-face",
+      "crop": [
+        182,
+        13,
+        1076,
+        1239
+      ],
+      "size": "small",
+      "isolation": "whole"
+    }
+  ],
+  "revision": 43
+}
