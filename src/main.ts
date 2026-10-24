@@ -2014,7 +2014,7 @@ function enterGame(skipGallery = false) {
       try {
         // The gallery shows the selected character, loading its verified template
         // once; the world's local player reuses it. Entry is offered once the
-        // arrival's critical set and the character's held props are ready too.
+        // arrival's critical set, held props and selected companions are ready too.
         await cave.load();
         if (loadingCave !== cave) return;
         loadingScreen.release(caveCover);
@@ -2029,8 +2029,8 @@ function enterGame(skipGallery = false) {
     return;
   }
   void renderer.startWorld?.();
-  // Start the local character's template and held props now; its actor reuses
-  // them, and the world reports a genuine failure when the actor needs them.
+  // Prepare the local character, held props and selected companions. Arrival
+  // also checks the actual snapshot, including a previous saved party.
   renderer.prepareSelf?.(profile).catch(() => {});
   beginGame();
 }
@@ -2050,8 +2050,8 @@ function showPlay() {
   document.body.classList.add('in-game');
   areaBanner.reset();
 }
-/** Replace the gallery with the game once the visitor's character stands in the
- * world (WorldRenderer.arrival): their body and floor, never unrelated actors. */
+/** Replace the gallery once the visitor and selected companions stand in the
+ * world (WorldRenderer.arrival), on their loaded floor. */
 async function arriveFromGallery(cave: LoadingCave) {
   const marks = startupMarks.current;
   try {

@@ -1,11 +1,6 @@
 {
-  "checkedAt": "2026-10-16T13:28:14.960Z",
-  "status": "passed",
   "base": "https://cromagnonmmo.com/",
-  "buildId": "3b22d16f865af778842dfa1f7b742a447e003099fdaff0e954388baa66eef194",
-  "sourceCommit": "24a9b07fa9bba7b4a2bbc07e3dbc66029f872eb0",
-  "browser": "155.0.8059.41",
-  "scope": "Real Chrome on Windows; desktop and 390px touch emulation in isolated browser saves. Physical phones, native Safari, physical controllers and long-duration play were not tested.",
+  "browser": "154.0.8037.93",
   "checks": [
     "The title enables solo and disables online entry",
     "First entry runs and autosaves a local character, outfit and one companion",
@@ -15,22 +10,8 @@
     "Native Chrome touch moves, cancellation stops, jump works, and the menu saves the moved position",
     "No WebSocket or game API request"
   ],
+  "idleSamples": [],
+  "performanceSamples": [],
   "errors": [],
-  "forbidden": [],
-  "publicHealth": {
-    "ok": true,
-    "hosting": "cloudflare-free",
-    "worldVersion": 4,
-    "mode": "solo",
-    "maxPlayers": 1,
-    "room": "SOLO"
-  },
-  "screenshots": "output/playwright/solo-live-mural-20261016-01",
-  "visuallyReviewed": ["solo-world.png", "solo-mobile.png"],
-  "productionGate": "output/production-mural-20261016-01/verification.json",
-  "evidence": "output/playwright/solo-live-mural-20261016-01/result.json",
-  "contributorX": {
-    "status": "unchanged; not re-exercised in this deployment",
-    "priorEvidence": "docs/ui-deploy-2026-10-16.md"
-  }
+  "forbidden": []
 }

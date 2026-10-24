@@ -344,10 +344,7 @@ test('the camp-mountain material ends at the sea and its flat apron gives way to
   const { material, roof, shader } = compileMountain();
   try {
     assert.equal(shader.uniforms.earthCoast?.value, textures.coast, 'the shared coast field');
-    assert.equal(
-      material.customProgramCacheKey(),
-      'camp-mountain-river-v11-measured-mouth-coast-1',
-    );
+    assert.equal(material.customProgramCacheKey(), 'camp-mountain-river-v12-world-meadow-coast-1');
     // The source surface treatments are kept: river rock, cave-mouth envelope, world-space hill.
     assert.ok(shader.vertexShader.includes('hillPosition=position;vRiverCut=riverCut;'));
     assert.ok(shader.vertexShader.includes('vCoastWorld=(modelMatrix*coastPoint).xyz;'));

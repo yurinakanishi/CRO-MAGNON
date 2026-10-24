@@ -1,6 +1,7 @@
 import { isMesh } from './three-types.js';
 import { markActiveInstances, markActiveAttribute } from './instance-updates.js';
 import { instancedMaterial } from './material-variants.js';
+import { prepareMeadowNormals } from './meadow-surface.js';
 import * as THREE from 'three';
 import { WORLD } from '../shared/world.mjs';
 import { BIOMES, biomeById, nearbyChunks } from '../shared/biomes.mjs';
@@ -226,6 +227,7 @@ export class OpenWorldTerrain {
           .applyMatrix4(node.matrixWorld)
           .translate(-centre.x, -(template.asset.placement.surfaceHeightMetres ?? 0), -centre.z)
           .scale(32 / size.x, 1, 32 / size.z);
+        if (biome.id === 'grassland') prepareMeadowNormals(geometry);
         geometry.computeBoundingSphere();
         geometry.setAttribute(
           'earthCoastal',
@@ -278,6 +280,7 @@ export class OpenWorldTerrain {
           }
           for (const [i, result] of results.entries()) {
             if (result.status !== 'fulfilled') continue;
+            if (chunk.biome === 'grassland') prepareMeadowNormals(result.value);
             const mesh = new THREE.Mesh(result.value, levels[0][i].material);
             mesh.matrixAutoUpdate = false;
             mesh.receiveShadow = true;
@@ -301,6 +304,7 @@ export class OpenWorldTerrain {
         source.deleteAttribute('earthCoastal');
         const geometry = fitSourceRiverBank(source);
         if (source !== geometry) source.dispose();
+        if (chunk.biome === 'grassland') prepareMeadowNormals(geometry);
         const mesh = new THREE.Mesh(geometry, part.material);
         mesh.matrixAutoUpdate = false;
         mesh.receiveShadow = true;

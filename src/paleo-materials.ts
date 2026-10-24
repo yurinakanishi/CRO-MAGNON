@@ -11,6 +11,7 @@ import { BLADE_ALBEDO } from './meadow-palette.js';
 import { CAMP_CAVE } from '../shared/camp-cave-layout.mjs';
 import { CAMP_CAVE_SURFACE_DATA as cave } from '../shared/camp-cave-surface-data.mjs';
 import { caveGroundShader } from './cave-ground-style.js';
+import { meadowMapFragment, meadowTrailShader } from './meadow-surface.js';
 export { BLADE_ALBEDO } from './meadow-palette.js';
 const shadow = regionById('shadow-realm');
 // GLSL twin of marshDrop in behemoth-rules.mts: the drawn floor equals the walked floor.
@@ -209,9 +210,14 @@ export function earthTerrainMaterial(original, biome, textures) {
     shader.fragmentShader =
       earthShader +
       (marsh ? marshShader : '') +
-      (meadow ? meadowShader + caveGroundShader : '') +
+      (meadow ? meadowShader + caveGroundShader + meadowTrailShader : '') +
       'uniform sampler2D earthBiomes;\nuniform sampler2D caveFloor;\nvarying vec3 vTerrainWorld;\nvarying float vCoastal;\n' +
       shader.fragmentShader;
+    if (meadow)
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <map_fragment>',
+        `#include <map_fragment>\n${meadowMapFragment('vTerrainWorld.xz')}`,
+      );
     shader.fragmentShader = shader.fragmentShader.replace(
       '#include <color_fragment>',
       `#include <color_fragment>
@@ -228,16 +234,7 @@ export function earthTerrainMaterial(original, biome, textures) {
       diffuseColor.rgb=mix(diffuseColor.rgb,${biome.id === 'ice' || biome.id === 'snow' ? 'climate*.8' : 'vec3(.38,.32,.20)'},beach*.55);
       float shadowGarden=1.0-smoothstep(${(shadow.radius - 18).toFixed(1)},${shadow.radius.toFixed(1)},distance(vTerrainWorld.xz,vec2(${shadow.x.toFixed(1)},${shadow.z.toFixed(1)})));
       diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.045,.038,.09)*relief,shadowGarden);
-      ${
-        meadow
-          ? `
-      vec2 approach=vTerrainWorld.xz-vec2(${CAMP_CAVE.x.toFixed(2)},${CAMP_CAVE.z.toFixed(2)});
-      float dustPath=(1.0-smoothstep(4.5,8.0,abs(approach.x)+dustNoise(vTerrainWorld.xz*.45)*.7))
-        *smoothstep(-32.0,-18.0,approach.y)*(1.0-smoothstep(-7.0,1.0,approach.y));
-      diffuseColor.rgb=mix(diffuseColor.rgb,caveDust(diffuseColor.rgb,vTerrainWorld.xz),dustPath);
-      `
-          : ''
-      }
+      ${meadow ? 'diffuseColor.rgb=meadowTrail(diffuseColor.rgb,vTerrainWorld.xz);' : ''}
       ${
         marsh
           ? `float marsh=marshBasin(vTerrainWorld.xz);
@@ -263,7 +260,7 @@ export function earthTerrainMaterial(original, biome, textures) {
       totalEmissiveRadiance+=vec3(1.0,.16,.018)*lava*.7;`,
       );
   };
-  material.customProgramCacheKey = () => `paleo-terrain-${biome.id}-marsh-1-meadow-2-cave-4`;
+  material.customProgramCacheKey = () => `paleo-terrain-${biome.id}-marsh-1-meadow-3-cave-5`;
   return material;
 }
 

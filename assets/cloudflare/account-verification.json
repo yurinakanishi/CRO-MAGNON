@@ -1,9 +1,9 @@
 {
-  "checkedAt": "2026-10-16T13:19:36.607Z",
+  "checkedAt": "2026-10-19T03:11:31.8250288Z",
   "accountId": "a211102818d484cb668c6b62bebff3f9",
   "accountName": "CRO-MAGNON Free",
   "workersPlan": "Free",
-  "evidence": "Observed the exact Workers plans dashboard in authenticated Chrome through CUA, tab 1179543499. The account switcher identified CRO-MAGNON Free; the Free card showed $0 and disabled Current plan. Both the accessibility tree and screenshot were observed in this chat. No plan or billing settings were changed.",
+  "evidence": "Authenticated Workers plans dashboard reloaded immediately before deployment; CRO-MAGNON Free / Free / $0 / disabled Current plan. AX evidence: output/cloudflare-deploy/deploy-gather-camp-20261019-01/workers-free-ax.txt. No plan or billing change.",
   "dashboard": "https://dash.cloudflare.com/a211102818d484cb668c6b62bebff3f9/workers/plans",
   "deploymentAllowed": true
 }

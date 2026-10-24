@@ -1,14 +1,9 @@
 import * as THREE from 'three';
-import {
-  CAMP_MOUNTAIN,
-  CAMP_CAVE,
-  CAMP_MOUNTAIN_TRAIL,
-  CAVE_APPROACH,
-  CAVE_BEND,
-} from '../shared/camp-cave-layout.mjs';
+import { CAMP_MOUNTAIN, CAMP_CAVE, CAVE_BEND } from '../shared/camp-cave-layout.mjs';
 import { isMesh } from './three-types.js';
 import { meadowShader, MEADOW_BLADE_ALBEDO, MEADOW_MATCH, clipAtCoast } from './paleo-materials.js';
 import { caveGroundShader } from './cave-ground-style.js';
+import { meadowMapFragment, meadowTrailShader } from './meadow-surface.js';
 import { CAMP_CAVE_SURFACE_DATA as cave } from '../shared/camp-cave-surface-data.mjs';
 
 // The cave's rock envelope in the hillside, in cave-local metres: half its width beside the
@@ -74,23 +69,13 @@ export function prepareMountainMaterials(
   roof.minFilter = roof.magFilter = THREE.LinearFilter;
   roof.generateMipmaps = false;
   roof.needsUpdate = true;
-  const segments = [CAMP_MOUNTAIN_TRAIL, CAVE_APPROACH]
-    .map((trail) =>
-      trail
-        .slice(1)
-        .map((b, i) => {
-          const a = trail[i];
-          return `trail=min(trail,trailSegment(p,vec2(${a.x.toFixed(1)},${a.z.toFixed(1)}),vec2(${b.x.toFixed(1)},${b.z.toFixed(1)})));`;
-        })
-        .join('\n'),
-    )
-    .join('\n');
   const seen = new Set<THREE.Material>();
   root.traverse((node) => {
     if (!isMesh(node)) return;
     for (const material of [node.material].flat()) {
       if (seen.has(material)) continue;
       seen.add(material);
+      (material as THREE.MeshStandardMaterial).roughness = 0.94;
       material.onBeforeCompile = (shader) => {
         clipAtCoast(shader, earthTextures, { flatGround: true });
         shader.uniforms.caveRoof = { value: roof };
@@ -114,23 +99,15 @@ export function prepareMountainMaterials(
         shader.fragmentShader =
           meadowShader +
           caveGroundShader +
-          `uniform sampler2D caveRoof; varying vec3 hillPosition; varying float vRiverCut;
-          float trailSegment(vec2 p,vec2 a,vec2 b){vec2 d=b-a;return length(p-a-d*clamp(dot(p-a,d)/dot(d,d),0.0,1.0));}
-          ` +
+          meadowTrailShader +
+          'uniform sampler2D caveRoof; varying vec3 hillPosition; varying float vRiverCut;\n' +
           shader.fragmentShader;
         shader.fragmentShader = shader.fragmentShader.replace(
           '#include <map_fragment>',
           `
           #include <map_fragment>
           vec2 p=vec2(${CAMP_MOUNTAIN.x.toFixed(1)}-hillPosition.x,${CAMP_MOUNTAIN.z.toFixed(1)}-hillPosition.z);
-          #ifdef USE_MAP
-          // Overlap three differently oriented samples of the accepted meadow
-          // texture, so its original square turf patch does not repeat as tiles.
-          vec2 a=p/29.0;
-          vec2 b=mat2(.8,-.6,.6,.8)*p/37.0+vec2(.31,.67);
-          vec2 c=mat2(.28,.96,-.96,.28)*p/23.0+vec2(.73,.19);
-          diffuseColor.rgb=texture2D(map,a).rgb*.42+texture2D(map,b).rgb*.34+texture2D(map,c).rgb*.24;
-          #endif
+          ${meadowMapFragment('p')}
           vec2 caveLocal=vec2(${CAMP_CAVE.x.toFixed(2)},${CAMP_CAVE.z.toFixed(2)})-p;
           vec2 caveUV=(caveLocal-vec2(${cave.minX.toFixed(3)},${cave.minZ.toFixed(3)}))/vec2(${(cave.nx * cave.step).toFixed(3)},${(cave.nz * cave.step).toFixed(3)});
           if(all(greaterThanEqual(caveUV,vec2(0.0))) && all(lessThanEqual(caveUV,vec2(1.0)))){
@@ -143,18 +120,14 @@ export function prepareMountainMaterials(
             if(abs(caveLocal.x-centre)<innerWidth && roofHeight>${glsl(MOUTH.roof)} && hillPosition.y<${(CAMP_CAVE.elevation + CAMP_CAVE.groundOffset).toFixed(2)}+roofHeight-${glsl(MOUTH.below)})discard;
           }
           diffuseColor.rgb=meadowGreen(diffuseColor.rgb,p);
-          float trail=1000.0;${segments}
-          float path=1.0-smoothstep(1.25,3.1,trail);
           float shade=dot(diffuseColor.rgb,vec3(.3,.59,.11));
-          diffuseColor.rgb=mix(diffuseColor.rgb,caveDust(diffuseColor.rgb,p),path*.85);
-          float apron=(1.0-smoothstep(6.0,11.0,abs(caveLocal.x)))*smoothstep(6.0,12.0,caveLocal.y)*(1.0-smoothstep(18.0,24.0,caveLocal.y));
-          diffuseColor.rgb=mix(diffuseColor.rgb,caveDust(diffuseColor.rgb,p),apron);
+          diffuseColor.rgb=meadowTrail(diffuseColor.rgb,p);
           float riverRock=1.0-exp(-vRiverCut*2.5);
           diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.22,.205,.17)*(shade*3.0+.3),riverRock*.88);
         `,
         );
       };
-      material.customProgramCacheKey = () => 'camp-mountain-river-v11-measured-mouth-coast-1';
+      material.customProgramCacheKey = () => 'camp-mountain-river-v12-world-meadow-coast-1';
       material.needsUpdate = true;
     }
   });

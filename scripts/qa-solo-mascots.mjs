@@ -109,6 +109,8 @@ try {
     });
     const tap = async (selector) =>
       mobile ? page.locator(selector).tap() : page.locator(selector).click();
+    const command = (action) =>
+      mobile ? `[data-touch-action="${action}"]` : `[data-cue="${action}"]`;
     await page.goto(base);
     await tap('#title-start');
     await page.locator('#setup-form input[name="name"]').fill('仲間QA');
@@ -136,7 +138,9 @@ try {
     await page.locator('#mascot-target:not([hidden])').waitFor();
     pass(`${label}: multi choice, all/none and Back preserve the draft; all 11 arrive`);
     await tap('.mascot-target-toggle');
-    await page.locator('[data-mascot-command="inspect"]:not([disabled])').waitFor();
+    assert.equal(await page.locator('#mascot-target [data-mascot-command]').count(), 0);
+    await page.locator(command('inspect')).waitFor();
+    await page.locator(command('pet')).waitFor();
     await page.waitForTimeout(700);
     await page.screenshot({ path: `${output}/${label}-target.png` });
     if (mobile) {
@@ -206,11 +210,22 @@ try {
         continue;
       }
     }
-    await tap('[data-mascot-command="inspect"]');
+    await tap('[data-mascot-step="1"]');
+    const selected = await page.locator('#mascot-target').getAttribute('data-target-key');
+    if (mobile) await page.touchscreen.tap(350, 300);
+    else await page.mouse.click(1200, 300);
+    assert.equal(await page.locator('#mascot-target-panel').isHidden(), true);
+    assert.equal(await page.locator('#mascot-target').getAttribute('data-target-key'), selected);
+    await tap('.mascot-target-toggle');
+    await tap('[data-mascot-step="-1"]');
+    pass(
+      `${label}: picker only selects a target; outside tap closes it and preserves the selection`,
+    );
+    await tap(command('inspect'));
+    assert.equal(await page.locator('#mascot-target-panel').isHidden(), true);
     await until(() => document.querySelector('#world').dataset.companionView?.startsWith('524@'));
     await page.waitForTimeout(700);
     await page.screenshot({ path: `${output}/${label}-524-closeup.png` });
-    await tap('.mascot-target-toggle');
     await tap('.mascot-target-toggle');
     await page.waitForTimeout(350);
     assert.ok(
@@ -225,9 +240,12 @@ try {
     );
     await page.waitForTimeout(700);
     await page.screenshot({ path: `${output}/${label}-rimo-closeup.png` });
-    await tap('[data-mascot-command="endInspect"]');
-    await page.locator('[data-mascot-command="pet"]:not([disabled])').waitFor();
-    await tap('[data-mascot-command="pet"]');
+    await tap(command('endInspect'));
+    await page.locator(command('pet')).waitFor();
+    // The lower action remains reachable while the target picker is open.
+    await tap('.mascot-target-toggle');
+    await tap(command('pet'));
+    assert.equal(await page.locator('#mascot-target-panel').isHidden(), true);
     await until(() =>
       window.mascotQA.state.companions?.some(
         (c) => c.key === 'rimo-neko' && c.petPlayerId === window.mascotQA.id,
@@ -243,8 +261,9 @@ try {
     await page.screenshot({ path: `${output}/${label}-pet.png` });
     await until(() => window.mascotQA.state.companions?.every((c) => !c.petPlayerId));
     pass(
-      `${label}: selector reopening preserves the view, arrows switch 524/rimo and petting reaches only rimo`,
+      `${label}: lower Look/Back/Pet buttons work on the first tap; arrows switch 524/rimo and petting reaches only rimo`,
     );
+    await tap('.mascot-target-toggle');
     if (mobile) {
       const strip = await page.locator('.mascot-target-strip').boundingBox();
       const session = await context.newCDPSession(page);

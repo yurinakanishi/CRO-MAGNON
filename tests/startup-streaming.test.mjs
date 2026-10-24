@@ -948,6 +948,7 @@ test('arrival waits for the world, the local snapshot, its floor and its body; l
     failed: false,
     selfId: null,
     players: new Map(),
+    state: { players: [] },
     openWorld: { arrive: async (position) => floors.push([position.x, position.z]) },
   });
   let arrived = false;

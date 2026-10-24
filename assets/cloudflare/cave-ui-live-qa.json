@@ -1,0 +1,537 @@
+{
+  "checkedAt": "2026-10-17T15:10:59.836Z",
+  "status": "passed",
+  "sourceCommit": "ec99685269a319508dc08c532ac84f7fd462dfc7",
+  "buildId": "0ebcaa432ef3bff53f40c167c84f09d2e391b21aae91412f4b7eb5b952eff2bb",
+  "versionId": "d5761636-f979-4665-bdbc-c6352a5e3589",
+  "base": "https://cromagnonmmo.com/",
+  "scope": "Windows Chrome 154.0.8037.93; five desktop sizes, three touch-emulated sizes and a simulated gamepad. Physical phones, Safari, physical controllers and long-duration play not tested.",
+  "desktop": {
+    "evidence": "output/playwright/desktop-public-live-20261018-01",
+    "checks": [
+      "Mouse closeup and Return work without a keyboard or modal",
+      "Picker stays selection-only; one lower-button click pets the selected companion",
+      "Clicking a gameplay button returns focus so Space still jumps",
+      "Named inventory, companions, map and menu buttons open their real screens and retain modal focus",
+      "Throw and recall work by mouse alongside the contextual companion buttons",
+      "Tab/Enter activate the visible action and Escape returns without opening the menu",
+      "All action buttons remain at least 44px high, visible and clickable at five desktop sizes",
+      "Simulated controller keeps its original diagram; a mouse action switches back without losing the click",
+      "Touch emulation keeps its original controls and Look/Return at three portrait/landscape sizes"
+    ],
+    "delivered": [
+      {
+        "file": "src/input-cues.js",
+        "sha256": "b6a42d4b6f3bee2daacdc43c92e7abadcba7f34e1ff40010da6b849326a93d2b"
+      },
+      {
+        "file": "src/input-cues-ui.js",
+        "sha256": "d98d30cef57eb76f2f8dfd12ce83963a7fd1865d2fb42ab27256bf4aba2e3836"
+      },
+      {
+        "file": "src/input-cues.css",
+        "sha256": "c482a0eb8221da33bfb02b3fc0e09c56b2225cf0aeee5c99af99c8cbd6a28b97"
+      }
+    ]
+  },
+  "cave": {
+    "evidence": "output/playwright/cave-public-live-20261018-01",
+    "checks": [
+      {
+        "character": "cro-female",
+        "mobile": false,
+        "comparisons": [
+          {
+            "lit": true,
+            "shots": [
+              {
+                "name": "before",
+                "mean": 75.88293595678985,
+                "p10": 43.081199999999995,
+                "p95": 95.5036,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 36
+                },
+                "nearFaceClearance": null,
+                "width": 1214,
+                "height": 758
+              },
+              {
+                "name": "after",
+                "mean": 159.77505524691608,
+                "p10": 116.196,
+                "p95": 175.3552,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 36
+                },
+                "nearFaceClearance": null,
+                "width": 1214,
+                "height": 758
+              },
+              {
+                "name": "near-face",
+                "mean": 176.20736651234935,
+                "p10": 136.976,
+                "p95": 209.42459999999997,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 36
+                },
+                "nearFaceClearance": 0.020000000000005378,
+                "width": 1214,
+                "height": 758
+              }
+            ]
+          },
+          {
+            "lit": false,
+            "shots": [
+              {
+                "name": "before",
+                "mean": 76.04168885030845,
+                "p10": 44.009,
+                "p95": 95.5758,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 36
+                },
+                "nearFaceClearance": null,
+                "width": 1214,
+                "height": 758
+              },
+              {
+                "name": "after",
+                "mean": 160.13345189043477,
+                "p10": 117.6926,
+                "p95": 175.42739999999998,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 36
+                },
+                "nearFaceClearance": null,
+                "width": 1214,
+                "height": 758
+              }
+            ]
+          }
+        ],
+        "spinnerAndStart": true
+      },
+      {
+        "liveCave": true,
+        "character": "cro-male",
+        "mobile": false,
+        "settings": {
+          "intensity": 2.9990514727126003,
+          "ground": "#b8b6aa",
+          "decay": 0,
+          "distance": 4,
+          "torch": 2.5640382032850773
+        }
+      },
+      {
+        "character": "cro-male",
+        "mobile": false,
+        "comparisons": [
+          {
+            "lit": true,
+            "shots": [
+              {
+                "name": "before",
+                "mean": 56.32849966425611,
+                "p10": 2,
+                "p95": 237.01379999999997,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 44
+                },
+                "nearFaceClearance": null,
+                "width": 1214,
+                "height": 758
+              },
+              {
+                "name": "after",
+                "mean": 40.21634999999944,
+                "p10": 10.8556,
+                "p95": 115.9468,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 44
+                },
+                "nearFaceClearance": null,
+                "width": 1214,
+                "height": 758
+              },
+              {
+                "name": "near-face",
+                "mean": 36.49351082128069,
+                "p10": 8.6968,
+                "p95": 96.8236,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 44
+                },
+                "nearFaceClearance": 0.020000000000005378,
+                "width": 1214,
+                "height": 758
+              }
+            ]
+          },
+          {
+            "lit": false,
+            "shots": [
+              {
+                "name": "before",
+                "mean": 9.803870118801623,
+                "p10": 0.8504,
+                "p95": 32.135,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 44
+                },
+                "nearFaceClearance": null,
+                "width": 1214,
+                "height": 758
+              },
+              {
+                "name": "after",
+                "mean": 32.57137678202458,
+                "p10": 6.397600000000001,
+                "p95": 74.4248,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 44
+                },
+                "nearFaceClearance": null,
+                "width": 1214,
+                "height": 758
+              }
+            ]
+          }
+        ],
+        "spinnerAndStart": true
+      },
+      {
+        "character": "cro-magnon-boy-headband",
+        "mobile": false,
+        "comparisons": [
+          {
+            "lit": true,
+            "shots": [
+              {
+                "name": "before",
+                "mean": 65.83248939043148,
+                "p10": 11.759799999999998,
+                "p95": 84.3604,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 36
+                },
+                "nearFaceClearance": null,
+                "width": 1214,
+                "height": 758
+              },
+              {
+                "name": "after",
+                "mean": 143.31314305555472,
+                "p10": 52.071999999999996,
+                "p95": 168.3484,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 36
+                },
+                "nearFaceClearance": null,
+                "width": 1214,
+                "height": 758
+              },
+              {
+                "name": "near-face",
+                "mean": 154.9758533179012,
+                "p10": 67.6204,
+                "p95": 201.48080000000002,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 36
+                },
+                "nearFaceClearance": 0.020000000000005378,
+                "width": 1214,
+                "height": 758
+              }
+            ]
+          },
+          {
+            "lit": false,
+            "shots": [
+              {
+                "name": "before",
+                "mean": 64.4400269675918,
+                "p10": 11.475000000000001,
+                "p95": 84.1478,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 36
+                },
+                "nearFaceClearance": null,
+                "width": 1214,
+                "height": 758
+              },
+              {
+                "name": "after",
+                "mean": 143.15586643518444,
+                "p10": 51.7912,
+                "p95": 168.3484,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 36
+                },
+                "nearFaceClearance": null,
+                "width": 1214,
+                "height": 758
+              }
+            ]
+          }
+        ],
+        "spinnerAndStart": true
+      },
+      {
+        "character": "bear-female",
+        "mobile": false,
+        "comparisons": [
+          {
+            "lit": true,
+            "shots": [
+              {
+                "name": "before",
+                "mean": 170.37231551246433,
+                "p10": 22.770199999999996,
+                "p95": 254.78339999999997,
+                "clippedFraction": 0.3462603878116344,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 19
+                },
+                "nearFaceClearance": null,
+                "width": 1214,
+                "height": 758
+              },
+              {
+                "name": "after",
+                "mean": 107.3426020775622,
+                "p10": 26.177,
+                "p95": 158.205,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 19
+                },
+                "nearFaceClearance": null,
+                "width": 1214,
+                "height": 758
+              },
+              {
+                "name": "near-face",
+                "mean": 102.49206011080334,
+                "p10": 25.9788,
+                "p95": 146.6038,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 19
+                },
+                "nearFaceClearance": 0.020000000000005378,
+                "width": 1214,
+                "height": 758
+              }
+            ]
+          },
+          {
+            "lit": false,
+            "shots": [
+              {
+                "name": "before",
+                "mean": 42.555692797783884,
+                "p10": 4.6286,
+                "p95": 66.0468,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 19
+                },
+                "nearFaceClearance": null,
+                "width": 1214,
+                "height": 758
+              },
+              {
+                "name": "after",
+                "mean": 87.92003102493098,
+                "p10": 23.471,
+                "p95": 120.6424,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 607,
+                  "cy": 379,
+                  "radius": 19
+                },
+                "nearFaceClearance": null,
+                "width": 1214,
+                "height": 758
+              }
+            ]
+          }
+        ],
+        "spinnerAndStart": true
+      },
+      {
+        "liveCave": true,
+        "character": "cro-magnon-girl-bear",
+        "mobile": true,
+        "settings": {
+          "intensity": 2.9990506186537735,
+          "ground": "#b8b6aa",
+          "decay": 0,
+          "distance": 4,
+          "torch": 2.4098204747715
+        }
+      },
+      {
+        "character": "cro-magnon-girl-bear",
+        "mobile": true,
+        "comparisons": [
+          {
+            "lit": true,
+            "shots": [
+              {
+                "name": "before",
+                "mean": 101.49817028125115,
+                "p10": 25.670399999999997,
+                "p95": 246.04299999999998,
+                "clippedFraction": 0.02984375,
+                "roi": {
+                  "cx": 195,
+                  "cy": 422,
+                  "radius": 40
+                },
+                "nearFaceClearance": null,
+                "width": 390,
+                "height": 844
+              },
+              {
+                "name": "after",
+                "mean": 144.92825428125002,
+                "p10": 63.9076,
+                "p95": 172.922,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 195,
+                  "cy": 422,
+                  "radius": 40
+                },
+                "nearFaceClearance": null,
+                "width": 390,
+                "height": 844
+              },
+              {
+                "name": "near-face",
+                "mean": 158.90223806249946,
+                "p10": 83.3734,
+                "p95": 201.4888,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 195,
+                  "cy": 422,
+                  "radius": 40
+                },
+                "nearFaceClearance": 0.020000000000005378,
+                "width": 390,
+                "height": 844
+              }
+            ]
+          },
+          {
+            "lit": false,
+            "shots": [
+              {
+                "name": "before",
+                "mean": 67.09129784375217,
+                "p10": 15.0366,
+                "p95": 85.65839999999999,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 195,
+                  "cy": 422,
+                  "radius": 40
+                },
+                "nearFaceClearance": null,
+                "width": 390,
+                "height": 844
+              },
+              {
+                "name": "after",
+                "mean": 143.57237828124832,
+                "p10": 62.04679999999999,
+                "p95": 167.1438,
+                "clippedFraction": 0,
+                "roi": {
+                  "cx": 195,
+                  "cy": 422,
+                  "radius": 40
+                },
+                "nearFaceClearance": null,
+                "width": 390,
+                "height": 844
+              }
+            ]
+          }
+        ],
+        "spinnerAndStart": true
+      }
+    ],
+    "fixture": "Verified actual served bundle SHA, then exposed scene handles and held readiness. Fixed camera, pose and flicker for old/new comparisons; a light 2 cm outside the actual mesh face is an adversarial fixture. Start and torch use real mouse/touch input. Solo world spawn is a cave fixture.",
+    "normalScreenshotsReviewed": [
+      "cro-female-normal-lit.png",
+      "cro-male-world-cave.png",
+      "cro-magnon-girl-bear-normal-lit.png"
+    ],
+    "comparisonScreenshotsReviewed": ["bear-female-lit-after.png", "bear-female-lit-near-face.png"]
+  },
+  "errors": [],
+  "forbidden": [],
+  "productionGate": "output/production-cave-ui-20261017-01/verification.json",
+  "productionBrowser": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\playwright\\production-2026-10-17T14-58-25-826Z/result.json"
+}

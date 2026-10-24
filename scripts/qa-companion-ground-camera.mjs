@@ -177,17 +177,18 @@ WorldRenderer.prototype.render = function(...args) {
     await page.waitForTimeout(1500);
   }
   await tap('.mascot-target-toggle');
-  await page.locator('[data-mascot-command="inspect"]:not([disabled])').waitFor();
+  const command = (action) =>
+    phone ? `[data-touch-action="${action}"]` : `[data-cue="${action}"]`;
+  await page.locator(command('inspect')).waitFor();
   const previousView = await page.evaluate(() => ({
     yaw: qa.yaw,
     pitch: qa.pitch,
     distance: qa.targetDistance,
     player: [qa.state.players[0].x, qa.state.players[0].z],
   }));
-  await tap('[data-mascot-command="inspect"]');
+  await tap(command('inspect'));
   await page.waitForFunction(() => !!qa.viewedId);
-  // Close the target strip so a landscape swipe starts on the world, not on a card.
-  await tap('.mascot-target-toggle');
+  assert.equal(await page.locator('#mascot-target-panel').isHidden(), true);
   await page.waitForTimeout(1500);
   console.log(
     'Inspect ready',
@@ -354,7 +355,7 @@ WorldRenderer.prototype.render = function(...args) {
       viewed,
       'reopening the target strip keeps the current closeup',
     );
-    await tap('[data-mascot-command="endInspect"]');
+    await tap(command('endInspect'));
     await page.waitForFunction(() => !qa.viewedId);
     const returned = await page.evaluate(() => ({
       yaw: qa.yaw,

@@ -1,0 +1,74 @@
+{
+  "checkedAt": "2026-10-17T05:16:49.744Z",
+  "status": "passed",
+  "sourceCommit": "219e3bb1a10286791aecb696ddbc97283d22f72b",
+  "buildId": "2efc17f016872760731074cb64a32046bef82537c2c033a660e46d99218979de",
+  "versionId": "f313c8c4-046c-402f-ad7e-5fb24de47ea7",
+  "base": "https://cromagnonmmo.com/",
+  "scope": "Windows Chrome 154.0.8037.93; desktop 1440x900 and touch emulation 390x844. Physical phones, Safari, physical controllers and long-duration performance not tested.",
+  "fixture": "Real UI entry, fixed camera views with a matching terrain cull; optional explicitly hidden diagnostic surfaces.",
+  "realInputWalking": true,
+  "desktop": {
+    "evidence": "output/playwright/camp-terrain-live-pc-05",
+    "overlapPixels": {
+      "samples": 43200,
+      "mean": 0.02400462962962963,
+      "p95": 0,
+      "max": 1
+    },
+    "tileEdgePixels": {
+      "samples": 360,
+      "mean": 0.7361111111111112
+    },
+    "walk": {
+      "before": {
+        "x": 48,
+        "z": 57
+      },
+      "input": "S key",
+      "after": {
+        "x": 46.06219419226844,
+        "z": 63.7389207334352
+      },
+      "distance": 7.01200000000007
+    }
+  },
+  "phone": {
+    "evidence": "output/playwright/camp-terrain-live-phone-05",
+    "overlapPixels": {
+      "samples": 43200,
+      "mean": 0.03027777777777778,
+      "p95": 0,
+      "max": 1
+    },
+    "tileEdgePixels": {
+      "samples": 360,
+      "mean": 1.1305555555555555
+    },
+    "walk": {
+      "before": {
+        "x": 48,
+        "z": 57
+      },
+      "input": "touch pad drag",
+      "after": {
+        "x": 42.58188169651136,
+        "z": 75.84206850134575
+      },
+      "distance": 19.60560000000011
+    }
+  },
+  "errors": [],
+  "forbidden": [],
+  "visuallyReviewed": {
+    "desktop": [
+      "normal.png",
+      "approach.png"
+    ],
+    "phone": [
+      "camp.png"
+    ]
+  },
+  "productionGate": "output/production-20261017-05/verification.json",
+  "productionBrowser": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\playwright\\production-2026-10-17T05-07-32-865Z/result.json"
+}

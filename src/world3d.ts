@@ -12,10 +12,15 @@ import { CoastalRenderer } from './coastal-renderer.js';
 import { VillageRenderer } from './village-renderer.js';
 import { CompanionRenderers, companionModelKey } from './companion-renderers.js';
 import { flaskVisible, orientFlask } from './flask-pose.js';
-import { FRIEND_TIMING } from '../shared/friend-mascots.mjs';
+import { FRIEND_TIMING, friendDefinition } from '../shared/friend-mascots.mjs';
 import { OrbBotRenderer } from './orb-bot-renderer.js';
-import { ORB_BOTS, isCompanionBot, posingOrbBot } from '../shared/orb-bots.mjs';
-import { pettingMascot } from '../shared/mascot-selection.mjs';
+import { BOT_KINDS, ORB_BOTS, isCompanionBot, posingOrbBot } from '../shared/orb-bots.mjs';
+import {
+  mascotBodies,
+  mascotKeyOf,
+  pettingMascot,
+  selectedMascotKeys,
+} from '../shared/mascot-selection.mjs';
 import { GroundPettingPose, groundPettingProgress } from './ground-petting-pose.js';
 import { CaveTorch } from './cave-torch.js';
 import { caveInteriorWeight, caveTorchAvailable, caveTorchLit } from '../shared/cave-light.mjs';
@@ -595,8 +600,8 @@ export class WorldRenderer {
 
   /** The local character's verified template and the props its actor holds (the
    * weapon, the other spear, Howkey's flask), loaded ahead of its snapshot so the
-   * body is complete the moment the world names it. A failure is fatal to entry;
-   * another character is never substituted. */
+   * body and selected companions are complete when the world names them. A failure
+   * is fatal to entry; another character or companion is never substituted. */
   async prepareSelf(profile) {
     const ticket = LoadTicket.of(LOAD_TIER.essential),
       model = characterModel(profile),
@@ -614,7 +619,73 @@ export class WorldRenderer {
     await Promise.all([
       provider.load(ticket),
       ...[...props].map((key) => this.worldAssets.ensureEquipment(key, ticket)),
+      this.prepareCompanions(
+        profile.mascot && !['keep', 'none'].includes(profile.mascot)
+          ? profile.mascot.split(',')
+          : [],
+      ),
     ]);
+  }
+
+  /** Only the travelling party, including its held props. These requests bypass
+   * the distance-streaming hold while the visitor is still in the loading cave. */
+  async prepareCompanions(keys: readonly string[]) {
+    if (!keys.length) return;
+    await this.worldAssets.loadCatalog();
+    const ticket = LoadTicket.of(LOAD_TIER.essential);
+    try {
+      await Promise.all(
+        [...new Set(keys)].map(async (key) => {
+          const model = BOT_KINDS.some((kind) => kind === key)
+            ? `orb-bot-${key}`
+            : companionModelKey(key);
+          const equipment = friendDefinition(key)?.equipment?.key;
+          await Promise.all([
+            this.worldAssets.ensureCompanion(model, ticket),
+            ...(equipment ? [this.worldAssets.ensureEquipment(equipment, ticket)] : []),
+          ]);
+        }),
+      );
+    } finally {
+      ticket.release();
+    }
+  }
+
+  /** A resumed save can name companions absent from the title's cached choice.
+   * Await their actual templates and attach every owned body before lifting the
+   * loading cover. The ordinary world render loop is paused while the cave shows. */
+  private async prepareArrivalCompanions(check: () => void) {
+    const own = () =>
+      mascotBodies(this.state).filter((body) => body.ownerId === this.selfId && !body.leavingAt);
+    const keys = [
+      ...selectedMascotKeys(this.players.get(this.selfId)?.state),
+      ...own().map(mascotKeyOf),
+    ];
+    if (!keys.length) return;
+    try {
+      await this.prepareCompanions(keys);
+      for (;;) {
+        check();
+        this.companionRenderers.sync();
+        this.companionRenderers.update(0, false);
+        this.companionRenderers.update(0, true);
+        this.orbBotRenderer?.update(0);
+        if (
+          own().every((body) =>
+            'kind' in body
+              ? this.orbBotRenderer?.bots.has(body.id)
+              : this.companionRenderers.renderers.has(body.id),
+          )
+        )
+          break;
+        await arrivalPause();
+      }
+    } catch (error) {
+      check();
+      if (!isLoadCancelled(error))
+        this.failWorld('仲間の3D素材を読み込めませんでした。再読み込みしてください。', error);
+      throw error;
+    }
   }
 
   prioritizeArrivalLoads() {
@@ -633,8 +704,8 @@ export class WorldRenderer {
   }
 
   /** Resolves once the local player can be shown: its snapshot has arrived, the
-   * floor around it exists and its actor (with held props) is attached. Other
-   * actors and farther scenery never delay it. Rejects with LoadCancelled when
+   * floor around it exists and its actor and chosen companions are attached.
+   * Other actors and farther scenery never delay it. Rejects with LoadCancelled when
    * `current()` turns false (the visitor left), with the cause if the world fails. */
   async arrival(current: () => boolean = () => true) {
     const check = this.arrivalCheck(current);
@@ -656,6 +727,9 @@ export class WorldRenderer {
       check();
       await arrivalPause();
     }
+    check();
+    await this.prepareArrivalCompanions(check);
+    check();
     return floor;
   }
 
@@ -704,8 +778,8 @@ export class WorldRenderer {
   /** The bounded set an arrival at the current focus needs (startup-plan.ts):
    * its floor, the camp's scenery and props, the landmarks framing its view and
    * the mountain level it sees. Farther ground and landmarks, the NPC, herd,
-   * boats and companions stream nearest first afterwards; the local character
-   * loads through its own provider (the loading cave shows it first). */
+   * boats and other players' companions stream nearest first afterwards. The
+   * local character and chosen companions load separately through prepareSelf(). */
   planStartup(): CriticalStartup {
     const focus = { x: this.focus.x, z: this.focus.z };
     return criticalStartup({

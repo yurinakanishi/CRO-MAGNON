@@ -1,0 +1,701 @@
+{
+  "checkedAt": "2026-10-17T02:27:41.939Z",
+  "status": "passed",
+  "browser": "154.0.8037.93",
+  "base": "https://cromagnonmmo.com/",
+  "checks": [
+    "The exact public scripts use dot names and the paw icon",
+    "pc: multi choice, all/none and Back preserve the draft; all 11 arrive",
+    "pc: picker only selects a target; outside tap closes it and preserves the selection",
+    "pc: lower Look/Back/Pet buttons work on the first tap; arrows switch 524/rimo and petting reaches only rimo",
+    "pc: bracket key changes the target without changing the travelling party",
+    "pc: 11 real throw presses deploy 11 distinct companions once each, then recall all",
+    "pc: in-game individual/all/none changes save immediately; reload restores all 11",
+    "phone: multi choice, all/none and Back preserve the draft; all 11 arrive",
+    "phone: 320px portrait, 390px portrait and landscape keep the selector on screen, with 44px controls clear of the toolbar",
+    "phone: picker only selects a target; outside tap closes it and preserves the selection",
+    "phone: lower Look/Back/Pet buttons work on the first tap; arrows switch 524/rimo and petting reaches only rimo",
+    "phone: native horizontal touch swipe selects a different companion",
+    "phone: 11 real throw presses deploy 11 distinct companions once each, then recall all",
+    "phone: in-game individual/all/none changes save immediately; reload restores all 11",
+    "No browser errors, game APIs or WebSockets; game remains entirely in the browser"
+  ],
+  "errors": [],
+  "forbidden": [],
+  "delivered": [
+    {
+      "file": "src/orb-bots.css",
+      "sha256": "61557715c58afabd3a71cb8c1399b5bd7090e3ef68db7a9c800f2c1220bbfcf4"
+    },
+    {
+      "file": "src/mascot-target.js",
+      "sha256": "e6857f04f1c4d8e62ea4a02d7f05e18b2aea679a41ace60885f911c3aecd98ec"
+    },
+    {
+      "file": "src/starting-mascot.js",
+      "sha256": "48a75e76a4ef63490feb15454e1b34f5f28915a8b54dbbaf4ab6c3ec60c9443d"
+    },
+    {
+      "file": "src/main.js",
+      "sha256": "e6a8721d4aa68c3181bf75065d1443095e6adbdc1072c7842b62a2e2735cb372"
+    },
+    {
+      "file": "src/solo-worker.js",
+      "sha256": "ae80b68a5a4c90fd4c5844ea2619eb67335badfe1ba52e4fd74aa3d8e82d43cd"
+    },
+    {
+      "file": "shared/mascot-selection.mjs",
+      "sha256": "ec486f332bdc80d461748f7b5b3f6441963c804c2c0d2f9ad7ddbdada7fc766c"
+    }
+  ],
+  "colorObservations": [
+    {
+      "label": "pc-setup",
+      "nameContrast": 9.247377611665696,
+      "cards": [
+        {
+          "name": "524",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "りもねこ",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "しろdot",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.063)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "あおdot",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.063)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "みどりdot",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.063)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "むらさきdot",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.063)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "オレンジdot",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.063)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "ベレーdot",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.063)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "かえるdot",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.063)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "さんかくdot",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.063)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "ハートdot",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.063)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        }
+      ]
+    },
+    {
+      "label": "pc-target",
+      "nameContrast": 9.247377611665696,
+      "cards": [
+        {
+          "name": "524",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "りもねこ",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "しろdot",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "あおdot",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "みどりdot",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "むらさきdot",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "オレンジdot",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "ベレーdot",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "かえるdot",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "さんかくdot",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "ハートdot",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        }
+      ]
+    },
+    {
+      "label": "pc-menu",
+      "nameContrast": 9.247377611665696,
+      "cards": [
+        {
+          "name": "524",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.125)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "りもねこ一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        },
+        {
+          "name": "しろdot一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        },
+        {
+          "name": "あおdot一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        },
+        {
+          "name": "みどりdot一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        },
+        {
+          "name": "むらさきdot一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        },
+        {
+          "name": "オレンジdot一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        },
+        {
+          "name": "ベレーdot一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        },
+        {
+          "name": "かえるdot一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        },
+        {
+          "name": "さんかくdot一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        },
+        {
+          "name": "ハートdot一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        }
+      ]
+    },
+    {
+      "label": "pc-selected-keyboard-focus",
+      "selected": "true",
+      "keyboardFocus": true,
+      "color": "rgb(76, 52, 25)",
+      "background": "rgb(230, 182, 110)"
+    },
+    {
+      "label": "phone-setup",
+      "nameContrast": 9.247377611665696,
+      "cards": [
+        {
+          "name": "524",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "りもねこ",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "しろdot",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.063)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "あおdot",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.063)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "みどりdot",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.063)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "むらさきdot",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.063)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "オレンジdot",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.063)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "ベレーdot",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.063)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "かえるdot",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.063)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "さんかくdot",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.063)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "ハートdot",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.063)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        }
+      ]
+    },
+    {
+      "label": "phone-target",
+      "nameContrast": 9.247377611665696,
+      "cards": [
+        {
+          "name": "524",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "りもねこ",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "しろdot",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "あおdot",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "みどりdot",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "むらさきdot",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "オレンジdot",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "ベレーdot",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "かえるdot",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "さんかくdot",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "ハートdot",
+          "pressed": "false",
+          "background": "rgba(16, 28, 23, 0.91)",
+          "color": "rgb(244, 239, 225)",
+          "outline": "rgb(244, 239, 225)",
+          "focused": false,
+          "statusColor": null
+        }
+      ]
+    },
+    {
+      "label": "phone-menu",
+      "nameContrast": 9.247377611665696,
+      "cards": [
+        {
+          "name": "524",
+          "pressed": "false",
+          "background": "rgba(173, 189, 153, 0.125)",
+          "color": "rgb(226, 230, 210)",
+          "outline": "rgb(226, 230, 210)",
+          "focused": false,
+          "statusColor": null
+        },
+        {
+          "name": "りもねこ一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        },
+        {
+          "name": "しろdot一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        },
+        {
+          "name": "あおdot一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        },
+        {
+          "name": "みどりdot一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        },
+        {
+          "name": "むらさきdot一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        },
+        {
+          "name": "オレンジdot一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        },
+        {
+          "name": "ベレーdot一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        },
+        {
+          "name": "かえるdot一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        },
+        {
+          "name": "さんかくdot一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        },
+        {
+          "name": "ハートdot一緒に行く",
+          "pressed": "true",
+          "background": "rgb(230, 182, 110)",
+          "color": "rgb(33, 26, 16)",
+          "outline": "rgb(33, 26, 16)",
+          "focused": false,
+          "statusColor": "rgb(76, 52, 25)"
+        }
+      ]
+    }
+  ],
+  "sourceCommit": "219e3bb1a10286791aecb696ddbc97283d22f72b",
+  "buildId": "5600c00bfd6155280d730820a812f4019272c4631452a01be7e1044cdb3d13e1",
+  "scope": "Windows Chrome; desktop and touch emulation. Physical phones, native Safari, physical controllers and long-duration play not tested.",
+  "screenshots": "output/playwright/companions-live-20261017-04",
+  "visuallyReviewed": [
+    "phone-setup-colors.png",
+    "phone-menu-colors.png",
+    "phone-target-colors.png",
+    "pc-selected-keyboard-focus.png"
+  ],
+  "productionGate": "output/production-20261017-04/verification.json"
+}

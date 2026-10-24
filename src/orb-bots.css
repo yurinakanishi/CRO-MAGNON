@@ -56,14 +56,15 @@
   text-align: center;
 }
 
-.mascot-card:hover:not(:disabled) {
+.mascot-card:hover:not(:disabled):not([aria-pressed='true']) {
   background: #adbd9920;
 }
 
 .mascot-card[aria-pressed='true'] {
-  border-color: #e6b66e;
-  background: #e0b07022;
-  box-shadow: inset 0 0 0 1px #e6b66e66;
+  border-color: #ffe1a3;
+  background: #e6b66e;
+  color: #211a10;
+  box-shadow: inset 0 0 0 1px #ffe1a3;
 }
 
 .mascot-card:focus-visible,
@@ -71,6 +72,11 @@
   outline: 3px solid #efd18c !important;
   outline-offset: -3px !important;
   box-shadow: none !important;
+}
+
+.mascot-card[aria-pressed='true']:focus-visible,
+.mascot-card[aria-pressed='true'].gamepad-focus {
+  outline-color: #4c3419 !important;
 }
 
 .mascot-card:disabled {
@@ -249,16 +255,9 @@
   touch-action: pan-x;
 }
 #mascot-target [aria-pressed='true'] {
-  border-color: #e6b66e;
-  background: #e0b07030;
-}
-.mascot-target-actions {
-  display: flex;
-  gap: 5px;
-  margin-top: 5px;
-}
-.mascot-target-actions button {
-  flex: 1;
+  border-color: #ffe1a3;
+  background: #e6b66e;
+  color: #211a10;
 }
 .touch-mode #mascot-target {
   top: 76px;
@@ -354,7 +353,7 @@
 }
 
 .mascot-card[aria-pressed='true'] .mascot-card-status {
-  color: #f2cd92;
+  color: #4c3419;
 }
 
 @media (max-width: 680px) {
