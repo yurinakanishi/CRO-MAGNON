@@ -142,7 +142,7 @@ try {
     assert.equal(await page.locator('[data-pause-tab="more"]').count(), 0);
     assert.equal(await page.locator('[data-pause-tab="warp"]').count(), 0, 'warp is in the map');
     for (const device of ['keyboard', 'pad']) {
-      for (const id of ['inventory', 'mascots', 'character', 'settings']) {
+      for (const id of ['inventory', 'mascots', 'character', 'settings', 'share']) {
         const selector = `[data-pause-tab="${id}"]`;
         await inspect(selector, device, `${size}-${device}-${id}`);
         if (device === 'pad') {

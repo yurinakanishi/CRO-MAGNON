@@ -290,7 +290,7 @@ try {
   const tabs = await page
     .locator('.pause-tab')
     .evaluateAll((els) => els.map((el) => el.dataset.pauseTab));
-  assert.deepEqual(tabs, ['inventory', 'mascots', 'character', 'settings']);
+  assert.deepEqual(tabs, ['inventory', 'mascots', 'character', 'settings', 'share']);
   await select('[data-controller-menu="mascots"]');
   await tap(PAD.circle);
   // One choice among the default roster: りもねこ, 524 and the nine Dots.

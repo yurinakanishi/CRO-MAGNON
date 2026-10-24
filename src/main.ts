@@ -147,6 +147,7 @@ import { registerTranslations } from './language.js';
 import { bindLanguageToggle, installLanguageUI } from './language-ui.js';
 import { ENGLISH_GAME } from './language-en.js';
 import { SoloConnection } from './solo-connection.js';
+import { bindShareLinks, sharePanelMarkup } from './share-links.js';
 
 registerTranslations(ENGLISH_GAME);
 
@@ -2002,6 +2003,7 @@ function enterGame(skipGallery = false) {
         // Who is painted on these walls, apart from the credits.
         onMurals: (hidden) =>
           openModal(muralPeopleDialogMarkup(muralPeople(hidden), { links: onlineTitle })),
+        share: onlineTitle,
         paused: () => $('#modal').open,
       },
     );
@@ -2604,12 +2606,13 @@ function openPauseMenu(tab?: string) {
         ['character', 'person', 'キャラクターを変える'],
         ['inventory', 'bag', '持ち物'],
       ]
-    : // Fast travel lives in the map: its 名所 bar and the fires.
+    : // Fast travel lives in the map: its 名所 bar and the fires. Sharing waits here, off the HUD.
       [
         ['inventory', 'bag', '持ち物'],
         ['mascots', 'paw', '連れていく仲間'],
         ['character', 'person', 'キャラクターを変える'],
         ['settings', 'gear', '設定'],
+        ...(onlineTitle ? [['share', 'share', 'シェア'] as [string, string, string]] : []),
       ];
   const titleExit: [string, string, string, () => void] = [
     'title',
@@ -2668,7 +2671,7 @@ function openPauseMenu(tab?: string) {
     )}${panel('character', characterSwitchMarkup(fixedIdentity ? null : (normalizeDye(player()?.dye) ?? profile.dye)))}${panel('warp', exhibitionWarpMarkup())}${panel('mascots', mascotMenuMarkup(availableMascots, solo))}${panel(
       'settings',
       `<h2>設定</h2><div class="settings-list">${audioSettingsMarkup(renderer.audio.settings)}<div class="settings-item"><div><strong>全画面表示</strong></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未接続'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}<div class="settings-row">${menuButton(titleExit)}</div>`,
-    )}</div></div>`,
+    )}${panel('share', `<h2>シェア</h2>${sharePanelMarkup()}`)}</div></div>`,
   );
   const root = $('#modal-body') as HTMLElement;
   const controlsSetting = document.createElement('div');
@@ -2913,6 +2916,11 @@ document.addEventListener('fullscreenchange', () => {
   $('#title-fullscreen').setAttribute('aria-pressed', String(active));
   $('#title-fullscreen').setAttribute('aria-label', active ? '全画面表示を終了' : '全画面表示');
 });
+// The title's share marks and the menu's シェア tab; a title that never links out has none.
+if (onlineTitle) {
+  bindShareLinks($('#screen-title'));
+  bindShareLinks($('#modal'));
+} else $('#screen-title .share-links')?.remove();
 $('#setup-back').onclick = () => (joined ? screens.hide() : showTitle());
 $('#mascot-back').onclick = () => {
   if (setupFlowBack()) return;

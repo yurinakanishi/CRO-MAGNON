@@ -70,6 +70,7 @@
     "src/language.ts",
     "src/language-ui.ts",
     "src/language-en.ts",
+    "src/share-links.ts",
     "src/verified-asset-cache.ts",
     "cloudflare/free-budget.mts",
     "cloudflare/socket-adapter.mts",

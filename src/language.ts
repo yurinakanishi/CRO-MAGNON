@@ -132,4 +132,13 @@ registerTranslations({
   監修: 'Advisers',
   友情出演: 'Special appearances',
   '{name}のXプロフィールを開く': 'Open {name} on X',
+  シェア: 'Share',
+  Xでポスト: 'Post on X',
+  Instagramでシェア: 'Share on Instagram',
+  Facebookでシェア: 'Share on Facebook',
+  リンクをコピー: 'Copy link',
+  リンクをコピーしました: 'Link copied',
+  'リンクをコピーしました。Instagramに貼り付けてください。':
+    'Link copied. Paste it into Instagram.',
+  'リンクをコピーできませんでした：{url}': 'Could not copy the link: {url}',
 });

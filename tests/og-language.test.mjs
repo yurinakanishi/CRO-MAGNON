@@ -1,14 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { access } from 'node:fs/promises';
 import http from 'node:http';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { serveStatic, sendFailure } from '../dist/infrastructure/node/static-files.mjs';
 import { bundledIndex } from '../scripts/bundle-browser.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const site = 'https://cromagnonmmo.cro-magnon.workers.dev';
+// The game's own domain (README), not the retained workers.dev URL.
+const site = 'https://cromagnonmmo.com';
+// Long tags wrap their attributes onto separate lines.
 const meta = (html, key) =>
-  html.match(new RegExp(`<meta (?:name|property)="${key}" content="([^"]*)"`))?.[1];
+  html.match(new RegExp(`<meta\\s+(?:name|property)="${key}"\\s+content="([^"]*)"`))?.[1];
 
 test('shared URLs serve distinct Japanese and English metadata before JavaScript runs', async (t) => {
   const server = http.createServer(async (request, response) => {
@@ -43,6 +47,11 @@ test('shared URLs serve distinct Japanese and English metadata before JavaScript
       assert.ok(document.includes(`rel="canonical" href="${site + pathname}"`));
       assert.ok(document.includes(`hreflang="ja" href="${site}/"`));
       assert.ok(document.includes(`hreflang="en" href="${site}/en/"`));
+      // Both previews show one image from the same site, a file the release serves.
+      const image = new URL(meta(document, 'og:image'));
+      assert.equal(meta(document, 'twitter:image'), image.href);
+      assert.equal(image.origin, site);
+      await access(path.join(root, 'public', image.pathname));
       assert.doesNotMatch(document, /オンライン・ファンタジー|三つの国と湾/);
     }
     const head = await fetch(origin + pathname, { method: 'HEAD' });

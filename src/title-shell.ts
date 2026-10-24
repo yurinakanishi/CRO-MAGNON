@@ -4,6 +4,7 @@ import { BUILD_PROFILE } from './build-profile.js';
 import type { MultiplayerConfig } from './multiplayer-config.js';
 import { ScreenManager } from './screens.js';
 import { bindLanguageToggle, installLanguageUI } from './language-ui.js';
+import { bindShareLinks, shareLinksMarkup } from './share-links.js';
 
 /**
  * The title before the game module: the same title screen and dialog the game
@@ -29,6 +30,7 @@ export function titleScreenMarkup(): string {
             <button id="title-contributors" class="menu-item">関わってくれた人たち</button>
             <button id="title-language" class="menu-item title-language" type="button" translate="no" aria-label="Switch to English" aria-pressed="false"><span lang="ja">日本語</span><span aria-hidden="true"> / </span><span lang="en">English</span></button>
           </nav>
+          ${BUILD_PROFILE.environment === 'exhibition' ? '' : shareLinksMarkup(true)}
           </div>
           </div>
         </div>
@@ -222,7 +224,8 @@ export function renderTitleShell(
       line.className = status.kind === 'error' ? 'form-error' : 'form-note';
       line.setAttribute('role', status.kind === 'error' ? 'alert' : 'status');
       line.textContent = status.kind === 'busy' ? TITLE_BUSY : status.message;
-      title.querySelector('.title-welcome')!.append(line);
+      // Right under the menu, above the share marks.
+      title.querySelector('.title-menu')!.after(line);
       if (status.kind !== 'error') return;
       const reload = document.createElement('button');
       reload.type = 'button';
@@ -250,6 +253,14 @@ export function renderTitleShell(
   current = session = new TitleShellSession(view, config);
   installLanguageUI(app);
   bindLanguageToggle(title, signal);
+  bindShareLinks(title, signal);
+  // A LAN title never links out (titleLinks), so it shares nothing either.
+  config.then(
+    (value) => {
+      if (!titleLinks(value)) title.querySelector('.share-links')?.remove();
+    },
+    () => {},
+  );
 
   const on = (selector: string, listener: () => void) =>
     title.querySelector(selector)!.addEventListener('click', listener, { signal });

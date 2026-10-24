@@ -23,6 +23,7 @@ import { startupMarks } from './startup-marks.js';
 import { CaveTorch } from './cave-torch.js';
 import { CAVE_LIGHT } from '../shared/cave-light.mjs';
 import { CaveSpring } from './cave-spring.js';
+import { bindShareLinks, shareLinksMarkup } from './share-links.js';
 
 const DIRECTION_KEYS = ['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
 const DOUBLE_TAP_MS = 300;
@@ -89,6 +90,7 @@ export class LoadingCave {
       dye = null,
       images = {},
       onMurals,
+      share = false,
       paused = () => false,
     }: {
       character?: string;
@@ -98,6 +100,8 @@ export class LoadingCave {
       /** Opens the dialog of the people painted here, given the subjects the murals leave
        * out; without it there is no button. */
       onMurals?: (hidden: string[]) => void;
+      /** The share marks beside the cave's name, while the world loads. */
+      share?: boolean;
       paused?: () => boolean;
     } = {},
   ) {
@@ -122,7 +126,7 @@ export class LoadingCave {
     this.scene.add(light, light.target);
     this.overlay.id = 'loading-cave';
     this.overlay.setAttribute('aria-label', 'アプデの洞窟');
-    this.overlay.innerHTML = `<header class="loading-cave-heading"><div><h2>アプデの洞窟</h2></div><div class="loading-cave-actions">${onMurals ? '<button class="button button-outline" data-cave-murals>壁画の人々</button>' : ''}<button class="button button-outline" data-cave-back>タイトルへ戻る</button></div></header>
+    this.overlay.innerHTML = `<header class="loading-cave-heading"><div class="loading-cave-title"><h2>アプデの洞窟</h2>${share ? shareLinksMarkup(true) : ''}</div><div class="loading-cave-actions">${onMurals ? '<button class="button button-outline" data-cave-murals>壁画の人々</button>' : ''}<button class="button button-outline" data-cave-back>タイトルへ戻る</button></div></header>
       <div class="loading-cave-wait" role="status">洞窟を準備しています…</div>
       <div class="loading-cave-stick" aria-label="ドラッグして移動"><i></i><span>移動</span></div>
       <button class="button button-outline loading-cave-torch" data-cave-torch aria-pressed="true">松明を消す</button>
@@ -142,6 +146,7 @@ export class LoadingCave {
         onMurals(this.muralHidden);
       };
     const signal = this.events.signal;
+    if (share) bindShareLinks(this.overlay, signal);
     document.addEventListener('keydown', this.keydown, { signal, capture: true });
     document.addEventListener(
       'keyup',
@@ -351,7 +356,8 @@ export class LoadingCave {
   };
 
   private pointerDown = (e: PointerEvent) => {
-    if ((e.target as Element).closest('button')) return;
+    // Buttons and the share links take their own presses; the rest of the cave looks around.
+    if ((e.target as Element).closest('button, a, .share-links')) return;
     e.preventDefault();
     const stick = !!(e.target as Element).closest('.loading-cave-stick');
     if (stick && [...this.pointers.values()].some((p) => p.stick)) return;

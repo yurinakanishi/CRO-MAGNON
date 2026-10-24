@@ -281,10 +281,10 @@ test('own warps and entries without the cave are covered; the title, setup and f
   );
   assert.doesNotMatch(main, /tips: /);
   // The loading cave opens its mural people over itself (the murals it leaves out are not
-  // listed) and pauses its own input meanwhile.
+  // listed) and pauses its own input meanwhile; its share marks follow the same link rule.
   assert.match(
     slice('const cave = new LoadingCave(', 'loadingCave = renderer.loadingCave = cave;'),
-    /onMurals: \(hidden\) =>\s*openModal\(muralPeopleDialogMarkup\(muralPeople\(hidden\), \{ links: onlineTitle \}\)\),\s*paused: \(\) => \$\('#modal'\)\.open,/,
+    /onMurals: \(hidden\) =>\s*openModal\(muralPeopleDialogMarkup\(muralPeople\(hidden\), \{ links: onlineTitle \}\)\),\s*share: onlineTitle,\s*paused: \(\) => \$\('#modal'\)\.open,/,
   );
 });
 

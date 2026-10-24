@@ -429,7 +429,7 @@ try {
   );
   assert.deepEqual(
     tabs.map((t) => t.id),
-    ['inventory', 'mascots', 'character', 'settings'],
+    ['inventory', 'mascots', 'character', 'settings', 'share'],
   );
   const close = await box('#modal-close');
   assert.ok(
