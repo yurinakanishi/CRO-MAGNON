@@ -1,10 +1,10 @@
 {
-  "checkedAt": "2026-10-23T01:53:20.870Z",
+  "checkedAt": "2026-10-24T02:44:12.205Z",
   "status": "passed",
   "base": "https://cromagnonmmo.com/",
-  "buildId": "86f5a029353687c97aebe78faa70ab11d61c9587a0a5cbbd7131756db61cef9e",
-  "sourceCommit": "7771c74c3cb3335275da93547022c545eb5a93b5",
-  "browser": "155.0.8059.85",
+  "buildId": "3ed81f7b7b70cbc45645838aeebb2df21885f6d0574b3f3cc666bfd72b533ddf",
+  "sourceCommit": "d2468653ed33c2aa72b0c6911e35fa95d099461f",
+  "browser": "155.0.8059.86",
   "scope": "Real Chrome on Windows; desktop and 390px touch emulation with isolated saves; analytics rejected through the actual UI. Physical phones, Safari, physical controllers and long-duration performance untested.",
   "checks": [
     "The title enables solo and disables online entry",
@@ -17,19 +17,44 @@
   ],
   "errors": [],
   "forbidden": [],
-  "publicHealth": {
-    "ok": true,
-    "hosting": "cloudflare-free",
-    "worldVersion": 4,
-    "mode": "solo",
-    "maxPlayers": 1,
-    "room": "SOLO"
-  },
-  "screenshots": "output/playwright/solo-live-daylight-20261023-01",
-  "visuallyReviewed": [
-    "output/playwright/solo-live-daylight-20261023-01/solo-world.png",
-    "output/playwright/solo-live-daylight-20261023-01/solo-mobile.png"
+  "publicHealth": [
+    {
+      "origin": "https://cromagnonmmo.com",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "hosting": "cloudflare-free",
+        "worldVersion": 4,
+        "mode": "solo",
+        "maxPlayers": 1,
+        "room": "SOLO"
+      }
+    },
+    {
+      "origin": "https://cromagnonmmo.cro-magnon.workers.dev",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "hosting": "cloudflare-free",
+        "worldVersion": 4,
+        "mode": "solo",
+        "maxPlayers": 1,
+        "room": "SOLO"
+      }
+    }
   ],
-  "productionGate": "output/daylight-production-20261023-r01/verification.json",
-  "evidence": "output/playwright/solo-live-daylight-20261023-01/result.json"
+  "shareChecks": [
+    "pc: live title shows four uncovered share marks; X link and copy share https://cromagnonmmo.com/",
+    "pc: live loading cave shows the share marks",
+    "pc: live play has no share marks on screen; the menu's シェア tab has four",
+    "phone: live title shows four uncovered share marks; X link and copy share https://cromagnonmmo.com/",
+    "phone: live loading cave shows the share marks",
+    "phone: live play has no share marks on screen; the menu's シェア tab has four",
+    "no page errors"
+  ],
+  "shareErrors": [],
+  "screenshots": "output/playwright/solo-live-20261024-share and output/playwright/share-live-20261024",
+  "visuallyReviewed": true,
+  "productionGate": "output/production-share-20261024-r02/verification.json",
+  "evidence": "output/playwright/solo-live-20261024-share/result.json"
 }
