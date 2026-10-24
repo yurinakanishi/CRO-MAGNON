@@ -1,6 +1,12 @@
-// Solid resources use their outside edge; passable plants use their centre.
-// The server check and every client input use the same one-metre reach.
+import { WORLD } from './world.mjs';
+
+// Solid resources use their outside edge; passable plants use their centre. The server
+// check and every client input use the same reach: one metre for a human-sized player.
 export const GATHER_RANGE = 1;
+// A broader body reaches as far from its own edge as a human does: the ape cannot
+// stand within 1 m of any pile.
+export const gatherRange = (player) =>
+  GATHER_RANGE + Math.max(0, (player?.radius ?? WORLD.playerRadius) - WORLD.playerRadius);
 
 export function gatherDistance(collision, player, resource): number {
   return (

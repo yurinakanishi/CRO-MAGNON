@@ -4,6 +4,7 @@ import { WORLD } from '../shared/world.mjs';
 import { ADVENTURE_REGIONS, regionAt, regionWeight } from '../shared/adventure-regions.mjs';
 import { SEA_WEATHER, maritimeWeight } from '../shared/maritime-weather.mjs';
 import { CAVE_LIGHT, caveInteriorWeight } from '../shared/cave-light.mjs';
+import { DAYLIGHT, wearDaylight, type Daylight } from './actor-daylight.js';
 
 export class WorldAtmosphere {
   declare world: any;
@@ -21,10 +22,13 @@ export class WorldAtmosphere {
   private caveSky = new THREE.Color(CAVE_LIGHT.sky);
   private caveGround = new THREE.Color(CAVE_LIGHT.ground);
   private caveSun = new THREE.Color(CAVE_LIGHT.sun);
-  private outdoorSky = new THREE.Color('#dce7d7');
-  private outdoorGround = new THREE.Color('#546047');
+  private outdoorSky = new THREE.Color(DAYLIGHT.sky);
+  private outdoorGround = new THREE.Color(DAYLIGHT.ground);
   private hemisphereSky = new THREE.Color();
   private hemisphereGround = new THREE.Color();
+  /** The scene's lights as they would be here without the cave, eased alike: characters wear
+   * it (actor-daylight.ts), so outdoors they are lit exactly as before and in the cave as outside. */
+  private daylight: Daylight;
   declare uniforms: {
     time: {
       value: number;
@@ -53,6 +57,14 @@ export class WorldAtmosphere {
 
   constructor(world) {
     this.world = world;
+    this.daylight = {
+      sky: world.hemisphere.color.clone(),
+      ground: world.hemisphere.groundColor.clone(),
+      hemisphere: world.hemisphere.intensity,
+      sun: world.sun.color.clone(),
+      directional: world.sun.intensity,
+      sunDirection: new THREE.Vector3(),
+    };
     this.fogColors = BIOMES.map((b) => new THREE.Color(b.fog));
     this.skyColors = BIOMES.map((b) => new THREE.Color(b.sky));
     this.lightColors = BIOMES.map((b) => new THREE.Color(b.light));
@@ -137,18 +149,22 @@ export class WorldAtmosphere {
     this.target.lerp(this.seaFog, mist);
     this.sky.lerp(this.seaSky, Math.max(mist, dim));
     this.light.lerp(this.seaLight, dim);
+    const sun = DAYLIGHT.directional - shadow * 1.7 - dim * 2,
+      sky = DAYLIGHT.hemisphere - shadow * 1.1 - dim * 0.6,
+      daylight = this.daylight;
+    daylight.directional += (sun - daylight.directional) * alpha;
+    daylight.hemisphere += (sky - daylight.hemisphere) * alpha;
+    daylight.sky.lerp(this.outdoorSky, alpha);
+    daylight.ground.lerp(this.outdoorGround, alpha);
+    daylight.sun.lerp(this.light, alpha);
+    daylight.sunDirection.subVectors(world.sun.position, world.sun.target.position);
+    wearDaylight(daylight);
     this.target.lerp(this.caveDark, cave);
     this.light.lerp(this.caveSun, cave);
     world.sun.intensity +=
-      ((2.65 - shadow * 1.7 - dim * 2) * (1 - cave) +
-        CAVE_LIGHT.directional * cave -
-        world.sun.intensity) *
-      alpha;
+      (sun * (1 - cave) + CAVE_LIGHT.directional * cave - world.sun.intensity) * alpha;
     world.hemisphere.intensity +=
-      ((2 - shadow * 1.1 - dim * 0.6) * (1 - cave) +
-        CAVE_LIGHT.hemisphere * cave -
-        world.hemisphere.intensity) *
-      alpha;
+      (sky * (1 - cave) + CAVE_LIGHT.hemisphere * cave - world.hemisphere.intensity) * alpha;
     world.hemisphere.color.lerp(
       this.hemisphereSky.copy(this.outdoorSky).lerp(this.caveSky, cave),
       alpha,

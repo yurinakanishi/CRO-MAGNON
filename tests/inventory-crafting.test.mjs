@@ -52,6 +52,21 @@ for (const recipe of INVENTORY_RECIPES) {
     if (recipe.id === 'blade') assert.equal(player.inventory.stone, before.inventory.stone);
   });
 }
+test('the ape and the mage craft every recipe; their spear goes into the bag, not their hands', () => {
+  for (const species of ['ape', 'bear'])
+    for (const recipe of INVENTORY_RECIPES) {
+      const { room, player } = fixture();
+      player.species = species;
+      const result = craftInventory(room, player, recipe.id, 10000);
+      assert.equal(result.ok, true, `${species}: ${recipe.id}`);
+      assert.equal(equippedItem(player), 'character');
+      if (recipe.equipment === 'spear') {
+        assert.equal(player.spearHead, 'obsidian');
+        assert.equal(result.equipment, undefined, 'no offer to hold it');
+        assert.equal(result.text, '黒曜石の槍を持ち物に追加しました。この人物は武器を持てません。');
+      } else assert.equal(result.equipment, recipe.equipment);
+    }
+});
 test('unavailable states and invalid recipes do not consume or grant anything', () => {
   for (const state of [
     { downedUntil: 11000 },
@@ -79,13 +94,13 @@ test('unavailable states and invalid recipes do not consume or grant anything', 
     assert.equal(craftInventory(room, player, id, 10000).ok, false);
   assert.deepEqual(player, before);
 });
-test('shortages, full stacks, duplicate equipment, non-spear characters and fire access are authoritative', () => {
+test('shortages, full stacks, duplicate equipment and fire access are authoritative', () => {
   const cases = [
     ['boat', (p) => (p.inventory.wood = 11)],
     ['boat', (p) => (p.inventory.boat = 99)],
     ['axe', (p) => (p.tool = true)],
     ['spear', (p) => (p.spearHead = 'obsidian')],
-    ['spear', (p) => (p.species = 'cat')],
+    ['spear', (p) => Object.assign(p, { species: 'ape', spearHead: 'obsidian' })],
     ['blade', (p) => (p.inventory.stone = 0)],
     ['blade', (p) => (p.inventory.obsidianBlade = 99)],
     ['herbRoot', (p) => (p.inventory.herb = 0)],

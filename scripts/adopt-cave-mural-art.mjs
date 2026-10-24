@@ -114,7 +114,7 @@ const review = {
     'Old GLB, paintings, source images and optimization records retained.',
     ...(identity
       ? [
-          `Identity compared for all ${identity.subjects.length} characters; ${identity.subjects.filter((s) => s.decision === 'repair').length} targeted repairs and ${identity.subjects.filter((s) => s.decision === 'retain').length} existing source images retained. Poses reviewed against their before cutouts; detached parts preserved in isolated sources.`,
+          `Identity compared for all ${identity.subjects.length} characters; ${identity.subjects.filter((s) => s.decision === 'repair').length} targeted repairs${identity.subjects.some((s) => s.decision === 'new') ? `, ${identity.subjects.filter((s) => s.decision === 'new').length} new from approved references` : ''}${identity.subjects.some((s) => s.decision === 'redraw') ? `, ${identity.subjects.filter((s) => s.decision === 'redraw').length} redrawn at the user's request` : ''} and ${identity.subjects.filter((s) => s.decision === 'retain').length} existing source images retained. Poses reviewed against their before cutouts; detached parts preserved in isolated sources.`,
         ]
       : []),
   ],

@@ -1,0 +1,23 @@
+Use your built-in image generation tool (image_gen) to create THREE separate transparent PNG images for the cave mural of the prehistoric fantasy game CRO-MAGNON. Do not write code, do not use Python/PIL or any drawing library, do not draw or edit pixels yourself, and do not create or edit any files other than the three PNGs and prompts.json named below.
+
+Two images are attached. Input 1 (the first attached image) is the photo to repaint (the edit target and identity reference). Input 2 (the second attached image) is the style reference. Attach both to every image_gen call.
+
+Shared prompt for every image (replace VARIANT_LINE with that image's variant line):
+"Use case: identity-preserving style transfer for an existing cave mural.
+Input 1 is the EDIT TARGET: a photo of the real person to depict, approved by the game's creator. Repaint only his head as a painting in the cave-mural technique while keeping his exact facial geometry, proportions, expression and straight-on frontal angle from the photo, so that he is clearly recognisable as this specific person: short thick jet-black hair rising into a short tousled quiff at the front with short sides; an oval face with a defined chin; straight, dark, medium-thick eyebrows; narrow almond-shaped dark eyes with single eyelids, slightly narrowed by the smile; a straight nose with a rounded tip; a broad open smile showing the full row of upper teeth; ears that stick out noticeably on both sides; light warm skin. Natural adult proportions: no big chibi eyes, no baby face, no caricature exaggeration.
+Input 2 is the STYLE reference: an existing figure from the same mural. Match only its painting technique: a flat illustration in weathered charcoal and earth/mineral pigments, a dark brown speckled outline, granular speckled fill with dry weathering and worn transparent flecks. Do not copy its proportions, eyes, hair, glasses, clothes or character.
+Subject: the head only, facing straight forward (frontal view), centred. No shoulders, clothes, collar, hands or body. VARIANT_LINE
+One isolated head on a genuinely transparent square canvas with generous empty margins around the hair, ears and chin. No background, scenery, shadow, text, watermark (do not copy the photo's "FaceApp" mark), logo, frame or other character. No photorealism, no glossy 3D rendering and no pixel art."
+
+Variant lines:
+- Image 1 (save as jank0vic-face-candidate-01.png): "A short neck ends cleanly just below the chin. Keep the photo's exact proportions."
+- Image 2 (save as jank0vic-face-candidate-02.png): "No neck: the painting ends at the jawline and chin."
+- Image 3 (save as jank0vic-face-candidate-03.png): "A short neck ends cleanly just below the chin. Slightly bolder, more simplified pigment lines, while keeping every likeness detail."
+
+Request a transparent background (PNG with alpha) for every image; use a square canvas of at least 1024 px.
+
+Save the three generated images as PNG files exactly at (copy them from wherever the image tool stores its outputs, byte for byte, without re-encoding):
+C:/Users/yurin/Desktop/projects/CRO-MAGNON/assets/camp-cave/jank0vic-face-r43/candidates/jank0vic-face-candidate-01.png
+C:/Users/yurin/Desktop/projects/CRO-MAGNON/assets/camp-cave/jank0vic-face-r43/candidates/jank0vic-face-candidate-02.png
+C:/Users/yurin/Desktop/projects/CRO-MAGNON/assets/camp-cave/jank0vic-face-r43/candidates/jank0vic-face-candidate-03.png
+Then write prompts.json in the same folder listing, for each file, the exact full prompt and any size/background options you sent to the image tool, the attached input images in order, and the original path the tool saved it to. Reply with the three saved paths.

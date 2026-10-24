@@ -9,7 +9,7 @@ import { equippedItem } from '../shared/equipment.mjs';
 import { equipItem } from '../shared/equipment-actions.mjs';
 import { attackProfile, shoulderMagic } from '../shared/combat-profiles.mjs';
 import { handleHuntingAction } from '../shared/hunting.mjs';
-import { GATHER_RANGE, gatherDistance, interactionVisible } from '../shared/interactions.mjs';
+import { gatherDistance, gatherRange, interactionVisible } from '../shared/interactions.mjs';
 import { handleRidingAction } from '../shared/riding.mjs';
 import { NPC } from '../shared/world.mjs';
 import { roomRules } from '../shared/room-rules.mjs';
@@ -235,7 +235,7 @@ export function createActionHandler({
         (resource) =>
           resource.amount > 0 &&
           (!message.targetId || resource.id === message.targetId) &&
-          gatherDistance(room.collision, player, resource) <= GATHER_RANGE &&
+          gatherDistance(room.collision, player, resource) <= gatherRange(player) &&
           interactionVisible(room.collision, player, resource),
       );
       const nearest = candidates

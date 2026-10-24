@@ -11,11 +11,21 @@ export function ownsEquipment(
   const native = !!characterModel(player).weapon;
   if (id === 'character') return native;
   if (id === 'spear') return !native;
-  return id === 'obsidianSpear' && !native && player.spearHead === 'obsidian';
+  return id === 'obsidianSpear' && player.spearHead === 'obsidian';
 }
 
+/** A character with its own attack (the ape's hands, the mage's magic) keeps a crafted
+ * spear in the bag but cannot hold it; a human it changes into can. */
+export function canHoldEquipment(
+  player: CharacterProfile | null | undefined,
+  id: unknown,
+): id is EquipmentId {
+  return ownsEquipment(player, id) && !(id === 'obsidianSpear' && characterModel(player!).weapon);
+}
+export const CANNOT_HOLD = 'この人物は武器を持てません。';
+
 export function equippedItem(player: CharacterProfile): EquipmentId {
-  if (ownsEquipment(player, player.equippedItem)) return player.equippedItem!;
+  if (canHoldEquipment(player, player.equippedItem)) return player.equippedItem!;
   // Old saves retain their weapon and all owned tools, with exactly one active item.
   if (characterModel(player).weapon) return 'character';
   return player.spearHead === 'obsidian' ? 'obsidianSpear' : 'spear';

@@ -41,7 +41,7 @@
     "types:cloudflare": "wrangler types cloudflare/env.d.ts --include-runtime=false"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=24.22.1 <25"
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "1.0.1",

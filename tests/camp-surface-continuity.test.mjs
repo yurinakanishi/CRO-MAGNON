@@ -139,7 +139,8 @@ test('both animal galleries retain a broad room and full standing height all the
   ];
   for (const wall of ['east', 'west']) {
     const paintings = CAVE_MURALS.filter((m) => m.wall === wall);
-    assert.equal(paintings.filter((m) => m.kind === 'character').length, 12);
+    // Jank0vic (r42) is the 25th character, the thirteenth on the east wall.
+    assert.equal(paintings.filter((m) => m.kind === 'character').length, wall === 'east' ? 13 : 12);
     assert.equal(
       new Set(paintings.filter((m) => m.kind === 'animal').map((m) => m.subject)).size,
       8,

@@ -48,7 +48,7 @@ test('the interaction hint is a hidden text line that only names a real nearby a
   );
   assert.equal(main.match(/#interaction-hint'\), 'hidden'/g)?.length, 1);
   assert.doesNotMatch(main, /\$\('#interaction-hint'\)\.hidden =/);
-  assert.match(main, /range: GATHER_RANGE/);
+  assert.match(main, /range: gatherRange\(me\)/);
   assert.match(main, /renderer\.resourceVisible\?\.\(r\.id\)/);
 });
 

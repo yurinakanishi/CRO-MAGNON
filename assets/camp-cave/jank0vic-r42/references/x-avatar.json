@@ -1,0 +1,14 @@
+{
+  "verifiedOn": "2026-10-22",
+  "source": "Handle given by the user (https://x.com/Jank0vic) with a request to add the person to the contributor list and the cave mural. The public X profile was opened in the app built-in browser (not signed in); the page title and profile-photo URL were read there.",
+  "approval": "The user chose option A in chat (relayed by the requesting session): paint the mural figure from the X profile photo, keep the photo as production material only, never show it on the cards.",
+  "profile": "https://x.com/Jank0vic",
+  "pageTitle": "個人開発・タコス・ビリヤニ・やんこ (@Jank0vic) / X",
+  "url": "https://pbs.twimg.com/profile_images/2002007438418173952/HlV7_Rb7_400x400.jpg",
+  "file": "assets/camp-cave/jank0vic-r42/references/x-avatar-400x400.jpg",
+  "image": { "format": "JPEG", "width": 400, "height": 400 },
+  "bytes": 27473,
+  "sha256": "f3bf812411300fd17c36c6a883ddea78ff547376b2684e5dc471411430ecb191",
+  "processing": "Original bytes as downloaded; not re-encoded. Not copied into public/ and not part of any build.",
+  "use": "Identity reference (Input 2) for the built-in image_gen mural figure; the photo's FaceApp mark was excluded in the prompt."
+}

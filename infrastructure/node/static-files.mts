@@ -30,6 +30,7 @@ export const MIME: Readonly<Record<string, string>> = {
   '.wasm': 'application/wasm',
   '.task': 'application/octet-stream',
   '.txt': 'text/plain; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8',
 };
 
 /** Only public assets and emitted browser/domain modules are exposed. */
@@ -54,7 +55,9 @@ export async function serveStatic(
         ? 'index.html'
         : pathname === '/en' || pathname === '/en/'
           ? 'en/index.html'
-          : pathname.replace(/^\/+/, '')
+          : pathname === '/privacy' || pathname === '/en/privacy'
+            ? pathname.slice(1) + '.html'
+            : pathname.replace(/^\/+/, '')
       : pathname.slice(mount.length + 2);
   const resolved = path.resolve(base, relative);
   const allowed = path.relative(base, resolved);

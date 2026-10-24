@@ -26,7 +26,7 @@
 
 ## 次のキャラを追加するとき
 
-1. `public/models/camp-cave/asset.json` の `muralComposition.recipe` が指す現在のレシピ（現在は `identity-r41/recipe.json`）を新しい制作revisionへコピーし、`revision` に新しい番号を設定する。このr39へ戻して修復済みの特徴を失わない。既存の原本とレシピを上書きしない。元画像は引き続き旧revisionを参照できる。
+1. `public/models/camp-cave/asset.json` の `muralComposition.recipe` が指す現在のレシピ（現在は `jank0vic-exclaim-r44/recipe.json`）を新しい制作revisionへコピーし、`revision` に新しい番号を設定する。このr39へ戻して修復済みの特徴を失わない。既存の原本とレシピを上書きしない。元画像は引き続き旧revisionを参照できる。
 2. 内蔵image_genで、同じ顔料表現の独立した透過キャラを作る。全身、帽子、しっぽ、手足が欠けず、隣と重ならない参照を用意する。
 3. `sources` に原本のパス・SHA・bytes・プロンプト・元の参照を、`subjects` に `id`、保管先の `atlas`、`source`、`crop`、`size` を1件ずつ追加する。1体だけの原本は `isolation: "whole"` で離れた部品も保持する。人型なら `size: "person"`。帽子・大きな耳がある場合は `bodyTop` に頭頂の元画像Y座標を、524の2点のように身体と分ける下側の部品がある場合は `bodyBottom` に身体の最下端の次のY座標を指定する。人物紹介の名前・X・キャラIDの対応も共通名簿へ追加する。
 4. `npm run cave:build-art -- --recipe=assets/camp-cave/<新revision>/recipe.json` で配信画像、UVと身体基準の表、URLとSHA、2つのmanifestを更新する。10個の保管先は画面上のグループではないので、空きのあるアトラスを使える。1枚5体まで、切り出しの高さ180px以上、配信1024px以下を検証する。

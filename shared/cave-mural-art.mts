@@ -312,6 +312,19 @@ export const CAVE_SUBJECT_ART = [
     source: 'river-people',
     sourceCrop: [891, 706, 1202, 1186],
   },
+  {
+    id: 'jank0vic',
+    motif: 'maeKohaku',
+    size: 'small',
+    lift: 0.3351,
+    rect: [0.681640625, 0.05865102639296188, 0.29296875, 0.8797653958944281],
+    aspect: 1,
+    bodySpan: 0.4900826446280992,
+    foot: 0.7450413223140496,
+    ink: [0.04421487603305785, 0.026446280991735537, 0.9553719008264463, 0.9731404958677686],
+    source: 'jank0vic-exclaim',
+    sourceCrop: [0, 0, 2420, 2420],
+  },
 ] as const;
 export const CAVE_ANIMAL_ART = [
   {

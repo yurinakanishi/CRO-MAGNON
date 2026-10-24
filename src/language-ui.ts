@@ -101,6 +101,28 @@ export function installLanguageUI(root: HTMLElement): void {
       const url = new URL(view.location.href);
       url.pathname = getLanguage() === 'en' ? '/en/' : '/';
       if (url.href !== view.location.href) view.history.replaceState(view.history.state, '', url);
+      const doc = root.ownerDocument;
+      const canonical = `https://cromagnonmmo.com${url.pathname}`;
+      doc.querySelector('link[rel="canonical"]')?.setAttribute('href', canonical);
+      doc.querySelector('meta[property="og:url"]')?.setAttribute('content', canonical);
+      const english = getLanguage() === 'en';
+      doc
+        .querySelector('meta[property="og:locale"]')
+        ?.setAttribute('content', english ? 'en_US' : 'ja_JP');
+      doc
+        .querySelector('meta[property="og:locale:alternate"]')
+        ?.setAttribute('content', english ? 'ja_JP' : 'en_US');
+      for (const selector of [
+        'meta[name="description"]',
+        'meta[property="og:description"]',
+        'meta[name="twitter:description"]',
+      ])
+        doc
+          .querySelector(selector)
+          ?.setAttribute(
+            'content',
+            english ? 'Explore a prehistoric world.' : '原始の世界を自由に冒険。',
+          );
     }
     translateNode(root);
     updateLanguageButton(root);
@@ -112,6 +134,8 @@ export function installLanguageUI(root: HTMLElement): void {
 }
 
 function updateLanguageButton(root: ParentNode): void {
+  const privacy = root.querySelector<HTMLAnchorElement>('#title-privacy');
+  if (privacy) privacy.href = getLanguage() === 'en' ? '/en/privacy' : '/privacy';
   const button = root.querySelector<HTMLButtonElement>('#title-language');
   if (!button) return;
   const english = getLanguage() === 'en';

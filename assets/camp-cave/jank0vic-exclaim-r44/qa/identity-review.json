@@ -1,0 +1,753 @@
+{
+  "reviewedAt": "2026-10-22T15:04:19.907Z",
+  "subjects": [
+    {
+      "id": "white",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/orb-bots/source/user-reference.png",
+        "sha256": "c26fcc4d555b7cf586249114fb0a118c82baade3c3836e3cd745babe2c076a40",
+        "bytes": 1447208
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/white.png",
+      "source": "assets/camp-cave/continuous-r39/source/round-and-maruimo-r01.png",
+      "features": [
+        "white body",
+        "two upward-chevron eyes"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/round-bots-sprites-r39-4e5d49d65bd48974.png",
+        "sha256": "4e5d49d65bd48974e34f47d054ea6b26a55ce228e23443fb46242d0d47f7ca41",
+        "rect": [
+          0.01171875,
+          0.21994134897360704,
+          0.1875,
+          0.5601173020527859
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/white.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "blue",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/orb-bots/source/user-reference.png",
+        "sha256": "c26fcc4d555b7cf586249114fb0a118c82baade3c3836e3cd745babe2c076a40",
+        "bytes": 1447208
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/blue.png",
+      "source": "assets/camp-cave/continuous-r39/source/round-and-maruimo-r01.png",
+      "features": [
+        "blue body",
+        "inward > < eyes"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/round-bots-sprites-r39-4e5d49d65bd48974.png",
+        "sha256": "4e5d49d65bd48974e34f47d054ea6b26a55ce228e23443fb46242d0d47f7ca41",
+        "rect": [
+          0.2109375,
+          0.21994134897360704,
+          0.1845703125,
+          0.5601173020527859
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/blue.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "green",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/orb-bots/source/user-reference.png",
+        "sha256": "c26fcc4d555b7cf586249114fb0a118c82baade3c3836e3cd745babe2c076a40",
+        "bytes": 1447208
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/green.png",
+      "source": "assets/camp-cave/continuous-r39/source/round-and-maruimo-r01.png",
+      "features": [
+        "green body",
+        "two plus eyes"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/round-bots-sprites-r39-4e5d49d65bd48974.png",
+        "sha256": "4e5d49d65bd48974e34f47d054ea6b26a55ce228e23443fb46242d0d47f7ca41",
+        "rect": [
+          0.4072265625,
+          0.21994134897360704,
+          0.18359375,
+          0.5601173020527859
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/green.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "purple",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/orb-bots/source/user-reference.png",
+        "sha256": "c26fcc4d555b7cf586249114fb0a118c82baade3c3836e3cd745babe2c076a40",
+        "bytes": 1447208
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/purple.png",
+      "source": "assets/camp-cave/continuous-r39/source/round-and-maruimo-r01.png",
+      "features": [
+        "purple body",
+        "two ring eyes"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/round-bots-sprites-r39-4e5d49d65bd48974.png",
+        "sha256": "4e5d49d65bd48974e34f47d054ea6b26a55ce228e23443fb46242d0d47f7ca41",
+        "rect": [
+          0.6025390625,
+          0.21994134897360704,
+          0.1845703125,
+          0.5601173020527859
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/purple.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "orange",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/orb-bots/source/user-reference.png",
+        "sha256": "c26fcc4d555b7cf586249114fb0a118c82baade3c3836e3cd745babe2c076a40",
+        "bytes": 1447208
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/orange.png",
+      "source": "assets/camp-cave/continuous-r39/source/round-and-maruimo-r01.png",
+      "features": [
+        "orange body",
+        "two horizontal eyes"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/round-bots-sprites-r39-4e5d49d65bd48974.png",
+        "sha256": "4e5d49d65bd48974e34f47d054ea6b26a55ce228e23443fb46242d0d47f7ca41",
+        "rect": [
+          0.798828125,
+          0.21994134897360704,
+          0.1826171875,
+          0.5601173020527859
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/orange.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "maruimo-mascot",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/maruimo-octopus/source/user-reference.png",
+        "sha256": "69fcad371823afb72eb8a15413ebf830387c636e3d7e260b24431c6d5ca49fa7",
+        "bytes": 962907
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/maruimo-mascot.png",
+      "source": "assets/camp-cave/continuous-r39/source/round-and-maruimo-r01.png",
+      "features": [
+        "glasses and brown hair",
+        "knit sweater",
+        "curled red octopus tentacles with suckers; current pose retained"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/maruimo-frieze-sprites-r39-8e8a66ed9d4b940e.png",
+        "sha256": "8e8a66ed9d4b940e66c1278bac673690b5430c60cc79af5cce78899e458b35f1",
+        "rect": [
+          0.01171875,
+          0.05865102639296188,
+          0.2578125,
+          0.8797653958944281
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/maruimo-mascot.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "beret",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/shape-bots/source/user-reference.png",
+        "sha256": "9836ed1b161feba83535854a67235b74ceb1c4dbe26a2098e53a33559c69ad77",
+        "bytes": 217726
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/beret.png",
+      "source": "assets/camp-cave/continuous-r39/source/shapes-and-companions-r01.png",
+      "features": [
+        "blue asymmetrical body",
+        "brown beret",
+        "vertical eyes"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/shape-bots-sprites-r39-15effe4966ef81fd.png",
+        "sha256": "15effe4966ef81fd2d41f60ccf5e4e4e9130ebf572074f7da1c63fd9f5e717d3",
+        "rect": [
+          0.01171875,
+          0.19648093841642228,
+          0.2314453125,
+          0.6041055718475073
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/beret.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "frog",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/shape-bots/source/user-reference.png",
+        "sha256": "9836ed1b161feba83535854a67235b74ceb1c4dbe26a2098e53a33559c69ad77",
+        "bytes": 217726
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/frog.png",
+      "source": "assets/camp-cave/continuous-r39/source/shapes-and-companions-r01.png",
+      "features": [
+        "raised green eyes",
+        "pale eye rings"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/shape-bots-sprites-r39-15effe4966ef81fd.png",
+        "sha256": "15effe4966ef81fd2d41f60ccf5e4e4e9130ebf572074f7da1c63fd9f5e717d3",
+        "rect": [
+          0.2548828125,
+          0.19648093841642228,
+          0.2333984375,
+          0.6041055718475073
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/frog.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "triangle",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/shape-bots/source/user-reference.png",
+        "sha256": "9836ed1b161feba83535854a67235b74ceb1c4dbe26a2098e53a33559c69ad77",
+        "bytes": 217726
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/triangle.png",
+      "source": "assets/camp-cave/continuous-r39/source/shapes-and-companions-r01.png",
+      "features": [
+        "yellow triangle",
+        "round spectacles and curved closed eyes"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/shape-bots-sprites-r39-15effe4966ef81fd.png",
+        "sha256": "15effe4966ef81fd2d41f60ccf5e4e4e9130ebf572074f7da1c63fd9f5e717d3",
+        "rect": [
+          0.5,
+          0.19648093841642228,
+          0.240234375,
+          0.6041055718475073
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/triangle.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "heart",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/shape-bots/source/user-reference.png",
+        "sha256": "9836ed1b161feba83535854a67235b74ceb1c4dbe26a2098e53a33559c69ad77",
+        "bytes": 217726
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/heart.png",
+      "source": "assets/camp-cave/continuous-r39/source/shapes-and-companions-r01.png",
+      "features": [
+        "heart outline",
+        "dark sunglasses",
+        "earth-red mural palette retained"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/shape-bots-sprites-r39-15effe4966ef81fd.png",
+        "sha256": "15effe4966ef81fd2d41f60ccf5e4e4e9130ebf572074f7da1c63fd9f5e717d3",
+        "rect": [
+          0.751953125,
+          0.19648093841642228,
+          0.2294921875,
+          0.6041055718475073
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/heart.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "524",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/camp-cave/source/character-524-reference-user.png",
+        "sha256": "8231914f43d9e8454823a923c8004df44c0bad1ee1aec9e2f140493d5f2af273",
+        "bytes": 88969
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/524.png",
+      "source": "assets/camp-cave/identity-r41/source/524-r01.png",
+      "features": [
+        "two detached yellow dots",
+        "two upper points and scalloped lower body",
+        "three pale digit patches; red 524; teal mouth"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/creature524-sprites-r41-a6c8f1b0a85bb17d.png",
+        "sha256": "a6c8f1b0a85bb17d8155bf62955a24f6c4dd708fe0175c06548bf5b4e0e0e96a",
+        "rect": [
+          0.01171875,
+          0.05865102639296188,
+          0.267578125,
+          0.8797653958944281
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/524.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "rimo-neko",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/rimo-neko/source/user-reference.jpg",
+        "sha256": "3a0ebdfadbb383d170318a0cd4d3cb9540ccb113822bc0a44836dfcaeeebdf41",
+        "bytes": 27231
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/rimo-neko.png",
+      "source": "assets/camp-cave/continuous-r39/source/shapes-and-companions-r01.png",
+      "features": [
+        "green eyes",
+        "white muzzle/chest",
+        "raised paw with pink toe beans",
+        "striped fluffy tail"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/rimo-frieze-sprites-r39-ec249779442b8ede.png",
+        "sha256": "ec249779442b8edeb6a2052f0f6deffa31c2624107cf24f44bd56058fda8a761",
+        "rect": [
+          0.01171875,
+          0.05865102639296188,
+          0.263671875,
+          0.8797653958944281
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/rimo-neko.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "mae",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/mae/source/mae.jpg",
+        "sha256": "ed917b016d8aab12ccd7f7b1521f5d5e314a99d18f70de23ddd82cf1ce6d149a",
+        "bytes": 7125
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/mae.png",
+      "source": "assets/camp-cave/continuous-r39/source/meadow-people-r01.png",
+      "features": [
+        "oblong outline",
+        "two vertical eyes",
+        "short horizontal mouth"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/mae-kohaku-sprites-r44-ce962ad820c3df46.png",
+        "sha256": "ce962ad820c3df467109b49a6e11b605639dffdb705d101241bd2ab18c320eda",
+        "rect": [
+          0.01171875,
+          0.05865102639296188,
+          0.3994140625,
+          0.8797653958944281
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/mae.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "kohaku",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/kohaku/source/reference-v2.png",
+        "sha256": "e1df6619300d50f3c8e0af0691f5b01e4a810abd658ff607a6f259d285352343",
+        "bytes": 1517261
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/kohaku.png",
+      "source": "assets/camp-cave/continuous-r39/source/meadow-people-r01.png",
+      "features": [
+        "blue-accented bob",
+        "cat ears with white ribbons",
+        "maid dress",
+        "striped tail"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/mae-kohaku-sprites-r44-ce962ad820c3df46.png",
+        "sha256": "ce962ad820c3df467109b49a6e11b605639dffdb705d101241bd2ab18c320eda",
+        "rect": [
+          0.4228515625,
+          0.05865102639296188,
+          0.2470703125,
+          0.8797653958944281
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/kohaku.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "saber-mascot",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/friend-mascots/saber-mascot/source/user-reference.jpg",
+        "sha256": "8c0f23c3c1d9acdf60509fa0a8a38f8d95c4562522513389d90a52491634caf0",
+        "bytes": 347309
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/saber-mascot.png",
+      "source": "assets/camp-cave/identity-r41/source/saber-mascot-r01.png",
+      "features": [
+        "white five-petal flower",
+        "woven straw hat and white ribbon"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/friends-meadow-sprites-r41-f42da105eead65b7.png",
+        "sha256": "f42da105eead65b79c7b4afc2b6439926560c08940cf9fae1bed93a9030c2ef7",
+        "rect": [
+          0.01171875,
+          0.05865102639296188,
+          0.2568359375,
+          0.8797653958944281
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/saber-mascot.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "fairy-mascot",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/friend-mascots/fairy-mascot/source/reference-v1.png",
+        "sha256": "11c8f34f854dc95652a141940923fa56a0e8b73966e7ef74c57af0625048fa17",
+        "bytes": 1737794
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/fairy-mascot.png",
+      "source": "assets/camp-cave/continuous-r39/source/meadow-people-r01.png",
+      "features": [
+        "brown bob",
+        "lavender wings and scarf",
+        "white skirt"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/friends-meadow-sprites-r41-f42da105eead65b7.png",
+        "sha256": "f42da105eead65b79c7b4afc2b6439926560c08940cf9fae1bed93a9030c2ef7",
+        "rect": [
+          0.2802734375,
+          0.05865102639296188,
+          0.2080078125,
+          0.8797653958944281
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/fairy-mascot.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "nukonuko-mascot",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/friend-mascots/nukonuko-mascot/source/reference-v1.png",
+        "sha256": "7c8bcdcc1fc0101d920ffa77720128901b19fea5413313674ffe14328bc796d5",
+        "bytes": 1145485
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/nukonuko-mascot.png",
+      "source": "assets/camp-cave/identity-r41/source/nukonuko-mascot-r01.png",
+      "features": [
+        "gold star stamped inside round pendant instead of a bow",
+        "dark collar and white blouse"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/friends-meadow-sprites-r41-f42da105eead65b7.png",
+        "sha256": "f42da105eead65b79c7b4afc2b6439926560c08940cf9fae1bed93a9030c2ef7",
+        "rect": [
+          0.5,
+          0.05865102639296188,
+          0.24609375,
+          0.8797653958944281
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/nukonuko-mascot.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "sagasa-mascot",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/friend-mascots/sagasa-mascot/source/user-reference.jpg",
+        "sha256": "851595b134cf1f1548da30b6614d8dd04a7c6882e53f36588e98b712ad5dbb76",
+        "bytes": 206957
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/sagasa-mascot.png",
+      "source": "assets/camp-cave/identity-r41/source/sagasa-mascot-r01.png",
+      "features": [
+        "rounded rectangular glasses",
+        "silver bar earring",
+        "blue sleeveless vest over black hoodie"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/friends-meadow-sprites-r41-f42da105eead65b7.png",
+        "sha256": "f42da105eead65b79c7b4afc2b6439926560c08940cf9fae1bed93a9030c2ef7",
+        "rect": [
+          0.7578125,
+          0.05865102639296188,
+          0.2138671875,
+          0.8797653958944281
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/sagasa-mascot.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "otani-mascot",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/friend-mascots/otani-mascot/source/reference-v1.png",
+        "sha256": "e6ac386f6f560e0eeca784441715c2962e8e4986312bf21142ca2d71dc568639",
+        "bytes": 1230479
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/otani-mascot.png",
+      "source": "assets/camp-cave/identity-r41/source/otani-mascot-r01.png",
+      "features": [
+        "cursor arrow on hat",
+        "dangling green heart charm",
+        "headset microphone and green front-badge squares"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/friends-river-sprites-r41-8ff4736a7f5ccd89.png",
+        "sha256": "8ff4736a7f5ccd89d826251255556d92c49e29b7440a1274cb1e4124e7b3324b",
+        "rect": [
+          0.01171875,
+          0.12316715542521994,
+          0.224609375,
+          0.750733137829912
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/otani-mascot.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "urata-mascot",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/friend-mascots/urata-mascot/source/reference-v1.png",
+        "sha256": "cbba1e464914d8f51f7b537b4b2bac9817ce08c7445e2583acb2b13669be9c88",
+        "bytes": 925965
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/urata-mascot.png",
+      "source": "assets/camp-cave/continuous-r39/source/river-people-r01.png",
+      "features": [
+        "curly hair",
+        "round glasses",
+        "black shirt and jeans",
+        "raised hands"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/friends-river-sprites-r41-8ff4736a7f5ccd89.png",
+        "sha256": "8ff4736a7f5ccd89d826251255556d92c49e29b7440a1274cb1e4124e7b3324b",
+        "rect": [
+          0.248046875,
+          0.12316715542521994,
+          0.2119140625,
+          0.750733137829912
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/urata-mascot.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "howkey-scientist",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/howkey-scientist/source/user-reference-01.png",
+        "sha256": "a2505d35e691796d0172cfbc53f4405efd9d22944f2503154de4af203c75731c",
+        "bytes": 407754
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/howkey-scientist.png",
+      "source": "assets/camp-cave/identity-r41/source/howkey-scientist-r01.png",
+      "features": [
+        "red shield badge",
+        "grey waistcoat and open white collar",
+        "mint bob with pale tips and retained green flask"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/friends-river-sprites-r41-8ff4736a7f5ccd89.png",
+        "sha256": "8ff4736a7f5ccd89d826251255556d92c49e29b7440a1274cb1e4124e7b3324b",
+        "rect": [
+          0.4716796875,
+          0.12316715542521994,
+          0.24609375,
+          0.750733137829912
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/howkey-scientist.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "rei-mascot",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/friend-mascots/rei-mascot/source/user-reference-sheet.png",
+        "sha256": "18a81c2681b1f957156e274068e67be89c033b09de655da77d578ae5e09926c7",
+        "bytes": 377219
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/rei-mascot.png",
+      "source": "assets/camp-cave/continuous-r39/source/river-people-r01.png",
+      "features": [
+        "long dark hair",
+        "orange outfit piping and ornaments",
+        "open book"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/friends-river-sprites-r41-8ff4736a7f5ccd89.png",
+        "sha256": "8ff4736a7f5ccd89d826251255556d92c49e29b7440a1274cb1e4124e7b3324b",
+        "rect": [
+          0.7294921875,
+          0.12316715542521994,
+          0.2568359375,
+          0.750733137829912
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/rei-mascot.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "daredaro",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/camp-cave/source/daredaro-reference-user.png",
+        "sha256": "857463e4e35ea8a8ee88c3d44190bf565ab3043087f7b71e4f0b46aa6cfad727",
+        "bytes": 236357
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/daredaro.png",
+      "source": "assets/camp-cave/identity-r41/source/daredaro-r01.png",
+      "features": [
+        "magenta-purple eye band",
+        "violet necktie"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/daredaro-frieze-sprites-r41-8334b0a72303bc9e.png",
+        "sha256": "8334b0a72303bc9ebfc47b89c8d14d67a51e77b08c27722e7d3568cd76f761de",
+        "rect": [
+          0.01171875,
+          0.05865102639296188,
+          0.171875,
+          0.8797653958944281
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/daredaro.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "ryuichi",
+      "decision": "retain",
+      "reference": {
+        "path": "assets/camp-cave/ryuichi-frieze-r38/reference-archived.jpg",
+        "sha256": "06cba8b57b036a3d1551a74c6be9748271ebdd702402dbf71f6adbfe9cbcc2e5",
+        "bytes": 8837
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/ryuichi.png",
+      "source": "assets/camp-cave/continuous-r39/source/river-people-r01.png",
+      "features": [
+        "white/red/blue full-face helmet",
+        "blue visor glint",
+        "tan jacket and black straps"
+      ],
+      "pose": "r43 cutout retained: decoded delivered pixels are identical to the reviewed r43 cutout.",
+      "delivery": {
+        "url": "/models/camp-cave/ryuichi-frieze-sprites-r39-38a533fa1a5459cf.png",
+        "sha256": "38a533fa1a5459cf6ff84c2fdd37e6421c06225af82ca6b8b68b471a7a65a0f7",
+        "rect": [
+          0.01171875,
+          0.05865102639296188,
+          0.189453125,
+          0.8797653958944281
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/ryuichi.png",
+      "reviewedInGame": true
+    },
+    {
+      "id": "jank0vic",
+      "decision": "redraw",
+      "reference": {
+        "path": "assets/camp-cave/jank0vic-r42/references/x-avatar-400x400.jpg",
+        "sha256": "f3bf812411300fd17c36c6a883ddea78ff547376b2684e5dc471411430ecb191",
+        "bytes": 27473
+      },
+      "styleReference": {
+        "path": "assets/camp-cave/identity-r41/source/howkey-scientist-r01.png",
+        "sha256": "6b8967c8ba1857e3e00afd37fa5cc761c7b4949c95f561d0fb1ac3302f3459e6",
+        "bytes": 2187802
+      },
+      "before": "assets/camp-cave/jank0vic-face-r43/qa/served/jank0vic.png",
+      "face": "assets/camp-cave/jank0vic-face-r43/source/jank0vic-face-r01.png",
+      "candidates": [
+        {
+          "path": "assets/camp-cave/jank0vic-exclaim-r44/marks/exclaim-sheet-01.png",
+          "sha256": "ce8b81a79f385d700412bfbba680c7124722600343ae7ea5cb3905bf559837b3",
+          "bytes": 1939339
+        },
+        {
+          "path": "assets/camp-cave/jank0vic-exclaim-r44/marks/exclaim-sheet-02.png",
+          "sha256": "0ab16dbe2fa9eeb3908e9ec425b1bef1e3e105f0a70bd513badf71af14458022",
+          "bytes": 2164434
+        }
+      ],
+      "chosen": "assets/camp-cave/jank0vic-exclaim-r44/marks/exclaim-sheet-02.png",
+      "composition": "assets/camp-cave/jank0vic-exclaim-r44/qa/frame-layout.json",
+      "source": "assets/camp-cave/jank0vic-exclaim-r44/source/jank0vic-exclaim-r01.png",
+      "features": [
+        "front-facing head only, repainted from the photo with its facial geometry",
+        "short thick jet-black hair rising into a short quiff, short sides",
+        "straight dark brows, narrow smiling single-lidded eyes, straight nose",
+        "broad open smile showing the upper teeth, ears sticking out on both sides",
+        "the same r43 face (every face pixel copied unchanged), framed by 64 red-ochre exclamation marks",
+        "aligned grid of 10 per row: two full rows above and below, three either side of the face"
+      ],
+      "pose": "User request 2026-10-22: many exclamation marks around the face, in horizontal rows that line up. The marks are image_gen paint; code only aligned them in the grid. The bottom row rests on the shared 1.4 m baseline.",
+      "delivery": {
+        "url": "/models/camp-cave/mae-kohaku-sprites-r44-ce962ad820c3df46.png",
+        "sha256": "ce962ad820c3df467109b49a6e11b605639dffdb705d101241bd2ab18c320eda",
+        "rect": [
+          0.681640625,
+          0.05865102639296188,
+          0.29296875,
+          0.8797653958944281
+        ]
+      },
+      "after": "assets/camp-cave/jank0vic-exclaim-r44/qa/served/jank0vic.png",
+      "reviewedInGame": true
+    }
+  ],
+  "scope": "At the user's request the r43 front-facing face of Jank0vic is framed by an aligned grid of image_gen exclamation marks. The X profile photo remains production material only (never served or shown on cards). The other 24 characters keep their sources and decode to identical delivered pixels. Cave-pigment simplification; no claim of photographic or pixel-identical faces.",
+  "gameReview": {
+    "report": "output/playwright/cave-jank0vic-exclaim-20261023-r01/report.json",
+    "sha256": "7beab81f75caed75b6bcefc2dc19102f4ba07efff4e5d5b60bfd9a89c4f9f73b",
+    "checkedAt": "2026-10-22T15:03:34.721Z",
+    "scope": "Manual comparison of the delivered cutouts and wall-normal views covering every character on both walls, plus PC/mobile waiting and live oblique views. Jank0vic compared with the r43 face, the chosen mark sheet and the reference photo."
+  }
+}

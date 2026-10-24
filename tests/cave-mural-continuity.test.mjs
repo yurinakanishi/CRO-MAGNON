@@ -262,7 +262,7 @@ test('future additions reflow automatically without shrinking any existing chara
 test('hiding a person closes the gap and preserves all independent animals and other scales', () => {
   const hidden = buildCaveMurals(CAVE_SUBJECT_ART, ['howkey-scientist']);
   continuous(hidden);
-  assert.equal(hidden.filter((m) => m.kind === 'character').length, 23);
+  assert.equal(hidden.filter((m) => m.kind === 'character').length, 24);
   assert(!hidden.some((m) => m.subject === 'howkey-scientist'));
   for (const old of CAVE_MURALS.filter((m) => m.subject !== 'howkey-scientist')) {
     const current = hidden.find((m) => m.id === old.id);

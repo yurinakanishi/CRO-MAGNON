@@ -35,7 +35,7 @@ export function titleScreenMarkup(): string {
           </div>
         </div>
         <button id="title-fullscreen" class="title-fullscreen" type="button" aria-label="全画面表示" aria-pressed="false">${icon('expand')}</button>
-        <div class="title-footer"><span>v0.1</span></div>
+        <div class="title-footer">${BUILD_PROFILE.environment === 'exhibition' ? '' : '<a id="title-privacy" href="/privacy">プライバシー・計測設定</a>'}<span>v0.1</span></div>
       </section>`;
 }
 

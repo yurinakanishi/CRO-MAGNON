@@ -50,6 +50,8 @@ async function prepare(context) {
     return route.abort();
   });
   await target.goto(base);
+  const analyticsDecline = target.getByRole('button', { name: /^(許可しない|Do not allow)$/ });
+  if (await analyticsDecline.isVisible()) await analyticsDecline.click();
   return target;
 }
 async function setup(target, character = 'cro-male', dye = 'blue', enter = true) {

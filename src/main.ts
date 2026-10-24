@@ -32,7 +32,13 @@ import type { ViewState } from './view-state.js';
 import { normalizeCharacter, characterModel } from '../shared/characters.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
 import type { EquipmentId } from '../shared/types.mjs';
-import { equippedItem, equipmentInfo, ownsEquipment } from '../shared/equipment.mjs';
+import {
+  CANNOT_HOLD,
+  canHoldEquipment,
+  equippedItem,
+  equipmentInfo,
+  ownsEquipment,
+} from '../shared/equipment.mjs';
 import { installEquipmentUI } from './equipment-ui.js';
 import { parseCharacterValue } from './character-selection.js';
 import {
@@ -101,7 +107,7 @@ import {
   movementKey,
   acceptsGameShortcut,
 } from './combat-input.js';
-import { GATHER_RANGE, gatherDistance, interactionVisible } from '../shared/interactions.mjs';
+import { gatherDistance, gatherRange, interactionVisible } from '../shared/interactions.mjs';
 import { caveFireInteraction } from '../shared/cave-fire.mjs';
 import { caveTorchAvailable, caveTorchLit } from '../shared/cave-light.mjs';
 import { ENEMY_GROUNDS, SCENERY } from '../shared/scenery-layout.mjs';
@@ -1241,7 +1247,7 @@ function nearby(): { action: string; label: string; targetId?: string } | null {
         r.type === 'obsidian'
           ? '黒曜石を採掘する'
           : `${{ wood: '木材', stone: '石', berry: 'ベリー' }[r.type]}を採集する`,
-      range: GATHER_RANGE,
+      range: gatherRange(me),
       reachDistance: gatherDistance(renderer.collision, me, r),
     }));
   if (!fixedIdentity && state.npc)
@@ -2256,7 +2262,8 @@ function inventoryEntries() {
       items.push({
         key: id === base ? 'weapon' : id,
         label: item.name,
-        note: equippedItem(me) === id ? '装備中' : '装備する',
+        note:
+          equippedItem(me) === id ? '装備中' : canHoldEquipment(me, id) ? '装備する' : '持てません',
         count: 1,
         glyph: item.icon,
       });
@@ -2356,6 +2363,7 @@ function openItemActions(card: HTMLElement) {
   if (equipment) {
     closeItemActions();
     if (equippedItem(player()) === equipment) inventoryCrafting.status('すでに装備しています。');
+    else if (!canHoldEquipment(player(), equipment)) inventoryCrafting.status(CANNOT_HOLD);
     else equipmentUI.open(equipment, false, card);
     return;
   }

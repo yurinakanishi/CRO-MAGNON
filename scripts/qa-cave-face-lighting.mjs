@@ -1,6 +1,9 @@
 // Real Chrome on disposable solo origins. Face comparisons fix pose, camera and light time.
 // Old/new face lighting is compared in the current chamber; near-face light and live-world
 // spawn are QA fixtures. Start, torch and proceed use actual mouse/touch events.
+// Record of 2026-10-17. Since 2026-10-23 characters wear the outdoor daylight in the cave and
+// neither the cave's fill nor the torch lights them (src/actor-daylight.ts), so its "fill lifts
+// the face" checks no longer hold: use scripts/qa-cave-character-daylight.mjs.
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { chromium } from 'playwright';

@@ -1,0 +1,22 @@
+[
+  {
+    "file": "exclaim-sheet-01.png",
+    "prompt": "Use case: decorative marks for an existing cave mural.\nPaint EIGHT separate exclamation marks (!) on one canvas, arranged as a loose grid of 4 columns by 2 rows with wide empty gaps between them. Each mark stays completely inside its own grid cell, well away from the cell edges and from its neighbours, so no two marks touch or overlap.\nEach mark is an upright exclamation mark: a tapered vertical bar above a separate round dot, hand-painted with a brush in red ochre (iron-oxide) mineral pigment. Match the painting technique of the input image exactly: a darker red-brown speckled outline, granular speckled fill, dry weathering and worn transparent flecks. All eight marks have the same height and the same upright angle; only the brushwork varies slightly (stroke width, taper, dot shape).\nDo not paint the face, hair or any figure from the input image. No letters, numbers, other symbols, background, frame, ground, shadow or text. Genuinely transparent background. Medium stroke width.\nCanvas: landscape, about 1536 x 1024 px; if unavailable, square at least 1024 px. Input image 1 is a painting-technique reference only.",
+    "referenced_image_paths": [
+      "C:/Users/yurin/Desktop/projects/CRO-MAGNON/assets/camp-cave/jank0vic-face-r43/source/jank0vic-face-r01.png"
+    ],
+    "transparent_background": true,
+    "size_option": "No dedicated size parameter available; landscape 1536 x 1024 requested in prompt.",
+    "original_path": "C:/Users/yurin/.codex/generated_images/01a16417-b3e6-73b2-8017-dc0abc0daf44/exec-7870b17b-7be7-4a59-b81a-796944ce7888.png"
+  },
+  {
+    "file": "exclaim-sheet-02.png",
+    "prompt": "Use case: decorative marks for an existing cave mural.\nPaint EIGHT separate exclamation marks (!) on one canvas, arranged as a loose grid of 4 columns by 2 rows with wide empty gaps between them. Each mark stays completely inside its own grid cell, well away from the cell edges and from its neighbours, so no two marks touch or overlap.\nEach mark is an upright exclamation mark: a tapered vertical bar above a separate round dot, hand-painted with a brush in red ochre (iron-oxide) mineral pigment. Match the painting technique of the input image exactly: a darker red-brown speckled outline, granular speckled fill, dry weathering and worn transparent flecks. All eight marks have the same height and the same upright angle; only the brushwork varies slightly (stroke width, taper, dot shape).\nDo not paint the face, hair or any figure from the input image. No letters, numbers, other symbols, background, frame, ground, shadow or text. Genuinely transparent background. Slightly bolder strokes and a larger round dot.\nCanvas: landscape, about 1536 x 1024 px; if unavailable, square at least 1024 px. Input image 1 is a painting-technique reference only.",
+    "referenced_image_paths": [
+      "C:/Users/yurin/Desktop/projects/CRO-MAGNON/assets/camp-cave/jank0vic-face-r43/source/jank0vic-face-r01.png"
+    ],
+    "transparent_background": true,
+    "size_option": "No dedicated size parameter available; landscape 1536 x 1024 requested in prompt.",
+    "original_path": "C:/Users/yurin/.codex/generated_images/01a16417-b3e6-73b2-8017-dc0abc0daf44/exec-a2e9982c-4c0e-4b03-9ce2-740dd3bc13e9.png"
+  }
+]

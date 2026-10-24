@@ -4,7 +4,7 @@ import { EventEmitter } from 'node:events';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import { createGameCore } from '../dist/application/game-core.mjs';
-import { GATHER_RANGE, gatherDistance, interactionVisible } from '../dist/shared/interactions.mjs';
+import { gatherDistance, gatherRange, interactionVisible } from '../dist/shared/interactions.mjs';
 import { coastalInteraction } from '../dist/src/coastal-ui.js';
 import { fishingInteraction } from '../dist/src/fishing-ui.js';
 import { huntInteraction } from '../dist/src/hunting-ui.js';
@@ -58,8 +58,8 @@ function fixture(t) {
       adventureInteraction,
       residentInteraction,
       gulfInteraction,
-      GATHER_RANGE,
       gatherDistance,
+      gatherRange,
       interactionVisible,
       distance: (a, b) => Math.hypot(a.x - b.x, a.z - b.z),
     });

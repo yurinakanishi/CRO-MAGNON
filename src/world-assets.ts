@@ -21,6 +21,7 @@ import { applyBehemothPalette } from './behemoth-palette.js';
 import { installSkinnedBounds } from './skinned-bounds.js';
 import { SIGHT_MARGIN, crownProfile, segmentNearTree } from './tree-sight.js';
 import { configureActorPerformance, disposeActorPerformance } from './performance-lod.js';
+import { installActorDaylight } from './actor-daylight.js';
 import { instancedMaterial } from './material-variants.js';
 import { AssetLoadQueue, LOAD_TIER, LoadTicket } from './asset-load-queue.js';
 import {
@@ -432,6 +433,7 @@ export class WorldAssets {
       root = cloneSkeleton(gltf.scene),
       mixer = new THREE.AnimationMixer(root);
     dress?.(root);
+    installActorDaylight(root);
     configureActorPerformance(root, lods?.[0]?.scene, asset);
     installSkinnedBounds(root);
     const actions = new Map<string, THREE.AnimationAction>(

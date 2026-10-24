@@ -238,6 +238,11 @@
   line-height: 12px;
   letter-spacing: 0.1em;
 }
+#title-privacy {
+  color: inherit;
+  font-size: 11px;
+  letter-spacing: normal;
+}
 @media (max-width: 1000px) {
   #screen-title .title-content {
     padding: 30px 24px 0;

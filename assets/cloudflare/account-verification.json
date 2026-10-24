@@ -1,9 +1,9 @@
 {
-  "checkedAt": "2026-10-19T03:11:31.8250288Z",
+  "checkedAt": "2026-10-23T01:47:05.663Z",
   "accountId": "a211102818d484cb668c6b62bebff3f9",
   "accountName": "CRO-MAGNON Free",
   "workersPlan": "Free",
-  "evidence": "Authenticated Workers plans dashboard reloaded immediately before deployment; CRO-MAGNON Free / Free / $0 / disabled Current plan. AX evidence: output/cloudflare-deploy/deploy-gather-camp-20261019-01/workers-free-ax.txt. No plan or billing change.",
+  "evidence": "Observed authenticated Chrome CUA tab 1179547925 on the exact account URL: CRO-MAGNON Free account; Free heading, $0 and disabled Current plan button. Recorded at 2026-10-23T01:47:05.663Z. No plan, billing or permission changes.",
   "dashboard": "https://dash.cloudflare.com/a211102818d484cb668c6b62bebff3f9/workers/plans",
   "deploymentAllowed": true
 }

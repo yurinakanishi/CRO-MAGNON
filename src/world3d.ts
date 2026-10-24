@@ -24,6 +24,7 @@ import {
 import { GroundPettingPose, groundPettingProgress } from './ground-petting-pose.js';
 import { CaveTorch } from './cave-torch.js';
 import { caveInteriorWeight, caveTorchAvailable, caveTorchLit } from '../shared/cave-light.mjs';
+import { CAMP_DAYLIGHT, DAYLIGHT } from './actor-daylight.js';
 import { chooseCompanionView, companionViewDistances } from './companion-view.js';
 import { placeCompanionCamera } from './companion-camera.js';
 import { pettingProgress } from './petting-pose.js';
@@ -562,10 +563,10 @@ export class WorldRenderer {
   }
 
   setupLighting() {
-    this.hemisphere = new THREE.HemisphereLight('#dce7d7', '#546047', 2.0);
+    this.hemisphere = new THREE.HemisphereLight(DAYLIGHT.sky, DAYLIGHT.ground, DAYLIGHT.hemisphere);
     this.scene.add(this.hemisphere);
     // Light only: the sun casts no shadow map in the one graphics profile.
-    this.sun = new THREE.DirectionalLight('#ffe4b5', 2.65);
+    this.sun = new THREE.DirectionalLight(DAYLIGHT.sun, DAYLIGHT.directional);
     this.sun.position.set(5, 47, 18);
     this.sun.target.position.set(50, 0, 50);
     this.scene.add(this.sun, this.sun.target);
@@ -2978,7 +2979,7 @@ export class WorldRenderer {
         marker.element.style.top = `${(1 - screen.y) * 50}%`;
       }
     }
-    this.sun.position.set(this.focus.x - 32, this.focus.y + 48, this.focus.z - 25);
+    this.sun.position.copy(this.focus).add(CAMP_DAYLIGHT.sunDirection);
     this.sun.target.position.set(this.focus.x, this.focus.y, this.focus.z);
     this.openWorld?.update(this.camera, time);
     this.landmarks?.update(this.camera, time);

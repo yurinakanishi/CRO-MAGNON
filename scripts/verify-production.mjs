@@ -105,6 +105,12 @@ try {
     },
   );
   await run('browser', ['scripts/qa-production.mjs', output, evidence]);
+  await run('site-metadata', ['scripts/qa-site-metadata.mjs', output]);
+  await run('analytics-consent', [
+    'scripts/qa-site-analytics.mjs',
+    path.join(evidence, 'analytics'),
+    path.join(output, 'dist-cloudflare'),
+  ]);
   report.status = 'passed';
   console.log(
     `Production verification passed: ${build.buildId}\nReport: ${path.join(output, 'verification.json')}`,

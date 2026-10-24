@@ -59,10 +59,9 @@ test('shared URLs serve distinct Japanese and English metadata before JavaScript
     assert.equal(await head.text(), '');
   }
   // Both entries must keep boot/import maps and styles in sync with the same game.
-  assert.equal(
-    pages[0].slice(pages[0].indexOf('  <body>')),
-    pages[1].slice(pages[1].indexOf('  <body>')),
-  );
+  const body = (html) =>
+    html.slice(html.indexOf('  <body>')).replace(/<noscript>[\s\S]*?<\/noscript>/, '');
+  assert.equal(body(pages[0]), body(pages[1]));
   const styles = (html) => [...html.matchAll(/<link rel="stylesheet"[^>]+>/g)].map(([tag]) => tag);
   assert.deepEqual(styles(pages[0]), styles(pages[1]));
   for (const pathname of ['/en', '/en/index.html', '/en/?room=EMBER']) {
